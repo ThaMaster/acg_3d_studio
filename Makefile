@@ -162,6 +162,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named lab1
+
+# Build rule for target.
+lab1: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 lab1
+.PHONY : lab1
+
+# fast build rule for target.
+lab1/fast:
+	$(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/build
+.PHONY : lab1/fast
+
+#=============================================================================
 # Target rules for targets named viewer
 
 # Build rule for target.
@@ -186,6 +199,7 @@ help:
 	@echo "... install/strip"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
+	@echo "... lab1"
 	@echo "... viewer"
 .PHONY : help
 
