@@ -1,0 +1,25 @@
+# File produced by 
+
+newmtl Chest
+  Ns 26.4
+  d 1.0
+  illum 2
+  Kd 0.784 0.6078 0.3176
+  Ka 0 0 0
+  Ks 0.8549 0.7647 0.651
+
+newmtl Stomach
+  Ns 92.44
+  d 1.0
+  illum 2
+  Kd 1.0 0.4196 0
+  Ka 0.4314 0 0
+  Ks 0.8549 0.4784 0.1686
+
+newmtl Stomach_1
+  Ns 55.61
+  d 1.0
+  illum 2
+  Kd 0.1451 0.1333 0.0431
+  Ka 0.1451 0.1333 0.0431
+  Ks 0.1451 0.1333 0.0431

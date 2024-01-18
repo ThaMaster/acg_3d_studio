@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene>
+  <node name="house0">
+    <file path="models/ResidentialBuildings/ResidentialBuildings006.fbx"> </file>
+    <transform translate="-166.50003108486143 0 20.43688829476742" rotate="0 140.5931017539817 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house1">
+    <file path="models/ResidentialBuildings/ResidentialBuildings008.fbx"> </file>
+    <transform translate="-90.6025523638021 0 403.27046300499836" rotate="0 -21.620947968218672 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house2">
+    <file path="models/ResidentialBuildings/ResidentialBuildings003.fbx"> </file>
+    <transform translate="-163.78832704181022 0 285.6054336104551" rotate="0 -19.04348908010423 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house3">
+    <file path="models/ResidentialBuildings/ResidentialBuildings007.fbx"> </file>
+    <transform translate="387.68515559959906 0 317.5805637211844" rotate="0 -132.93517763851955 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house4">
+    <file path="models/ResidentialBuildings/ResidentialBuildings002.fbx"> </file>
+    <transform translate="-397.70655914967324 0 433.5607681941057" rotate="0 96.2196400266329 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house5">
+    <file path="models/ResidentialBuildings/ResidentialBuildings006.fbx"> </file>
+    <transform translate="148.71344744069415 0 347.67348162595823" rotate="0 15.934183445972842 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house6">
+    <file path="models/ResidentialBuildings/ResidentialBuildings004.fbx"> </file>
+    <transform translate="251.18134442699426 0 114.42488504500248" rotate="0 -124.64645000984262 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house7">
+    <file path="models/ResidentialBuildings/ResidentialBuildings004.fbx"> </file>
+    <transform translate="-171.68610485747226 0 -30.800515532722894" rotate="0 7.672439994832589 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house8">
+    <file path="models/ResidentialBuildings/ResidentialBuildings002.fbx"> </file>
+    <transform translate="319.3121598248069 0 278.82164362375585" rotate="0 -54.92608752263258 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house9">
+    <file path="models/ResidentialBuildings/ResidentialBuildings010.fbx"> </file>
+    <transform translate="-410.48751720170105 0 -378.6698755543457" rotate="0 -15.799027246151919 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house10">
+    <file path="models/ResidentialBuildings/ResidentialBuildings009.fbx"> </file>
+    <transform translate="-284.40257040667285 0 -52.658034799068275" rotate="0 63.25324168251112 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house11">
+    <file path="models/ResidentialBuildings/ResidentialBuildings008.fbx"> </file>
+    <transform translate="474.152810179719 0 -179.51626729238913" rotate="0 -51.53081322639416 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house12">
+    <file path="models/ResidentialBuildings/ResidentialBuildings002.fbx"> </file>
+    <transform translate="224.8031975911159 0 -58.05727829738095" rotate="0 23.176282087418695 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house13">
+    <file path="models/ResidentialBuildings/ResidentialBuildings004.fbx"> </file>
+    <transform translate="279.7340399872069 0 -192.1492674199413" rotate="0 82.70595305744594 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house14">
+    <file path="models/ResidentialBuildings/ResidentialBuildings005.fbx"> </file>
+    <transform translate="-113.05370615676547 0 51.13969566865217" rotate="0 57.01220481907018 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house15">
+    <file path="models/ResidentialBuildings/ResidentialBuildings008.fbx"> </file>
+    <transform translate="-86.61433168599142 0 17.75357275421563" rotate="0 -158.82975668165412 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house16">
+    <file path="models/ResidentialBuildings/ResidentialBuildings007.fbx"> </file>
+    <transform translate="246.0736002024977 0 -152.44823321894697" rotate="0 82.09027485636433 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house17">
+    <file path="models/ResidentialBuildings/ResidentialBuildings009.fbx"> </file>
+    <transform translate="257.6168590748927 0 176.0406749984912" rotate="0 -105.00243825471232 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house18">
+    <file path="models/ResidentialBuildings/ResidentialBuildings006.fbx"> </file>
+    <transform translate="116.39873914072096 0 343.0106178155363" rotate="0 33.31723799157221 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house19">
+    <file path="models/ResidentialBuildings/ResidentialBuildings007.fbx"> </file>
+    <transform translate="192.21849351569054 0 -286.4662935447988" rotate="0 78.07374132200974 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house20">
+    <file path="models/ResidentialBuildings/ResidentialBuildings010.fbx"> </file>
+    <transform translate="-118.10274244151297 0 167.21023704181493" rotate="0 -122.00073110082589 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house21">
+    <file path="models/ResidentialBuildings/ResidentialBuildings008.fbx"> </file>
+    <transform translate="-34.12563732477103 0 246.19789869805265" rotate="0 -26.12586114978141 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house22">
+    <file path="models/ResidentialBuildings/ResidentialBuildings008.fbx"> </file>
+    <transform translate="51.31762699747278 0 479.28552649982095" rotate="0 -161.9108247222253 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house23">
+    <file path="models/ResidentialBuildings/ResidentialBuildings003.fbx"> </file>
+    <transform translate="367.70643564831875 0 418.657583340635" rotate="0 159.2756579551022 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house24">
+    <file path="models/ResidentialBuildings/ResidentialBuildings009.fbx"> </file>
+    <transform translate="-492.2450077432573 0 -63.18839632201267" rotate="0 -161.69167515203023 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house25">
+    <file path="models/ResidentialBuildings/ResidentialBuildings001.fbx"> </file>
+    <transform translate="67.88344220758513 0 458.994068348809" rotate="0 -155.38081349472304 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house26">
+    <file path="models/ResidentialBuildings/ResidentialBuildings004.fbx"> </file>
+    <transform translate="409.940165878661 0 -248.85494211312786" rotate="0 75.63007047069623 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house27">
+    <file path="models/ResidentialBuildings/ResidentialBuildings005.fbx"> </file>
+    <transform translate="-370.05439698194755 0 -403.38532772678894" rotate="0 22.004970217905885 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house28">
+    <file path="models/ResidentialBuildings/ResidentialBuildings007.fbx"> </file>
+    <transform translate="378.1392326140839 0 55.7750549708127" rotate="0 -169.3790268598761 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house29">
+    <file path="models/ResidentialBuildings/ResidentialBuildings003.fbx"> </file>
+    <transform translate="191.37837438790683 0 373.768865817626" rotate="0 92.13577575207262 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house30">
+    <file path="models/ResidentialBuildings/ResidentialBuildings006.fbx"> </file>
+    <transform translate="-253.78455581926718 0 -48.384151590991856" rotate="0 -138.08137277097794 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house31">
+    <file path="models/ResidentialBuildings/ResidentialBuildings006.fbx"> </file>
+    <transform translate="247.33025364831042 0 239.20386159849528" rotate="0 -57.53595345594039 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house32">
+    <file path="models/ResidentialBuildings/ResidentialBuildings010.fbx"> </file>
+    <transform translate="250.61526979525306 0 -361.98491853062444" rotate="0 -63.50041768705404 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house33">
+    <file path="models/ResidentialBuildings/ResidentialBuildings006.fbx"> </file>
+    <transform translate="233.10901262949935 0 317.9425714575882" rotate="0 -151.3662714128614 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house34">
+    <file path="models/ResidentialBuildings/ResidentialBuildings004.fbx"> </file>
+    <transform translate="134.21775676593717 0 -42.303469924632964" rotate="0 -89.8961919282441 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house35">
+    <file path="models/ResidentialBuildings/ResidentialBuildings010.fbx"> </file>
+    <transform translate="41.22606354654057 0 361.88027973578795" rotate="0 -41.81444522568251 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house36">
+    <file path="models/ResidentialBuildings/ResidentialBuildings009.fbx"> </file>
+    <transform translate="-182.77898615470235 0 -161.48670340700045" rotate="0 146.7323762186729 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house37">
+    <file path="models/ResidentialBuildings/ResidentialBuildings006.fbx"> </file>
+    <transform translate="140.31291640531197 0 427.21631521361246" rotate="0 -79.83596569426123 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house38">
+    <file path="models/ResidentialBuildings/ResidentialBuildings008.fbx"> </file>
+    <transform translate="228.0478192933696 0 -122.0316154056752" rotate="0 -146.33175770228516 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house39">
+    <file path="models/ResidentialBuildings/ResidentialBuildings003.fbx"> </file>
+    <transform translate="497.4508758215787 0 103.81605300170659" rotate="0 -42.741958651641696 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house40">
+    <file path="models/ResidentialBuildings/ResidentialBuildings001.fbx"> </file>
+    <transform translate="467.1334281379449 0 78.79595869095257" rotate="0 -141.2293322520322 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house41">
+    <file path="models/ResidentialBuildings/ResidentialBuildings005.fbx"> </file>
+    <transform translate="72.59821208199024 0 -149.65791963654263" rotate="0 104.08470232280673 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house42">
+    <file path="models/ResidentialBuildings/ResidentialBuildings006.fbx"> </file>
+    <transform translate="-427.868995191541 0 -169.472704890975" rotate="0 -108.40141119854158 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house43">
+    <file path="models/ResidentialBuildings/ResidentialBuildings008.fbx"> </file>
+    <transform translate="-205.08948349593481 0 -392.03475016826764" rotate="0 6.333592680210232 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house44">
+    <file path="models/ResidentialBuildings/ResidentialBuildings003.fbx"> </file>
+    <transform translate="373.1304860197442 0 -51.29456583103076" rotate="0 37.855991949375955 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house45">
+    <file path="models/ResidentialBuildings/ResidentialBuildings005.fbx"> </file>
+    <transform translate="205.07568994278725 0 39.856861278276035" rotate="0 -13.328372234859081 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house46">
+    <file path="models/ResidentialBuildings/ResidentialBuildings007.fbx"> </file>
+    <transform translate="-284.9019748187197 0 350.5603420786239" rotate="0 -56.736310952689266 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house47">
+    <file path="models/ResidentialBuildings/ResidentialBuildings004.fbx"> </file>
+    <transform translate="-208.01016866517207 0 -331.81452739229366" rotate="0 167.63158360170235 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house48">
+    <file path="models/ResidentialBuildings/ResidentialBuildings007.fbx"> </file>
+    <transform translate="-349.69129582875536 0 -111.37774469690542" rotate="0 -83.2488753098387 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house49">
+    <file path="models/ResidentialBuildings/ResidentialBuildings005.fbx"> </file>
+    <transform translate="-29.216991525008563 0 80.40169422367616" rotate="0 110.61526404905962 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house50">
+    <file path="models/ResidentialBuildings/ResidentialBuildings008.fbx"> </file>
+    <transform translate="292.2160946441428 0 -436.42763432848886" rotate="0 -63.57659094811687 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house51">
+    <file path="models/ResidentialBuildings/ResidentialBuildings005.fbx"> </file>
+    <transform translate="339.85458630195586 0 -486.49822575498024" rotate="0 -174.6400899875623 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house52">
+    <file path="models/ResidentialBuildings/ResidentialBuildings006.fbx"> </file>
+    <transform translate="165.42571252465643 0 207.61948097455664" rotate="0 -111.52497310247328 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house53">
+    <file path="models/ResidentialBuildings/ResidentialBuildings006.fbx"> </file>
+    <transform translate="380.2663546584845 0 421.66102047680454" rotate="0 -155.1724798599669 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house54">
+    <file path="models/ResidentialBuildings/ResidentialBuildings003.fbx"> </file>
+    <transform translate="-144.65969873701667 0 -254.5431441542959" rotate="0 -68.86248614145582 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house55">
+    <file path="models/ResidentialBuildings/ResidentialBuildings005.fbx"> </file>
+    <transform translate="17.02133421552943 0 -307.69726540437046" rotate="0 -172.6769117553139 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house56">
+    <file path="models/ResidentialBuildings/ResidentialBuildings001.fbx"> </file>
+    <transform translate="-379.3715109030239 0 298.10956320795225" rotate="0 165.9934021212457 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house57">
+    <file path="models/ResidentialBuildings/ResidentialBuildings008.fbx"> </file>
+    <transform translate="147.69351192617296 0 427.9958781195801" rotate="0 -106.10578780681182 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house58">
+    <file path="models/ResidentialBuildings/ResidentialBuildings009.fbx"> </file>
+    <transform translate="-158.59796032833674 0 -246.97940356856353" rotate="0 -50.35415681231855 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house59">
+    <file path="models/ResidentialBuildings/ResidentialBuildings008.fbx"> </file>
+    <transform translate="-492.3107892871488 0 -347.16421693821997" rotate="0 7.523161307518866 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house60">
+    <file path="models/ResidentialBuildings/ResidentialBuildings003.fbx"> </file>
+    <transform translate="-91.42651400639868 0 214.2035521668566" rotate="0 -46.03774001181443 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house61">
+    <file path="models/ResidentialBuildings/ResidentialBuildings005.fbx"> </file>
+    <transform translate="-195.9111823178318 0 -496.2339587691906" rotate="0 -151.09708431915732 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house62">
+    <file path="models/ResidentialBuildings/ResidentialBuildings006.fbx"> </file>
+    <transform translate="-499.9689001248785 0 -163.33415224278414" rotate="0 -95.8164059304328 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house63">
+    <file path="models/ResidentialBuildings/ResidentialBuildings002.fbx"> </file>
+    <transform translate="350.1576935335265 0 40.438328760819545" rotate="0 169.30077732357455 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house64">
+    <file path="models/ResidentialBuildings/ResidentialBuildings005.fbx"> </file>
+    <transform translate="494.3146909176508 0 185.56333406808878" rotate="0 -97.08848294880035 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house65">
+    <file path="models/ResidentialBuildings/ResidentialBuildings002.fbx"> </file>
+    <transform translate="447.13063222424665 0 352.14025295342344" rotate="0 25.508594111740205 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house66">
+    <file path="models/ResidentialBuildings/ResidentialBuildings002.fbx"> </file>
+    <transform translate="-406.26861350391243 0 8.15583592003688" rotate="0 -157.6119116523251 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house67">
+    <file path="models/ResidentialBuildings/ResidentialBuildings009.fbx"> </file>
+    <transform translate="-89.41268045217521 0 -341.93039899064513" rotate="0 -38.45690246913112 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house68">
+    <file path="models/ResidentialBuildings/ResidentialBuildings007.fbx"> </file>
+    <transform translate="262.69696963505874 0 -128.38535087769822" rotate="0 -124.94071364943375 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house69">
+    <file path="models/ResidentialBuildings/ResidentialBuildings001.fbx"> </file>
+    <transform translate="-178.66208850567233 0 -458.4326041401756" rotate="0 -73.34916878421747 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house70">
+    <file path="models/ResidentialBuildings/ResidentialBuildings009.fbx"> </file>
+    <transform translate="-67.94610088915142 0 437.50482124247947" rotate="0 -106.83623386212129 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house71">
+    <file path="models/ResidentialBuildings/ResidentialBuildings003.fbx"> </file>
+    <transform translate="460.8456418398349 0 -37.93274444466144" rotate="0 131.51256054575714 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house72">
+    <file path="models/ResidentialBuildings/ResidentialBuildings008.fbx"> </file>
+    <transform translate="402.2272852867784 0 -458.20597501267025" rotate="0 -143.13241942947548 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house73">
+    <file path="models/ResidentialBuildings/ResidentialBuildings004.fbx"> </file>
+    <transform translate="-66.85672693942513 0 291.2600712361463" rotate="0 84.31835883448619 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house74">
+    <file path="models/ResidentialBuildings/ResidentialBuildings009.fbx"> </file>
+    <transform translate="293.25595402173576 0 -305.99544476953224" rotate="0 88.26952295345974 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house75">
+    <file path="models/ResidentialBuildings/ResidentialBuildings010.fbx"> </file>
+    <transform translate="68.21686728532738 0 -229.4713265061258" rotate="0 -112.98952599393425 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house76">
+    <file path="models/ResidentialBuildings/ResidentialBuildings008.fbx"> </file>
+    <transform translate="-47.29830885806041 0 -124.37242429883588" rotate="0 3.739324321502089 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house77">
+    <file path="models/ResidentialBuildings/ResidentialBuildings008.fbx"> </file>
+    <transform translate="107.67550799059944 0 250.31665182239337" rotate="0 138.75333063823572 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house78">
+    <file path="models/ResidentialBuildings/ResidentialBuildings005.fbx"> </file>
+    <transform translate="262.6547165657942 0 300.5001908129444" rotate="0 -160.36063107864948 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house79">
+    <file path="models/ResidentialBuildings/ResidentialBuildings010.fbx"> </file>
+    <transform translate="-386.4448479496135 0 136.6696056628083" rotate="0 169.6821543258075 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house80">
+    <file path="models/ResidentialBuildings/ResidentialBuildings003.fbx"> </file>
+    <transform translate="-404.32287796370383 0 474.28916202837115" rotate="0 103.06164711804574 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house81">
+    <file path="models/ResidentialBuildings/ResidentialBuildings006.fbx"> </file>
+    <transform translate="312.203904829502 0 214.03879685348048" rotate="0 -33.83717287942203 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house82">
+    <file path="models/ResidentialBuildings/ResidentialBuildings002.fbx"> </file>
+    <transform translate="-243.26439456439942 0 -172.90849480127147" rotate="0 60.622034483006715 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house83">
+    <file path="models/ResidentialBuildings/ResidentialBuildings003.fbx"> </file>
+    <transform translate="25.496115746483916 0 108.92375687638656" rotate="0 165.87910431116484 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house84">
+    <file path="models/ResidentialBuildings/ResidentialBuildings001.fbx"> </file>
+    <transform translate="-221.3593852519342 0 -324.65058760060094" rotate="0 70.99097417472741 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house85">
+    <file path="models/ResidentialBuildings/ResidentialBuildings001.fbx"> </file>
+    <transform translate="-264.99589531554943 0 -303.8907336455988" rotate="0 140.6142780378424 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house86">
+    <file path="models/ResidentialBuildings/ResidentialBuildings009.fbx"> </file>
+    <transform translate="78.45955737563348 0 498.32505887521705" rotate="0 91.0526985079871 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house87">
+    <file path="models/ResidentialBuildings/ResidentialBuildings001.fbx"> </file>
+    <transform translate="324.05323220843684 0 243.359879441164" rotate="0 69.5693701340576 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house88">
+    <file path="models/ResidentialBuildings/ResidentialBuildings002.fbx"> </file>
+    <transform translate="-57.71876486471428 0 -159.97824592438803" rotate="0 152.64608822723997 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house89">
+    <file path="models/ResidentialBuildings/ResidentialBuildings009.fbx"> </file>
+    <transform translate="45.91701872185394 0 419.16044734028566" rotate="0 -76.95594312683573 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house90">
+    <file path="models/ResidentialBuildings/ResidentialBuildings002.fbx"> </file>
+    <transform translate="169.00771484214516 0 41.47237312167529" rotate="0 135.49803824722042 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house91">
+    <file path="models/ResidentialBuildings/ResidentialBuildings009.fbx"> </file>
+    <transform translate="-218.16236755687635 0 53.941496469505964" rotate="0 116.59099702801093 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house92">
+    <file path="models/ResidentialBuildings/ResidentialBuildings003.fbx"> </file>
+    <transform translate="-199.49840265497565 0 -152.29953376030036" rotate="0 52.30500269421223 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house93">
+    <file path="models/ResidentialBuildings/ResidentialBuildings007.fbx"> </file>
+    <transform translate="-299.5046044973328 0 150.00720663606336" rotate="0 -20.747322236956425 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house94">
+    <file path="models/ResidentialBuildings/ResidentialBuildings005.fbx"> </file>
+    <transform translate="-193.49403449793613 0 -465.18731674157067" rotate="0 75.14555880045594 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house95">
+    <file path="models/ResidentialBuildings/ResidentialBuildings004.fbx"> </file>
+    <transform translate="335.4345091535027 0 285.2854980921119" rotate="0 -40.76676739400642 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house96">
+    <file path="models/ResidentialBuildings/ResidentialBuildings002.fbx"> </file>
+    <transform translate="354.75383289703086 0 -264.4564970508313" rotate="0 -75.4733052008866 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house97">
+    <file path="models/ResidentialBuildings/ResidentialBuildings010.fbx"> </file>
+    <transform translate="489.6940710650415 0 -264.8755787220214" rotate="0 28.576358848000353 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house98">
+    <file path="models/ResidentialBuildings/ResidentialBuildings004.fbx"> </file>
+    <transform translate="166.83977316991027 0 -258.79948262653187" rotate="0 87.2395955264339 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="house99">
+    <file path="models/ResidentialBuildings/ResidentialBuildings003.fbx"> </file>
+    <transform translate="-319.4606820447231 0 -78.43166986125216" rotate="0 105.14333407498452 0" scale="0.03 0.03 0.03"></transform>
+  </node>
+  <node name="ground">
+    <file path="models/box.obj"> </file>
+    <transform translate="0 0 0 " rotate="0 0 0" scale="1000 0.1 1000"></transform>
+  </node>
+</scene>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<scene>
+  <node name="car1">
+    <file path="models/porsche_911_gt3.glb"> </file>
+    <transform translate="0 0 0" rotate="0 0 0" scale="1 1 1"></transform>
+  </node>
+
+  <node name="car2">
+    <file path="models/porsche_911_gt3.glb"> </file>
+    <transform translate="5 0 0" rotate="0 0 0" scale="1 1 1"></transform>
+  </node>
+
+  <node name="car3">
+    <file path="models/porsche_911_gt3.glb"> </file>
+    <transform translate="10 0 0" rotate="0 0 0"></transform>
+  </node>
+</scene>

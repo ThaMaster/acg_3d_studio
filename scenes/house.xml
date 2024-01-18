@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<scene>
+  <node name="monkey">
+    <file path="models/monkey.obj"> </file>
+    <transform translate="10 10 -20" rotate="0 -90 0" scale="5 5 5"></transform>
+  </node>
+
+  <node name="monkey">
+    <file path="models/5426_C3PO_Robot_Star_Wars.obj"> </file>
+    <transform translate="20 20 -20" rotate="0 0 0" scale="0.01 0.01 0.01"></transform>
+  </node>
+
+  <node name="house">
+    <file path="models/House01/House01.obj"> </file>
+    <transform translate="0 0 0" rotate="0 0 0"></transform>
+  </node>
+</scene>
