@@ -1,8 +1,0 @@
-/*
-*/
-
-#pragma once
-
-#define VRLIB_MAJOR_VERSION @VRLIB_MAJOR_VERSION@
-#define VRLIB_MINOR_VERSION @VRLIB_MINOR_VERSION@
-

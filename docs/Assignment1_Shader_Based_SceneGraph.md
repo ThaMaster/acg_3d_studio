@@ -47,7 +47,7 @@ The following classes shall be implemented:
 
 - **Scene** (Optional)
   
-  A class keeping track of everything else (visitors, camera, lights...). 
+  A class keeping track of everything else (visitors, camera, lights...).
   
   *Hint: Make it a Singelton.*
 
@@ -172,7 +172,7 @@ The exercise have to be turned in as a **well-written report** that describes ho
 ## VERY IMPORTANT INFORMATION
 
 Because you are going to collect 3D models, textures etc. it might not be super practical to zip everything and upload to Canvas.
-Especially if it contains compiled code from your own computer. 
+Especially if it contains compiled code from your own computer.
 
 Therefore (and this is important):
 
