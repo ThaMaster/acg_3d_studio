@@ -132,14 +132,14 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio/CMakeFiles /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio//CMakeFiles/progress.marks
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(CMAKE_COMMAND) -E cmake_progress_start /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio/CMakeFiles /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio/applications/visitorTest//CMakeFiles/progress.marks
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 applications/visitorTest/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 clean
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 applications/visitorTest/clean
 .PHONY : clean
 
 # The main clean target
@@ -148,57 +148,56 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 preinstall
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 applications/visitorTest/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 preinstall
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 applications/visitorTest/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
-#=============================================================================
-# Target rules for targets named lab1
+# Convenience name for target.
+applications/visitorTest/CMakeFiles/visitorTest.dir/rule:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 applications/visitorTest/CMakeFiles/visitorTest.dir/rule
+.PHONY : applications/visitorTest/CMakeFiles/visitorTest.dir/rule
 
-# Build rule for target.
-lab1: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 lab1
-.PHONY : lab1
-
-# fast build rule for target.
-lab1/fast:
-	$(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/build
-.PHONY : lab1/fast
-
-#=============================================================================
-# Target rules for targets named viewer
-
-# Build rule for target.
-viewer: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 viewer
-.PHONY : viewer
-
-# fast build rule for target.
-viewer/fast:
-	$(MAKE) $(MAKESILENT) -f applications/viewer/CMakeFiles/viewer.dir/build.make applications/viewer/CMakeFiles/viewer.dir/build
-.PHONY : viewer/fast
-
-#=============================================================================
-# Target rules for targets named visitorTest
-
-# Build rule for target.
-visitorTest: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 visitorTest
+# Convenience name for target.
+visitorTest: applications/visitorTest/CMakeFiles/visitorTest.dir/rule
 .PHONY : visitorTest
 
 # fast build rule for target.
 visitorTest/fast:
-	$(MAKE) $(MAKESILENT) -f applications/visitorTest/CMakeFiles/visitorTest.dir/build.make applications/visitorTest/CMakeFiles/visitorTest.dir/build
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/visitorTest/CMakeFiles/visitorTest.dir/build.make applications/visitorTest/CMakeFiles/visitorTest.dir/build
 .PHONY : visitorTest/fast
+
+main.o: main.cpp.o
+.PHONY : main.o
+
+# target to build an object file
+main.cpp.o:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/visitorTest/CMakeFiles/visitorTest.dir/build.make applications/visitorTest/CMakeFiles/visitorTest.dir/main.cpp.o
+.PHONY : main.cpp.o
+
+main.i: main.cpp.i
+.PHONY : main.i
+
+# target to preprocess a source file
+main.cpp.i:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/visitorTest/CMakeFiles/visitorTest.dir/build.make applications/visitorTest/CMakeFiles/visitorTest.dir/main.cpp.i
+.PHONY : main.cpp.i
+
+main.s: main.cpp.s
+.PHONY : main.s
+
+# target to generate assembly for a file
+main.cpp.s:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/visitorTest/CMakeFiles/visitorTest.dir/build.make applications/visitorTest/CMakeFiles/visitorTest.dir/main.cpp.s
+.PHONY : main.cpp.s
 
 # Help Target
 help:
@@ -212,9 +211,10 @@ help:
 	@echo "... install/strip"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
-	@echo "... lab1"
-	@echo "... viewer"
 	@echo "... visitorTest"
+	@echo "... main.o"
+	@echo "... main.i"
+	@echo "... main.s"
 .PHONY : help
 
 
@@ -226,6 +226,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 
