@@ -1,4 +1,6 @@
-Anders Backman,
+# Installation and compilation of VRlib
+
+Anders Backman
 
 Umeå University
 2023-12-22
@@ -11,7 +13,7 @@ Umeå University
 4. XML format
 5. Create your first application
 
-# 1. DESCRIPTION
+## 1. DESCRIPTION
 
 VRLIB is a collection of handy classes for building some examples and a very simple rendering engine.
 
@@ -27,15 +29,15 @@ The environment variable VR_PATH is used to locate files. So make sure it is set
 If you want to create another application (assignment), just copy the viewer directory with everything in it and name it... lab1 or something.
 Then run cmake in the root directory of vrlib and you will have another application ready for development while keeping the previous one.
 
-# 2. BUILDING
+## 2. BUILDING
 
-## 2.0 dependencies
+### 2.0 dependencies
 
 Notice that you need first need to execute setup_env.bat/bash depending on your platform before continuing.
 Then depending on your platform, start a command shell and run build_all.bat or build_all.bash.
 On Unix, png, jpeg and zlib will be required pre-installed dependencies.
 
-## 2.1 LINUX
+### 2.1 LINUX
 
 Note: The scripts (build_all.bash/setup_env.bash) assumes you can or are using the bash shell.
 So if you are using some other shell, just look into setup_env.bash and mimic whatever you have to expose the same environment variables as that script.
@@ -96,7 +98,7 @@ Now if you want to build only the examples again, just write:
 
 In the top directory
 
-## 2.2 WINDOWS
+### 2.2 WINDOWS
 
 First, make sure you run the script to setup the environment:
 
@@ -115,7 +117,6 @@ I would strongly recommend using RelWithDebInfo. That gives you just as much inf
 You might want to disable optimization and inline for your code (google how to do that).
 Do NOT mix Debug and Release in the same project. That will cause crasches. Always. (Blame Visual Studio for that.)
 
-
 Next, to build everything you should run build_all.bat
 
 To start visual studio with the project (vrlib) then just go to build\vrlib\ where you find vrlib.sln
@@ -130,7 +131,7 @@ If you now want to build only the examples just do:
 
 To add your own example, See chapter 5 below.
 
-# 3. EXECUTING
+## 3. EXECUTING
 
 Running from debugger in VisualStudio, require you to set the path (PATH) so all the binaries can be found.
 This should be done if you execute setup_env.bat BEFORE starting visual studio with devenv /useenv vrlib.sln
@@ -151,13 +152,14 @@ Keyboard bindings:
 'shift' - Increase speed
 'esc' - quit the application
 
-# 4. XML format
+## 4. XML format
 
 In the directory scenes there are examples of an xml format which can be read using the objViewer (files with extension .xml)
 
 Below is an example of this format. It should be easy to understand.
 The parsing of this format is done in Loader.cpp. Notice that it is not very error safe.
 
+``` html
 <?xml version="1.0" encoding="utf-8"?>
 <scene>
   <node name="monkey">
@@ -165,8 +167,9 @@ The parsing of this format is done in Loader.cpp. Notice that it is not very err
     <transform translate="0 0 0" rotate="0 0 0" scale="2 2 2"></transform>
   </node>
 </scene>
+```
 
-# 5. Create your first application
+## 5. Create your first application
 
 Go to the application directory
 Copy the viewer directory to for example lab1
@@ -183,4 +186,4 @@ run make then make install:
 
 Problems?
 
-email: andersb@cs.umu.se
+email: [andersb@cs.umu.se](andersb@cs.umu.se)
