@@ -7,11 +7,11 @@
 
   <node name="monkey">
     <file path="models/monkey.obj"> </file>
-    <transform translate="2 1 0" rotate="0 0 0"></transform>
+    <transform translate="4 0 0" rotate="0 -45 0"></transform>
   </node>
   <node name="monkey">
     <file path="models/monkey.obj"> </file>
-    <transform translate="-2 -1 0" rotate="0 45 0"></transform>
+    <transform translate="-4 0 0" rotate="0 45 0"></transform>
   </node>
 
 </scene>
