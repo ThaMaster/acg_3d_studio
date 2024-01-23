@@ -1,7 +1,7 @@
 #ifndef GROUP_H
 #define GROUP_H
 
-#include "node.h"
+#include "Node.h"
 
 class Group : public Node
 {
@@ -14,7 +14,7 @@ class Group : public Node
             m_children.push_back(n);
         }
 
-        void accept(Visitor& v)
+        void accept(NodeVisitor& v)
         {
             std::cerr << "Accept: " << getName() << std::endl;
             v.visit(*this);

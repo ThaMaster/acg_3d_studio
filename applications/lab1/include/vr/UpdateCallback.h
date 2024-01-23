@@ -1,0 +1,4 @@
+#ifndef UPDATECALLBACK_H
+#define UPDATECALLBACK_H
+
+#endif

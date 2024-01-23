@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-class visitor;
+class Visitor;
 
 class Node 
 {

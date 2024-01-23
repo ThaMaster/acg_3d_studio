@@ -1,7 +1,7 @@
 #ifndef TRANSFORM_H
 #define TRANSFORM_H
 
-#include "group.h"
+#include "Group.h"
 
 class Transform : public Group
 {
@@ -9,12 +9,15 @@ class Transform : public Group
 
         Transform(const std::string& name = "") : Group(name) {}
 
-        void accept(Visitor& v) override
+        void accept(NodeVisitor& v) override
         {
             // push transform
             Group::accept(v);
             // pop transform
         }
+    
+    private:
+
 };
 
 #endif
