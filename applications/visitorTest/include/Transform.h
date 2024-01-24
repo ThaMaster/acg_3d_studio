@@ -12,7 +12,8 @@ class Transform : public Group
         void accept(Visitor& v) override
         {
             // push transform
-            Group::accept(v);
+            std::cerr << "Accept: " << getName() << std::endl;
+            v.visit(*this);
             // pop transform
         }
 };

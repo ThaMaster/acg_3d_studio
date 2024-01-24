@@ -4,6 +4,26 @@ Repository for the 3D studio created in the Advanced Computer Graphcis course.
 
 ## Compiling
 
+It is very simple to compile all the applications that are written in this repository. Since all the necessary files are located in the *applications* folder, the environment variables must first be set with the following command:
+
+```shell
+/$ source setup_env.bash
+```
+
+Next run the **build_all.bash** script to build all the dependencies. You may need to change the permissons of the file and can be done with the following command:
+
+```shell
+/$ chmod 755 build_all.bash
+```
+
+Then all dependencies have been built and simple use *make* and *make install* to build the files located in the *applications* folder:
+
+```shell
+/$ make & make install
+```
+
+Since the environemnt variables already have been set, you can start the different files at your current location and do not need to find the executable.
+
 ### Bash files
 
 The given bash files are DOS text files and must therefore be converted to a Unix text file. This can be done by executing the following command:
@@ -33,27 +53,32 @@ It is worth mentioning that this table is subject to change during development o
 
 This section details the changes that occurs with each session of working on this project. After each programming session a new list with all the things that have been done and other information will be posted. This is to have a clear view of what has been done and what is needed to be fixed/added to the project.
 
+### Change log - 2024-01-24
+
+- Modified the test of the visitor pattern so that it now uses the accept function form the Transform and not from the Group. (May change)
+- Deleted old attempt at implementing the specification content.
+- Created mulitple folders containing a more structured architecture for attempting to implementing the required parts.
+
+## TODO
+
+This section details what is to be done in the next programming session. This section is an attempt at keeping a good focus on what to work on the next time a programming session comences.
+
+### TODO - 2024-01-24
+
+- Decide if the accept() function should be from the Group or the Transform.
+- Continue to implement the unfinished components.
+- Start to comment parts of the code in an attempt at making it less tedious later.
+- Read up on the [Visitor Design Pattern](https://sourcemaking.com/design_patterns/visitor/cpp/2).
+
 ## Helpful resources when developing the 3D Studio
 
 Below follows some useful links and resources to the different parts of the project. These resources includes reference pages, references cards, manuals, documentation and more.
-
 
 ### C++ Resources
 
 This section includes all the learning resources used to get accustomed with the C++ programming language.
 
-#### C++ Reference Page
-
-    https://en.cppreference.com/w/cpp
-
-#### C++ Tutorial
-
-    https://www.learncpp.com/?utm_content=cmp-true
-
-#### C++ Tour
-
-    https://isocpp.org/tour
-
-#### C++ Documentation Guidelines
-
-    https://developer.lsst.io/cpp/api-docs.html#
+- [C++ Reference Page](https://en.cppreference.com/w/cpp)
+- [C++ Tutorial](https://www.learncpp.com/?utm_content=cmp-true)
+- [C++ Tour](https://isocpp.org/tour)
+- [C++ Documentation Guidelines](https://developer.lsst.io/cpp/api-docs.html#)

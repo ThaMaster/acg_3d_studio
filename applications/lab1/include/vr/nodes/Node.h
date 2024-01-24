@@ -3,19 +3,22 @@
 
 #include <iostream>
 #include <vector>
-#include "Visitor.h"
+#include <glm/glm.hpp>
 
-class Node 
+class NodeVisitor;
+
+class Node
 {
     public:
+        
+        Node(const std::string& name = "" ) : m_name(name) {}
 
-        Node(const std::string& name = "") : m_name(name) {}
-
-        virtual void accept(Visitor& v) = 0;
+        virtual void accept(NodeVisitor& v) = 0;
 
         std::string getName() { return m_name; }
-
+    
     private:
+
         std::string m_name;
 };
 

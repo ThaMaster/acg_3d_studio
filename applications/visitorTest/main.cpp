@@ -9,9 +9,9 @@ int main()
     auto root = new Group("root");
 
     g1->addChild(t);
+    t->addChild(t2);
     t->addChild(g);
     t2->addChild(g);
-
 
     root->addChild(g1);
     root->addChild(t2);
