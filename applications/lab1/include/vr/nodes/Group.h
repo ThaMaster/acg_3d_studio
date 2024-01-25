@@ -3,6 +3,8 @@
 
 #include "Node.h"
 
+#include "vr/visitors/NodeVisitor.h"
+
 class Group : public Node
 {
     public:

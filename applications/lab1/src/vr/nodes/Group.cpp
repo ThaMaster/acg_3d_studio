@@ -1,5 +1,4 @@
 #include "vr/nodes/Group.h"
-#include "vr/visitors/NodeVisitor.h"
 
 void Group::addChild(Node* n)
 {

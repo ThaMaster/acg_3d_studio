@@ -3,6 +3,7 @@
 
 #include "Group.h"
 #include "vr/Mesh.h"
+#include "vr/visitors/NodeVisitor.h"
 
 class Geometry : public Node
 {

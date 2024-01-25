@@ -1,5 +1,4 @@
 #include "vr/nodes/Geometry.h"
-#include "vr/visitors/NodeVisitor.h"
 
 void Geometry::accept(NodeVisitor& v)
 {

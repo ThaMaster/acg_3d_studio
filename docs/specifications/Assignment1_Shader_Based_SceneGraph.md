@@ -156,10 +156,10 @@ Now use these classes to write a program where you load several models and arran
 
 /---TABLE---/
 
-You can use [these models](../models/cow/) for the LOD demonstration. The zip file consists of a set of .obj files of a cow in different resolutions. From 94 to 9496 triangles:
+You can use [these models](../../models/cow/) for the LOD demonstration. The zip file consists of a set of .obj files of a cow in different resolutions. From 94 to 9496 triangles:
 
-![Low Poly Cow](../docs/images/cow_low.png "Low resolution model of a cow")
-![High Poly Cow](../docs/images/cow_high.png "High resolution model of a cow")
+![Low Poly Cow](../images/cow_low.png "Low resolution model of a cow")
+![High Poly Cow](../images/cow_high.png "High resolution model of a cow")
 
 In addition your report **MUST** have a table listing the bonus features, *even if you do not intend to implement any of the bonus features.* Otherwise there might be no bonus points on your assignments!!
 
