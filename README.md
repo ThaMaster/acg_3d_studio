@@ -53,6 +53,13 @@ It is worth mentioning that this table is subject to change during development o
 
 This section details the changes that occurs with each session of working on this project. After each programming session a new list with all the things that have been done and other information will be posted. This is to have a clear view of what has been done and what is needed to be fixed/added to the project.
 
+### Change log - 2024-01-25
+
+- Started integrating the Visitor Design Pattern in the lab1 application.
+- Added a folder for scenes that contains test scenes that should work for lab1. The folder is located [here](/scenes/lab1/).
+- Implemented a recursive function that travels the xml files. The function takes a *root group* that will be altered when the function returns.
+- Some things are added to some nodes in preperation for later integration.
+
 ### Change log - 2024-01-24
 
 - Modified the test of the visitor pattern so that it now uses the accept function form the Transform and not from the Group. (May change)
@@ -62,6 +69,14 @@ This section details the changes that occurs with each session of working on thi
 ## TODO
 
 This section details what is to be done in the next programming session. This section is an attempt at keeping a good focus on what to work on the next time a programming session comences.
+
+### TODO - 2024-01-25
+
+- Perform rendering with the render node instead of the way that the provided *viewer* application handles it.
+- Remove prints from the nodes and visitors.
+- Implement the state class.
+- Check wether the communication is correct between the implemented componets in regards to the specification.
+- Comment the code.
 
 ### TODO - 2024-01-24
 
