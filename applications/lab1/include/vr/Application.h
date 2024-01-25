@@ -40,8 +40,13 @@ namespace vr {
     void processInput(GLFWwindow* window);
 
     void setClearColor(const glm::f32vec4& clearColor);
-  private:
 
+    void getVisitorPrint()
+    {
+      m_sceneRoot.get()->getRenderVisitor()->visit(*m_sceneRoot.get()->getSceneRoot());
+    }
+
+  private:
     // Parent of all to be rendered
     std::shared_ptr<Scene> m_sceneRoot;
 

@@ -1,25 +1,25 @@
 #ifndef GROUP_H
 #define GROUP_H
 
-#include "Node.h"
+#include "M_Node.h"
 
 #include "vr/visitors/NodeVisitor.h"
 
-class Group : public Node
+class Group : public M_Node
 {
     public:
 
-        Group(const std::string& name = "") : Node(name) {}
+        Group(const std::string& name = "") : M_Node(name) {}
 
-        void addChild(Node* n);
+        void addChild(M_Node* n);
 
         void accept(NodeVisitor& v) override;
 
-        std::vector<Node*> getChildren() { return m_children; }
+        std::vector<M_Node*> getChildren() { return m_children; }
 
     private:
 
-        std::vector<Node*> m_children;
+        std::vector<M_Node*> m_children;
 };
 
 #endif

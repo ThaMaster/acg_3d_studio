@@ -1,5 +1,5 @@
-#ifndef NODE_H
-#define NODE_H
+#ifndef M_NODE_H
+#define M_NODE_H
 
 #include <iostream>
 #include <vector>
@@ -7,11 +7,11 @@
 
 class NodeVisitor;
 
-class Node
+class M_Node
 {
     public:
         
-        Node(const std::string& name = "" ) : m_name(name) {}
+        M_Node(const std::string& name = "" ) : m_name(name) {}
 
         virtual void accept(NodeVisitor& v) = 0;
 

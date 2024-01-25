@@ -21,6 +21,11 @@
 #include <rapidxml/rapidxml.hpp>
 #include <rapidxml/rapidxml_utils.hpp>
 
+#include "vr/visitors/RenderVisitor.h"
+
+#include "vr/nodes/Group.h"
+#include "vr/nodes/Transform.h"
+#include "vr/nodes/Geometry.h"
 
 using namespace vr;
 
@@ -370,6 +375,30 @@ std::string getAttribute(rapidxml::xml_node<>* node, const std::string& attribut
   return attrib->value();
 }
 
+void loadSceneNode(rapidxml::xml_node<>* parent_node, Group* root) {
+  if (!parent_node || parent_node->type() == rapidxml::node_comment || parent_node->type() == rapidxml::node_doctype)
+        return;
+  
+  for(rapidxml::xml_node<>* curr_node = parent_node; curr_node; curr_node = curr_node->next_sibling()) {
+    std::string node_type = curr_node->name();
+
+    if(node_type == "group") {
+      
+      std::string group_name = getAttribute(curr_node, "name");
+      auto groupNode = new Group(group_name);
+      loadSceneNode(curr_node->first_node(), groupNode);
+      root->addChild(groupNode);
+
+    } else if(node_type == "geometry") {
+
+      std::string geo_name = getAttribute(curr_node, "name");
+      auto geometryNode = new Geometry(geo_name);
+      root->addChild(geometryNode);
+
+    } 
+  }
+}
+
 bool vr::loadSceneFile(const std::string& sceneFile, std::shared_ptr<Scene>& scene)
 {
   std::string filepath = sceneFile;
@@ -396,7 +425,7 @@ bool vr::loadSceneFile(const std::string& sceneFile, std::shared_ptr<Scene>& sce
   std::vector<std::string> xmlpath;
 
   try
-  {
+  { 
     rapidxml::file<> xmlFile(filepath.c_str()); // Default template is char
     rapidxml::xml_document<> doc;
 
@@ -407,74 +436,52 @@ bool vr::loadSceneFile(const std::string& sceneFile, std::shared_ptr<Scene>& sce
       throw std::runtime_error("File missing scene/");
 
     xmlpath.push_back("scene");
-    // Iterate over the nodes
-    for (rapidxml::xml_node<>* node_node = root_node->first_node("node"); node_node; node_node = node_node->next_sibling())
-    {
-      xmlpath.push_back("node");
 
-      if (node_node->type() == rapidxml::node_comment || node_node->type() == rapidxml::node_doctype)
+    Group *root = new Group("root");
+    loadSceneNode(root_node->first_node(), root);
+    
+    scene->setSceneRoot(root);
+
+    // Iterate over the nodes
+    for (rapidxml::xml_node<>* node = root_node->first_node("group"); node; node = node->next_sibling())
+    {
+      xmlpath.push_back("group");
+      
+      // Skip comments and such.
+      if (node->type() == rapidxml::node_comment || node->type() == rapidxml::node_doctype)
         continue;
 
+      std::string group_name = getAttribute(node, "name");
+      rapidxml::xml_node<>* geo_node = node->first_node("geometry");
 
-      std::string name = getAttribute(node_node, "name");
+      std::string geo_name = getAttribute(geo_node, "name");
+      std::string geo_path = geo_node->first_attribute("path")->value();
 
-      rapidxml::xml_node<>* file = node_node->first_node("file");
-      if (!file)
-        throw std::runtime_error("Missing file: " + pathToString(xmlpath));
-
-      xmlpath.push_back("file");
-
-      std::string path = file->first_attribute("path")->value();
-      if (path.empty())
+      if (geo_path.empty())
         throw std::runtime_error("Empty path: " + pathToString(xmlpath));
-      xmlpath.pop_back(); // file
 
-      // Do we have a transform?
-      rapidxml::xml_node<>* transform = node_node->first_node("transform");
-      if (transform) {
-        xmlpath.push_back("transform");
-
-
-        std::string translate = getAttribute(transform, "translate");
+      std::shared_ptr<Node> loadedNode = vr::load3DModelFile(geo_path);
+      if (!loadedNode)
+        std::cerr << "Unable to load node \'" << group_name << "\' path: " << geo_path << std::endl;
+      else
+      {
         glm::vec3 t_vec;
-        if (!getVec<glm::vec3>(t_vec, translate))
-          throw std::runtime_error("Node (" + name + ") Invalid translate in: " + pathToString(xmlpath));
-
-        std::string rotate = getAttribute(transform, "rotate");
         glm::vec3 r_vec;
-        if (!getVec<glm::vec3>(r_vec, rotate))
-          throw std::runtime_error("Node (" + name + ") Invalid rotate in: " + pathToString(xmlpath));
-
-        std::string scale = getAttribute(transform, "scale");
         glm::vec3 s_vec;
-        if (!getVec<glm::vec3>(s_vec, scale, glm::vec3(1)))
-          throw std::runtime_error("Node (" + name + ") Invalid scale in: " + pathToString(xmlpath));
+        glm::mat4 mt = glm::translate(glm::mat4(), t_vec);
+        glm::mat4 ms = glm::scale(glm::mat4(), s_vec);
+        glm::mat4 rx = glm::rotate(glm::mat4(), glm::radians(r_vec.x), glm::vec3(1, 0, 0));
+        glm::mat4 ry = glm::rotate(glm::mat4(), glm::radians(r_vec.y), glm::vec3(0, 1, 0));
+        glm::mat4 rz = glm::rotate(glm::mat4(), glm::radians(r_vec.z), glm::vec3(0, 0, 1));
 
-        // Now create the node
-        std::shared_ptr<Node> loadedNode = vr::load3DModelFile(path);
-        if (!loadedNode)
-          std::cerr << "Unable to load node \'" << name << "\' path: " << path << std::endl;
-        else
-        {
-          glm::mat4 mt = glm::translate(glm::mat4(), t_vec);
-          glm::mat4 ms = glm::scale(glm::mat4(), s_vec);
-          glm::mat4 rx = glm::rotate(glm::mat4(), glm::radians(r_vec.x), glm::vec3(1, 0, 0));
-          glm::mat4 ry = glm::rotate(glm::mat4(), glm::radians(r_vec.y), glm::vec3(0, 1, 0));
-          glm::mat4 rz = glm::rotate(glm::mat4(), glm::radians(r_vec.z), glm::vec3(0, 0, 1));
-
-          auto t = mt * rz * ry * rx;
-          t = glm::scale(t, s_vec);
-          loadedNode->setInitialTransform(t);
-          loadedNode->name = name;
-          scene->add(loadedNode);
-        }
-
-        xmlpath.pop_back(); // transform
+        loadedNode->setInitialTransform(glm::mat4());
+        loadedNode->name = group_name;
+        scene->add(loadedNode);
       }
-
 
       xmlpath.pop_back(); // node
     }
+    
     xmlpath.pop_back(); // scene
   }
   catch (rapidxml::parse_error& error)
@@ -490,4 +497,3 @@ bool vr::loadSceneFile(const std::string& sceneFile, std::shared_ptr<Scene>& sce
 
   return true;
 }
-

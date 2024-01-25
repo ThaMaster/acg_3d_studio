@@ -35,3 +35,7 @@ void Geometry::resetTransform()
   object2world = m_initialTransform;
 }
 
+glm::mat4& Geometry::getObject2WorldMat()
+{
+    return object2world;
+}

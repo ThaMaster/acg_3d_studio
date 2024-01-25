@@ -1,6 +1,7 @@
 #ifndef NODEVISITOR_H
 #define NODEVISITOR_H
 
+#include <memory>
 #include <iostream>
 #include <vector>
 #include <stack>
@@ -18,7 +19,7 @@ class NodeVisitor
         virtual void visit(Geometry&) = 0;
 
     private:
-        std::stack<glm::mat4> transformStack;
+        std::stack<glm::mat4> m_transformStack;
 };
 
 #endif

@@ -1,4 +1,5 @@
 #include "vr/visitors/RenderVisitor.h"
+
 #include "vr/nodes/Group.h"
 #include "vr/nodes/Transform.h"
 #include "vr/nodes/Geometry.h"
@@ -22,5 +23,5 @@ void RenderVisitor::visit(Transform& trans)
 void RenderVisitor::visit(Geometry& geo)
 {
     std::cerr << "Visit: " << geo.getName() << std::endl;
-    //geo.render();
+    geo.render(m_shader);
 }

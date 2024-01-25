@@ -1,6 +1,6 @@
 #include "vr/nodes/Group.h"
 
-void Group::addChild(Node* n)
+void Group::addChild(M_Node* n)
 {
     m_children.push_back(n);
 }

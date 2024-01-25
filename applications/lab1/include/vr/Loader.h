@@ -4,7 +4,6 @@
 
 namespace vr
 {
-
   /// Load a given file and add content to the scene
   std::shared_ptr<Node> load3DModelFile(const std::string& filename);
 

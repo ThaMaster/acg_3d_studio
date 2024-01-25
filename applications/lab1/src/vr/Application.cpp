@@ -161,7 +161,6 @@ void Application::update(GLFWwindow* window)
   render(window);
 }
 
-
 void Application::processInput(GLFWwindow* window)
 {
   getCamera()->processInput(window);

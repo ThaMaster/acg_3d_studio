@@ -7,11 +7,11 @@ using namespace vr;
 Scene::Scene() : m_uniform_numberOfLights(-1)
 {
   m_camera = std::shared_ptr<Camera>(new Camera);
+  renderVisitor = new RenderVisitor();
 }
 
 bool Scene::initShaders(const std::string& vshader_filename, const std::string& fshader_filename)
 {
-
   m_shader = std::make_shared<vr::Shader>(vshader_filename, fshader_filename);
   if (!m_shader->valid())
     return false;
@@ -36,7 +36,6 @@ const LightVector& Scene::getLights()
   return
     m_lights;
 }
-
 
 std::shared_ptr<Camera> Scene::getCamera()
 {
@@ -102,7 +101,6 @@ void Scene::render()
   useProgram();
 
   CHECK_GL_ERROR_LINE_FILE();
-
 
   // Update number of lights
   m_shader->setInt("numberOfLights", (GLint)m_lights.size());

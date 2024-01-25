@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene>
+    <group name="group1">
+        <geometry name="geo1" path="models/monkey.obj"/>
+    </group>
+</scene>

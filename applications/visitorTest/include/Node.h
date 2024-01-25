@@ -3,7 +3,8 @@
 
 #include <iostream>
 #include <vector>
-#include "Visitor.h"
+
+class Visitor;
 
 class Node 
 {

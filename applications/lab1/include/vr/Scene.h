@@ -9,11 +9,10 @@
 #include "Camera.h"
 #include "vr/Shader.h"
 
+#include "vr/nodes/Group.h"
+#include "vr/visitors/RenderVisitor.h"
 namespace vr
 {
-
-  class Scene;
-
   /**
   Class that holds all mesh objects, lights and a camera
   */
@@ -100,13 +99,28 @@ namespace vr
     */
     void render();
 
+    void setSceneRoot(Group *g)
+    {
+      sceneRoot = g;
+    }
+
+    Group* getSceneRoot()
+    {
+      return sceneRoot;
+    }
+
+    RenderVisitor* getRenderVisitor()
+    {
+      return renderVisitor;
+    }
+
   private:
     NodeVector m_nodes;
     LightVector m_lights;
     GLint m_uniform_numberOfLights;
-
+    Group *sceneRoot;
+    RenderVisitor *renderVisitor;
     std::shared_ptr<vr::Shader> m_shader;
-
     std::shared_ptr<Camera> m_camera;
   };
 }

@@ -703,6 +703,30 @@ src/vr/visitors/RenderVisitor.cpp.s:
 	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/visitors/RenderVisitor.cpp.s
 .PHONY : src/vr/visitors/RenderVisitor.cpp.s
 
+src/vr/visitors/UpdateVisitor.o: src/vr/visitors/UpdateVisitor.cpp.o
+.PHONY : src/vr/visitors/UpdateVisitor.o
+
+# target to build an object file
+src/vr/visitors/UpdateVisitor.cpp.o:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/visitors/UpdateVisitor.cpp.o
+.PHONY : src/vr/visitors/UpdateVisitor.cpp.o
+
+src/vr/visitors/UpdateVisitor.i: src/vr/visitors/UpdateVisitor.cpp.i
+.PHONY : src/vr/visitors/UpdateVisitor.i
+
+# target to preprocess a source file
+src/vr/visitors/UpdateVisitor.cpp.i:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/visitors/UpdateVisitor.cpp.i
+.PHONY : src/vr/visitors/UpdateVisitor.cpp.i
+
+src/vr/visitors/UpdateVisitor.s: src/vr/visitors/UpdateVisitor.cpp.s
+.PHONY : src/vr/visitors/UpdateVisitor.s
+
+# target to generate assembly for a file
+src/vr/visitors/UpdateVisitor.cpp.s:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/visitors/UpdateVisitor.cpp.s
+.PHONY : src/vr/visitors/UpdateVisitor.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -782,6 +806,9 @@ help:
 	@echo "... src/vr/visitors/RenderVisitor.o"
 	@echo "... src/vr/visitors/RenderVisitor.i"
 	@echo "... src/vr/visitors/RenderVisitor.s"
+	@echo "... src/vr/visitors/UpdateVisitor.o"
+	@echo "... src/vr/visitors/UpdateVisitor.i"
+	@echo "... src/vr/visitors/UpdateVisitor.s"
 .PHONY : help
 
 

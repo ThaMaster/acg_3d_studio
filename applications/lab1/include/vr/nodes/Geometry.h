@@ -3,13 +3,12 @@
 
 #include "Group.h"
 #include "vr/Mesh.h"
-#include "vr/visitors/NodeVisitor.h"
 
-class Geometry : public Node
+class Geometry : public M_Node
 {
     public:
 
-        Geometry(const std::string& name = "") : Node(name) {}
+        Geometry(const std::string& name = "") : M_Node(name) {}
         
         virtual void accept(NodeVisitor& v) override;
 
