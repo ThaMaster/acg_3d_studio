@@ -7,12 +7,13 @@ using namespace vr;
 Scene::Scene() : m_uniform_numberOfLights(-1)
 {
   m_camera = std::shared_ptr<Camera>(new Camera);
-  renderVisitor = new RenderVisitor();
+  m_renderVisitor = new RenderVisitor();
 }
 
 bool Scene::initShaders(const std::string& vshader_filename, const std::string& fshader_filename)
 {
   m_shader = std::make_shared<vr::Shader>(vshader_filename, fshader_filename);
+  m_renderVisitor->setShader(m_shader);
   if (!m_shader->valid())
     return false;
 
@@ -55,7 +56,7 @@ void Scene::applyCamera()
 
 void Scene::useProgram()
 {
-  m_shader->use();
+  m_renderVisitor->getShader()->use();
 }
 
 void Scene::add(std::shared_ptr<Node>& node)
@@ -111,7 +112,6 @@ void Scene::render()
   {
     l->apply(m_shader, i++);
   }
-
-  for (auto n : m_nodes)
-    n->render(m_shader);
+  m_renderVisitor->setShader(m_shader);
+  m_renderVisitor->visit(*m_rootGroup);
 }

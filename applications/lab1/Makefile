@@ -223,6 +223,126 @@ src/glad.c.s:
 	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/glad.c.s
 .PHONY : src/glad.c.s
 
+src/lab1/nodes/Geometry.o: src/lab1/nodes/Geometry.cpp.o
+.PHONY : src/lab1/nodes/Geometry.o
+
+# target to build an object file
+src/lab1/nodes/Geometry.cpp.o:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Geometry.cpp.o
+.PHONY : src/lab1/nodes/Geometry.cpp.o
+
+src/lab1/nodes/Geometry.i: src/lab1/nodes/Geometry.cpp.i
+.PHONY : src/lab1/nodes/Geometry.i
+
+# target to preprocess a source file
+src/lab1/nodes/Geometry.cpp.i:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Geometry.cpp.i
+.PHONY : src/lab1/nodes/Geometry.cpp.i
+
+src/lab1/nodes/Geometry.s: src/lab1/nodes/Geometry.cpp.s
+.PHONY : src/lab1/nodes/Geometry.s
+
+# target to generate assembly for a file
+src/lab1/nodes/Geometry.cpp.s:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Geometry.cpp.s
+.PHONY : src/lab1/nodes/Geometry.cpp.s
+
+src/lab1/nodes/Group.o: src/lab1/nodes/Group.cpp.o
+.PHONY : src/lab1/nodes/Group.o
+
+# target to build an object file
+src/lab1/nodes/Group.cpp.o:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Group.cpp.o
+.PHONY : src/lab1/nodes/Group.cpp.o
+
+src/lab1/nodes/Group.i: src/lab1/nodes/Group.cpp.i
+.PHONY : src/lab1/nodes/Group.i
+
+# target to preprocess a source file
+src/lab1/nodes/Group.cpp.i:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Group.cpp.i
+.PHONY : src/lab1/nodes/Group.cpp.i
+
+src/lab1/nodes/Group.s: src/lab1/nodes/Group.cpp.s
+.PHONY : src/lab1/nodes/Group.s
+
+# target to generate assembly for a file
+src/lab1/nodes/Group.cpp.s:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Group.cpp.s
+.PHONY : src/lab1/nodes/Group.cpp.s
+
+src/lab1/nodes/Transform.o: src/lab1/nodes/Transform.cpp.o
+.PHONY : src/lab1/nodes/Transform.o
+
+# target to build an object file
+src/lab1/nodes/Transform.cpp.o:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Transform.cpp.o
+.PHONY : src/lab1/nodes/Transform.cpp.o
+
+src/lab1/nodes/Transform.i: src/lab1/nodes/Transform.cpp.i
+.PHONY : src/lab1/nodes/Transform.i
+
+# target to preprocess a source file
+src/lab1/nodes/Transform.cpp.i:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Transform.cpp.i
+.PHONY : src/lab1/nodes/Transform.cpp.i
+
+src/lab1/nodes/Transform.s: src/lab1/nodes/Transform.cpp.s
+.PHONY : src/lab1/nodes/Transform.s
+
+# target to generate assembly for a file
+src/lab1/nodes/Transform.cpp.s:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Transform.cpp.s
+.PHONY : src/lab1/nodes/Transform.cpp.s
+
+src/lab1/visitors/RenderVisitor.o: src/lab1/visitors/RenderVisitor.cpp.o
+.PHONY : src/lab1/visitors/RenderVisitor.o
+
+# target to build an object file
+src/lab1/visitors/RenderVisitor.cpp.o:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/visitors/RenderVisitor.cpp.o
+.PHONY : src/lab1/visitors/RenderVisitor.cpp.o
+
+src/lab1/visitors/RenderVisitor.i: src/lab1/visitors/RenderVisitor.cpp.i
+.PHONY : src/lab1/visitors/RenderVisitor.i
+
+# target to preprocess a source file
+src/lab1/visitors/RenderVisitor.cpp.i:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/visitors/RenderVisitor.cpp.i
+.PHONY : src/lab1/visitors/RenderVisitor.cpp.i
+
+src/lab1/visitors/RenderVisitor.s: src/lab1/visitors/RenderVisitor.cpp.s
+.PHONY : src/lab1/visitors/RenderVisitor.s
+
+# target to generate assembly for a file
+src/lab1/visitors/RenderVisitor.cpp.s:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/visitors/RenderVisitor.cpp.s
+.PHONY : src/lab1/visitors/RenderVisitor.cpp.s
+
+src/lab1/visitors/UpdateVisitor.o: src/lab1/visitors/UpdateVisitor.cpp.o
+.PHONY : src/lab1/visitors/UpdateVisitor.o
+
+# target to build an object file
+src/lab1/visitors/UpdateVisitor.cpp.o:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/visitors/UpdateVisitor.cpp.o
+.PHONY : src/lab1/visitors/UpdateVisitor.cpp.o
+
+src/lab1/visitors/UpdateVisitor.i: src/lab1/visitors/UpdateVisitor.cpp.i
+.PHONY : src/lab1/visitors/UpdateVisitor.i
+
+# target to preprocess a source file
+src/lab1/visitors/UpdateVisitor.cpp.i:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/visitors/UpdateVisitor.cpp.i
+.PHONY : src/lab1/visitors/UpdateVisitor.cpp.i
+
+src/lab1/visitors/UpdateVisitor.s: src/lab1/visitors/UpdateVisitor.cpp.s
+.PHONY : src/lab1/visitors/UpdateVisitor.s
+
+# target to generate assembly for a file
+src/lab1/visitors/UpdateVisitor.cpp.s:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/visitors/UpdateVisitor.cpp.s
+.PHONY : src/lab1/visitors/UpdateVisitor.cpp.s
+
 src/vr/Application.o: src/vr/Application.cpp.o
 .PHONY : src/vr/Application.o
 
@@ -583,78 +703,6 @@ src/vr/glErrorUtil.cpp.s:
 	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/glErrorUtil.cpp.s
 .PHONY : src/vr/glErrorUtil.cpp.s
 
-src/vr/nodes/Geometry.o: src/vr/nodes/Geometry.cpp.o
-.PHONY : src/vr/nodes/Geometry.o
-
-# target to build an object file
-src/vr/nodes/Geometry.cpp.o:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/nodes/Geometry.cpp.o
-.PHONY : src/vr/nodes/Geometry.cpp.o
-
-src/vr/nodes/Geometry.i: src/vr/nodes/Geometry.cpp.i
-.PHONY : src/vr/nodes/Geometry.i
-
-# target to preprocess a source file
-src/vr/nodes/Geometry.cpp.i:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/nodes/Geometry.cpp.i
-.PHONY : src/vr/nodes/Geometry.cpp.i
-
-src/vr/nodes/Geometry.s: src/vr/nodes/Geometry.cpp.s
-.PHONY : src/vr/nodes/Geometry.s
-
-# target to generate assembly for a file
-src/vr/nodes/Geometry.cpp.s:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/nodes/Geometry.cpp.s
-.PHONY : src/vr/nodes/Geometry.cpp.s
-
-src/vr/nodes/Group.o: src/vr/nodes/Group.cpp.o
-.PHONY : src/vr/nodes/Group.o
-
-# target to build an object file
-src/vr/nodes/Group.cpp.o:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/nodes/Group.cpp.o
-.PHONY : src/vr/nodes/Group.cpp.o
-
-src/vr/nodes/Group.i: src/vr/nodes/Group.cpp.i
-.PHONY : src/vr/nodes/Group.i
-
-# target to preprocess a source file
-src/vr/nodes/Group.cpp.i:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/nodes/Group.cpp.i
-.PHONY : src/vr/nodes/Group.cpp.i
-
-src/vr/nodes/Group.s: src/vr/nodes/Group.cpp.s
-.PHONY : src/vr/nodes/Group.s
-
-# target to generate assembly for a file
-src/vr/nodes/Group.cpp.s:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/nodes/Group.cpp.s
-.PHONY : src/vr/nodes/Group.cpp.s
-
-src/vr/nodes/Transform.o: src/vr/nodes/Transform.cpp.o
-.PHONY : src/vr/nodes/Transform.o
-
-# target to build an object file
-src/vr/nodes/Transform.cpp.o:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/nodes/Transform.cpp.o
-.PHONY : src/vr/nodes/Transform.cpp.o
-
-src/vr/nodes/Transform.i: src/vr/nodes/Transform.cpp.i
-.PHONY : src/vr/nodes/Transform.i
-
-# target to preprocess a source file
-src/vr/nodes/Transform.cpp.i:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/nodes/Transform.cpp.i
-.PHONY : src/vr/nodes/Transform.cpp.i
-
-src/vr/nodes/Transform.s: src/vr/nodes/Transform.cpp.s
-.PHONY : src/vr/nodes/Transform.s
-
-# target to generate assembly for a file
-src/vr/nodes/Transform.cpp.s:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/nodes/Transform.cpp.s
-.PHONY : src/vr/nodes/Transform.cpp.s
-
 src/vr/version.o: src/vr/version.cpp.o
 .PHONY : src/vr/version.o
 
@@ -679,54 +727,6 @@ src/vr/version.cpp.s:
 	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/version.cpp.s
 .PHONY : src/vr/version.cpp.s
 
-src/vr/visitors/RenderVisitor.o: src/vr/visitors/RenderVisitor.cpp.o
-.PHONY : src/vr/visitors/RenderVisitor.o
-
-# target to build an object file
-src/vr/visitors/RenderVisitor.cpp.o:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/visitors/RenderVisitor.cpp.o
-.PHONY : src/vr/visitors/RenderVisitor.cpp.o
-
-src/vr/visitors/RenderVisitor.i: src/vr/visitors/RenderVisitor.cpp.i
-.PHONY : src/vr/visitors/RenderVisitor.i
-
-# target to preprocess a source file
-src/vr/visitors/RenderVisitor.cpp.i:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/visitors/RenderVisitor.cpp.i
-.PHONY : src/vr/visitors/RenderVisitor.cpp.i
-
-src/vr/visitors/RenderVisitor.s: src/vr/visitors/RenderVisitor.cpp.s
-.PHONY : src/vr/visitors/RenderVisitor.s
-
-# target to generate assembly for a file
-src/vr/visitors/RenderVisitor.cpp.s:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/visitors/RenderVisitor.cpp.s
-.PHONY : src/vr/visitors/RenderVisitor.cpp.s
-
-src/vr/visitors/UpdateVisitor.o: src/vr/visitors/UpdateVisitor.cpp.o
-.PHONY : src/vr/visitors/UpdateVisitor.o
-
-# target to build an object file
-src/vr/visitors/UpdateVisitor.cpp.o:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/visitors/UpdateVisitor.cpp.o
-.PHONY : src/vr/visitors/UpdateVisitor.cpp.o
-
-src/vr/visitors/UpdateVisitor.i: src/vr/visitors/UpdateVisitor.cpp.i
-.PHONY : src/vr/visitors/UpdateVisitor.i
-
-# target to preprocess a source file
-src/vr/visitors/UpdateVisitor.cpp.i:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/visitors/UpdateVisitor.cpp.i
-.PHONY : src/vr/visitors/UpdateVisitor.cpp.i
-
-src/vr/visitors/UpdateVisitor.s: src/vr/visitors/UpdateVisitor.cpp.s
-.PHONY : src/vr/visitors/UpdateVisitor.s
-
-# target to generate assembly for a file
-src/vr/visitors/UpdateVisitor.cpp.s:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/visitors/UpdateVisitor.cpp.s
-.PHONY : src/vr/visitors/UpdateVisitor.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -746,6 +746,21 @@ help:
 	@echo "... src/glad.o"
 	@echo "... src/glad.i"
 	@echo "... src/glad.s"
+	@echo "... src/lab1/nodes/Geometry.o"
+	@echo "... src/lab1/nodes/Geometry.i"
+	@echo "... src/lab1/nodes/Geometry.s"
+	@echo "... src/lab1/nodes/Group.o"
+	@echo "... src/lab1/nodes/Group.i"
+	@echo "... src/lab1/nodes/Group.s"
+	@echo "... src/lab1/nodes/Transform.o"
+	@echo "... src/lab1/nodes/Transform.i"
+	@echo "... src/lab1/nodes/Transform.s"
+	@echo "... src/lab1/visitors/RenderVisitor.o"
+	@echo "... src/lab1/visitors/RenderVisitor.i"
+	@echo "... src/lab1/visitors/RenderVisitor.s"
+	@echo "... src/lab1/visitors/UpdateVisitor.o"
+	@echo "... src/lab1/visitors/UpdateVisitor.i"
+	@echo "... src/lab1/visitors/UpdateVisitor.s"
 	@echo "... src/vr/Application.o"
 	@echo "... src/vr/Application.i"
 	@echo "... src/vr/Application.s"
@@ -791,24 +806,9 @@ help:
 	@echo "... src/vr/glErrorUtil.o"
 	@echo "... src/vr/glErrorUtil.i"
 	@echo "... src/vr/glErrorUtil.s"
-	@echo "... src/vr/nodes/Geometry.o"
-	@echo "... src/vr/nodes/Geometry.i"
-	@echo "... src/vr/nodes/Geometry.s"
-	@echo "... src/vr/nodes/Group.o"
-	@echo "... src/vr/nodes/Group.i"
-	@echo "... src/vr/nodes/Group.s"
-	@echo "... src/vr/nodes/Transform.o"
-	@echo "... src/vr/nodes/Transform.i"
-	@echo "... src/vr/nodes/Transform.s"
 	@echo "... src/vr/version.o"
 	@echo "... src/vr/version.i"
 	@echo "... src/vr/version.s"
-	@echo "... src/vr/visitors/RenderVisitor.o"
-	@echo "... src/vr/visitors/RenderVisitor.i"
-	@echo "... src/vr/visitors/RenderVisitor.s"
-	@echo "... src/vr/visitors/UpdateVisitor.o"
-	@echo "... src/vr/visitors/UpdateVisitor.i"
-	@echo "... src/vr/visitors/UpdateVisitor.s"
 .PHONY : help
 
 

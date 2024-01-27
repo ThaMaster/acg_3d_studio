@@ -1,4 +1,4 @@
-#include "vr/nodes/Geometry.h"
+#include "lab1/nodes/Geometry.h"
 
 void Geometry::accept(NodeVisitor& v)
 {
@@ -6,12 +6,14 @@ void Geometry::accept(NodeVisitor& v)
     v.visit(*this);
 }
 
-void Geometry::render(std::shared_ptr<vr::Shader> shader)
+void Geometry::render(std::shared_ptr<vr::Shader> shader, glm::mat4 transformMat)
 {
     std::cerr << "Rendering" << std::endl;
     for(auto m : m_meshes)
     {
-        m->render(shader, this->object2world);
+        m->initShaders(shader);
+        m->upload();
+        m->render(shader, (this->object2world * transformMat));
     }
 }
 
@@ -38,4 +40,9 @@ void Geometry::resetTransform()
 glm::mat4& Geometry::getObject2WorldMat()
 {
     return object2world;
+}
+
+void Geometry::setObject2WorldMat(glm::mat4& m)
+{
+    object2world = m;
 }

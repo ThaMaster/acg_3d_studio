@@ -9,8 +9,8 @@
 #include "Camera.h"
 #include "vr/Shader.h"
 
-#include "vr/nodes/Group.h"
-#include "vr/visitors/RenderVisitor.h"
+#include "lab1/nodes/Group.h"
+#include "lab1/visitors/RenderVisitor.h"
 namespace vr
 {
   /**
@@ -99,27 +99,27 @@ namespace vr
     */
     void render();
 
-    void setSceneRoot(Group *g)
+    void setRootGroup(Group *g)
     {
-      sceneRoot = g;
+      m_rootGroup = g;
     }
 
-    Group* getSceneRoot()
+    Group* getRootGroup()
     {
-      return sceneRoot;
+      return m_rootGroup;
     }
 
     RenderVisitor* getRenderVisitor()
     {
-      return renderVisitor;
+      return m_renderVisitor;
     }
 
   private:
     NodeVector m_nodes;
     LightVector m_lights;
     GLint m_uniform_numberOfLights;
-    Group *sceneRoot;
-    RenderVisitor *renderVisitor;
+    Group *m_rootGroup;
+    RenderVisitor *m_renderVisitor;
     std::shared_ptr<vr::Shader> m_shader;
     std::shared_ptr<Camera> m_camera;
   };

@@ -55,7 +55,6 @@ namespace vr
 
     void resetTransform();
 
-
     /**
     Draw the node (all of its meshes)
     \param program - The active program for which rendering will be performed

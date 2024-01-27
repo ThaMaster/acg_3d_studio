@@ -48,13 +48,13 @@ bool Application::initResources(const std::string& model_filename, const std::st
       return false;
     }
 
-    if (m_sceneRoot->getNodes().empty())
+    /* if (m_sceneRoot->getNodes().empty())
     {
       std::cerr << "Empty scene, something when wrong when loading files" << std::endl;
       return false;
     }
     // We want to be able to "rotate" one node lets take the first
-    node = m_sceneRoot->getNodes().front();
+    node = m_sceneRoot->getNodes().front(); */
   }
   else
   {

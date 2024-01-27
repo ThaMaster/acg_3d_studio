@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vr/Scene.h>
-
+#include "lab1/nodes/Geometry.h"
 namespace vr
 {
   /// Load a given file and add content to the scene

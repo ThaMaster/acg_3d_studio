@@ -3,7 +3,7 @@
 
 #include "M_Node.h"
 
-#include "vr/visitors/NodeVisitor.h"
+#include "lab1/visitors/NodeVisitor.h"
 
 class Group : public M_Node
 {

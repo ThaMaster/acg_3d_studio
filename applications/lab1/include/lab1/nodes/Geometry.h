@@ -12,7 +12,7 @@ class Geometry : public M_Node
         
         virtual void accept(NodeVisitor& v) override;
 
-        virtual void render(std::shared_ptr<vr::Shader> shader);
+        virtual void render(std::shared_ptr<vr::Shader> shader, glm::mat4 transformMat);
 
         void add(std::shared_ptr<vr::Mesh>& mesh);
         vr::MeshVector& getMeshes();
@@ -21,6 +21,8 @@ class Geometry : public M_Node
         void resetTransform();
         
         glm::mat4& getObject2WorldMat();
+        void setObject2WorldMat(glm::mat4& m);
+
     private:
 
         vr::MeshVector m_meshes;

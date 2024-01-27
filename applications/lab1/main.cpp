@@ -114,7 +114,6 @@ void cleanupWindows(GLFWwindow *window)
 
 int main(int argc, char** argv) 
 {
-  bool renderCringe = true;
   const unsigned SCREEN_WIDTH = 1920;
   const unsigned SCREEN_HEIGHT = 1080;
 
@@ -157,11 +156,6 @@ int main(int argc, char** argv)
 
     glfwSwapBuffers(window);
     glfwPollEvents();
-    if(renderCringe)
-    {
-      application->getVisitorPrint();
-      renderCringe = false;
-    }
     application->processInput(window);
   }
   

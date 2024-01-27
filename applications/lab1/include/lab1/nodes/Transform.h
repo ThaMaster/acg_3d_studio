@@ -8,7 +8,17 @@ class Transform : public Group
     public:
         Transform(const std::string& name = "") : Group(name) {}
         void accept(NodeVisitor& v) override;
-    
+
+        void setTransformMat(glm::mat4 m)
+        {
+            transformMat = m;
+        }
+        
+        glm::mat4 getTransfromMat(void)
+        {
+            return transformMat;
+        }
+        
     private:
 
         glm::mat4 transformMat;

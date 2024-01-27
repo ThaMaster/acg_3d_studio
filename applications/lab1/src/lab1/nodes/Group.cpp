@@ -1,4 +1,4 @@
-#include "vr/nodes/Group.h"
+#include "lab1/nodes/Group.h"
 
 void Group::addChild(M_Node* n)
 {

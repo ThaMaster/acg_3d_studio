@@ -19,7 +19,7 @@ class NodeVisitor
         virtual void visit(Geometry&) = 0;
 
     private:
-        std::stack<glm::mat4> m_transformStack;
+        
 };
 
 #endif
