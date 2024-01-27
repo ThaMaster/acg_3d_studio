@@ -484,6 +484,46 @@ bool vr::loadSceneFile(const std::string& sceneFile, std::shared_ptr<Scene>& sce
     loadSceneNode(root_node->first_node(), root);
     scene->setRootGroup(root);
 
+    // Iterate over the nodes
+    for (rapidxml::xml_node<>* node = root_node->first_node("group"); node; node = node->next_sibling())
+    {
+      xmlpath.push_back("group");
+      
+      // Skip comments and such.
+      if (node->type() == rapidxml::node_comment || node->type() == rapidxml::node_doctype)
+        continue;
+
+      std::string group_name = getAttribute(node, "name");
+      rapidxml::xml_node<>* geo_node = node->first_node("geometry");
+
+      std::string geo_name = getAttribute(geo_node, "name");
+      std::string geo_path = geo_node->first_attribute("path")->value();
+
+      if (geo_path.empty())
+        throw std::runtime_error("Empty path: " + pathToString(xmlpath));
+
+      std::shared_ptr<Node> loadedNode = vr::load3DModelFile(geo_path);
+      if (!loadedNode)
+        std::cerr << "Unable to load node \'" << group_name << "\' path: " << geo_path << std::endl;
+      else
+      {
+        glm::vec3 t_vec;
+        glm::vec3 r_vec;
+        glm::vec3 s_vec;
+        glm::mat4 mt = glm::translate(glm::mat4(), t_vec);
+        glm::mat4 ms = glm::scale(glm::mat4(), s_vec);
+        glm::mat4 rx = glm::rotate(glm::mat4(), glm::radians(r_vec.x), glm::vec3(1, 0, 0));
+        glm::mat4 ry = glm::rotate(glm::mat4(), glm::radians(r_vec.y), glm::vec3(0, 1, 0));
+        glm::mat4 rz = glm::rotate(glm::mat4(), glm::radians(r_vec.z), glm::vec3(0, 0, 1));
+
+        loadedNode->setInitialTransform(glm::mat4());
+        loadedNode->name = group_name;
+        scene->add(loadedNode);
+      }
+
+      xmlpath.pop_back(); // node
+    }
+    
     xmlpath.pop_back(); // scene
   }
   catch (rapidxml::parse_error& error)
