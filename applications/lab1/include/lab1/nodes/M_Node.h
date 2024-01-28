@@ -5,6 +5,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include "lab1/UpdateCallback.h"
+#include <vr/BoundingBox.h>
 
 class NodeVisitor;
 
@@ -13,6 +14,7 @@ class M_Node
     public:
         M_Node(const std::string& name = "" ) : m_name(name) {}
         virtual void accept(NodeVisitor& v) = 0;
+        virtual vr::BoundingBox calculateBoundingBox() = 0;
         std::string getName() { return m_name; }
 
         void setUpdateCallback(UpdateCallback* callback);

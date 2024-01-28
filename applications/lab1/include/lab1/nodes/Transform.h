@@ -8,6 +8,8 @@ class Transform : public Group
     public:
         Transform(const std::string& name = "") : Group(name) {}
         void accept(NodeVisitor& v) override;
+        vr::BoundingBox calculateBoundingBox() override;
+
 
         void setTransformMat(glm::mat4 m)
         {

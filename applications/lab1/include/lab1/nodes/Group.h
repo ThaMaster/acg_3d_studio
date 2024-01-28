@@ -14,6 +14,7 @@ class Group : public M_Node
         void addChild(M_Node* n);
 
         void accept(NodeVisitor& v) override;
+        vr::BoundingBox calculateBoundingBox() override;
 
         std::vector<M_Node*> getChildren() { return m_children; }
 

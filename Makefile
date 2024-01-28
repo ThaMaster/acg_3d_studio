@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio
+CMAKE_SOURCE_DIR = /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio
+CMAKE_BINARY_DIR = /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -132,9 +132,9 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio/CMakeFiles /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio/CMakeFiles /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

@@ -1,5 +1,17 @@
 #include "lab1/nodes/Geometry.h"
 
+vr::BoundingBox Geometry::calculateBoundingBox()
+{
+    vr::BoundingBox box;
+    for (auto v : vertices)
+    {
+        glm::vec3 vTransformed = this->object2world * v;
+        box.expand(vTransformed);
+    }
+    box = box * this->object2world;
+    return box;
+}
+
 void Geometry::accept(NodeVisitor& v)
 {
     std::cerr << "Accept: " << getName() << std::endl;

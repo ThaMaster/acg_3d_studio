@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio
+CMAKE_SOURCE_DIR = /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio
+CMAKE_BINARY_DIR = /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -132,14 +132,14 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(CMAKE_COMMAND) -E cmake_progress_start /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio/CMakeFiles /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio/applications/visitorTest//CMakeFiles/progress.marks
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 applications/visitorTest/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio/CMakeFiles 0
+	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(CMAKE_COMMAND) -E cmake_progress_start /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio/CMakeFiles /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio/applications/visitorTest//CMakeFiles/progress.marks
+	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 applications/visitorTest/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 applications/visitorTest/clean
+	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 applications/visitorTest/clean
 .PHONY : clean
 
 # The main clean target
@@ -148,22 +148,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 applications/visitorTest/preinstall
+	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 applications/visitorTest/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 applications/visitorTest/preinstall
+	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 applications/visitorTest/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 applications/visitorTest/CMakeFiles/visitorTest.dir/rule:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 applications/visitorTest/CMakeFiles/visitorTest.dir/rule
+	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 applications/visitorTest/CMakeFiles/visitorTest.dir/rule
 .PHONY : applications/visitorTest/CMakeFiles/visitorTest.dir/rule
 
 # Convenience name for target.
@@ -172,7 +172,7 @@ visitorTest: applications/visitorTest/CMakeFiles/visitorTest.dir/rule
 
 # fast build rule for target.
 visitorTest/fast:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/visitorTest/CMakeFiles/visitorTest.dir/build.make applications/visitorTest/CMakeFiles/visitorTest.dir/build
+	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/visitorTest/CMakeFiles/visitorTest.dir/build.make applications/visitorTest/CMakeFiles/visitorTest.dir/build
 .PHONY : visitorTest/fast
 
 main.o: main.cpp.o
@@ -180,7 +180,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/visitorTest/CMakeFiles/visitorTest.dir/build.make applications/visitorTest/CMakeFiles/visitorTest.dir/main.cpp.o
+	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/visitorTest/CMakeFiles/visitorTest.dir/build.make applications/visitorTest/CMakeFiles/visitorTest.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -188,7 +188,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/visitorTest/CMakeFiles/visitorTest.dir/build.make applications/visitorTest/CMakeFiles/visitorTest.dir/main.cpp.i
+	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/visitorTest/CMakeFiles/visitorTest.dir/build.make applications/visitorTest/CMakeFiles/visitorTest.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -196,7 +196,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/visitorTest/CMakeFiles/visitorTest.dir/build.make applications/visitorTest/CMakeFiles/visitorTest.dir/main.cpp.s
+	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/visitorTest/CMakeFiles/visitorTest.dir/build.make applications/visitorTest/CMakeFiles/visitorTest.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 # Help Target
@@ -226,6 +226,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 
