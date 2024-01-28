@@ -21,7 +21,7 @@ class Geometry : public M_Node
 
         bool initShaders(std::shared_ptr<vr::Shader> shader);
 
-        virtual void render(std::shared_ptr<vr::Shader> shader, glm::mat4 transformMat);
+        virtual void draw(std::shared_ptr<vr::Shader> shader, glm::mat4 modelMat);
 
         void add(std::shared_ptr<vr::Mesh>& mesh);
         vr::MeshVector& getMeshes();

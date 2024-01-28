@@ -24,6 +24,6 @@ void RenderVisitor::visit(Transform& trans)
 void RenderVisitor::visit(Geometry& geo)
 {
     //std::cerr << "Visit: " << geo.getName() << std::endl;
-    geo.render(m_shader, m_transformStack.top());
+    geo.draw(m_shader, m_transformStack.top());
     //std::cerr << "Has: " << geo.getMeshes().size() << " meshes!\n" << std::endl;
 }

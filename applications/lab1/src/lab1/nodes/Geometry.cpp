@@ -200,13 +200,13 @@ void Geometry::upload()
  * 
  * 
  */
-void Geometry::render(std::shared_ptr<vr::Shader> shader, glm::mat4 transformMat)
+void Geometry::draw(std::shared_ptr<vr::Shader> shader, glm::mat4 modelMat)
 {
     //std::cerr << "Rendering" << std::endl;
     for(auto m : m_meshes)
     {
         m->initShaders(shader);
         m->upload();
-        m->render(shader, (this->object2world * transformMat));
+        m->render(shader, (this->object2world * modelMat));
     }
 }

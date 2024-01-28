@@ -4,25 +4,41 @@
 #include <iostream>
 #include <vector>
 #include <glm/glm.hpp>
-#include "lab1/UpdateCallback.h"
+
 #include <vr/BoundingBox.h>
+
+#include "lab1/UpdateCallback.h"
+#include "lab1/State.h"
 
 class NodeVisitor;
 
 class M_Node
 {
     public:
-        M_Node(const std::string& name = "" ) : m_name(name) {}
+        M_Node(const std::string& name = "" ) : m_name(name), m_updateCallback(nullptr) {}
         virtual void accept(NodeVisitor& v) = 0;
         virtual vr::BoundingBox calculateBoundingBox() = 0;
         std::string getName() { return m_name; }
 
-        void setUpdateCallback(UpdateCallback* callback);
-        UpdateCallback* getUpdateCallback();
+        void setUpdateCallback(UpdateCallback* callback)
+        {
+            m_updateCallback = std::shared_ptr<UpdateCallback>(callback);
+        }
+
+        std::shared_ptr<UpdateCallback> getUpdateCallback()
+        {
+            return m_updateCallback;
+        }
+
+        void setState(State s)
+        {
+            m_state = s;
+        }
 
     private:
+        State m_state;
         std::string m_name;
-        UpdateCallback *updateCallback;
+        std::shared_ptr<UpdateCallback> m_updateCallback;
 };
 
 #endif

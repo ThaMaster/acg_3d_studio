@@ -4,6 +4,7 @@
 #include <stack>
 #include "NodeVisitor.h"
 #include "vr/Shader.h"
+#include "lab1/State.h"
 
 class RenderVisitor : public NodeVisitor
 {
@@ -26,7 +27,9 @@ class RenderVisitor : public NodeVisitor
         {
             return m_shader;
         }
+
     private:
+        std::stack<State> m_stateStack;
         std::stack<glm::mat4> m_transformStack;
         std::shared_ptr<vr::Shader> m_shader;   
 };

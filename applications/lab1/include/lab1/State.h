@@ -8,10 +8,13 @@
 class State 
 {
     public:
+        State();
+        void apply(State& s);
+
     private:
         std::shared_ptr<vr::Shader> m_shader;
         std::shared_ptr<vr::Material> m_material;
-        std::shared_ptr<vr::Texture> m_texture;
+        std::vector<std::shared_ptr<vr::Texture>> m_texture;
 };
 
 #endif
