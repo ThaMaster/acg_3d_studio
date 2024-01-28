@@ -11,6 +11,7 @@
 
 #include "lab1/nodes/Group.h"
 #include "lab1/visitors/RenderVisitor.h"
+
 namespace vr
 {
   /**
@@ -70,6 +71,13 @@ namespace vr
     */
     void add(std::shared_ptr<Node>& node);
 
+    void addObj(std::shared_ptr<Geometry>& obj);
+
+    std::vector<std::shared_ptr<Geometry>> getObjects()
+    {
+      return m_objects;
+    }
+    
     /**
     Reset all nodes transform to its initial value
     */
@@ -114,9 +122,14 @@ namespace vr
       return m_renderVisitor;
     }
 
+
+
   private:
+
     NodeVector m_nodes;
     LightVector m_lights;
+    std::vector<std::shared_ptr<Geometry>> m_objects;
+
     GLint m_uniform_numberOfLights;
     Group *m_rootGroup;
     RenderVisitor *m_renderVisitor;

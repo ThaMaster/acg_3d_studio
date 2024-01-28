@@ -4,6 +4,6 @@
         <transform name="trans1" translate="1 1 1" scale="0.4 0.4 0.4">
             <geometry name="geo1" path="models/monkey.obj"/>
         </transform>
-        <geometry name="geo2" path="models/monkey.obj"/>
+        <geometry name="geo1" path="models/monkey.obj"/>
     </group>
 </scene>

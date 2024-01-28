@@ -17,6 +17,6 @@ void Group::addChild(M_Node* n)
 
 void Group::accept(NodeVisitor& v)
 {
-    std::cerr << "Accept: " << getName() << std::endl;
+    //std::cerr << "Accept: " << getName() << std::endl;
     v.visit(*this);
 }

@@ -14,9 +14,12 @@ class Geometry : public M_Node
         std::vector<GLushort> elements;
 
         Geometry(const std::string& name = "") : M_Node(name) {}
+        ~Geometry();
         
         virtual void accept(NodeVisitor& v) override;
         virtual vr::BoundingBox calculateBoundingBox() override;
+
+        bool initShaders(std::shared_ptr<vr::Shader> shader);
 
         virtual void render(std::shared_ptr<vr::Shader> shader, glm::mat4 transformMat);
 
@@ -28,6 +31,11 @@ class Geometry : public M_Node
         
         glm::mat4& getObject2WorldMat();
         void setObject2WorldMat(glm::mat4& m);
+
+        void setMaterial(std::shared_ptr<vr::Material>& material);
+        std::shared_ptr<vr::Material> getMaterial();
+
+        void upload();
 
     private:
         std::shared_ptr<vr::Material> m_material;

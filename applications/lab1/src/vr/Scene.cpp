@@ -34,14 +34,12 @@ void Scene::add(std::shared_ptr<Light>& light)
 
 const LightVector& Scene::getLights()
 {
-  return
-    m_lights;
+  return m_lights;
 }
 
 std::shared_ptr<Camera> Scene::getCamera()
 {
-  return
-    m_camera;
+  return m_camera;
 }
 
 Scene::~Scene()
@@ -70,6 +68,11 @@ void Scene::add(std::shared_ptr<Node>& node)
   }
 }
 
+void Scene::addObj(std::shared_ptr<Geometry>& obj)
+{
+  m_objects.push_back(obj);
+}
+
 void Scene::resetTransform()
 {
   for (auto n : m_nodes)
@@ -80,7 +83,6 @@ const NodeVector& Scene::getNodes()
 {
   return m_nodes;
 }
-
 
 std::shared_ptr<Node> Scene::getNode(size_t i)
 {

@@ -223,6 +223,30 @@ src/glad.c.s:
 	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/glad.c.s
 .PHONY : src/glad.c.s
 
+src/lab1/State.o: src/lab1/State.cpp.o
+.PHONY : src/lab1/State.o
+
+# target to build an object file
+src/lab1/State.cpp.o:
+	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/State.cpp.o
+.PHONY : src/lab1/State.cpp.o
+
+src/lab1/State.i: src/lab1/State.cpp.i
+.PHONY : src/lab1/State.i
+
+# target to preprocess a source file
+src/lab1/State.cpp.i:
+	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/State.cpp.i
+.PHONY : src/lab1/State.cpp.i
+
+src/lab1/State.s: src/lab1/State.cpp.s
+.PHONY : src/lab1/State.s
+
+# target to generate assembly for a file
+src/lab1/State.cpp.s:
+	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/State.cpp.s
+.PHONY : src/lab1/State.cpp.s
+
 src/lab1/nodes/Geometry.o: src/lab1/nodes/Geometry.cpp.o
 .PHONY : src/lab1/nodes/Geometry.o
 
@@ -746,6 +770,9 @@ help:
 	@echo "... src/glad.o"
 	@echo "... src/glad.i"
 	@echo "... src/glad.s"
+	@echo "... src/lab1/State.o"
+	@echo "... src/lab1/State.i"
+	@echo "... src/lab1/State.s"
 	@echo "... src/lab1/nodes/Geometry.o"
 	@echo "... src/lab1/nodes/Geometry.i"
 	@echo "... src/lab1/nodes/Geometry.s"

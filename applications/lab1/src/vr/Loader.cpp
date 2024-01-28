@@ -375,7 +375,7 @@ std::string getAttribute(rapidxml::xml_node<>* node, const std::string& attribut
   return attrib->value();
 }
 
-void loadSceneNode(rapidxml::xml_node<>* parent_node, Group* root) {
+void loadSceneNode(rapidxml::xml_node<>* parent_node, Group* root, std::shared_ptr<Scene>& scene) {
   if (!parent_node || parent_node->type() == rapidxml::node_comment || parent_node->type() == rapidxml::node_doctype)
         return;
   
@@ -387,27 +387,40 @@ void loadSceneNode(rapidxml::xml_node<>* parent_node, Group* root) {
       
       node_name = getAttribute(curr_node, "name");
       auto groupNode = new Group(node_name);
-      loadSceneNode(curr_node->first_node(), groupNode);
+      loadSceneNode(curr_node->first_node(), groupNode, scene);
       root->addChild(groupNode);
 
     } else if(node_type == "geometry") {
 
       node_name = getAttribute(curr_node, "name");
-      auto geometryNode = new Geometry(node_name);
-      geometryNode->setInitialTransform(glm::mat4());
-      std::string geo_path = curr_node->first_attribute("path")->value();
-      if (geo_path.empty())
-        throw std::runtime_error("Geometry(" + node_name + "): Empty path.\n");
-
-      std::shared_ptr<Node> loadedNode = vr::load3DModelFile(geo_path);
-        if (!loadedNode)
-          std::cerr << "Unable to load node \'" << node_name << "\' path: " << geo_path << std::endl;
-
-      for (auto m : loadedNode->getMeshes())
+      bool dupObj = false;
+      std::shared_ptr<Geometry> geometryNode;
+      for(auto obj : scene->getObjects())
       {
-        geometryNode->add(m);
+        if(obj->getName() == node_name)
+        {
+          geometryNode = obj;
+          dupObj = true;
+          break;
+        }
       }
-      root->addChild(geometryNode);
+      if(!dupObj){
+        geometryNode = std::shared_ptr<Geometry>(new Geometry(node_name));
+        std::string geo_path = curr_node->first_attribute("path")->value();
+        if (geo_path.empty())
+          throw std::runtime_error("Geometry(" + node_name + "): Empty path.\n");
+
+        std::shared_ptr<Node> loadedNode = vr::load3DModelFile(geo_path);
+          if (!loadedNode)
+            std::cerr << "Unable to load node \'" << node_name << "\' path: " << geo_path << std::endl;
+
+        for (auto m : loadedNode->getMeshes())
+        {
+          geometryNode->add(m);
+        }
+        scene->addObj(geometryNode);
+      } 
+      root->addChild(geometryNode.get());
 
     } else if(node_type == "transform") {
 
@@ -437,7 +450,7 @@ void loadSceneNode(rapidxml::xml_node<>* parent_node, Group* root) {
       auto t = mt * rz * ry * rx;
       t = glm::scale(t, s_vec);
       transformNode->setTransformMat(t);
-      loadSceneNode(curr_node->first_node(), transformNode);
+      loadSceneNode(curr_node->first_node(), transformNode, scene);
       root->addChild(transformNode);
     }
   }
@@ -481,7 +494,8 @@ bool vr::loadSceneFile(const std::string& sceneFile, std::shared_ptr<Scene>& sce
     xmlpath.push_back("scene");
 
     Group *root = new Group("root");
-    loadSceneNode(root_node->first_node(), root);
+    loadSceneNode(root_node->first_node(), root, scene);
+    std::cout << scene->getObjects().size() << std::endl;
     scene->setRootGroup(root);
 
     // Iterate over the nodes
