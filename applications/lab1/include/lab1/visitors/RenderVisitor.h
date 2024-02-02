@@ -9,6 +9,7 @@
 class RenderVisitor : public NodeVisitor
 {
     public:
+
         RenderVisitor()
         {
             m_transformStack.push(glm::mat4());
@@ -29,7 +30,7 @@ class RenderVisitor : public NodeVisitor
         }
 
     private:
-        std::stack<State> m_stateStack;
+        std::stack<std::shared_ptr<State>> m_stateStack;
         std::stack<glm::mat4> m_transformStack;
         std::shared_ptr<vr::Shader> m_shader;   
 };

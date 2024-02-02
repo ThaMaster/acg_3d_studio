@@ -23,9 +23,7 @@
 
 #include "lab1/visitors/RenderVisitor.h"
 
-#include "lab1/nodes/Group.h"
-#include "lab1/nodes/Transform.h"
-#include "lab1/nodes/Geometry.h"
+#include "lab1/callbacks/RotateCallback.h"
 
 using namespace vr;
 
@@ -450,6 +448,7 @@ void loadSceneNode(rapidxml::xml_node<>* parent_node, Group* root, std::shared_p
       auto t = mt * rz * ry * rx;
       t = glm::scale(t, s_vec);
       transformNode->setTransformMat(t);
+      transformNode->setUpdateCallback(new RotateCallback(glm::vec3()));
       loadSceneNode(curr_node->first_node(), transformNode, scene);
       root->addChild(transformNode);
     }
@@ -493,10 +492,7 @@ bool vr::loadSceneFile(const std::string& sceneFile, std::shared_ptr<Scene>& sce
 
     xmlpath.push_back("scene");
 
-    Group *root = new Group("root");
-    loadSceneNode(root_node->first_node(), root, scene);
-    std::cout << scene->getObjects().size() << std::endl;
-    scene->setRootGroup(root);
+    loadSceneNode(root_node->first_node(), scene->getRootGroup(), scene);
 
     // Iterate over the nodes
     for (rapidxml::xml_node<>* node = root_node->first_node("group"); node; node = node->next_sibling())

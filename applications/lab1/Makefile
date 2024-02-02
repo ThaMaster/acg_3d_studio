@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio
+CMAKE_SOURCE_DIR = /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio
+CMAKE_BINARY_DIR = /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -132,14 +132,14 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(CMAKE_COMMAND) -E cmake_progress_start /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio/CMakeFiles /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio/applications/lab1//CMakeFiles/progress.marks
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 applications/lab1/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio/CMakeFiles 0
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(CMAKE_COMMAND) -E cmake_progress_start /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio/CMakeFiles /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio/applications/lab1//CMakeFiles/progress.marks
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 applications/lab1/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 applications/lab1/clean
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 applications/lab1/clean
 .PHONY : clean
 
 # The main clean target
@@ -148,22 +148,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 applications/lab1/preinstall
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 applications/lab1/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 applications/lab1/preinstall
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 applications/lab1/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 applications/lab1/CMakeFiles/lab1.dir/rule:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 applications/lab1/CMakeFiles/lab1.dir/rule
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 applications/lab1/CMakeFiles/lab1.dir/rule
 .PHONY : applications/lab1/CMakeFiles/lab1.dir/rule
 
 # Convenience name for target.
@@ -172,7 +172,7 @@ lab1: applications/lab1/CMakeFiles/lab1.dir/rule
 
 # fast build rule for target.
 lab1/fast:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/build
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/build
 .PHONY : lab1/fast
 
 main.o: main.cpp.o
@@ -180,7 +180,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/main.cpp.o
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -188,7 +188,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/main.cpp.i
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -196,7 +196,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/main.cpp.s
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 src/glad.o: src/glad.c.o
@@ -204,7 +204,7 @@ src/glad.o: src/glad.c.o
 
 # target to build an object file
 src/glad.c.o:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/glad.c.o
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/glad.c.o
 .PHONY : src/glad.c.o
 
 src/glad.i: src/glad.c.i
@@ -212,7 +212,7 @@ src/glad.i: src/glad.c.i
 
 # target to preprocess a source file
 src/glad.c.i:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/glad.c.i
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/glad.c.i
 .PHONY : src/glad.c.i
 
 src/glad.s: src/glad.c.s
@@ -220,7 +220,7 @@ src/glad.s: src/glad.c.s
 
 # target to generate assembly for a file
 src/glad.c.s:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/glad.c.s
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/glad.c.s
 .PHONY : src/glad.c.s
 
 src/lab1/State.o: src/lab1/State.cpp.o
@@ -228,7 +228,7 @@ src/lab1/State.o: src/lab1/State.cpp.o
 
 # target to build an object file
 src/lab1/State.cpp.o:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/State.cpp.o
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/State.cpp.o
 .PHONY : src/lab1/State.cpp.o
 
 src/lab1/State.i: src/lab1/State.cpp.i
@@ -236,7 +236,7 @@ src/lab1/State.i: src/lab1/State.cpp.i
 
 # target to preprocess a source file
 src/lab1/State.cpp.i:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/State.cpp.i
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/State.cpp.i
 .PHONY : src/lab1/State.cpp.i
 
 src/lab1/State.s: src/lab1/State.cpp.s
@@ -244,7 +244,7 @@ src/lab1/State.s: src/lab1/State.cpp.s
 
 # target to generate assembly for a file
 src/lab1/State.cpp.s:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/State.cpp.s
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/State.cpp.s
 .PHONY : src/lab1/State.cpp.s
 
 src/lab1/nodes/Geometry.o: src/lab1/nodes/Geometry.cpp.o
@@ -252,7 +252,7 @@ src/lab1/nodes/Geometry.o: src/lab1/nodes/Geometry.cpp.o
 
 # target to build an object file
 src/lab1/nodes/Geometry.cpp.o:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Geometry.cpp.o
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Geometry.cpp.o
 .PHONY : src/lab1/nodes/Geometry.cpp.o
 
 src/lab1/nodes/Geometry.i: src/lab1/nodes/Geometry.cpp.i
@@ -260,7 +260,7 @@ src/lab1/nodes/Geometry.i: src/lab1/nodes/Geometry.cpp.i
 
 # target to preprocess a source file
 src/lab1/nodes/Geometry.cpp.i:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Geometry.cpp.i
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Geometry.cpp.i
 .PHONY : src/lab1/nodes/Geometry.cpp.i
 
 src/lab1/nodes/Geometry.s: src/lab1/nodes/Geometry.cpp.s
@@ -268,7 +268,7 @@ src/lab1/nodes/Geometry.s: src/lab1/nodes/Geometry.cpp.s
 
 # target to generate assembly for a file
 src/lab1/nodes/Geometry.cpp.s:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Geometry.cpp.s
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Geometry.cpp.s
 .PHONY : src/lab1/nodes/Geometry.cpp.s
 
 src/lab1/nodes/Group.o: src/lab1/nodes/Group.cpp.o
@@ -276,7 +276,7 @@ src/lab1/nodes/Group.o: src/lab1/nodes/Group.cpp.o
 
 # target to build an object file
 src/lab1/nodes/Group.cpp.o:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Group.cpp.o
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Group.cpp.o
 .PHONY : src/lab1/nodes/Group.cpp.o
 
 src/lab1/nodes/Group.i: src/lab1/nodes/Group.cpp.i
@@ -284,7 +284,7 @@ src/lab1/nodes/Group.i: src/lab1/nodes/Group.cpp.i
 
 # target to preprocess a source file
 src/lab1/nodes/Group.cpp.i:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Group.cpp.i
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Group.cpp.i
 .PHONY : src/lab1/nodes/Group.cpp.i
 
 src/lab1/nodes/Group.s: src/lab1/nodes/Group.cpp.s
@@ -292,7 +292,7 @@ src/lab1/nodes/Group.s: src/lab1/nodes/Group.cpp.s
 
 # target to generate assembly for a file
 src/lab1/nodes/Group.cpp.s:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Group.cpp.s
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Group.cpp.s
 .PHONY : src/lab1/nodes/Group.cpp.s
 
 src/lab1/nodes/Transform.o: src/lab1/nodes/Transform.cpp.o
@@ -300,7 +300,7 @@ src/lab1/nodes/Transform.o: src/lab1/nodes/Transform.cpp.o
 
 # target to build an object file
 src/lab1/nodes/Transform.cpp.o:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Transform.cpp.o
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Transform.cpp.o
 .PHONY : src/lab1/nodes/Transform.cpp.o
 
 src/lab1/nodes/Transform.i: src/lab1/nodes/Transform.cpp.i
@@ -308,7 +308,7 @@ src/lab1/nodes/Transform.i: src/lab1/nodes/Transform.cpp.i
 
 # target to preprocess a source file
 src/lab1/nodes/Transform.cpp.i:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Transform.cpp.i
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Transform.cpp.i
 .PHONY : src/lab1/nodes/Transform.cpp.i
 
 src/lab1/nodes/Transform.s: src/lab1/nodes/Transform.cpp.s
@@ -316,7 +316,7 @@ src/lab1/nodes/Transform.s: src/lab1/nodes/Transform.cpp.s
 
 # target to generate assembly for a file
 src/lab1/nodes/Transform.cpp.s:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Transform.cpp.s
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Transform.cpp.s
 .PHONY : src/lab1/nodes/Transform.cpp.s
 
 src/lab1/visitors/RenderVisitor.o: src/lab1/visitors/RenderVisitor.cpp.o
@@ -324,7 +324,7 @@ src/lab1/visitors/RenderVisitor.o: src/lab1/visitors/RenderVisitor.cpp.o
 
 # target to build an object file
 src/lab1/visitors/RenderVisitor.cpp.o:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/visitors/RenderVisitor.cpp.o
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/visitors/RenderVisitor.cpp.o
 .PHONY : src/lab1/visitors/RenderVisitor.cpp.o
 
 src/lab1/visitors/RenderVisitor.i: src/lab1/visitors/RenderVisitor.cpp.i
@@ -332,7 +332,7 @@ src/lab1/visitors/RenderVisitor.i: src/lab1/visitors/RenderVisitor.cpp.i
 
 # target to preprocess a source file
 src/lab1/visitors/RenderVisitor.cpp.i:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/visitors/RenderVisitor.cpp.i
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/visitors/RenderVisitor.cpp.i
 .PHONY : src/lab1/visitors/RenderVisitor.cpp.i
 
 src/lab1/visitors/RenderVisitor.s: src/lab1/visitors/RenderVisitor.cpp.s
@@ -340,7 +340,7 @@ src/lab1/visitors/RenderVisitor.s: src/lab1/visitors/RenderVisitor.cpp.s
 
 # target to generate assembly for a file
 src/lab1/visitors/RenderVisitor.cpp.s:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/visitors/RenderVisitor.cpp.s
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/visitors/RenderVisitor.cpp.s
 .PHONY : src/lab1/visitors/RenderVisitor.cpp.s
 
 src/lab1/visitors/UpdateVisitor.o: src/lab1/visitors/UpdateVisitor.cpp.o
@@ -348,7 +348,7 @@ src/lab1/visitors/UpdateVisitor.o: src/lab1/visitors/UpdateVisitor.cpp.o
 
 # target to build an object file
 src/lab1/visitors/UpdateVisitor.cpp.o:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/visitors/UpdateVisitor.cpp.o
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/visitors/UpdateVisitor.cpp.o
 .PHONY : src/lab1/visitors/UpdateVisitor.cpp.o
 
 src/lab1/visitors/UpdateVisitor.i: src/lab1/visitors/UpdateVisitor.cpp.i
@@ -356,7 +356,7 @@ src/lab1/visitors/UpdateVisitor.i: src/lab1/visitors/UpdateVisitor.cpp.i
 
 # target to preprocess a source file
 src/lab1/visitors/UpdateVisitor.cpp.i:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/visitors/UpdateVisitor.cpp.i
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/visitors/UpdateVisitor.cpp.i
 .PHONY : src/lab1/visitors/UpdateVisitor.cpp.i
 
 src/lab1/visitors/UpdateVisitor.s: src/lab1/visitors/UpdateVisitor.cpp.s
@@ -364,7 +364,7 @@ src/lab1/visitors/UpdateVisitor.s: src/lab1/visitors/UpdateVisitor.cpp.s
 
 # target to generate assembly for a file
 src/lab1/visitors/UpdateVisitor.cpp.s:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/visitors/UpdateVisitor.cpp.s
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/visitors/UpdateVisitor.cpp.s
 .PHONY : src/lab1/visitors/UpdateVisitor.cpp.s
 
 src/vr/Application.o: src/vr/Application.cpp.o
@@ -372,7 +372,7 @@ src/vr/Application.o: src/vr/Application.cpp.o
 
 # target to build an object file
 src/vr/Application.cpp.o:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Application.cpp.o
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Application.cpp.o
 .PHONY : src/vr/Application.cpp.o
 
 src/vr/Application.i: src/vr/Application.cpp.i
@@ -380,7 +380,7 @@ src/vr/Application.i: src/vr/Application.cpp.i
 
 # target to preprocess a source file
 src/vr/Application.cpp.i:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Application.cpp.i
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Application.cpp.i
 .PHONY : src/vr/Application.cpp.i
 
 src/vr/Application.s: src/vr/Application.cpp.s
@@ -388,7 +388,7 @@ src/vr/Application.s: src/vr/Application.cpp.s
 
 # target to generate assembly for a file
 src/vr/Application.cpp.s:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Application.cpp.s
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Application.cpp.s
 .PHONY : src/vr/Application.cpp.s
 
 src/vr/Camera.o: src/vr/Camera.cpp.o
@@ -396,7 +396,7 @@ src/vr/Camera.o: src/vr/Camera.cpp.o
 
 # target to build an object file
 src/vr/Camera.cpp.o:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Camera.cpp.o
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Camera.cpp.o
 .PHONY : src/vr/Camera.cpp.o
 
 src/vr/Camera.i: src/vr/Camera.cpp.i
@@ -404,7 +404,7 @@ src/vr/Camera.i: src/vr/Camera.cpp.i
 
 # target to preprocess a source file
 src/vr/Camera.cpp.i:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Camera.cpp.i
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Camera.cpp.i
 .PHONY : src/vr/Camera.cpp.i
 
 src/vr/Camera.s: src/vr/Camera.cpp.s
@@ -412,7 +412,7 @@ src/vr/Camera.s: src/vr/Camera.cpp.s
 
 # target to generate assembly for a file
 src/vr/Camera.cpp.s:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Camera.cpp.s
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Camera.cpp.s
 .PHONY : src/vr/Camera.cpp.s
 
 src/vr/FPSCounter.o: src/vr/FPSCounter.cpp.o
@@ -420,7 +420,7 @@ src/vr/FPSCounter.o: src/vr/FPSCounter.cpp.o
 
 # target to build an object file
 src/vr/FPSCounter.cpp.o:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/FPSCounter.cpp.o
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/FPSCounter.cpp.o
 .PHONY : src/vr/FPSCounter.cpp.o
 
 src/vr/FPSCounter.i: src/vr/FPSCounter.cpp.i
@@ -428,7 +428,7 @@ src/vr/FPSCounter.i: src/vr/FPSCounter.cpp.i
 
 # target to preprocess a source file
 src/vr/FPSCounter.cpp.i:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/FPSCounter.cpp.i
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/FPSCounter.cpp.i
 .PHONY : src/vr/FPSCounter.cpp.i
 
 src/vr/FPSCounter.s: src/vr/FPSCounter.cpp.s
@@ -436,7 +436,7 @@ src/vr/FPSCounter.s: src/vr/FPSCounter.cpp.s
 
 # target to generate assembly for a file
 src/vr/FPSCounter.cpp.s:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/FPSCounter.cpp.s
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/FPSCounter.cpp.s
 .PHONY : src/vr/FPSCounter.cpp.s
 
 src/vr/FileSystem.o: src/vr/FileSystem.cpp.o
@@ -444,7 +444,7 @@ src/vr/FileSystem.o: src/vr/FileSystem.cpp.o
 
 # target to build an object file
 src/vr/FileSystem.cpp.o:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/FileSystem.cpp.o
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/FileSystem.cpp.o
 .PHONY : src/vr/FileSystem.cpp.o
 
 src/vr/FileSystem.i: src/vr/FileSystem.cpp.i
@@ -452,7 +452,7 @@ src/vr/FileSystem.i: src/vr/FileSystem.cpp.i
 
 # target to preprocess a source file
 src/vr/FileSystem.cpp.i:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/FileSystem.cpp.i
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/FileSystem.cpp.i
 .PHONY : src/vr/FileSystem.cpp.i
 
 src/vr/FileSystem.s: src/vr/FileSystem.cpp.s
@@ -460,7 +460,7 @@ src/vr/FileSystem.s: src/vr/FileSystem.cpp.s
 
 # target to generate assembly for a file
 src/vr/FileSystem.cpp.s:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/FileSystem.cpp.s
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/FileSystem.cpp.s
 .PHONY : src/vr/FileSystem.cpp.s
 
 src/vr/Light.o: src/vr/Light.cpp.o
@@ -468,7 +468,7 @@ src/vr/Light.o: src/vr/Light.cpp.o
 
 # target to build an object file
 src/vr/Light.cpp.o:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Light.cpp.o
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Light.cpp.o
 .PHONY : src/vr/Light.cpp.o
 
 src/vr/Light.i: src/vr/Light.cpp.i
@@ -476,7 +476,7 @@ src/vr/Light.i: src/vr/Light.cpp.i
 
 # target to preprocess a source file
 src/vr/Light.cpp.i:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Light.cpp.i
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Light.cpp.i
 .PHONY : src/vr/Light.cpp.i
 
 src/vr/Light.s: src/vr/Light.cpp.s
@@ -484,7 +484,7 @@ src/vr/Light.s: src/vr/Light.cpp.s
 
 # target to generate assembly for a file
 src/vr/Light.cpp.s:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Light.cpp.s
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Light.cpp.s
 .PHONY : src/vr/Light.cpp.s
 
 src/vr/Loader.o: src/vr/Loader.cpp.o
@@ -492,7 +492,7 @@ src/vr/Loader.o: src/vr/Loader.cpp.o
 
 # target to build an object file
 src/vr/Loader.cpp.o:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Loader.cpp.o
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Loader.cpp.o
 .PHONY : src/vr/Loader.cpp.o
 
 src/vr/Loader.i: src/vr/Loader.cpp.i
@@ -500,7 +500,7 @@ src/vr/Loader.i: src/vr/Loader.cpp.i
 
 # target to preprocess a source file
 src/vr/Loader.cpp.i:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Loader.cpp.i
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Loader.cpp.i
 .PHONY : src/vr/Loader.cpp.i
 
 src/vr/Loader.s: src/vr/Loader.cpp.s
@@ -508,7 +508,7 @@ src/vr/Loader.s: src/vr/Loader.cpp.s
 
 # target to generate assembly for a file
 src/vr/Loader.cpp.s:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Loader.cpp.s
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Loader.cpp.s
 .PHONY : src/vr/Loader.cpp.s
 
 src/vr/Material.o: src/vr/Material.cpp.o
@@ -516,7 +516,7 @@ src/vr/Material.o: src/vr/Material.cpp.o
 
 # target to build an object file
 src/vr/Material.cpp.o:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Material.cpp.o
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Material.cpp.o
 .PHONY : src/vr/Material.cpp.o
 
 src/vr/Material.i: src/vr/Material.cpp.i
@@ -524,7 +524,7 @@ src/vr/Material.i: src/vr/Material.cpp.i
 
 # target to preprocess a source file
 src/vr/Material.cpp.i:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Material.cpp.i
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Material.cpp.i
 .PHONY : src/vr/Material.cpp.i
 
 src/vr/Material.s: src/vr/Material.cpp.s
@@ -532,7 +532,7 @@ src/vr/Material.s: src/vr/Material.cpp.s
 
 # target to generate assembly for a file
 src/vr/Material.cpp.s:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Material.cpp.s
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Material.cpp.s
 .PHONY : src/vr/Material.cpp.s
 
 src/vr/Mesh.o: src/vr/Mesh.cpp.o
@@ -540,7 +540,7 @@ src/vr/Mesh.o: src/vr/Mesh.cpp.o
 
 # target to build an object file
 src/vr/Mesh.cpp.o:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Mesh.cpp.o
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Mesh.cpp.o
 .PHONY : src/vr/Mesh.cpp.o
 
 src/vr/Mesh.i: src/vr/Mesh.cpp.i
@@ -548,7 +548,7 @@ src/vr/Mesh.i: src/vr/Mesh.cpp.i
 
 # target to preprocess a source file
 src/vr/Mesh.cpp.i:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Mesh.cpp.i
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Mesh.cpp.i
 .PHONY : src/vr/Mesh.cpp.i
 
 src/vr/Mesh.s: src/vr/Mesh.cpp.s
@@ -556,7 +556,7 @@ src/vr/Mesh.s: src/vr/Mesh.cpp.s
 
 # target to generate assembly for a file
 src/vr/Mesh.cpp.s:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Mesh.cpp.s
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Mesh.cpp.s
 .PHONY : src/vr/Mesh.cpp.s
 
 src/vr/Node.o: src/vr/Node.cpp.o
@@ -564,7 +564,7 @@ src/vr/Node.o: src/vr/Node.cpp.o
 
 # target to build an object file
 src/vr/Node.cpp.o:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Node.cpp.o
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Node.cpp.o
 .PHONY : src/vr/Node.cpp.o
 
 src/vr/Node.i: src/vr/Node.cpp.i
@@ -572,7 +572,7 @@ src/vr/Node.i: src/vr/Node.cpp.i
 
 # target to preprocess a source file
 src/vr/Node.cpp.i:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Node.cpp.i
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Node.cpp.i
 .PHONY : src/vr/Node.cpp.i
 
 src/vr/Node.s: src/vr/Node.cpp.s
@@ -580,7 +580,7 @@ src/vr/Node.s: src/vr/Node.cpp.s
 
 # target to generate assembly for a file
 src/vr/Node.cpp.s:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Node.cpp.s
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Node.cpp.s
 .PHONY : src/vr/Node.cpp.s
 
 src/vr/Scene.o: src/vr/Scene.cpp.o
@@ -588,7 +588,7 @@ src/vr/Scene.o: src/vr/Scene.cpp.o
 
 # target to build an object file
 src/vr/Scene.cpp.o:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Scene.cpp.o
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Scene.cpp.o
 .PHONY : src/vr/Scene.cpp.o
 
 src/vr/Scene.i: src/vr/Scene.cpp.i
@@ -596,7 +596,7 @@ src/vr/Scene.i: src/vr/Scene.cpp.i
 
 # target to preprocess a source file
 src/vr/Scene.cpp.i:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Scene.cpp.i
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Scene.cpp.i
 .PHONY : src/vr/Scene.cpp.i
 
 src/vr/Scene.s: src/vr/Scene.cpp.s
@@ -604,7 +604,7 @@ src/vr/Scene.s: src/vr/Scene.cpp.s
 
 # target to generate assembly for a file
 src/vr/Scene.cpp.s:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Scene.cpp.s
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Scene.cpp.s
 .PHONY : src/vr/Scene.cpp.s
 
 src/vr/Shader.o: src/vr/Shader.cpp.o
@@ -612,7 +612,7 @@ src/vr/Shader.o: src/vr/Shader.cpp.o
 
 # target to build an object file
 src/vr/Shader.cpp.o:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Shader.cpp.o
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Shader.cpp.o
 .PHONY : src/vr/Shader.cpp.o
 
 src/vr/Shader.i: src/vr/Shader.cpp.i
@@ -620,7 +620,7 @@ src/vr/Shader.i: src/vr/Shader.cpp.i
 
 # target to preprocess a source file
 src/vr/Shader.cpp.i:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Shader.cpp.i
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Shader.cpp.i
 .PHONY : src/vr/Shader.cpp.i
 
 src/vr/Shader.s: src/vr/Shader.cpp.s
@@ -628,7 +628,7 @@ src/vr/Shader.s: src/vr/Shader.cpp.s
 
 # target to generate assembly for a file
 src/vr/Shader.cpp.s:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Shader.cpp.s
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Shader.cpp.s
 .PHONY : src/vr/Shader.cpp.s
 
 src/vr/Text.o: src/vr/Text.cpp.o
@@ -636,7 +636,7 @@ src/vr/Text.o: src/vr/Text.cpp.o
 
 # target to build an object file
 src/vr/Text.cpp.o:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Text.cpp.o
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Text.cpp.o
 .PHONY : src/vr/Text.cpp.o
 
 src/vr/Text.i: src/vr/Text.cpp.i
@@ -644,7 +644,7 @@ src/vr/Text.i: src/vr/Text.cpp.i
 
 # target to preprocess a source file
 src/vr/Text.cpp.i:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Text.cpp.i
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Text.cpp.i
 .PHONY : src/vr/Text.cpp.i
 
 src/vr/Text.s: src/vr/Text.cpp.s
@@ -652,7 +652,7 @@ src/vr/Text.s: src/vr/Text.cpp.s
 
 # target to generate assembly for a file
 src/vr/Text.cpp.s:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Text.cpp.s
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Text.cpp.s
 .PHONY : src/vr/Text.cpp.s
 
 src/vr/Texture.o: src/vr/Texture.cpp.o
@@ -660,7 +660,7 @@ src/vr/Texture.o: src/vr/Texture.cpp.o
 
 # target to build an object file
 src/vr/Texture.cpp.o:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Texture.cpp.o
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Texture.cpp.o
 .PHONY : src/vr/Texture.cpp.o
 
 src/vr/Texture.i: src/vr/Texture.cpp.i
@@ -668,7 +668,7 @@ src/vr/Texture.i: src/vr/Texture.cpp.i
 
 # target to preprocess a source file
 src/vr/Texture.cpp.i:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Texture.cpp.i
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Texture.cpp.i
 .PHONY : src/vr/Texture.cpp.i
 
 src/vr/Texture.s: src/vr/Texture.cpp.s
@@ -676,7 +676,7 @@ src/vr/Texture.s: src/vr/Texture.cpp.s
 
 # target to generate assembly for a file
 src/vr/Texture.cpp.s:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Texture.cpp.s
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Texture.cpp.s
 .PHONY : src/vr/Texture.cpp.s
 
 src/vr/Timer.o: src/vr/Timer.cpp.o
@@ -684,7 +684,7 @@ src/vr/Timer.o: src/vr/Timer.cpp.o
 
 # target to build an object file
 src/vr/Timer.cpp.o:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Timer.cpp.o
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Timer.cpp.o
 .PHONY : src/vr/Timer.cpp.o
 
 src/vr/Timer.i: src/vr/Timer.cpp.i
@@ -692,7 +692,7 @@ src/vr/Timer.i: src/vr/Timer.cpp.i
 
 # target to preprocess a source file
 src/vr/Timer.cpp.i:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Timer.cpp.i
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Timer.cpp.i
 .PHONY : src/vr/Timer.cpp.i
 
 src/vr/Timer.s: src/vr/Timer.cpp.s
@@ -700,7 +700,7 @@ src/vr/Timer.s: src/vr/Timer.cpp.s
 
 # target to generate assembly for a file
 src/vr/Timer.cpp.s:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Timer.cpp.s
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Timer.cpp.s
 .PHONY : src/vr/Timer.cpp.s
 
 src/vr/glErrorUtil.o: src/vr/glErrorUtil.cpp.o
@@ -708,7 +708,7 @@ src/vr/glErrorUtil.o: src/vr/glErrorUtil.cpp.o
 
 # target to build an object file
 src/vr/glErrorUtil.cpp.o:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/glErrorUtil.cpp.o
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/glErrorUtil.cpp.o
 .PHONY : src/vr/glErrorUtil.cpp.o
 
 src/vr/glErrorUtil.i: src/vr/glErrorUtil.cpp.i
@@ -716,7 +716,7 @@ src/vr/glErrorUtil.i: src/vr/glErrorUtil.cpp.i
 
 # target to preprocess a source file
 src/vr/glErrorUtil.cpp.i:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/glErrorUtil.cpp.i
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/glErrorUtil.cpp.i
 .PHONY : src/vr/glErrorUtil.cpp.i
 
 src/vr/glErrorUtil.s: src/vr/glErrorUtil.cpp.s
@@ -724,7 +724,7 @@ src/vr/glErrorUtil.s: src/vr/glErrorUtil.cpp.s
 
 # target to generate assembly for a file
 src/vr/glErrorUtil.cpp.s:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/glErrorUtil.cpp.s
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/glErrorUtil.cpp.s
 .PHONY : src/vr/glErrorUtil.cpp.s
 
 src/vr/version.o: src/vr/version.cpp.o
@@ -732,7 +732,7 @@ src/vr/version.o: src/vr/version.cpp.o
 
 # target to build an object file
 src/vr/version.cpp.o:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/version.cpp.o
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/version.cpp.o
 .PHONY : src/vr/version.cpp.o
 
 src/vr/version.i: src/vr/version.cpp.i
@@ -740,7 +740,7 @@ src/vr/version.i: src/vr/version.cpp.i
 
 # target to preprocess a source file
 src/vr/version.cpp.i:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/version.cpp.i
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/version.cpp.i
 .PHONY : src/vr/version.cpp.i
 
 src/vr/version.s: src/vr/version.cpp.s
@@ -748,7 +748,7 @@ src/vr/version.s: src/vr/version.cpp.s
 
 # target to generate assembly for a file
 src/vr/version.cpp.s:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/version.cpp.s
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/version.cpp.s
 .PHONY : src/vr/version.cpp.s
 
 # Help Target
@@ -847,6 +847,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/christoffer-nordlander/Documents/University/Advanced_Computer_Graphics/acg_3d_studio && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

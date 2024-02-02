@@ -125,7 +125,7 @@ void Application::initView()
 
   std::shared_ptr<Light> light = m_sceneRoot->getLights().front();
   glm::vec4 position;
-  position = glm::vec4(eye + glm::vec3(3, 2, 0), 1);
+  position = glm::vec4(eye + glm::vec3(-8, 2, 0), 1);
   light->position = position;
 
   m_sceneRoot->resetTransform();

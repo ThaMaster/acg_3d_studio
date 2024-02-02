@@ -11,6 +11,7 @@
 
 #include "lab1/nodes/Group.h"
 #include "lab1/visitors/RenderVisitor.h"
+#include "lab1/visitors/UpdateVisitor.h"
 
 namespace vr
 {
@@ -122,6 +123,11 @@ namespace vr
       return m_renderVisitor;
     }
 
+    UpdateVisitor* getUpdateVisitor()
+    {
+      return m_updateVisitor;
+    }
+
 
 
   private:
@@ -133,6 +139,7 @@ namespace vr
     GLint m_uniform_numberOfLights;
     Group *m_rootGroup;
     RenderVisitor *m_renderVisitor;
+    UpdateVisitor *m_updateVisitor;
     std::shared_ptr<vr::Shader> m_shader;
     std::shared_ptr<Camera> m_camera;
   };

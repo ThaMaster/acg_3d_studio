@@ -4,11 +4,14 @@
 #include "NodeVisitor.h"
 
 class UpdateVisitor : public NodeVisitor
-{
+{    
     public:
+        UpdateVisitor() {}
+
         void visit(Group& g) override;
         void visit(Transform& g) override;
-        void visit(Geometry& g) override;   
+        void visit(Geometry& g) override;  
+
     private:
 };
 

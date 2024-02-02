@@ -7,7 +7,7 @@
 
 #include <vr/BoundingBox.h>
 
-#include "lab1/UpdateCallback.h"
+#include "lab1/callbacks/UpdateCallback.h"
 #include "lab1/State.h"
 
 class NodeVisitor;
@@ -30,13 +30,18 @@ class M_Node
             return m_updateCallback;
         }
 
-        void setState(State s)
+        void setState(State *s)
         {
             m_state = s;
         }
 
+        State* getState(void)
+        {
+            return m_state;
+        }
+
     private:
-        State m_state;
+        State *m_state;
         std::string m_name;
         std::shared_ptr<UpdateCallback> m_updateCallback;
 };
