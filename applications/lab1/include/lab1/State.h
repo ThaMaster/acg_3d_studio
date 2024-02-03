@@ -12,17 +12,48 @@ class State
         State(const std::string& name = "");
 
         ~State();
-        
-        void apply(State& s);
 
-        void set_shader(std::shared_ptr<vr::Shader> s)
+        std::shared_ptr<State> merge(std::shared_ptr<State> s);
+        void apply(std::shared_ptr<vr::Shader>& s);
+
+        void setShader(std::shared_ptr<vr::Shader> s)
         {
             m_shader = s;
         }
 
-        void set_material(std::shared_ptr<vr::Material> m)
+        std::shared_ptr<vr::Shader> getShader(void)
+        {
+            return m_shader;
+        }
+
+        void setMaterial(std::shared_ptr<vr::Material> m)
         {
             m_material = m;
+        }
+
+        std::shared_ptr<vr::Material> getMaterial(void)
+        {
+            return m_material;
+        }
+
+        void addLight(std::shared_ptr<vr::Light> light)
+        {
+            m_lights.push_back(light);
+        }
+
+        std::vector<std::shared_ptr<vr::Light>> getLights(void)
+        {
+            return m_lights;
+        }
+
+        void setCullFace(std::shared_ptr<bool> b)
+        {
+            m_cullFace = b;
+        }
+
+        std::shared_ptr<bool> getCullFace(void)
+        {
+            return m_cullFace;
         }
 
     private:
@@ -31,6 +62,7 @@ class State
         std::shared_ptr<vr::Material> m_material;
         std::vector<std::shared_ptr<vr::Texture>> m_texture;
         std::vector<std::shared_ptr<vr::Light>> m_lights;
+        std::shared_ptr<bool> m_cullFace;
 };
 
 #endif

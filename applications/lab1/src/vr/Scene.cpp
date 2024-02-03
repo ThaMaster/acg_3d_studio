@@ -8,8 +8,9 @@ Scene::Scene() : m_uniform_numberOfLights(-1)
 {
   m_camera = std::shared_ptr<Camera>(new Camera);
   setRootGroup(new Group("root"));
-  getRootGroup()->setState(new State("root_state"));
+  getRootGroup()->setState(std::shared_ptr<State>(new State("root_state")));
   m_renderVisitor = new RenderVisitor();
+  m_renderVisitor->m_stateStack.push(getRootGroup()->getState());
   m_updateVisitor = new UpdateVisitor();
 }
 
@@ -25,12 +26,7 @@ bool Scene::initShaders(const std::string& vshader_filename, const std::string& 
 
 void Scene::add(std::shared_ptr<Light>& light)
 {
-  m_lights.push_back(light);
-}
-
-const LightVector& Scene::getLights()
-{
-  return m_lights;
+  getRootGroup()->getState()->addLight(light);
 }
 
 std::shared_ptr<Camera> Scene::getCamera()
@@ -101,18 +97,6 @@ void Scene::render()
 
   CHECK_GL_ERROR_LINE_FILE();
 
-  // Update number of lights
-  m_shader->setInt("numberOfLights", (GLint)m_lights.size());
-
-  // Apply lightsources
-  size_t i = 0;
-  for (auto l : m_lights)
-  {
-    l->apply(m_shader, i);
-  }
-  m_renderVisitor->setShader(m_shader);
   m_renderVisitor->visit(*m_rootGroup);
   m_updateVisitor->visit(*m_rootGroup);
-  
-  
 }

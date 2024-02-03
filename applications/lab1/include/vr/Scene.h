@@ -42,13 +42,6 @@ namespace vr
     void add(std::shared_ptr<Light>& light);
 
     /**
-    Get all light sources
-    \return A vector of lightsources
-    */
-    const LightVector& getLights();
-
-
-    /**
     Get the camera
     \return The camera
     */
@@ -128,12 +121,9 @@ namespace vr
       return m_updateVisitor;
     }
 
-
-
   private:
 
     NodeVector m_nodes;
-    LightVector m_lights;
     std::vector<std::shared_ptr<Geometry>> m_objects;
 
     GLint m_uniform_numberOfLights;

@@ -30,19 +30,19 @@ class M_Node
             return m_updateCallback;
         }
 
-        void setState(State *s)
+        void setState(std::shared_ptr<State> s)
         {
             m_state = s;
         }
 
-        State* getState(void)
+        std::shared_ptr<State> getState(void)
         {
             return m_state;
         }
 
     private:
-        State *m_state;
         std::string m_name;
+        std::shared_ptr<State> m_state;
         std::shared_ptr<UpdateCallback> m_updateCallback;
 };
 

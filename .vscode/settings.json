@@ -69,7 +69,8 @@
         "streambuf": "cpp",
         "thread": "cpp",
         "typeinfo": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "lab1": "cpp"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }

@@ -29,8 +29,8 @@ class RenderVisitor : public NodeVisitor
             return m_shader;
         }
 
-    private:
         std::stack<std::shared_ptr<State>> m_stateStack;
+    private:
         std::stack<glm::mat4> m_transformStack;
         std::shared_ptr<vr::Shader> m_shader;   
 };

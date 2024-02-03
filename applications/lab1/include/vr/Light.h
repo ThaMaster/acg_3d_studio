@@ -20,13 +20,14 @@ namespace vr
 
     Light();
 
+    void apply(std::shared_ptr<vr::Shader> shader, size_t idx);
+    
   private:
     friend class Scene;
     std::shared_ptr<Mesh> m_mesh;
 
     void createMesh();
     std::shared_ptr<Mesh>& getMesh();
-    void apply(std::shared_ptr<vr::Shader> shader, size_t idx);
   };
   typedef std::vector<std::shared_ptr<Light> > LightVector;
 

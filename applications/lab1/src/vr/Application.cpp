@@ -123,7 +123,7 @@ void Application::initView()
 
   glm::vec3 direction = glm::normalize(box.getCenter() - eye);
 
-  std::shared_ptr<Light> light = m_sceneRoot->getLights().front();
+  std::shared_ptr<Light> light = m_sceneRoot->getRootGroup()->getState()->getLights().front();
   glm::vec4 position;
   position = glm::vec4(eye + glm::vec3(-8, 2, 0), 1);
   light->position = position;
