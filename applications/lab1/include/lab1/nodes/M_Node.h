@@ -15,17 +15,17 @@ class NodeVisitor;
 class M_Node
 {
     public:
-        M_Node(const std::string& name = "" ) : m_name(name), m_updateCallback(nullptr) {}
+        M_Node(const std::string& name = "" ) : m_name(name) {}
         virtual void accept(NodeVisitor& v) = 0;
         virtual vr::BoundingBox calculateBoundingBox() = 0;
         std::string getName() { return m_name; }
 
-        void setUpdateCallback(UpdateCallback* callback)
+        void addUpdateCallback(UpdateCallback* callback)
         {
-            m_updateCallback = std::shared_ptr<UpdateCallback>(callback);
+            m_updateCallback.push_back(std::shared_ptr<UpdateCallback>(callback));
         }
 
-        std::shared_ptr<UpdateCallback> getUpdateCallback()
+        std::vector<std::shared_ptr<UpdateCallback>> getUpdateCallbacks()
         {
             return m_updateCallback;
         }
@@ -43,7 +43,7 @@ class M_Node
     private:
         std::string m_name;
         std::shared_ptr<State> m_state;
-        std::shared_ptr<UpdateCallback> m_updateCallback;
+        std::vector<std::shared_ptr<UpdateCallback>> m_updateCallback;
 };
 
 #endif

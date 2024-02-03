@@ -448,7 +448,7 @@ void loadSceneNode(rapidxml::xml_node<>* parent_node, Group* root, std::shared_p
       auto t = mt * rz * ry * rx;
       t = glm::scale(t, s_vec);
       transformNode->setTransformMat(t);
-      transformNode->setUpdateCallback(new RotateCallback(1, glm::vec3(0,1,0)));
+      transformNode->addUpdateCallback(new RotateCallback(1, glm::vec3(0,1,0)));
       loadSceneNode(curr_node->first_node(), transformNode, scene);
       root->addChild(transformNode);
     }

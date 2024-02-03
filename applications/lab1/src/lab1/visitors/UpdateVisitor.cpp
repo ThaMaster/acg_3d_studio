@@ -5,8 +5,12 @@
 
 void UpdateVisitor::visit(Group& group) 
 {
-    if(group.getUpdateCallback()) 
-        group.getUpdateCallback()->update(group);
+    std::vector<std::shared_ptr<UpdateCallback>> callbackVector = group.getUpdateCallbacks();
+    if(callbackVector.size() != 0)
+    {
+        for(auto uc : callbackVector )
+            uc->update(group);
+    }
     
     for (auto child : group.getChildren()) {
         child->accept(*this);
@@ -15,9 +19,12 @@ void UpdateVisitor::visit(Group& group)
 
 void UpdateVisitor::visit(Transform& trans) 
 {
-    if(trans.getUpdateCallback())
-        trans.getUpdateCallback()->update(trans);
-    
+    std::vector<std::shared_ptr<UpdateCallback>> callbackVector = trans.getUpdateCallbacks();
+    if(callbackVector.size() != 0)
+    {
+        for(auto uc : callbackVector )
+            uc->update(trans);
+    }
 
     for (auto child : trans.getChildren()) {
         child->accept(*this);
@@ -26,6 +33,10 @@ void UpdateVisitor::visit(Transform& trans)
 
 void UpdateVisitor::visit(Geometry& geo) 
 {
-    if(geo.getUpdateCallback())
-        geo.getUpdateCallback()->update(geo);
+    std::vector<std::shared_ptr<UpdateCallback>> callbackVector = geo.getUpdateCallbacks();
+    if(callbackVector.size() != 0)
+    {
+        for(auto uc : callbackVector )
+            uc->update(geo);
+    }
 }

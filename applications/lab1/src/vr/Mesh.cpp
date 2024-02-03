@@ -248,7 +248,6 @@ void Mesh::render(std::shared_ptr<vr::Shader> shader, const glm::mat4& modelMatr
   glm::mat3 m_3x3_inv_transp = glm::transpose(glm::inverse(glm::mat3(obj2World)));
   shader->setMat3("m_3x3_inv_transp", m_3x3_inv_transp);
 
-
   /* Push each element in buffer_vertices to the vertex shader */
   if (this->m_ibo_elements != 0) 
   {
@@ -271,7 +270,7 @@ void Mesh::render(std::shared_ptr<vr::Shader> shader, const glm::mat4& modelMatr
 
   if (this->m_vbo_texCoords != 0)
     glDisableVertexAttribArray(m_attribute_v_texCoords);
-
+  
   if (m_useVAO)
     glBindVertexArray(0);
 }
