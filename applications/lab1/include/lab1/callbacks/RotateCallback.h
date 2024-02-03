@@ -2,6 +2,7 @@
 #define ROTATECALLBACK_H
 
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "lab1/callbacks/UpdateCallback.h"
 #include "lab1/nodes/Transform.h"
@@ -11,14 +12,18 @@
 class RotateCallback : public UpdateCallback
 {
     public:
-        RotateCallback(glm::vec3 r) {}
+        RotateCallback(float d, glm::vec3 r) : angleInDegrees(d), axis(r) {}
+        
         virtual void update(Transform& trans_node) override 
         {
-            std::cout << "Updating a transform!" << std::endl;
+            trans_node.setTransformMat(glm::rotate(trans_node.getTransfromMat(), glm::radians(angleInDegrees), axis));
         }
         
         virtual void update(Group& group_node) override {}
         virtual void update(Geometry& geo_node) override {}
+    private:
+        glm::vec3 axis;
+        float angleInDegrees;
 };
 
 #endif

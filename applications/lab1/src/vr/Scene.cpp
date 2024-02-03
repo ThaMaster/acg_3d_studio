@@ -26,13 +26,6 @@ bool Scene::initShaders(const std::string& vshader_filename, const std::string& 
 void Scene::add(std::shared_ptr<Light>& light)
 {
   m_lights.push_back(light);
-  std::shared_ptr<Node> node = std::shared_ptr<Node>(new Node());
-
-  node->add(light->m_mesh);
-  node->add(light->getMesh());
-
-  // Also add the mesh-node
-  add(node);
 }
 
 const LightVector& Scene::getLights()
