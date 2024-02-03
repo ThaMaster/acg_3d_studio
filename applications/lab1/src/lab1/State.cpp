@@ -5,7 +5,8 @@ State::~State() {}
 
 std::shared_ptr<State> State::merge(std::shared_ptr<State> s)
 {
-    std::shared_ptr<State> mergedState = std::shared_ptr<State>(new State("MERGED STATE"));
+    auto mergedState = std::shared_ptr<State>(new State("MERGED STATE"));
+
     if(!s) {
         mergedState->setMaterial(m_material);
         mergedState->setShader(m_shader);
@@ -22,13 +23,13 @@ std::shared_ptr<State> State::merge(std::shared_ptr<State> s)
     if(s->getShader())
         mergedState->setShader(s->getShader());
     
-    if(s->getLights().size() != 0)
-    {
-        for(auto l : s->getLights())
-        {
-            mergedState->addLight(l);
-        }
-    }
+
+    for(auto l : m_lights)
+        mergedState->addLight(l);
+
+    for(auto l : s->getLights())
+        mergedState->addLight(l);
+    
 
     if(s->getCullFace())
         mergedState->setCullFace(s->getCullFace());
@@ -52,6 +53,7 @@ void State::apply(std::shared_ptr<vr::Shader>& shader)
         for(auto l : m_lights)
         {
             l->apply(shader, i);
+            i++;
         }
     }
 

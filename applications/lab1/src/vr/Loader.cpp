@@ -24,6 +24,7 @@
 #include "lab1/visitors/RenderVisitor.h"
 
 #include "lab1/callbacks/RotateCallback.h"
+#include <vr/Light.h>
 
 using namespace vr;
 
@@ -417,7 +418,7 @@ void loadSceneNode(rapidxml::xml_node<>* parent_node, Group* root, std::shared_p
           geometryNode->add(m);
         }
         scene->addObj(geometryNode);
-      } 
+      }
       root->addChild(geometryNode.get());
 
     } else if(node_type == "transform") {
@@ -449,6 +450,17 @@ void loadSceneNode(rapidxml::xml_node<>* parent_node, Group* root, std::shared_p
       t = glm::scale(t, s_vec);
       transformNode->setTransformMat(t);
       transformNode->addUpdateCallback(new RotateCallback(1, glm::vec3(0,1,0)));
+      std::shared_ptr<State> coolState = std::shared_ptr<State>(new State("bruh"));
+
+      // --- Example that state works! --- //
+      std::shared_ptr<Light> light = std::shared_ptr<Light>(new Light);
+      light->diffuse = glm::vec4(0.2, 1, 0.3, 1);
+      light->specular = glm::vec4(1, 0.1, 0.65, 0.4);
+      light->position = glm::vec4(0.0, -2.0, 2.0, 0.0);
+      coolState->addLight(light);
+      transformNode->setState(coolState);
+      // --- Example that state works! --- //
+      
       loadSceneNode(curr_node->first_node(), transformNode, scene);
       root->addChild(transformNode);
     }

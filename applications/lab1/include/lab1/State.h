@@ -56,6 +56,11 @@ class State
             return m_cullFace;
         }
 
+        std::string getStateName()
+        {
+            return m_stateName;
+        }
+        
     private:
         std::string m_stateName;
         std::shared_ptr<vr::Shader> m_shader;

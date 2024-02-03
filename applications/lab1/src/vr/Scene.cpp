@@ -10,7 +10,6 @@ Scene::Scene() : m_uniform_numberOfLights(-1)
   setRootGroup(new Group("root"));
   getRootGroup()->setState(std::shared_ptr<State>(new State("root_state")));
   m_renderVisitor = new RenderVisitor();
-  m_renderVisitor->m_stateStack.push(getRootGroup()->getState());
   m_updateVisitor = new UpdateVisitor();
 }
 
@@ -92,11 +91,6 @@ BoundingBox Scene::calculateBoundingBox()
 
 void Scene::render()
 {
-  CHECK_GL_ERROR_LINE_FILE();
-  useProgram();
-
-  CHECK_GL_ERROR_LINE_FILE();
-
-  m_renderVisitor->visit(*m_rootGroup);
+m_renderVisitor->visit(*m_rootGroup);
   m_updateVisitor->visit(*m_rootGroup);
 }
