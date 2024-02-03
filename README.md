@@ -44,6 +44,9 @@ The keyboard shortcust are summarized in the table below.
 | S          | **Moves** camera **backwards**                               | Done        |
 | A          | **Moves** camera **left**                                    | Done        |
 | D          | **Moves** camera **right**                                   | Done        |
+| R          | **Reloads** The scene                                        | Done        |
+| SHIFT      | Makes the camera move **faster** when holding the button     | Done        |
+| ESC        | **Exits** the application                                    | Done        |
 
 </div>
 
@@ -52,6 +55,29 @@ It is worth mentioning that this table is subject to change during development o
 ## Change log
 
 This section details the changes that occurs with each session of working on this project. After each programming session a new list with all the things that have been done and other information will be posted. This is to have a clear view of what has been done and what is needed to be fixed/added to the project.
+
+### Change log - 2024-02-03
+
+- Added an additional light to all transform nodes to test if the state functions correctly, *(spoiler it does!)*.
+- Created a *Merge()* function that aims to merge two states and return the result. This is to be used when the *RenderVisitor* traverses the scene graph. If the node does not have a state, simply copy all the current state information into the result and return.
+- Created a rotation callback to test if the callback function works.
+- Added so that each node have a vector of potential *UpdateCallbacks*. This way, each node can update several things in a singel node.
+
+### Change log - 2024-02-02
+
+- Started to implement the state class into the project.
+- Implemented so that each node can have an *UpdateCallback* that gets called by a *UpdateVisitor* only if the callback is present.
+
+### Change log - 2024-01-28
+
+- Change so that each geometry calculate s its boudning box and then the group/transform nodes exapnds their bounding box depending on their children.
+- If the xml contains multiple objects with the same node name, it will skip the file path and load the already existing object again.
+- Continued to implement some things in the UpdateVisitor and the State classes.
+
+### Change log - 2024-01-27
+
+- Rendering now happens using the visitor design pattern.
+- Created the file UpdateCallback which will be derived from when creating update callbacks for the update visitor.
 
 ### Change log - 2024-01-25
 
@@ -69,6 +95,27 @@ This section details the changes that occurs with each session of working on thi
 ## TODO
 
 This section details what is to be done in the next programming session. This section is an attempt at keeping a good focus on what to work on the next time a programming session comences.
+
+### TODO - 2024-02-03
+
+- Remove the usage of the already present *Mesh* class to render the geometry. It should happen in geometry by itself.
+- Implement the support of textures and materials in the state class.
+- Make a function to construct your own scene graph where you can either load files or create your own geometry. (This makes it easiser to create a scene instead of needing to implement changes in the *Loader* class).
+- Create additional *UpdateCallback* functions for cool effects.
+- Create a documents for the report.
+
+### TODO - 2024-01-28
+
+- Finish the implementation of the UpdateVisitor and state class.
+- Remove some uneccassary windows build files.
+- Think about how to implement the state functionality until the next working session.
+- Change so that the objects does not get loaded if the same filepath is specified rather than the file name.
+
+### TODO - 2024-01-27
+
+- Finish the UpdateCallback function.
+- Begin to implement the UpdateVisitor.
+- NEED TO START IMPLEMENTING THE STATE FUNCTIONALITY!!!
 
 ### TODO - 2024-01-25
 
