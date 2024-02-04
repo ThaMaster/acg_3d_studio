@@ -34,7 +34,7 @@ The given bash files are DOS text files and must therefore be converted to a Uni
 
 This section lists all the differnet keybinds used for navigating and using the 3D studio. A graphical user interface (GUI) will be developed which will be the primary way of navigation and transformation but these keyboard shortcuts are made for an enhanced user experience.
 
-The keyboard shortcust are summarized in the table below.
+The keyboard shortcuts are summarized in the table below.
 
 <div align=center>
 
