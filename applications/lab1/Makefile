@@ -559,30 +559,6 @@ src/vr/Mesh.cpp.s:
 	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Mesh.cpp.s
 .PHONY : src/vr/Mesh.cpp.s
 
-src/vr/Node.o: src/vr/Node.cpp.o
-.PHONY : src/vr/Node.o
-
-# target to build an object file
-src/vr/Node.cpp.o:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Node.cpp.o
-.PHONY : src/vr/Node.cpp.o
-
-src/vr/Node.i: src/vr/Node.cpp.i
-.PHONY : src/vr/Node.i
-
-# target to preprocess a source file
-src/vr/Node.cpp.i:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Node.cpp.i
-.PHONY : src/vr/Node.cpp.i
-
-src/vr/Node.s: src/vr/Node.cpp.s
-.PHONY : src/vr/Node.s
-
-# target to generate assembly for a file
-src/vr/Node.cpp.s:
-	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/vr/Node.cpp.s
-.PHONY : src/vr/Node.cpp.s
-
 src/vr/Scene.o: src/vr/Scene.cpp.o
 .PHONY : src/vr/Scene.o
 
@@ -812,9 +788,6 @@ help:
 	@echo "... src/vr/Mesh.o"
 	@echo "... src/vr/Mesh.i"
 	@echo "... src/vr/Mesh.s"
-	@echo "... src/vr/Node.o"
-	@echo "... src/vr/Node.i"
-	@echo "... src/vr/Node.s"
 	@echo "... src/vr/Scene.o"
 	@echo "... src/vr/Scene.i"
 	@echo "... src/vr/Scene.s"

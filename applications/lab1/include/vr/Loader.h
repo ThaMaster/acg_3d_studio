@@ -2,10 +2,11 @@
 
 #include <vr/Scene.h>
 #include "lab1/nodes/Geometry.h"
+#include "lab1/nodes/Group.h"
 namespace vr
 {
   /// Load a given file and add content to the scene
-  std::shared_ptr<Node> load3DModelFile(const std::string& filename);
+  Group* load3DModelFile(const std::string& filename, const std::string& objName);
 
   // Load contents of an xml file into the scene
   bool loadSceneFile(const std::string& xmlFile, std::shared_ptr<Scene>& scene);

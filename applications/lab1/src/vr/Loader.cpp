@@ -169,7 +169,7 @@ glm::mat4 assimpToGlmMatrix(const aiMatrix4x4& ai_matrix)
   return glm_matrix;
 }
 
-void parseNodes(aiNode* root_node, MaterialVector& materials, std::stack<glm::mat4>& transformStack, std::shared_ptr<Node>& node, const aiScene* aiScene)
+void parseNodes(aiNode* root_node, MaterialVector& materials, std::stack<glm::mat4>& transformStack, Group& objNode, const aiScene* aiScene)
 {
 
   glm::mat4 transform = assimpToGlmMatrix(root_node->mTransformation);
@@ -184,21 +184,21 @@ void parseNodes(aiNode* root_node, MaterialVector& materials, std::stack<glm::ma
 
   for (uint32_t i = 0; i < num_meshes; i++)
   {
-    std::shared_ptr<Mesh> loadedMesh(new Mesh());
+    auto loadedGeo = new Geometry(objNode.getName() + "_" + std::to_string(i));
 
     aiMesh* mesh = aiScene->mMeshes[root_node->mMeshes[i]];
     uint32_t num_vertices = mesh->mNumVertices;
 
-    loadedMesh->vertices.resize(num_vertices);
-    loadedMesh->normals.resize(num_vertices);
-    loadedMesh->texCoords.resize(num_vertices);
+    loadedGeo->vertices.resize(num_vertices);
+    loadedGeo->normals.resize(num_vertices);
+    loadedGeo->texCoords.resize(num_vertices);
 
     //tangents.resize(num_vertices);
 
     for (uint32_t j = 0; j < num_vertices; j++)
     {
-      loadedMesh->vertices[j] = glm::vec4(mesh->mVertices[j].x, mesh->mVertices[j].y, mesh->mVertices[j].z, 1);
-      loadedMesh->normals[j] = glm::vec3(mesh->mNormals[j].x, mesh->mNormals[j].y, mesh->mNormals[j].z);
+      loadedGeo->vertices[j] = glm::vec4(mesh->mVertices[j].x, mesh->mVertices[j].y, mesh->mVertices[j].z, 1);
+      loadedGeo->normals[j] = glm::vec3(mesh->mNormals[j].x, mesh->mNormals[j].y, mesh->mNormals[j].z);
 
       glm::vec3 tangent;
       if (mesh->HasTangentsAndBitangents())
@@ -214,7 +214,7 @@ void parseNodes(aiNode* root_node, MaterialVector& materials, std::stack<glm::ma
         tex_coord.x = mesh->mTextureCoords[0][j].x;
         tex_coord.y = mesh->mTextureCoords[0][j].y;
 
-        loadedMesh->texCoords[j] = tex_coord;
+        loadedGeo->texCoords[j] = tex_coord;
       }
 
       // Ignore color
@@ -228,33 +228,33 @@ void parseNodes(aiNode* root_node, MaterialVector& materials, std::stack<glm::ma
     }
 
     uint32_t num_faces = mesh->mNumFaces;
-    loadedMesh->elements.resize(0);
+    loadedGeo->elements.resize(0);
     for (uint32_t j = 0; j < num_faces; j++)
     {
       aiFace face = mesh->mFaces[j];
       uint32_t num_indices = face.mNumIndices;
       for (uint32_t k = 0; k < num_indices; k++)
       {
-        loadedMesh->elements.push_back(face.mIndices[k]);
+        loadedGeo->elements.push_back(face.mIndices[k]);
       }
     }
 
-    loadedMesh->object2world = transformStack.top();
+    loadedGeo->setObject2WorldMat(transformStack.top());
 
     if (!materials.empty())
-      loadedMesh->setMaterial(materials[mesh->mMaterialIndex]);
+      loadedGeo->setMaterial(materials[mesh->mMaterialIndex]);
 
-    node->add(loadedMesh);
+    objNode.addChild(loadedGeo);
   }
 
   for (uint32_t i = 0; i < root_node->mNumChildren; i++)
   {
-    parseNodes(root_node->mChildren[i], materials, transformStack, node, aiScene);
+    parseNodes(root_node->mChildren[i], materials, transformStack, objNode, aiScene);
   }
   transformStack.pop();
 }
 
-std::shared_ptr<Node> vr::load3DModelFile(const std::string& filename)
+Group* vr::load3DModelFile(const std::string& filename, const std::string& objName)
 {
   std::string filepath = vr::FileSystem::findFile(filename);
   if (filepath.empty())
@@ -287,14 +287,14 @@ std::shared_ptr<Node> vr::load3DModelFile(const std::string& filename)
   std::stack<glm::mat4> transformStack;
   transformStack.push(glm::mat4());
 
-  std::shared_ptr<Node> node = std::shared_ptr<Node>(new Node);
-  parseNodes(root_node, materials, transformStack, node, aiScene);
+  auto objNode = new Group(objName);
+  parseNodes(root_node, materials, transformStack, *objNode, aiScene);
   transformStack.pop();
 
-  if (node->getMeshes().empty())
+  if (objNode->getChildren().empty())
     std::cerr << " File " << filepath << " did not contain any mesh data" << std::endl;
 
-  return node;
+  return objNode;
 }
 
 
@@ -392,34 +392,16 @@ void loadSceneNode(rapidxml::xml_node<>* parent_node, Group* root, std::shared_p
     } else if(node_type == "geometry") {
 
       node_name = getAttribute(curr_node, "name");
-      bool dupObj = false;
-      std::shared_ptr<Geometry> geometryNode;
-      for(auto obj : scene->getObjects())
-      {
-        if(obj->getName() == node_name)
-        {
-          geometryNode = obj;
-          dupObj = true;
-          break;
-        }
-      }
-      if(!dupObj){
-        geometryNode = std::shared_ptr<Geometry>(new Geometry(node_name));
-        std::string geo_path = curr_node->first_attribute("path")->value();
-        if (geo_path.empty())
-          throw std::runtime_error("Geometry(" + node_name + "): Empty path.\n");
+      
+      std::string geo_path = curr_node->first_attribute("path")->value();
+      if (geo_path.empty())
+        throw std::runtime_error("Geometry(" + node_name + "): Empty path.\n");
 
-        std::shared_ptr<Node> loadedNode = vr::load3DModelFile(geo_path);
-          if (!loadedNode)
-            std::cerr << "Unable to load node \'" << node_name << "\' path: " << geo_path << std::endl;
-
-        for (auto m : loadedNode->getMeshes())
-        {
-          geometryNode->add(m);
-        }
-        scene->addObj(geometryNode);
-      }
-      root->addChild(geometryNode.get());
+      auto objNode = vr::load3DModelFile(geo_path, node_name);
+      if (!objNode)
+        std::cerr << "Unable to load object \'" << node_name << "\' path: " << geo_path << std::endl;
+      
+      root->addChild(objNode);
 
     } else if(node_type == "transform") {
 
@@ -505,48 +487,6 @@ bool vr::loadSceneFile(const std::string& sceneFile, std::shared_ptr<Scene>& sce
     xmlpath.push_back("scene");
 
     loadSceneNode(root_node->first_node(), scene->getRootGroup(), scene);
-
-    // Iterate over the nodes
-    for (rapidxml::xml_node<>* node = root_node->first_node("group"); node; node = node->next_sibling())
-    {
-      xmlpath.push_back("group");
-      
-      // Skip comments and such.
-      if (node->type() == rapidxml::node_comment || node->type() == rapidxml::node_doctype)
-        continue;
-
-      std::string group_name = getAttribute(node, "name");
-      rapidxml::xml_node<>* geo_node = node->first_node("geometry");
-
-      std::string geo_name = getAttribute(geo_node, "name");
-      std::string geo_path = geo_node->first_attribute("path")->value();
-
-      if (geo_path.empty())
-        throw std::runtime_error("Empty path: " + pathToString(xmlpath));
-
-      std::shared_ptr<Node> loadedNode = vr::load3DModelFile(geo_path);
-      if (!loadedNode)
-        std::cerr << "Unable to load node \'" << group_name << "\' path: " << geo_path << std::endl;
-      else
-      {
-        glm::vec3 t_vec;
-        glm::vec3 r_vec;
-        glm::vec3 s_vec;
-        glm::mat4 mt = glm::translate(glm::mat4(), t_vec);
-        glm::mat4 ms = glm::scale(glm::mat4(), s_vec);
-        glm::mat4 rx = glm::rotate(glm::mat4(), glm::radians(r_vec.x), glm::vec3(1, 0, 0));
-        glm::mat4 ry = glm::rotate(glm::mat4(), glm::radians(r_vec.y), glm::vec3(0, 1, 0));
-        glm::mat4 rz = glm::rotate(glm::mat4(), glm::radians(r_vec.z), glm::vec3(0, 0, 1));
-
-        loadedNode->setInitialTransform(glm::mat4());
-        loadedNode->name = group_name;
-        scene->add(loadedNode);
-      }
-
-      xmlpath.pop_back(); // node
-    }
-    
-    xmlpath.pop_back(); // scene
   }
   catch (rapidxml::parse_error& error)
   {

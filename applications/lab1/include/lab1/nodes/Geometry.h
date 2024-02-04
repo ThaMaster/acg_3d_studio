@@ -17,11 +17,8 @@ class Geometry : public M_Node
         ~Geometry();
         
         virtual void accept(NodeVisitor& v) override;
-        virtual vr::BoundingBox calculateBoundingBox() override;
 
         bool initShaders(std::shared_ptr<vr::Shader> shader);
-
-        virtual void draw(std::shared_ptr<vr::Shader> shader, glm::mat4 modelMat);
 
         void add(std::shared_ptr<vr::Mesh>& mesh);
         vr::MeshVector& getMeshes();
@@ -36,6 +33,9 @@ class Geometry : public M_Node
         std::shared_ptr<vr::Material> getMaterial();
 
         void upload();
+        void render(std::shared_ptr<vr::Shader> shader, const glm::mat4& modelMatrix);
+        void draw_bbox(std::shared_ptr<vr::Shader> shader);
+        virtual vr::BoundingBox calculateBoundingBox() override;
 
     private:
         std::shared_ptr<vr::Material> m_material;
@@ -49,7 +49,7 @@ class Geometry : public M_Node
         //GLint m_uniform_m;
         //GLint m_uniform_m_3x3_inv_transp;
 
-        bool m_useVAO;
+        bool m_useVAO = true;
         vr::MeshVector m_meshes;
         glm::mat4 m_initialTransform;
         glm::mat4 object2world;

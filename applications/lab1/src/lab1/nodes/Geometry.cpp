@@ -66,7 +66,6 @@ vr::BoundingBox Geometry::calculateBoundingBox()
 
 void Geometry::accept(NodeVisitor& v)
 {
-    //std::cerr << "Accept: " << getName() << std::endl;
     v.visit(*this);
 }
 
@@ -200,13 +199,211 @@ void Geometry::upload()
  * 
  * 
  */
-void Geometry::draw(std::shared_ptr<vr::Shader> shader, glm::mat4 modelMat)
+/* void Geometry::draw(std::shared_ptr<vr::Shader> shader, glm::mat4 modelMat)
 {
-    //std::cerr << "Rendering" << std::endl;
+    std::cerr << "Rendering" << std::endl;
     for(auto m : m_meshes)
     {
         m->initShaders(shader);
         m->upload();
         m->render(shader, (this->object2world * modelMat));
     }
+} */
+
+void Geometry::draw_bbox(std::shared_ptr<vr::Shader> shader)
+{
+  if (this->vertices.size() == 0)
+    return;
+
+  // Cube 1x1x1, centered on origin
+  GLfloat vertices[] = {
+    -0.5, -0.5, -0.5, 1.0,
+    0.5, -0.5, -0.5, 1.0,
+    0.5, 0.5, -0.5, 1.0,
+    -0.5, 0.5, -0.5, 1.0,
+    -0.5, -0.5, 0.5, 1.0,
+    0.5, -0.5, 0.5, 1.0,
+    0.5, 0.5, 0.5, 1.0,
+    -0.5, 0.5, 0.5, 1.0,
+  };
+
+  GLuint vbo_vertices;
+  glGenBuffers(1, &vbo_vertices);
+  glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  GLushort elements[] = {
+    0, 1, 2, 3,
+    4, 5, 6, 7,
+    0, 4, 1, 5, 2, 6, 3, 7
+  };
+
+  GLuint ibo_elements;
+  glGenBuffers(1, &ibo_elements);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+  GLfloat
+    min_x, max_x,
+    min_y, max_y,
+    min_z, max_z;
+
+  min_x = max_x = this->vertices[0].x;
+  min_y = max_y = this->vertices[0].y;
+  min_z = max_z = this->vertices[0].z;
+  for (unsigned int i = 0; i < this->vertices.size(); i++) {
+    if (this->vertices[i].x < min_x) min_x = this->vertices[i].x;
+    if (this->vertices[i].x > max_x) max_x = this->vertices[i].x;
+    if (this->vertices[i].y < min_y) min_y = this->vertices[i].y;
+    if (this->vertices[i].y > max_y) max_y = this->vertices[i].y;
+    if (this->vertices[i].z < min_z) min_z = this->vertices[i].z;
+    if (this->vertices[i].z > max_z) max_z = this->vertices[i].z;
+  }
+
+  glm::vec3 size = glm::vec3(max_x - min_x, max_y - min_y, max_z - min_z);
+  glm::vec3 center = glm::vec3((min_x + max_x) / 2, (min_y + max_y) / 2, (min_z + max_z) / 2);
+  glm::mat4 transform = glm::scale(glm::mat4(1), size) * glm::translate(glm::mat4(1), center);
+
+  /* Apply object's transformation matrix */
+  glm::mat4 m = this->object2world * transform;
+  shader->setMat4("m", m);
+
+  CHECK_GL_ERROR_LINE_FILE();
+
+  glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
+  glEnableVertexAttribArray(m_attribute_v_coord);
+  glVertexAttribPointer(
+    m_attribute_v_coord,  // attribute
+    4,                  // number of elements per vertex, here (x,y,z,w)
+    GL_FLOAT,           // the type of each element
+    GL_FALSE,           // take our values as-is
+    0,                  // no extra data between each position
+    0                   // offset of first element
+    );
+
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
+  glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, 0);
+  glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, (GLvoid*)(4 * sizeof(GLushort)));
+  glDrawElements(GL_LINES, 8, GL_UNSIGNED_SHORT, (GLvoid*)(8 * sizeof(GLushort)));
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+  glDisableVertexAttribArray(m_attribute_v_coord);
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+  glDeleteBuffers(1, &vbo_vertices);
+  glDeleteBuffers(1, &ibo_elements);
+  CHECK_GL_ERROR_LINE_FILE();
+}
+
+void Geometry::render(std::shared_ptr<vr::Shader> shader, const glm::mat4& modelMatrix)
+{
+  CHECK_GL_ERROR_LINE_FILE();
+  if (m_useVAO) {
+    glBindVertexArray(m_vao);
+    CHECK_GL_ERROR_LINE_FILE();
+  }
+
+  if (normals.size() == 0)
+  {
+    draw_bbox(shader);
+    return;
+  }
+
+  if (m_material)
+    m_material->apply(shader);
+  
+  CHECK_GL_ERROR_LINE_FILE();
+
+  if (!m_useVAO)
+  {
+    if (this->m_vbo_vertices != 0) 
+    {
+      glEnableVertexAttribArray(m_attribute_v_coord);
+      glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo_vertices);
+      glVertexAttribPointer(
+        m_attribute_v_coord,// attribute
+        4,                  // number of elements per vertex, here (x,y,z,w)
+        GL_FLOAT,           // the type of each element
+        GL_FALSE,           // take our values as-is
+        0,                  // no extra data between each position
+        0                   // offset of first element
+        );
+    }
+
+    if (this->m_vbo_normals != 0)
+    {
+      glEnableVertexAttribArray(m_attribute_v_normal);
+      glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo_normals);
+      glVertexAttribPointer(
+        m_attribute_v_normal, // attribute
+        3,                  // number of elements per vertex, here (x,y,z)
+        GL_FLOAT,           // the type of each element
+        GL_FALSE,           // take our values as-is
+        0,                  // no extra data between each position
+        0                   // offset of first element
+      );
+    }
+    if (this->m_vbo_texCoords != 0)
+    {
+      glEnableVertexAttribArray(m_attribute_v_texCoords);
+      glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo_texCoords);
+      glVertexAttribPointer(
+        m_attribute_v_texCoords, // attribute
+        2,                  // number of elements per vertex, here (x,y,z)
+        GL_FLOAT,           // the type of each element
+        GL_FALSE,           // take our values as-is
+        0,                  // no extra data between each position
+        0                   // offset of first element
+      );
+    }
+  }
+  else {
+    glEnableVertexAttribArray(m_attribute_v_coord);
+    CHECK_GL_ERROR_LINE_FILE();
+    glEnableVertexAttribArray(m_attribute_v_normal);
+    CHECK_GL_ERROR_LINE_FILE();
+    if (m_vbo_texCoords != 0)
+      glEnableVertexAttribArray(m_attribute_v_texCoords);
+    CHECK_GL_ERROR_LINE_FILE();
+    
+  }
+  CHECK_GL_ERROR_LINE_FILE();
+
+  /* Apply object's transformation matrix */
+  glm::mat4 obj2World = modelMatrix * this->object2world;
+  
+  shader->setMat4("m", obj2World);
+
+  /* 
+  Transform normal vectors with transpose of inverse of upper left
+  3x3 model matrix (ex-gl_NormalMatrix): 
+  */
+  glm::mat3 m_3x3_inv_transp = glm::transpose(glm::inverse(glm::mat3(obj2World)));
+  shader->setMat3("m_3x3_inv_transp", m_3x3_inv_transp);
+
+  /* Push each element in buffer_vertices to the vertex shader */
+  if (this->m_ibo_elements != 0) 
+  {
+    if (!m_useVAO)
+      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->m_ibo_elements);
+
+      GLuint size = GLuint(this->elements.size());
+      glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_SHORT, 0);
+      CHECK_GL_ERROR_LINE_FILE();
+  }
+  else {
+    glDrawArrays(GL_TRIANGLES, 0, (GLsizei)this->vertices.size());
+  }
+
+  if (this->m_vbo_normals != 0)
+    glDisableVertexAttribArray(m_attribute_v_normal);
+
+  if (this->m_vbo_vertices != 0)
+    glDisableVertexAttribArray(m_attribute_v_coord);
+
+  if (this->m_vbo_texCoords != 0)
+    glDisableVertexAttribArray(m_attribute_v_texCoords);
+  
+  if (m_useVAO)
+    glBindVertexArray(0);
 }

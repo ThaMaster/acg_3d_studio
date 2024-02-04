@@ -48,49 +48,12 @@ void Scene::useProgram()
   getRootGroup()->getState()->getShader()->use();
 }
 
-void Scene::add(std::shared_ptr<Node>& node)
-{
-  m_nodes.push_back(node);
-
-  for (auto m : node->getMeshes())
-  {
-    m->initShaders(m_shader);
-    m->upload();
-  }
-}
-
-void Scene::addObj(std::shared_ptr<Geometry>& obj)
-{
-  m_objects.push_back(obj);
-}
-
 void Scene::resetTransform()
 {
-  for (auto n : m_nodes)
-    n->resetTransform();
-}
-
-const NodeVector& Scene::getNodes()
-{
-  return m_nodes;
-}
-
-std::shared_ptr<Node> Scene::getNode(size_t i)
-{
-  return m_nodes[i];
-}
-
-BoundingBox Scene::calculateBoundingBox()
-{
-  BoundingBox box;
-  for (auto n : m_nodes)
-    box.expand(n->calculateBoundingBox());
-
-  return box;
 }
 
 void Scene::render()
 {
-m_renderVisitor->visit(*m_rootGroup);
+  m_renderVisitor->visit(*m_rootGroup);
   m_updateVisitor->visit(*m_rootGroup);
 }

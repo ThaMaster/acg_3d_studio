@@ -38,7 +38,6 @@ bool Application::initResources(const std::string& model_filename, const std::st
   getCamera()->setScreenSize(m_screenSize);
 
   std::string ext = vr::FileSystem::getFileExtension(model_filename);
-  std::shared_ptr<Node> node;
 
   // Ok lets load this as our own "scene file format"
   if (ext == "xml" || ext == "XML")
@@ -58,10 +57,10 @@ bool Application::initResources(const std::string& model_filename, const std::st
   }
   else
   {
-    node = load3DModelFile(model_filename);
-    if (!node)
+    auto objNode = load3DModelFile(model_filename, model_filename);
+    if (!objNode)
       return false;
-    m_sceneRoot->add(node);
+    m_sceneRoot->getRootGroup()->addChild(objNode);
   }
 
 #if 0
@@ -114,7 +113,8 @@ void Application::setClearColor(const glm::f32vec4& clearColor)
 void Application::initView()
 {
   // Compute a bounding box around the whole scene
-  BoundingBox box = m_sceneRoot->calculateBoundingBox();
+  BoundingBox box = m_sceneRoot->getRootGroup()->calculateBoundingBox();
+
   float radius = box.getRadius();
 
   // Compute the diagonal and a suitable distance so we can see the whole thing

@@ -4,7 +4,6 @@
 #include <memory>
 #include <vector>
 #include <sstream>
-#include "Node.h"
 #include "Light.h"
 #include "Camera.h"
 #include "vr/Shader.h"
@@ -58,43 +57,11 @@ namespace vr
     Use the shader program
     */
     void useProgram();
-
-    /**
-    Add a new node
-    \param node - A new node
-    */
-    void add(std::shared_ptr<Node>& node);
-
-    void addObj(std::shared_ptr<Geometry>& obj);
-
-    std::vector<std::shared_ptr<Geometry>> getObjects()
-    {
-      return m_objects;
-    }
     
     /**
     Reset all nodes transform to its initial value
     */
     void resetTransform();
-
-    /**
-    Get a all nodes
-    \return A vector containing all nodes
-    */
-    const NodeVector& getNodes();
-
-    /**
-    Get the i:th node
-    \param i - Index in vector<
-    \return A node
-    */
-    std::shared_ptr<Node> getNode(size_t i);
-
-    /**
-    Compute a bounding box for the whole scene
-    \return A bounding box for the whole scene
-    */
-    BoundingBox calculateBoundingBox();
 
     /**
     Render the whole scene
@@ -122,10 +89,6 @@ namespace vr
     }
 
   private:
-
-    NodeVector m_nodes;
-    std::vector<std::shared_ptr<Geometry>> m_objects;
-
     GLint m_uniform_numberOfLights;
     Group *m_rootGroup;
     RenderVisitor *m_renderVisitor;
