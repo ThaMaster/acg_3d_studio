@@ -3,10 +3,12 @@
 
 #include <memory>
 #include <vector>
+#include <map>
 #include <sstream>
-#include "Light.h"
-#include "Camera.h"
-#include "vr/Shader.h"
+
+#include <vr/Light.h>
+#include <vr/Camera.h>
+#include <vr/Shader.h>
 
 #include "lab1/nodes/Group.h"
 #include "lab1/visitors/RenderVisitor.h"

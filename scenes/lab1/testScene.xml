@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene>
     <group name="group1">
+        <transform name="trans1" translate="1 1 1" scale="0.4 0.4 0.4">
+            <geometry name="geo1" path="models/monkey.obj"/>
+        </transform>
         <geometry name="geo1" path="models/monkey.obj"/>
     </group>
 </scene>

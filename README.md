@@ -56,6 +56,14 @@ It is worth mentioning that this table is subject to change during development o
 
 This section details the changes that occurs with each session of working on this project. After each programming session a new list with all the things that have been done and other information will be posted. This is to have a clear view of what has been done and what is needed to be fixed/added to the project.
 
+### Change log - 2024-02-04
+
+- Removed the Mesh and Node class from the project.
+- The material is no longer stored directly in the geometry node. It is instead stored in the state only if a mesh has a material.
+- The geometry is now responsible for all the buffers and it no longer uses the Mesh class to render object.
+- Restructured such that if object file is loaded, create an *Group* node and create *Geometry* nodes for each mesh of the object.
+- Light now uses the *Geometry* class for creating its own mesh (Might change!).
+
 ### Change log - 2024-02-03
 
 - Added an additional light to all transform nodes to test if the state functions correctly, *(spoiler it does!)*.
@@ -95,6 +103,17 @@ This section details the changes that occurs with each session of working on thi
 ## TODO
 
 This section details what is to be done in the next programming session. This section is an attempt at keeping a good focus on what to work on the next time a programming session comences.
+
+### TODO - 2024-02-04
+
+- Move the storage of textures from the material to the state.
+- Change so that the state only keeps track of which light should be enabled, and move the actual light vector to the scene class.
+- Test new objects and create more test-scenes.
+- Create more *UpdateCallbacks*.
+- Introduce a map to the scene that holds all the *Object Group Nodes* for each loaded object.
+- Make the **SPACE** key only reset the camera position and not reload the scene.
+- Check dependencies and refactor so the code becomes good!
+- Start to comment the code.
 
 ### TODO - 2024-02-03
 
