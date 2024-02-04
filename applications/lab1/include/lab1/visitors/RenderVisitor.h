@@ -19,20 +19,9 @@ class RenderVisitor : public NodeVisitor
         void visit(Transform& g) override;
         void visit(Geometry& g) override;
 
-        void setShader(std::shared_ptr<vr::Shader> s)
-        {
-            m_shader = s;
-        }
-
-        std::shared_ptr<vr::Shader> getShader(void)
-        {
-            return m_shader;
-        }
-
         std::stack<std::shared_ptr<State>> m_stateStack;
     private:
         std::stack<glm::mat4> m_transformStack;
-        std::shared_ptr<vr::Shader> m_shader;   
 };
 
 #endif

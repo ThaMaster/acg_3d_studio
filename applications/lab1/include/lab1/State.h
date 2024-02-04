@@ -14,7 +14,7 @@ class State
         ~State();
 
         std::shared_ptr<State> merge(std::shared_ptr<State> s);
-        void apply(std::shared_ptr<vr::Shader>& s);
+        void apply();
 
         void setShader(std::shared_ptr<vr::Shader> s)
         {

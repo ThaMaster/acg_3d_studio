@@ -16,7 +16,7 @@ Scene::Scene() : m_uniform_numberOfLights(-1)
 bool Scene::initShaders(const std::string& vshader_filename, const std::string& fshader_filename)
 {
   m_shader = std::make_shared<vr::Shader>(vshader_filename, fshader_filename);
-  m_renderVisitor->setShader(m_shader);
+  getRootGroup()->getState()->setShader(m_shader);
   if (!m_shader->valid())
     return false;
 
@@ -45,7 +45,7 @@ void Scene::applyCamera()
 
 void Scene::useProgram()
 {
-  m_renderVisitor->getShader()->use();
+  getRootGroup()->getState()->getShader()->use();
 }
 
 void Scene::add(std::shared_ptr<Node>& node)

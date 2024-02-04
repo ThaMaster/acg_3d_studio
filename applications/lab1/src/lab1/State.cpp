@@ -23,8 +23,9 @@ std::shared_ptr<State> State::merge(std::shared_ptr<State> s)
 
     if(s->getShader())
         mergedState->setShader(s->getShader());
+    else
+        mergedState->setShader(m_shader);
     
-
     for(auto l : m_lights)
         mergedState->addLight(l);
 
@@ -38,14 +39,14 @@ std::shared_ptr<State> State::merge(std::shared_ptr<State> s)
     return mergedState;
 }
 
-void State::apply(std::shared_ptr<vr::Shader>& shader) 
+void State::apply() 
 {
     if(m_material)
     {
-        m_material->apply(shader);
+        m_material->apply(m_shader);
     }
 
-    shader->setInt("numberOfLights", (GLint)m_lights.size());
+    m_shader->setInt("numberOfLights", (GLint)m_lights.size());
 
     // Apply lightsources
     size_t i = 0;
@@ -53,7 +54,7 @@ void State::apply(std::shared_ptr<vr::Shader>& shader)
     {
         for(auto l : m_lights)
         {
-            l->apply(shader, i);
+            l->apply(m_shader, i);
             i++;
         }
     }
