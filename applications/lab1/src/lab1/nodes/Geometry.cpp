@@ -24,16 +24,6 @@ void Geometry::accept(NodeVisitor& v)
     v.visit(*this);
 }
 
-void Geometry::setMaterial(std::shared_ptr<vr::Material>& material) 
-{ 
-    m_material = material; 
-}
-
-std::shared_ptr<vr::Material> Geometry::getMaterial()
-{
-    return m_material;
-}
-
 bool Geometry::initShaders(std::shared_ptr<vr::Shader> shader)
 {
     shader->use();
@@ -298,11 +288,6 @@ void Geometry::render(std::shared_ptr<vr::Shader> shader, const glm::mat4& model
     draw_bbox(shader);
     return;
   }
-
-  if (m_material)
-    m_material->apply(shader);
-  
-  CHECK_GL_ERROR_LINE_FILE();
 
   if (!m_useVAO)
   {

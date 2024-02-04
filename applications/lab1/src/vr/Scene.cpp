@@ -15,11 +15,11 @@ Scene::Scene() : m_uniform_numberOfLights(-1)
 
 bool Scene::initShaders(const std::string& vshader_filename, const std::string& fshader_filename)
 {
-  m_shader = std::make_shared<vr::Shader>(vshader_filename, fshader_filename);
-  getRootGroup()->getState()->setShader(m_shader);
-  if (!m_shader->valid())
+  auto shader = std::make_shared<vr::Shader>(vshader_filename, fshader_filename);
+  if (!shader->valid())
     return false;
 
+  getRootGroup()->getState()->setShader(shader);
   return true;
 }
 
@@ -33,14 +33,11 @@ std::shared_ptr<Camera> Scene::getCamera()
   return m_camera;
 }
 
-Scene::~Scene()
-{
-
-}
+Scene::~Scene() {}
 
 void Scene::applyCamera()
 {
-  m_camera->apply(m_shader);
+  m_camera->apply(getRootGroup()->getState()->getShader());
 }
 
 void Scene::useProgram()
@@ -50,6 +47,11 @@ void Scene::useProgram()
 
 void Scene::resetTransform()
 {
+}
+
+Group* createDefaultScene()
+{
+  return new Group("DefaultSceneRoot");
 }
 
 void Scene::render()

@@ -31,17 +31,12 @@ class Geometry : public M_Node
         glm::mat4& getObject2WorldMat();
         void setObject2WorldMat(glm::mat4& m);
 
-        void setMaterial(std::shared_ptr<vr::Material>& material);
-        std::shared_ptr<vr::Material> getMaterial();
-
         void upload();
         void render(std::shared_ptr<vr::Shader> shader, const glm::mat4& modelMatrix);
         void draw_bbox(std::shared_ptr<vr::Shader> shader);
         virtual vr::BoundingBox calculateBoundingBox() override;
 
     private:
-        std::shared_ptr<vr::Material> m_material;
-
         GLuint m_vbo_vertices, m_vbo_normals, m_vbo_texCoords, m_ibo_elements;
         GLuint m_vao;
         GLint m_attribute_v_coord;

@@ -241,8 +241,11 @@ void parseNodes(aiNode* root_node, MaterialVector& materials, std::stack<glm::ma
 
     loadedGeo->setObject2WorldMat(transformStack.top());
 
-    if (!materials.empty())
-      loadedGeo->setMaterial(materials[mesh->mMaterialIndex]);
+    if (!materials.empty()) {
+      std::shared_ptr<State> materialState(new State(loadedGeo->getName() + "_mat_state"));
+      materialState->setMaterial(materials[mesh->mMaterialIndex]);
+      loadedGeo->setState(materialState);
+    }
 
     objNode.addChild(loadedGeo);
   }

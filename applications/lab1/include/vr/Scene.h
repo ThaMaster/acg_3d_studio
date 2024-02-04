@@ -78,22 +78,13 @@ namespace vr
       return m_rootGroup;
     }
 
-    RenderVisitor* getRenderVisitor()
-    {
-      return m_renderVisitor;
-    }
-
-    UpdateVisitor* getUpdateVisitor()
-    {
-      return m_updateVisitor;
-    }
+    Group* createDefaultScene();
 
   private:
     GLint m_uniform_numberOfLights;
     Group *m_rootGroup;
     RenderVisitor *m_renderVisitor;
     UpdateVisitor *m_updateVisitor;
-    std::shared_ptr<vr::Shader> m_shader;
     std::shared_ptr<Camera> m_camera;
   };
 }
