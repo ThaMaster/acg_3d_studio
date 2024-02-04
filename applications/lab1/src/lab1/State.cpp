@@ -16,7 +16,7 @@ std::shared_ptr<State> State::merge(std::shared_ptr<State> s)
 
         return mergedState;
     }
-    mergedState = std::shared_ptr<State>(new State("(" + m_stateName + "+" + s->getStateName() + ")" ));
+    mergedState = std::shared_ptr<State>(new State("(" + m_stateName + " + " + s->getStateName() + ")" ));
 
     if(s->getMaterial())
         mergedState->setMaterial(s->getMaterial());
