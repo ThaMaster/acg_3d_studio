@@ -2,10 +2,10 @@
 
 #include <glm/glm.hpp>
 #include <memory>
-#include "Mesh.h"
 #include <vector>
 #include <vr/Shader.h>
 
+class Geometry;
 namespace vr
 {
 
@@ -24,10 +24,10 @@ namespace vr
     
   private:
     friend class Scene;
-    std::shared_ptr<Mesh> m_mesh;
+    std::shared_ptr<Geometry> m_geo;
 
-    void createMesh();
-    std::shared_ptr<Mesh>& getMesh();
+    void createGeometry();
+    std::shared_ptr<Geometry>& getGeometry();
   };
   typedef std::vector<std::shared_ptr<Light> > LightVector;
 

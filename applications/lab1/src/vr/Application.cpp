@@ -11,7 +11,6 @@
 
 #include <vr/Scene.h>
 #include <vr/Loader.h>
-#include <vr/Mesh.h>
 
 using namespace vr;
 
@@ -43,17 +42,7 @@ bool Application::initResources(const std::string& model_filename, const std::st
   if (ext == "xml" || ext == "XML")
   {
     if (!loadSceneFile(model_filename, m_sceneRoot))
-    {
       return false;
-    }
-
-    /* if (m_sceneRoot->getNodes().empty())
-    {
-      std::cerr << "Empty scene, something when wrong when loading files" << std::endl;
-      return false;
-    }
-    // We want to be able to "rotate" one node lets take the first
-    node = m_sceneRoot->getNodes().front(); */
   }
   else
   {
@@ -62,32 +51,6 @@ bool Application::initResources(const std::string& model_filename, const std::st
       return false;
     m_sceneRoot->getRootGroup()->addChild(objNode);
   }
-
-#if 0
-  std::shared_ptr<Mesh> ground(new Mesh);
-
-  BoundingBox box = m_sceneRoot->calculateBoundingBox();
-  glm::vec3 size = box.max() - box.min();
-  // mesh position initialized in init_view()
-
-  ground->vertices.push_back(glm::vec4(size.x, 0, size.y, 1.0));
-  ground->vertices.push_back(glm::vec4(size.x, 0, -size.y, 1.0));
-  ground->vertices.push_back(glm::vec4(-size.x, 0, size.y, 1.0));
-  ground->vertices.push_back(glm::vec4(-size.x, 0, size.y, 1.0));
-  ground->vertices.push_back(glm::vec4(size.x, 0, -size.y, 1.0));
-  ground->vertices.push_back(glm::vec4(-size.x, 0, -size.y, 1.0));
-  
-  for (unsigned int k = 0; k < 6; k++)
-    ground->normals.push_back(glm::vec3(0.0, 1.0, 0.0));
-
-  std::shared_ptr<Node> groundNode = std::shared_ptr<Node>(new Node);
-  groundNode->add(ground);
-
-  groundNode->setInitialTransform(glm::translate(glm::mat4(), glm::vec3(box.getCenter().x, box.min().y, box.getCenter().z)));
-  ground->name = "ground";
-
-  m_sceneRoot->add(groundNode);
-#endif
 
   std::shared_ptr<Light> light1 = std::shared_ptr<Light>(new Light);
   light1->diffuse = glm::vec4(1, 1, 1, 1);

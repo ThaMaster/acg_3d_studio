@@ -179,8 +179,8 @@ void parseNodes(aiNode* root_node, MaterialVector& materials, std::stack<glm::ma
 
   uint32_t num_meshes = root_node->mNumMeshes;
 
-  Mesh::vec3Vector tangents;
-  Mesh::vec2Vector tex_coords;
+  Geometry::vec3Vector tangents;
+  Geometry::vec2Vector tex_coords;
 
   for (uint32_t i = 0; i < num_meshes; i++)
   {

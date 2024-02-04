@@ -3,7 +3,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
-#include <vr/Mesh.h>
 #include <sstream>
 #include <vr/glErrorUtil.h>
 
@@ -17,6 +16,12 @@ Geometry::~Geometry()
 
     if (m_ibo_elements != 0)
         glDeleteBuffers(1, &m_ibo_elements);
+}
+
+
+void Geometry::accept(NodeVisitor& v)
+{
+    v.visit(*this);
 }
 
 void Geometry::setMaterial(std::shared_ptr<vr::Material>& material) 
@@ -62,21 +67,6 @@ vr::BoundingBox Geometry::calculateBoundingBox()
     }
     box = box * this->object2world;
     return box;
-}
-
-void Geometry::accept(NodeVisitor& v)
-{
-    v.visit(*this);
-}
-
-void Geometry::add(std::shared_ptr<vr::Mesh>& mesh)
-{
-    m_meshes.push_back(mesh);
-}
-
-vr::MeshVector& Geometry::getMeshes()
-{
-    return m_meshes;
 }
 
 void Geometry::setInitialTransform(const glm::mat4& m)
