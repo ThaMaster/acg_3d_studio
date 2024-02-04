@@ -102,7 +102,7 @@ This section details what is to be done in the next programming session. This se
 - Implement the support of textures and materials in the state class.
 - Make a function to construct your own scene graph where you can either load files or create your own geometry. (This makes it easiser to create a scene instead of needing to implement changes in the *Loader* class).
 - Create additional *UpdateCallback* functions for cool effects.
-- Create a documents for the report.
+- Create a document for the report.
 
 ### TODO - 2024-01-28
 

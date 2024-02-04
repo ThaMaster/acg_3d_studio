@@ -5,9 +5,9 @@ State::~State() {}
 
 std::shared_ptr<State> State::merge(std::shared_ptr<State> s)
 {
-    auto mergedState = std::shared_ptr<State>(new State("MERGED STATE"));
-
+    std::shared_ptr<State> mergedState;
     if(!s) {
+        mergedState = std::shared_ptr<State>(new State(m_stateName));
         mergedState->setMaterial(m_material);
         mergedState->setShader(m_shader);
         mergedState->setCullFace(m_cullFace);
@@ -16,6 +16,7 @@ std::shared_ptr<State> State::merge(std::shared_ptr<State> s)
 
         return mergedState;
     }
+    mergedState = std::shared_ptr<State>(new State("(" + m_stateName + " + " + s->getStateName() + ")" ));
 
     if(s->getMaterial())
         mergedState->setMaterial(s->getMaterial());

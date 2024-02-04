@@ -450,9 +450,9 @@ void loadSceneNode(rapidxml::xml_node<>* parent_node, Group* root, std::shared_p
       t = glm::scale(t, s_vec);
       transformNode->setTransformMat(t);
       transformNode->addUpdateCallback(new RotateCallback(1, glm::vec3(0,1,0)));
-      std::shared_ptr<State> coolState = std::shared_ptr<State>(new State("bruh"));
 
       // --- Example that state works! --- //
+      std::shared_ptr<State> coolState = std::shared_ptr<State>(new State("green_lamp_state"));
       std::shared_ptr<Light> light = std::shared_ptr<Light>(new Light);
       light->diffuse = glm::vec4(0.2, 1, 0.3, 1);
       light->specular = glm::vec4(1, 0.1, 0.65, 0.4);

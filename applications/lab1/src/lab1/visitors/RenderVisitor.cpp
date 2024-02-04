@@ -33,6 +33,7 @@ void RenderVisitor::visit(Transform& trans)
 void RenderVisitor::visit(Geometry& geo)
 {
     m_stateStack.push(m_stateStack.top()->merge(geo.getState()));
+    std::cout << "Rendering w state: " << m_stateStack.top()->getStateName() << std::endl;
     m_stateStack.top()->apply(m_shader);
     geo.draw(m_shader, m_transformStack.top());
     m_stateStack.pop();
