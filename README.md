@@ -45,6 +45,7 @@ The keyboard shortcust are summarized in the table below.
 | A          | **Moves** camera **left**                                    | Done        |
 | D          | **Moves** camera **right**                                   | Done        |
 | R          | **Reloads** The scene                                        | Done        |
+| SPACE      | **Resets** the camera position                               | In progress |
 | SHIFT      | Makes the camera move **faster** when holding the button     | Done        |
 | ESC        | **Exits** the application                                    | Done        |
 
