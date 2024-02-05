@@ -10,7 +10,7 @@ vr::BoundingBox Group::calculateBoundingBox()
     return box;
 }
 
-void Group::addChild(M_Node* n)
+void Group::addChild(Node* n)
 {
     m_children.push_back(n);
 }

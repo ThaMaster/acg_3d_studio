@@ -119,6 +119,9 @@ namespace vr
     */
     float getSpeed() const;
 
+    void setDefaultView(glm::vec3 pos, glm::vec3 dir, glm::vec3 up);
+    void resetView();
+
   private:
 
     void handleMouse(GLFWwindow* window, double xpos, double ypos);
@@ -129,6 +132,10 @@ namespace vr
     glm::vec3 m_position;
     glm::vec3 m_direction;
     glm::vec3 m_up;
+
+    glm::vec3 m_defPosition;
+    glm::vec3 m_defDirection;
+    glm::vec3 m_defUp;
 
     bool m_firstClick;
     float m_speed;

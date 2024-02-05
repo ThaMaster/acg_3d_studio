@@ -1,8 +1,9 @@
 #pragma once
 
 #include <vr/Scene.h>
-#include "lab1/nodes/Geometry.h"
-#include "lab1/nodes/Group.h"
+
+class Group;
+class Geometry;
 namespace vr
 {
   /// Load a given file and add content to the scene
@@ -10,4 +11,6 @@ namespace vr
 
   // Load contents of an xml file into the scene
   bool loadSceneFile(const std::string& xmlFile, std::shared_ptr<Scene>& scene);
+
+  //Geometry* buildGeometry(std::string geo_name, vec4Vector vertices, GLushortVector indices, vec3Vector normals, vec2Vector texCoords);
 }

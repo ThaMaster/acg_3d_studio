@@ -3,7 +3,7 @@
 
 #include "Group.h"
 
-class Geometry : public M_Node
+class Geometry : public Node
 {
     public:
         typedef std::vector<glm::vec2> vec2Vector;
@@ -18,7 +18,7 @@ class Geometry : public M_Node
         std::vector<glm::vec2> texCoords;
         std::vector<GLushort> elements;
 
-        Geometry(const std::string& name = "") : M_Node(name) {}
+        Geometry(const std::string& name = "") : Node(name) {}
         ~Geometry();
         
         virtual void accept(NodeVisitor& v) override;
@@ -35,6 +35,8 @@ class Geometry : public M_Node
         void render(std::shared_ptr<vr::Shader> shader, const glm::mat4& modelMatrix);
         void draw_bbox(std::shared_ptr<vr::Shader> shader);
         virtual vr::BoundingBox calculateBoundingBox() override;
+
+        bool beenVisited = false;
 
     private:
         GLuint m_vbo_vertices, m_vbo_normals, m_vbo_texCoords, m_ibo_elements;

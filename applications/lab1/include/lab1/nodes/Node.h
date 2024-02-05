@@ -1,5 +1,5 @@
-#ifndef M_NODE_H
-#define M_NODE_H
+#ifndef NODE_H
+#define NODE_H
 
 #include <iostream>
 #include <vector>
@@ -12,10 +12,10 @@
 
 class NodeVisitor;
 
-class M_Node
+class Node
 {
     public:
-        M_Node(const std::string& name = "" ) : m_name(name) {}
+        Node(const std::string& name = "" ) : m_name(name) {}
         virtual void accept(NodeVisitor& v) = 0;
         virtual vr::BoundingBox calculateBoundingBox() = 0;
         std::string getName() { return m_name; }

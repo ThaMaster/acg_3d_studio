@@ -80,7 +80,20 @@ namespace vr
       return m_rootGroup;
     }
 
-    Group* createDefaultScene();
+    bool objectExists(std::string filePath)
+    {
+      return m_loadedObjects.find(filePath) != m_loadedObjects.end();
+    }
+
+    Group* getObject(std::string filePath)
+    {
+      return m_loadedObjects[filePath];
+    }
+
+    void addObject(std::string filePath, Group* geometry)
+    {
+      m_loadedObjects.insert(std::make_pair(filePath, geometry));
+    }
 
   private:
     GLint m_uniform_numberOfLights;
@@ -88,5 +101,6 @@ namespace vr
     RenderVisitor *m_renderVisitor;
     UpdateVisitor *m_updateVisitor;
     std::shared_ptr<Camera> m_camera;
+    std::map<std::string, Group*> m_loadedObjects;
   };
 }

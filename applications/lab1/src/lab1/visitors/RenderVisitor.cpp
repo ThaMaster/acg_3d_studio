@@ -34,8 +34,11 @@ void RenderVisitor::visit(Geometry& geo)
 {
     m_stateStack.push(m_stateStack.top()->merge(geo.getState()));
     m_stateStack.top()->apply();
-    geo.initShaders(m_stateStack.top()->getShader());
-    geo.upload();
+    if(!geo.beenVisited) {
+        geo.initShaders(m_stateStack.top()->getShader());
+        geo.upload();
+        geo.beenVisited = true;
+    }
     geo.render(m_stateStack.top()->getShader(), m_transformStack.top());
     m_stateStack.pop();
 }

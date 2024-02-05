@@ -95,6 +95,7 @@ void Application::initView()
 
   // Set the position/direction of the camera
   getCamera()->set(eye, direction, glm::vec3(0.0, 1.0, 0.0));
+  getCamera()->setDefaultView(eye, direction, glm::vec3(0.0, 1.0, 0.0));
   getCamera()->setNearFar(glm::vec2(0.1, distance * 20));
 
   // Compute the default movement speed based on the radius of the scene

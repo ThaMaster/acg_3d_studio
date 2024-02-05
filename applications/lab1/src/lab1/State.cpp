@@ -18,12 +18,14 @@ std::shared_ptr<State> State::merge(std::shared_ptr<State> s)
     }
     mergedState = std::shared_ptr<State>(new State("(" + m_stateName + " + " + s->getStateName() + ")" ));
 
-    if(s->getMaterial())
+    if(s->getMaterial()) 
         mergedState->setMaterial(s->getMaterial());
+    else 
+        mergedState->setMaterial(m_material);
 
-    if(s->getShader())
+    if(s->getShader()) 
         mergedState->setShader(s->getShader());
-    else
+    else 
         mergedState->setShader(m_shader);
     
     for(auto l : m_lights)
@@ -32,9 +34,10 @@ std::shared_ptr<State> State::merge(std::shared_ptr<State> s)
     for(auto l : s->getLights())
         mergedState->addLight(l);
     
-
-    if(s->getCullFace())
+    if(s->getCullFace()) 
         mergedState->setCullFace(s->getCullFace());
+    else 
+        mergedState->setCullFace(m_cullFace);
 
     return mergedState;
 }
@@ -42,9 +45,7 @@ std::shared_ptr<State> State::merge(std::shared_ptr<State> s)
 void State::apply() 
 {
     if(m_material)
-    {
         m_material->apply(m_shader);
-    }
 
     m_shader->setInt("numberOfLights", (GLint)m_lights.size());
 
@@ -57,9 +58,5 @@ void State::apply()
             l->apply(m_shader, i);
             i++;
         }
-    }
-
-    if(m_texture.size() != 0)
-    {
     }
 }

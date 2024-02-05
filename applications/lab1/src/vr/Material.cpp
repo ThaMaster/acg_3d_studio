@@ -22,7 +22,7 @@ Material::Material() : m_shininess(5)
   m_diffuse = glm::vec4(0.7, 0.8, 0.8, 1.0);
   m_specular = glm::vec4(1.0, 1.0, 1.0, 1.0);
 
-  m_textures.resize(2);
+  //m_textures.resize(2);
 }
 
 glm::vec4 Material::getAmbient() const { return m_ambient; }
@@ -44,22 +44,22 @@ void Material::apply(std::shared_ptr<vr::Shader> shader)
   shader->setVec4("material.diffuse", m_diffuse);
   shader->setFloat("material.shininess", m_shininess);
 
-  std::vector<int> slotActive;
-  std::vector<int> slots;
-  slotActive.resize(m_textures.size());
-  slots.resize(m_textures.size());
-  for (int i = 0; i < m_textures.size(); i++)
+  /* std::vector<int> slotActive;
+  std::vector<int> slots; */
+  //slotActive.resize(m_textures.size());
+  //slots.resize(m_textures.size());
+  /* for (int i = 0; i < m_textures.size(); i++)
   {
     slots[i] = i;
     slotActive[i] = m_textures[i] != nullptr;
     if (m_textures[i])
       m_textures[i]->bind();
-  }
+  } */
 
   CHECK_GL_ERROR_LINE_FILE();
-  shader->setIntVector("material.textures", slots);
+  /* shader->setIntVector("material.textures", slots);
 
-  shader->setIntVector("material.activeTextures", slotActive);
+  shader->setIntVector("material.activeTextures", slotActive); */
 }
 
 void Material::setTexture(std::shared_ptr<vr::Texture> texture, unsigned int unit)

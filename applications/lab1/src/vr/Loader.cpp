@@ -377,7 +377,66 @@ std::string getAttribute(rapidxml::xml_node<>* node, const std::string& attribut
   return attrib->value();
 }
 
-void loadSceneNode(rapidxml::xml_node<>* parent_node, Group* root, std::shared_ptr<Scene>& scene) {
+Transform* parseTransformNode(rapidxml::xml_node<>* node)
+{
+  std::string node_name = getAttribute(node, "name");
+  auto transformNode = new Transform(node_name);
+
+  std::string translate = getAttribute(node, "translate");
+  glm::vec3 t_vec;
+  if (!getVec<glm::vec3>(t_vec, translate))
+    throw std::runtime_error("Transform(" + node_name + "): Invalid translate.\n");
+
+  std::string rotate = getAttribute(node, "rotate");
+  glm::vec3 r_vec;
+  if (!getVec<glm::vec3>(r_vec, rotate))
+    throw std::runtime_error("Transform(" + node_name + "): Invalid rotate.\n");
+
+  std::string scale = getAttribute(node, "scale");
+  glm::vec3 s_vec;
+  if (!getVec<glm::vec3>(s_vec, scale, glm::vec3(1)))
+    throw std::runtime_error("Transform(" + node_name + "). Invalid scale.\n ");
+
+  glm::mat4 mt = glm::translate(glm::mat4(), t_vec);
+  glm::mat4 ms = glm::scale(glm::mat4(), s_vec);
+  glm::mat4 rx = glm::rotate(glm::mat4(), glm::radians(r_vec.x), glm::vec3(1, 0, 0));
+  glm::mat4 ry = glm::rotate(glm::mat4(), glm::radians(r_vec.y), glm::vec3(0, 1, 0));
+  glm::mat4 rz = glm::rotate(glm::mat4(), glm::radians(r_vec.z), glm::vec3(0, 0, 1));
+  auto t = mt * rz * ry * rx;
+  t = glm::scale(t, s_vec);
+  transformNode->setTransformMat(t);
+
+  return transformNode;
+}
+
+Group* parseGroupNode(rapidxml::xml_node<>* node)
+{
+  std::string node_name = getAttribute(node, "name");
+  auto groupNode = new Group(node_name);
+  return groupNode;
+}
+
+Group* parseObjNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
+{
+  std::string node_name = getAttribute(node, "name");
+  
+  std::string geo_path = node->first_attribute("path")->value();
+  if (geo_path.empty())
+    throw std::runtime_error("Geometry(" + node_name + "): Empty path.\n");
+
+  Group* objNode;
+  if(!scene->objectExists(geo_path)) {
+    objNode = vr::load3DModelFile(geo_path, node_name);
+    scene->addObject(geo_path, objNode);
+  } else {
+    objNode = scene->getObject(geo_path);
+  }
+  if (!objNode)
+    std::cerr << "Unable to load object \'" << node_name << "\' path: " << geo_path << std::endl;
+  return objNode;
+}
+
+void loadSceneGraph(rapidxml::xml_node<>* parent_node, Group* root, std::shared_ptr<Scene>& scene) {
   if (!parent_node || parent_node->type() == rapidxml::node_comment || parent_node->type() == rapidxml::node_doctype)
         return;
   
@@ -386,54 +445,19 @@ void loadSceneNode(rapidxml::xml_node<>* parent_node, Group* root, std::shared_p
     std::string node_type = curr_node->name();
 
     if(node_type == "group") {
-      
-      node_name = getAttribute(curr_node, "name");
-      auto groupNode = new Group(node_name);
-      loadSceneNode(curr_node->first_node(), groupNode, scene);
+      auto groupNode = parseGroupNode(curr_node);
+      loadSceneGraph(curr_node->first_node(), groupNode, scene);
       root->addChild(groupNode);
 
     } else if(node_type == "geometry") {
 
-      node_name = getAttribute(curr_node, "name");
-      
-      std::string geo_path = curr_node->first_attribute("path")->value();
-      if (geo_path.empty())
-        throw std::runtime_error("Geometry(" + node_name + "): Empty path.\n");
-
-      auto objNode = vr::load3DModelFile(geo_path, node_name);
-      if (!objNode)
-        std::cerr << "Unable to load object \'" << node_name << "\' path: " << geo_path << std::endl;
+      auto objNode = parseObjNode(curr_node, scene);
       
       root->addChild(objNode);
 
     } else if(node_type == "transform") {
 
-      node_name = getAttribute(curr_node, "name");
-      auto transformNode = new Transform(node_name);
-
-      std::string translate = getAttribute(curr_node, "translate");
-      glm::vec3 t_vec;
-      if (!getVec<glm::vec3>(t_vec, translate))
-        throw std::runtime_error("Transform(" + node_name + "): Invalid translate.\n");
-
-      std::string rotate = getAttribute(curr_node, "rotate");
-      glm::vec3 r_vec;
-      if (!getVec<glm::vec3>(r_vec, rotate))
-        throw std::runtime_error("Transform(" + node_name + "): Invalid rotate.\n");
-
-      std::string scale = getAttribute(curr_node, "scale");
-      glm::vec3 s_vec;
-      if (!getVec<glm::vec3>(s_vec, scale, glm::vec3(1)))
-        throw std::runtime_error("Transform(" + node_name + "). Invalid scale.\n ");
-
-      glm::mat4 mt = glm::translate(glm::mat4(), t_vec);
-      glm::mat4 ms = glm::scale(glm::mat4(), s_vec);
-      glm::mat4 rx = glm::rotate(glm::mat4(), glm::radians(r_vec.x), glm::vec3(1, 0, 0));
-      glm::mat4 ry = glm::rotate(glm::mat4(), glm::radians(r_vec.y), glm::vec3(0, 1, 0));
-      glm::mat4 rz = glm::rotate(glm::mat4(), glm::radians(r_vec.z), glm::vec3(0, 0, 1));
-      auto t = mt * rz * ry * rx;
-      t = glm::scale(t, s_vec);
-      transformNode->setTransformMat(t);
+      auto transformNode = parseTransformNode(curr_node);
       transformNode->addUpdateCallback(new RotateCallback(1, glm::vec3(0,1,0)));
 
       // --- Example that state works! --- //
@@ -446,7 +470,7 @@ void loadSceneNode(rapidxml::xml_node<>* parent_node, Group* root, std::shared_p
       transformNode->setState(coolState);
       // --- Example that state works! --- //
       
-      loadSceneNode(curr_node->first_node(), transformNode, scene);
+      loadSceneGraph(curr_node->first_node(), transformNode, scene);
       root->addChild(transformNode);
     }
   }
@@ -488,8 +512,9 @@ bool vr::loadSceneFile(const std::string& sceneFile, std::shared_ptr<Scene>& sce
       throw std::runtime_error("File missing scene/");
 
     xmlpath.push_back("scene");
-
-    loadSceneNode(root_node->first_node(), scene->getRootGroup(), scene);
+    if(scene->getRootGroup()->getChildren().size() == 0){
+      loadSceneGraph(root_node->first_node(), scene->getRootGroup(), scene);
+    }
   }
   catch (rapidxml::parse_error& error)
   {
@@ -504,3 +529,13 @@ bool vr::loadSceneFile(const std::string& sceneFile, std::shared_ptr<Scene>& sce
 
   return true;
 }
+
+/* Geometry* vr::buildGeometry(std::string geo_name, std::vector<glm::vec4> vertices, std::vec4 indices, Geometry::vec3Vector normals, Geometry::vec2Vector texCoords)
+{
+  auto geometry = new Geometry(geo_name);
+  geometry->vertices = vertices;
+  geometry->elements = indices;
+  geometry->normals = normals;
+  geometry->texCoords = texCoords;
+  return geometry;
+} */
