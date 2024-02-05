@@ -126,7 +126,6 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
         else
           material->setTexture(texture, 0);
       }
-
     }
 
     if (ai_material->GetTextureCount(aiTextureType_SPECULAR) > 0)
@@ -149,7 +148,6 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
       path.Clear();
       ai_material->GetTexture(aiTextureType_DISPLACEMENT, 0, &path);
     }
-
     materials.push_back(material);
   }
 
@@ -283,7 +281,6 @@ Group* vr::load3DModelFile(const std::string& filename, const std::string& objNa
   }
 
   aiNode* root_node = aiScene->mRootNode;
-
   ExtractMaterials(aiScene, materials, filename);
   std::cout << "Found " << materials.size() << " materials" << std::endl;
 
@@ -530,12 +527,3 @@ bool vr::loadSceneFile(const std::string& sceneFile, std::shared_ptr<Scene>& sce
   return true;
 }
 
-/* Geometry* vr::buildGeometry(std::string geo_name, std::vector<glm::vec4> vertices, std::vec4 indices, Geometry::vec3Vector normals, Geometry::vec2Vector texCoords)
-{
-  auto geometry = new Geometry(geo_name);
-  geometry->vertices = vertices;
-  geometry->elements = indices;
-  geometry->normals = normals;
-  geometry->texCoords = texCoords;
-  return geometry;
-} */

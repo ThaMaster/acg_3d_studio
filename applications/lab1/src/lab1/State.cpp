@@ -44,12 +44,12 @@ std::shared_ptr<State> State::merge(std::shared_ptr<State> s)
 
 void State::apply() 
 {
+
     if(m_material)
         m_material->apply(m_shader);
 
     m_shader->setInt("numberOfLights", (GLint)m_lights.size());
 
-    // Apply lightsources
     size_t i = 0;
     if(m_lights.size() != 0)
     {
@@ -59,4 +59,10 @@ void State::apply()
             i++;
         }
     }
+
+    if(m_cullFace)
+        glEnable(GL_CULL_FACE);
+    else
+        glDisable(GL_CULL_FACE);
+    
 }
