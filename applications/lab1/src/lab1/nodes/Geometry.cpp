@@ -139,7 +139,7 @@ void Geometry::upload()
         0                   // offset of first element
         );
         glDisableVertexAttribArray(m_attribute_v_normal);
-
+        
         glEnableVertexAttribArray(m_attribute_v_texCoords);
         glBindBuffer(GL_ARRAY_BUFFER, m_vbo_texCoords);
         glVertexAttribPointer(
@@ -151,7 +151,6 @@ void Geometry::upload()
         0                   // offset of first element
         );
         glDisableVertexAttribArray(m_attribute_v_texCoords);
-
     }
 
     if (this->elements.size() > 0) {
@@ -172,23 +171,6 @@ void Geometry::upload()
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
 }
-
-/**
- * render()
- * ---------------
- * 
- * 
- */
-/* void Geometry::draw(std::shared_ptr<vr::Shader> shader, glm::mat4 modelMat)
-{
-    std::cerr << "Rendering" << std::endl;
-    for(auto m : m_meshes)
-    {
-        m->initShaders(shader);
-        m->upload();
-        m->render(shader, (this->object2world * modelMat));
-    }
-} */
 
 void Geometry::draw_bbox(std::shared_ptr<vr::Shader> shader)
 {

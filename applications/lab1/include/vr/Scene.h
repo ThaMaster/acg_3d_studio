@@ -11,9 +11,9 @@
 #include <vr/Shader.h>
 
 #include "lab1/nodes/Group.h"
+#include "lab1/nodes/Geometry.h"
 #include "lab1/visitors/RenderVisitor.h"
 #include "lab1/visitors/UpdateVisitor.h"
-
 namespace vr
 {
   /**
@@ -94,6 +94,9 @@ namespace vr
     {
       m_loadedObjects.insert(std::make_pair(filePath, geometry));
     }
+
+    Group* createDefaultScene();
+    Geometry* buildGeometry(std::string geo_name, std::vector<glm::vec3> vertices, std::vector<GLshort> indices, std::vector<glm::vec3> normals, std::vector<glm::vec2> texCoords);
 
   private:
     GLint m_uniform_numberOfLights;

@@ -177,8 +177,8 @@ void parseNodes(aiNode* root_node, MaterialVector& materials, std::stack<glm::ma
 
   uint32_t num_meshes = root_node->mNumMeshes;
 
-  Geometry::vec3Vector tangents;
-  Geometry::vec2Vector tex_coords;
+  std::vector<glm::vec3> tangents;
+  std::vector<glm::vec2> tex_coords;
 
   for (uint32_t i = 0; i < num_meshes; i++)
   {
@@ -430,6 +430,7 @@ Group* parseObjNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
   }
   if (!objNode)
     std::cerr << "Unable to load object \'" << node_name << "\' path: " << geo_path << std::endl;
+    
   return objNode;
 }
 
@@ -526,4 +527,3 @@ bool vr::loadSceneFile(const std::string& sceneFile, std::shared_ptr<Scene>& sce
 
   return true;
 }
-

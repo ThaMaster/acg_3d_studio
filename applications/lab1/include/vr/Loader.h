@@ -3,7 +3,6 @@
 #include <vr/Scene.h>
 
 class Group;
-class Geometry;
 namespace vr
 {
   /// Load a given file and add content to the scene

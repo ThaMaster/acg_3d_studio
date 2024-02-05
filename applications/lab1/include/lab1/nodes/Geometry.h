@@ -4,13 +4,7 @@
 #include "Group.h"
 
 class Geometry : public Node
-{
-    public:
-        typedef std::vector<glm::vec2> vec2Vector;
-        typedef std::vector<glm::vec3> vec3Vector;
-        typedef std::vector<glm::vec4> vec4Vector;
-        typedef std::vector<GLushort> GLushortVector;
-        
+{        
     public:
 
         std::vector<glm::vec4> vertices;

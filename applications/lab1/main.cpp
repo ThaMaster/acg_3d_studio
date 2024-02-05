@@ -127,7 +127,7 @@ int main(int argc, char** argv)
   std::shared_ptr<vr::Application> application = std::make_shared<vr::Application>(SCREEN_WIDTH, SCREEN_HEIGHT);
   g_applicationPtr = application;
 
-  std::string model_filename = (char*) "models/porsche_911_gt3.glb";
+  std::string model_filename;
   if (argc > 1)
     model_filename = argv[1];
 
@@ -135,8 +135,8 @@ int main(int argc, char** argv)
   std::string  f_shader_filename = "shaders/phong-shading.fs";
 
   if (argc < 2 ) {
-    std::cerr << "Loading default model: " << model_filename << std::endl;
-    std::cerr << "\n\nUsage: " << argv[0] << " <model-file>" << std::endl;
+    std::cerr << "Loading default scene! " << model_filename << std::endl;
+    std::cerr << "\nUsage: " << argv[0] << " <model-file>" << std::endl;
   }
 
   if (!application->initResources(model_filename, v_shader_filename, f_shader_filename))

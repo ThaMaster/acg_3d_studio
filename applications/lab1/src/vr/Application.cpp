@@ -35,7 +35,7 @@ bool Application::initResources(const std::string& model_filename, const std::st
   if (!m_sceneRoot->initShaders(vshader_filename, fshader_filename))
     return false;
   getCamera()->setScreenSize(m_screenSize);
-
+  
   std::string ext = vr::FileSystem::getFileExtension(model_filename);
 
   // Ok lets load this as our own "scene file format"
@@ -44,13 +44,16 @@ bool Application::initResources(const std::string& model_filename, const std::st
     if (!loadSceneFile(model_filename, m_sceneRoot))
       return false;
   }
-  else
+  else if(model_filename.empty())
   {
+    m_sceneRoot->getRootGroup()->addChild(m_sceneRoot->createDefaultScene());
+  }else {
     auto objNode = load3DModelFile(model_filename, model_filename);
     if (!objNode)
       return false;
     m_sceneRoot->getRootGroup()->addChild(objNode);
   }
+  
 
   std::shared_ptr<Light> light1 = std::shared_ptr<Light>(new Light);
   light1->diffuse = glm::vec4(1, 1, 1, 1);
@@ -87,6 +90,7 @@ void Application::initView()
   glm::vec3 direction = glm::normalize(box.getCenter() - eye);
 
   std::shared_ptr<Light> light = m_sceneRoot->getRootGroup()->getState()->getLights().front();
+
   glm::vec4 position;
   position = glm::vec4(eye + glm::vec3(-8, 2, 0), 1);
   light->position = position;
