@@ -57,6 +57,15 @@ It is worth mentioning that this table is subject to change during development o
 
 This section details the changes that occurs with each session of working on this project. After each programming session a new list with all the things that have been done and other information will be posted. This is to have a clear view of what has been done and what is needed to be fixed/added to the project.
 
+### Change log - 2024-02-05
+
+- The state will contains the actual light objects.
+- Refactored out each parsing of each node to their own function.
+- Tested more object files and fixed some bugs.
+- Implemented the *Map* that stores each loaded object and only loads from disk if it is not present in the map.
+- Fixed so that the geometries only inits the shader and uploads all the data once when the *RenderVisitor* arrives to the node. This fixed the performance problem!
+- Renamed the *M_Node* class to *Node* since this project no longer uses *Mesh* or the previous *Node* class.
+
 ### Change log - 2024-02-04
 
 - Removed the Mesh and Node class from the project.
@@ -104,6 +113,15 @@ This section details the changes that occurs with each session of working on thi
 ## TODO
 
 This section details what is to be done in the next programming session. This section is an attempt at keeping a good focus on what to work on the next time a programming session comences.
+
+### TODO - 2024-02-05
+
+- Implement the *Level of Detail (LOD)*. Maybe upload every object file to the buffer and use the *indexOffset* in **glDrawElements()** to determine which *LOD* to render.
+- Adjust so that pressing the **SPACE** key correctly resets the view and fix the snapping when rotating camera after the reset.
+- Create additional *UpdateCallback* functions.
+- Implement more functionality with the parsing of the XML files.
+- Comment the code!
+- Write report.
 
 ### TODO - 2024-02-04
 
