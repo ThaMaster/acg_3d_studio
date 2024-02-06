@@ -78,6 +78,14 @@ std::string findTexture(const std::string& texturePath, const std::string& model
   return ""; // Unable to find
 }
 
+/**
+ * @brief 
+ * 
+ * @param scene 
+ * @param materials 
+ * @param modelPath 
+ * @return size_t 
+ */
 size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const std::string modelPath)
 {
   uint32_t num_materials = scene->mNumMaterials;
@@ -152,6 +160,12 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
   return materials.size();
 }
 
+/**
+ * @brief 
+ * 
+ * @param ai_matrix 
+ * @return glm::mat4 
+ */
 glm::mat4 assimpToGlmMatrix(const aiMatrix4x4& ai_matrix)
 {
   glm::mat4 glm_matrix;
@@ -165,6 +179,15 @@ glm::mat4 assimpToGlmMatrix(const aiMatrix4x4& ai_matrix)
   return glm_matrix;
 }
 
+/**
+ * @brief 
+ * 
+ * @param root_node 
+ * @param materials 
+ * @param transformStack 
+ * @param objNode 
+ * @param aiScene 
+ */
 void parseNodes(aiNode* root_node, MaterialVector& materials, std::stack<glm::mat4>& transformStack, Group& objNode, const aiScene* aiScene)
 {
 
@@ -253,6 +276,13 @@ void parseNodes(aiNode* root_node, MaterialVector& materials, std::stack<glm::ma
   transformStack.pop();
 }
 
+/**
+ * @brief 
+ * 
+ * @param filename 
+ * @param objName 
+ * @return Group* 
+ */
 Group* vr::load3DModelFile(const std::string& filename, const std::string& objName)
 {
   std::string filepath = vr::FileSystem::findFile(filename);
@@ -295,7 +325,13 @@ Group* vr::load3DModelFile(const std::string& filename, const std::string& objNa
   return objNode;
 }
 
-
+/**
+ * @brief 
+ * 
+ * @tparam T 
+ * @param string 
+ * @return T 
+ */
 template<class T>
 T readValue(const std::string& string) {
   std::stringstream ss;
@@ -305,6 +341,12 @@ T readValue(const std::string& string) {
   return result;
 }
 
+/**
+ * @brief 
+ * 
+ * @param path 
+ * @return std::string 
+ */
 std::string pathToString(std::vector<std::string>& path)
 {
   std::string result;
@@ -314,6 +356,15 @@ std::string pathToString(std::vector<std::string>& path)
   return result;
 }
 
+/**
+ * @brief 
+ * 
+ * @tparam ContainerT 
+ * @param str 
+ * @param tokens 
+ * @param delimiters 
+ * @param trimEmpty 
+ */
 template < class ContainerT >
 void tokenize(const std::string& str, ContainerT& tokens,
   const std::string& delimiters = " ", bool trimEmpty = false)
@@ -339,6 +390,16 @@ void tokenize(const std::string& str, ContainerT& tokens,
   }
 }
 
+/**
+ * @brief Get the Vec object
+ * 
+ * @tparam T 
+ * @param vec 
+ * @param string 
+ * @param def 
+ * @return true 
+ * @return false 
+ */
 template<class T>
 bool getVec(T& vec, const std::string& string, const T& def = T())
 {
@@ -461,6 +522,14 @@ Group* parseObjNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
   return objNode;
 }
 
+std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node)
+{
+}
+
+std::vector<UpdateCallback*> parseNodeUpdate(rapidxml::xml_node<>* node)
+{
+}
+
 /**
  * @brief 
  * 
@@ -483,7 +552,6 @@ void vr::loadSceneGraph(rapidxml::xml_node<>* parent_node, Group* root, std::sha
     } else if(node_type == "geometry") {
 
       auto objNode = parseObjNode(curr_node, scene);
-      
       root->addChild(objNode);
 
     } else if(node_type == "transform") {
@@ -492,8 +560,8 @@ void vr::loadSceneGraph(rapidxml::xml_node<>* parent_node, Group* root, std::sha
       transformNode->addUpdateCallback(new RotateCallback(1, glm::vec3(0,1,0)));
 
       // --- Example that state works! --- //
-      std::shared_ptr<State> coolState = std::shared_ptr<State>(new State("green_lamp_state"));
-      std::shared_ptr<Light> light = std::shared_ptr<Light>(new Light);
+      std::shared_ptr<State> coolState(new State("green_lamp_state"));
+      std::shared_ptr<Light> light(new Light);
       light->diffuse = glm::vec4(0.2, 1, 0.3, 1);
       light->specular = glm::vec4(1, 0.1, 0.65, 0.4);
       light->position = glm::vec4(0.0, -2.0, 2.0, 0.0);
@@ -501,6 +569,18 @@ void vr::loadSceneGraph(rapidxml::xml_node<>* parent_node, Group* root, std::sha
       transformNode->setState(coolState);
 
       root->addChild(transformNode);
+    } else if(node_type == "state") {
+
+      auto newState = parseNodeState(curr_node);
+      root->setState(newState);
+
+    } else if(node_type == "update") {
+
+      auto updateCallbacks = parseNodeUpdate(curr_node);
+
+      for(auto c : updateCallbacks)
+        root->addUpdateCallback(c);
+
     } else {
       std::cerr << "Unknown node found: \'" << node_type << "\'" << std::endl;
     }
