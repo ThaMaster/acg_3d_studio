@@ -16,57 +16,30 @@ class State
         std::shared_ptr<State> merge(std::shared_ptr<State> s);
         void apply();
 
-        void setShader(std::shared_ptr<vr::Shader> s)
-        {
-            m_shader = s;
-        }
+        void setShader(std::shared_ptr<vr::Shader> s) { m_shader = s;}
+        std::shared_ptr<vr::Shader> getShader(void) { return m_shader; }
 
-        std::shared_ptr<vr::Shader> getShader(void)
-        {
-            return m_shader;
-        }
+        void setMaterial(std::shared_ptr<vr::Material> m) { m_material = m;}
+        std::shared_ptr<vr::Material> getMaterial(void) { return m_material; }
 
-        void setMaterial(std::shared_ptr<vr::Material> m)
-        {
-            m_material = m;
-        }
+        void addLight(std::shared_ptr<vr::Light> light) { m_lights.push_back(light); }
+        std::vector<std::shared_ptr<vr::Light>> getLights(void) { return m_lights; }
 
-        std::shared_ptr<vr::Material> getMaterial(void)
-        {
-            return m_material;
-        }
+        void setEnableLight(std::shared_ptr<bool> b) { m_enableLight = b; }
+        std::shared_ptr<bool> getEnableLight(void) { return m_enableLight; }
 
-        void addLight(std::shared_ptr<vr::Light> light)
-        {
-            m_lights.push_back(light);
-        }
+        void setCullFace(std::shared_ptr<bool> b) { m_cullFace = b; }
+        std::shared_ptr<bool> getCullFace(void) { return m_cullFace;}
 
-        std::vector<std::shared_ptr<vr::Light>> getLights(void)
-        {
-            return m_lights;
-        }
-
-        void setCullFace(bool b)
-        {
-            m_cullFace = b;
-        }
-
-        bool getCullFace(void)
-        {
-            return m_cullFace;
-        }
-
-        std::string getStateName()
-        {
-            return m_stateName;
-        }        
+        std::string getStateName() { return m_stateName;}        
     private:
         std::string m_stateName;
         std::shared_ptr<vr::Shader> m_shader;
         std::shared_ptr<vr::Material> m_material;
         std::vector<std::shared_ptr<vr::Texture>> m_texture;
         std::vector<std::shared_ptr<vr::Light>> m_lights;
-        bool m_cullFace = false;
+        std::shared_ptr<bool> m_cullFace;
+        std::shared_ptr<bool> m_enableLight;
 };
 
 #endif

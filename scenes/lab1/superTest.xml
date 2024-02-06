@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene>
+    <state enableLight="true"/>
     <transform name="trans1" translate="1 1 1" scale="0.4 0.4 0.4">
         <state>
-            <light position="0.0 -2.0 2.0 0.0" specular="1.0 0.1 0.65 0.4" diffuse="0.2 1.0 0.3 1.0"/>
-            <cullface enable="true"/>
+            <light position="0.0 -2.0 2.0 0.0" specular="1.0 1.0 1.0 1.0" diffuse="1.0 1.0 1.0 1.0"/>
         </state>
         <update>
             <rotate speed="1" axis="0 1 0"/>
-            <rotate speed="2" axis="0 0 1"/>
         </update>
         <geometry name="geo1" path="models/monkey.obj"/>
     </transform>

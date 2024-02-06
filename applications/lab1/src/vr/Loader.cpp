@@ -259,6 +259,7 @@ void parseNodes(aiNode* root_node, MaterialVector& materials, std::stack<glm::ma
     }
 
     loadedGeo->setObject2WorldMat(transformStack.top());
+    objNode.setObject2WorldMat(transformStack.top());
 
     if (!materials.empty()) {
       std::shared_ptr<State> materialState(new State(loadedGeo->getName() + "_mat_state"));
@@ -440,6 +441,12 @@ std::string getAttribute(rapidxml::xml_node<>* node, const std::string& attribut
   return attrib->value();
 }
 
+/**
+ * @brief 
+ * 
+ * @param node 
+ * @return std::shared_ptr<Light> 
+ */
 std::shared_ptr<Light> parseStateLight(rapidxml::xml_node<>* node)
 {
   std::string light_name = node->name();
@@ -465,6 +472,12 @@ std::shared_ptr<Light> parseStateLight(rapidxml::xml_node<>* node)
   return newLight;
 }
 
+/**
+ * @brief 
+ * 
+ * @param node 
+ * @return std::vector<UpdateCallback*> 
+ */
 std::vector<UpdateCallback*> parseNodeCallbacks(rapidxml::xml_node<>* node)
 {
   std::vector<UpdateCallback*> callbacks;
@@ -491,10 +504,25 @@ std::vector<UpdateCallback*> parseNodeCallbacks(rapidxml::xml_node<>* node)
   return callbacks;
 }
 
+/**
+ * @brief 
+ * 
+ * @param node 
+ * @return std::shared_ptr<State> 
+ */
 std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node)
 {
   std::string state_name = getAttribute(node, "name");
   std::shared_ptr<State> newState(new State(state_name));
+
+  std::string enableCullFace = getAttribute(node, "enableCullface");
+  if(!enableCullFace.empty())
+    newState->setCullFace(std::shared_ptr<bool>(new bool(enableCullFace == "1" || enableCullFace == "true")));
+
+  std::string enableLight = getAttribute(node, "enableLight");
+  if(!enableLight.empty())
+    newState->setEnableLight(std::shared_ptr<bool>(new bool(enableLight == "1" || enableLight == "true")));
+
   for(node = node->first_node(); node; node = node->next_sibling())
   {
     std::string node_type = node->name();
@@ -502,19 +530,7 @@ std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node)
         continue;
 
     if(node_type == "light") {
-
       newState->addLight(parseStateLight(node));
-
-    } else if(node_type == "cullface"){
-
-      std::string enable = getAttribute(node, "enable");
-
-      if(enable == "1" || enable == "true")
-        newState->setCullFace(true);
-      else if(enable == "0" || enable == "false")
-        newState->setCullFace(false);
-      else
-        throw std::runtime_error("cullface(" + state_name + "). Invalid bool.\n ");
     } else {
       std::cout << "Unknow node: \'"<< node->name() << "\'" << std::endl;
     }
@@ -522,6 +538,12 @@ std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node)
   return newState;
 }
 
+/**
+ * @brief 
+ * 
+ * @param graph_node 
+ * @param xml_node 
+ */
 void addStateAndUpdate(Node& graph_node, rapidxml::xml_node<>* xml_node)
 {
   rapidxml::xml_node<>* stateNode = xml_node->first_node("state");
@@ -595,7 +617,7 @@ Group* parseGroupNode(rapidxml::xml_node<>* node,std::shared_ptr<Scene>& scene)
 }
 
 /**
- * @brief 
+ * @brief Parses 
  * 
  * @param node 
  * @param scene 
@@ -624,6 +646,24 @@ Group* parseObjNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
   return objNode;
 }
 
+LOD* parseLodNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
+{
+  std::string node_name = getAttribute(node, "name");
+  auto lodNode = new LOD(node_name);
+  float maxDistance = atof(getAttribute(node, "maxDistance").c_str());
+  lodNode->setMaxRenderDistance(maxDistance);
+  std::string lodChildType;
+  for(node = node->first_node(); node; node = node->next_sibling())
+  {
+    lodChildType = node->name();
+    if (!node || node->type() == rapidxml::node_comment || node->type() == rapidxml::node_doctype || lodChildType != "geometry")
+        continue;
+    auto object = parseObjNode(node, scene);
+    lodNode->addObject(object);
+  }
+  return lodNode;
+}
+
 /**
  * @brief 
  * 
@@ -640,6 +680,7 @@ void vr::loadSceneGraph(rapidxml::xml_node<>* parent_node, Group* root, std::sha
     std::string node_type = curr_node->name();
 
     if(node_type == "group") {
+      
       auto groupNode = parseGroupNode(curr_node, scene);
       root->addChild(groupNode);
 
@@ -652,7 +693,11 @@ void vr::loadSceneGraph(rapidxml::xml_node<>* parent_node, Group* root, std::sha
 
       auto transformNode = parseTransformNode(curr_node, scene);
       root->addChild(transformNode);
+      
+    } else if(node_type == "lod") {
 
+      auto lodNode = parseLodNode(curr_node, scene);
+      root->addChild(lodNode);
     }
   }
 }
@@ -717,4 +762,7 @@ bool vr::loadSceneFile(const std::string& sceneFile, std::shared_ptr<Scene>& sce
   }
 
   return true;
-}
+}void addObject(Group*);
+        
+        void setMaxRenderDistance(float dist);
+        float getMaxRenderDistance(void);

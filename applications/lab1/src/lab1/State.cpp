@@ -11,6 +11,7 @@ std::shared_ptr<State> State::merge(std::shared_ptr<State> s)
         mergedState->setMaterial(m_material);
         mergedState->setShader(m_shader);
         mergedState->setCullFace(m_cullFace);
+        mergedState->setEnableLight(m_enableLight);
         for(auto l : m_lights)
             mergedState->addLight(l);
 
@@ -39,30 +40,37 @@ std::shared_ptr<State> State::merge(std::shared_ptr<State> s)
     else 
         mergedState->setCullFace(m_cullFace);
 
+    if(s->getEnableLight()) 
+        mergedState->setEnableLight(s->getEnableLight());
+    else 
+        mergedState->setEnableLight(m_enableLight);
+
     return mergedState;
 }
 
 void State::apply() 
 {
-
     if(m_material)
         m_material->apply(m_shader);
 
     m_shader->setInt("numberOfLights", (GLint)m_lights.size());
 
     size_t i = 0;
-    if(m_lights.size() != 0)
-    {
-        for(auto l : m_lights)
+    if(m_enableLight) {
+        if(m_lights.size() != 0 && *m_enableLight)
         {
-            l->apply(m_shader, i);
-            i++;
+            for(auto l : m_lights)
+            {
+                l->apply(m_shader, i);
+                i++;
+            }
         }
     }
 
-    if(m_cullFace)
-        glEnable(GL_CULL_FACE);
-    else
-        glDisable(GL_CULL_FACE);
-    
+    if(m_cullFace) {
+        if(*m_cullFace)
+            glEnable(GL_CULL_FACE);
+        else
+            glDisable(GL_CULL_FACE);
+    }
 }

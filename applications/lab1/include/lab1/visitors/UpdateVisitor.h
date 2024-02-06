@@ -11,6 +11,7 @@ class UpdateVisitor : public NodeVisitor
         void visit(Group& g) override;
         void visit(Transform& g) override;
         void visit(Geometry& g) override;  
+        void visit(LOD& g) override;  
 
     private:
 };

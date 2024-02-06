@@ -10,6 +10,7 @@ Scene::Scene() : m_uniform_numberOfLights(-1)
   m_camera = std::shared_ptr<Camera>(new Camera);
   setRootGroup(new Group("root"));
   getRootGroup()->setState(std::shared_ptr<State>(new State("root_state")));
+  getRootGroup()->getState()->setEnableLight(std::shared_ptr<bool>(new bool(true)));
   m_renderVisitor = new RenderVisitor();
   m_updateVisitor = new UpdateVisitor();
 }
@@ -132,6 +133,7 @@ Group* Scene::createDefaultScene()
 
 void Scene::render()
 {
+  m_renderVisitor->setCameraPos(getCamera()->getPosition());
   m_renderVisitor->visit(*m_rootGroup);
   m_updateVisitor->visit(*m_rootGroup);
 }

@@ -18,8 +18,11 @@ class Group : public Node
 
         std::vector<Node*> getChildren() { return m_children; }
 
-    private:
+        glm::mat4& getObject2WorldMat() { return m_object2world; }
+        void setObject2WorldMat(glm::mat4& m) { m_object2world = m; }
 
+    private:
+        glm::mat4 m_object2world;
         std::vector<Node*> m_children;
 };
 

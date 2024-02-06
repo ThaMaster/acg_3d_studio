@@ -295,6 +295,30 @@ src/lab1/nodes/Group.cpp.s:
 	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/Group.cpp.s
 .PHONY : src/lab1/nodes/Group.cpp.s
 
+src/lab1/nodes/LOD.o: src/lab1/nodes/LOD.cpp.o
+.PHONY : src/lab1/nodes/LOD.o
+
+# target to build an object file
+src/lab1/nodes/LOD.cpp.o:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/LOD.cpp.o
+.PHONY : src/lab1/nodes/LOD.cpp.o
+
+src/lab1/nodes/LOD.i: src/lab1/nodes/LOD.cpp.i
+.PHONY : src/lab1/nodes/LOD.i
+
+# target to preprocess a source file
+src/lab1/nodes/LOD.cpp.i:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/LOD.cpp.i
+.PHONY : src/lab1/nodes/LOD.cpp.i
+
+src/lab1/nodes/LOD.s: src/lab1/nodes/LOD.cpp.s
+.PHONY : src/lab1/nodes/LOD.s
+
+# target to generate assembly for a file
+src/lab1/nodes/LOD.cpp.s:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab1/CMakeFiles/lab1.dir/build.make applications/lab1/CMakeFiles/lab1.dir/src/lab1/nodes/LOD.cpp.s
+.PHONY : src/lab1/nodes/LOD.cpp.s
+
 src/lab1/nodes/Transform.o: src/lab1/nodes/Transform.cpp.o
 .PHONY : src/lab1/nodes/Transform.o
 
@@ -731,6 +755,9 @@ help:
 	@echo "... src/lab1/nodes/Group.o"
 	@echo "... src/lab1/nodes/Group.i"
 	@echo "... src/lab1/nodes/Group.s"
+	@echo "... src/lab1/nodes/LOD.o"
+	@echo "... src/lab1/nodes/LOD.i"
+	@echo "... src/lab1/nodes/LOD.s"
 	@echo "... src/lab1/nodes/Transform.o"
 	@echo "... src/lab1/nodes/Transform.i"
 	@echo "... src/lab1/nodes/Transform.s"

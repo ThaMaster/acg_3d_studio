@@ -2,6 +2,7 @@
 #include "lab1/nodes/Group.h"
 #include "lab1/nodes/Transform.h"
 #include "lab1/nodes/Geometry.h"
+#include "lab1/nodes/LOD.h"
 
 void UpdateVisitor::visit(Group& group) 
 {
@@ -33,10 +34,22 @@ void UpdateVisitor::visit(Transform& trans)
 
 void UpdateVisitor::visit(Geometry& geo) 
 {
+    std::cout << "hello geo" << std::endl;
     std::vector<std::shared_ptr<UpdateCallback>> callbackVector = geo.getUpdateCallbacks();
     if(callbackVector.size() != 0)
     {
         for(auto uc : callbackVector )
             uc->update(geo);
+    }
+    std::cout << "bye geo" << std::endl;
+}
+
+void UpdateVisitor::visit(LOD& lod) 
+{
+    std::vector<std::shared_ptr<UpdateCallback>> callbackVector = lod.getUpdateCallbacks();
+    if(callbackVector.size() != 0)
+    {
+        for(auto uc : callbackVector )
+            uc->update(lod);
     }
 }

@@ -8,6 +8,7 @@
 #include "lab1/nodes/Transform.h"
 #include "lab1/nodes/Group.h"
 #include "lab1/nodes/Geometry.h"
+#include "lab1/nodes/LOD.h"
 
 class RotateCallback : public UpdateCallback
 {
@@ -21,6 +22,7 @@ class RotateCallback : public UpdateCallback
         
         virtual void update(Group& group_node) override {}
         virtual void update(Geometry& geo_node) override {}
+        virtual void update(LOD& lod_node) override {}
     private:
         glm::vec3 axis;
         float angleInDegrees;

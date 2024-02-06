@@ -2,6 +2,8 @@
 #include "lab1/nodes/Group.h"
 #include "lab1/nodes/Transform.h"
 #include "lab1/nodes/Geometry.h"
+#include "lab1/nodes/LOD.h"
+
 
 void RenderVisitor::visit(Group& group)
 {
@@ -41,4 +43,13 @@ void RenderVisitor::visit(Geometry& geo)
     }
     geo.render(m_stateStack.top()->getShader(), m_transformStack.top());
     m_stateStack.pop();
+}
+
+void RenderVisitor::visit(LOD& lod)
+{
+    float distToCamera = lod.getDistanceToCamera(glm::vec4(m_camPos, 1.0f));
+    auto selectedObj = lod.getObjectToRender(distToCamera);
+    if(selectedObj != nullptr) {
+        selectedObj->accept(*this);
+    }
 }
