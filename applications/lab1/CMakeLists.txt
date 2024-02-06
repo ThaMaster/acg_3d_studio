@@ -9,7 +9,7 @@ FILE(GLOB_RECURSE SOURCE *.cpp *.c *.h)
 #FILE(GLOB SOURCE_EXTRA ../*.cpp ../*.h)
 
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/include")
-
+INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/../../installed/include")
 
 
 # Create an executable from the sources

@@ -22,8 +22,8 @@
 #include <rapidxml/rapidxml_utils.hpp>
 
 #include "lab1/visitors/RenderVisitor.h"
-
 #include "lab1/callbacks/RotateCallback.h"
+
 #include <vr/Light.h>
 
 using namespace vr;
