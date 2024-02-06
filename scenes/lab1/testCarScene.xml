@@ -3,28 +3,28 @@
     <transform name="trans1" translate="0 0 0">
         <geometry name="geo1" path="models/porsche_911_gt3.glb"/>
     </transform>
-    <transform name="trans2" translate="1 0 0">
+    <transform name="trans2" translate="5 0 0">
         <geometry name="geo2" path="models/porsche_911_gt3.glb"/>
     </transform>
-    <transform name="trans3" translate="0 1 0">
+    <transform name="trans3" translate="10 0 0">
         <geometry name="geo3" path="models/porsche_911_gt3.glb"/>
     </transform>
-    <transform name="trans4" translate="0 0 1">
+    <transform name="trans4" translate="15 0 0">
         <geometry name="geo4" path="models/porsche_911_gt3.glb"/>
     </transform>
-    <transform name="trans5" translate="1 1 0">
+    <transform name="trans5" translate="20 0 0">
         <geometry name="geo5" path="models/porsche_911_gt3.glb"/>
     </transform>
-    <transform name="trans6" translate="1 0 1">
+    <transform name="trans6" translate="25 0 0">
         <geometry name="geo6" path="models/porsche_911_gt3.glb"/>
     </transform>
-    <transform name="trans7" translate="0 1 1">
+    <transform name="trans7" translate="30 0 0">
         <geometry name="geo7" path="models/porsche_911_gt3.glb"/>
     </transform>
-    <transform name="trans8" translate="1 1 1">
+    <transform name="trans8" translate="35 0 0">
         <geometry name="geo8" path="models/porsche_911_gt3.glb"/>
     </transform>
-    <transform name="trans9" translate="1 2 1">
+    <transform name="trans9" translate="40 0 0">
         <geometry name="geo9" path="models/porsche_911_gt3.glb"/>
     </transform>
 </scene>

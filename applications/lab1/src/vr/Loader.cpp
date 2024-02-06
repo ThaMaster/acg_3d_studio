@@ -18,8 +18,6 @@
 #include <iostream>
 
 #include <fstream>
-#include <rapidxml/rapidxml.hpp>
-#include <rapidxml/rapidxml_utils.hpp>
 
 #include "lab1/visitors/RenderVisitor.h"
 #include "lab1/callbacks/RotateCallback.h"
@@ -362,6 +360,13 @@ bool getVec(T& vec, const std::string& string, const T& def = T())
   return true;
 }
 
+/**
+ * @brief Get the Attribute object
+ * 
+ * @param node 
+ * @param attribute 
+ * @return std::string 
+ */
 std::string getAttribute(rapidxml::xml_node<>* node, const std::string& attribute)
 {
   if (!node)
@@ -374,7 +379,13 @@ std::string getAttribute(rapidxml::xml_node<>* node, const std::string& attribut
   return attrib->value();
 }
 
-Transform* parseTransformNode(rapidxml::xml_node<>* node)
+/**
+ * @brief 
+ * 
+ * @param node 
+ * @return Transform* 
+ */
+Transform* parseTransformNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
 {
   std::string node_name = getAttribute(node, "name");
   auto transformNode = new Transform(node_name);
@@ -403,16 +414,32 @@ Transform* parseTransformNode(rapidxml::xml_node<>* node)
   t = glm::scale(t, s_vec);
   transformNode->setTransformMat(t);
 
+  loadSceneGraph(node->first_node(), transformNode, scene);
+
   return transformNode;
 }
 
-Group* parseGroupNode(rapidxml::xml_node<>* node)
+/**
+ * @brief Function for parsing a single Group node from a given XML node.
+ * 
+ * @param node The XML node.
+ * @return Group* 
+ */
+Group* parseGroupNode(rapidxml::xml_node<>* node,std::shared_ptr<Scene>& scene)
 {
   std::string node_name = getAttribute(node, "name");
   auto groupNode = new Group(node_name);
+  loadSceneGraph(node->first_node(), groupNode, scene);
   return groupNode;
 }
 
+/**
+ * @brief 
+ * 
+ * @param node 
+ * @param scene 
+ * @return Group* 
+ */
 Group* parseObjNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
 {
   std::string node_name = getAttribute(node, "name");
@@ -434,7 +461,14 @@ Group* parseObjNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
   return objNode;
 }
 
-void loadSceneGraph(rapidxml::xml_node<>* parent_node, Group* root, std::shared_ptr<Scene>& scene) {
+/**
+ * @brief 
+ * 
+ * @param parent_node 
+ * @param root 
+ * @param scene 
+ */
+void vr::loadSceneGraph(rapidxml::xml_node<>* parent_node, Group* root, std::shared_ptr<Scene>& scene) {
   if (!parent_node || parent_node->type() == rapidxml::node_comment || parent_node->type() == rapidxml::node_doctype)
         return;
   
@@ -443,8 +477,7 @@ void loadSceneGraph(rapidxml::xml_node<>* parent_node, Group* root, std::shared_
     std::string node_type = curr_node->name();
 
     if(node_type == "group") {
-      auto groupNode = parseGroupNode(curr_node);
-      loadSceneGraph(curr_node->first_node(), groupNode, scene);
+      auto groupNode = parseGroupNode(curr_node, scene);
       root->addChild(groupNode);
 
     } else if(node_type == "geometry") {
@@ -455,7 +488,7 @@ void loadSceneGraph(rapidxml::xml_node<>* parent_node, Group* root, std::shared_
 
     } else if(node_type == "transform") {
 
-      auto transformNode = parseTransformNode(curr_node);
+      auto transformNode = parseTransformNode(curr_node, scene);
       transformNode->addUpdateCallback(new RotateCallback(1, glm::vec3(0,1,0)));
 
       // --- Example that state works! --- //
@@ -466,14 +499,22 @@ void loadSceneGraph(rapidxml::xml_node<>* parent_node, Group* root, std::shared_
       light->position = glm::vec4(0.0, -2.0, 2.0, 0.0);
       coolState->addLight(light);
       transformNode->setState(coolState);
-      // --- Example that state works! --- //
-      
-      loadSceneGraph(curr_node->first_node(), transformNode, scene);
+
       root->addChild(transformNode);
+    } else {
+      std::cerr << "Unknown node found: \'" << node_type << "\'" << std::endl;
     }
   }
 }
 
+/**
+ * @brief 
+ * 
+ * @param sceneFile 
+ * @param scene 
+ * @return true 
+ * @return false 
+ */
 bool vr::loadSceneFile(const std::string& sceneFile, std::shared_ptr<Scene>& scene)
 {
   std::string filepath = sceneFile;
