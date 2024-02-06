@@ -20,7 +20,6 @@ class NodeVisitor
         virtual void visit(Geometry&) = 0;
         virtual void visit(LOD&) = 0;
 
-
     private:
         
 };

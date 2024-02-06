@@ -57,6 +57,13 @@ It is worth mentioning that this table is subject to change during development o
 
 This section details the changes that occurs with each session of working on this project. After each programming session a new list with all the things that have been done and other information will be posted. This is to have a clear view of what has been done and what is needed to be fixed/added to the project.
 
+### Change log - 2024-02-06
+
+- Implemented the *Level of Detail (LOD)* node. You supply the node with geometries that it will select from depending on the distance from the camera.
+- The *LOD* node only contains *Group* nodes that represents objects.
+- Added so that scenes now can be completely created from the scene XML files.
+- States and *UpdateCallbacks* can be created in the XML files.
+
 ### Change log - 2024-02-05
 
 - The state will contains the actual light objects.
@@ -114,6 +121,15 @@ This section details the changes that occurs with each session of working on thi
 
 This section details what is to be done in the next programming session. This section is an attempt at keeping a good focus on what to work on the next time a programming session comences.
 
+### TODO - 2024-02-06
+
+- See over what the nodes should be able to contain, example "should the *LOD* node contain *States* or *UpdateCallbacks*?
+- See over that everything works and test more scenes.
+- Create additional *UpdateCallbacks*.
+- Refactor the code.
+- Comment the code.
+- Write the report.
+
 ### TODO - 2024-02-05
 
 - Implement the *Level of Detail (LOD)*. Maybe upload every object file to the buffer and use the *indexOffset* in **glDrawElements()** to determine which *LOD* to render.
@@ -121,7 +137,7 @@ This section details what is to be done in the next programming session. This se
 - Create additional *UpdateCallback* functions.
 - Implement more functionality with the parsing of the XML files.
 - Comment the code!
-- Write report.
+- Write the report.
 
 ### TODO - 2024-02-04
 
