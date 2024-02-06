@@ -46,12 +46,12 @@ class State
             return m_lights;
         }
 
-        void setCullFace(std::shared_ptr<bool> b)
+        void setCullFace(bool b)
         {
             m_cullFace = b;
         }
 
-        std::shared_ptr<bool> getCullFace(void)
+        bool getCullFace(void)
         {
             return m_cullFace;
         }
@@ -66,7 +66,7 @@ class State
         std::shared_ptr<vr::Material> m_material;
         std::vector<std::shared_ptr<vr::Texture>> m_texture;
         std::vector<std::shared_ptr<vr::Light>> m_lights;
-        std::shared_ptr<bool> m_cullFace;
+        bool m_cullFace = false;
 };
 
 #endif

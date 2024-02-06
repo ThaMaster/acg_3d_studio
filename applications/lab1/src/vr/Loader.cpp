@@ -440,6 +440,102 @@ std::string getAttribute(rapidxml::xml_node<>* node, const std::string& attribut
   return attrib->value();
 }
 
+std::shared_ptr<Light> parseStateLight(rapidxml::xml_node<>* node)
+{
+  std::string light_name = node->name();
+  std::shared_ptr<Light> newLight(new Light);
+  std::string diffuse = getAttribute(node, "diffuse");
+  glm::vec4 d_vec;
+  if (!getVec<glm::vec4>(d_vec, diffuse))
+    throw std::runtime_error("Light(" + light_name + "): Invalid diffuse value.\n");
+
+  std::string specular = getAttribute(node, "specular");
+  glm::vec4 s_vec;
+  if (!getVec<glm::vec4>(s_vec, specular))
+    throw std::runtime_error("Light(" + light_name  + "): Invalid specular value.\n");
+
+  std::string position = getAttribute(node, "position");
+  glm::vec4 p_vec;
+  if (!getVec<glm::vec4>(p_vec, position))
+    throw std::runtime_error("Light(" + light_name  + "). Invalid position.\n ");
+  
+  newLight->diffuse = d_vec;
+  newLight->specular = s_vec;
+  newLight->position = p_vec;
+  return newLight;
+}
+
+std::vector<UpdateCallback*> parseNodeCallbacks(rapidxml::xml_node<>* node)
+{
+  std::vector<UpdateCallback*> callbacks;
+  for(node = node->first_node(); node; node = node->next_sibling())
+  {
+    if (!node || node->type() == rapidxml::node_comment || node->type() == rapidxml::node_doctype)
+        continue;
+
+    std::string node_type = node->name();
+    if(node_type == "rotate") {
+      
+      float amount = atof(getAttribute(node, "speed").c_str());
+
+      std::string rotate = getAttribute(node, "axis");
+      glm::vec3 axis;
+      if (!getVec<glm::vec3>(axis, rotate))
+        throw std::runtime_error("Rotate(" + node_type + "): Invalid rotation axis.\n");
+      
+      callbacks.push_back(new RotateCallback(amount, axis));
+    } else {
+      std::cout << "Unknown node type: \'" << node_type << "\'" << std::endl;
+    }
+  }
+  return callbacks;
+}
+
+std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node)
+{
+  std::string state_name = getAttribute(node, "name");
+  std::shared_ptr<State> newState(new State(state_name));
+  for(node = node->first_node(); node; node = node->next_sibling())
+  {
+    std::string node_type = node->name();
+    if (!node || node->type() == rapidxml::node_comment || node->type() == rapidxml::node_doctype)
+        continue;
+
+    if(node_type == "light") {
+
+      newState->addLight(parseStateLight(node));
+
+    } else if(node_type == "cullface"){
+
+      std::string enable = getAttribute(node, "enable");
+
+      if(enable == "1" || enable == "true")
+        newState->setCullFace(true);
+      else if(enable == "0" || enable == "false")
+        newState->setCullFace(false);
+      else
+        throw std::runtime_error("cullface(" + state_name + "). Invalid bool.\n ");
+    } else {
+      std::cout << "Unknow node: \'"<< node->name() << "\'" << std::endl;
+    }
+  }
+  return newState;
+}
+
+void addStateAndUpdate(Node& graph_node, rapidxml::xml_node<>* xml_node)
+{
+  rapidxml::xml_node<>* stateNode = xml_node->first_node("state");
+  if(stateNode) 
+    graph_node.setState(parseNodeState(stateNode));
+
+  rapidxml::xml_node<>* updateNode = xml_node->first_node("update");
+  if(updateNode) {
+    auto callbackVector = parseNodeCallbacks(updateNode);
+    for(auto callback : callbackVector)
+      graph_node.addUpdateCallback(callback);
+  }
+}
+
 /**
  * @brief 
  * 
@@ -477,6 +573,7 @@ Transform* parseTransformNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>
 
   loadSceneGraph(node->first_node(), transformNode, scene);
 
+  addStateAndUpdate(*transformNode, node);
   return transformNode;
 }
 
@@ -491,6 +588,9 @@ Group* parseGroupNode(rapidxml::xml_node<>* node,std::shared_ptr<Scene>& scene)
   std::string node_name = getAttribute(node, "name");
   auto groupNode = new Group(node_name);
   loadSceneGraph(node->first_node(), groupNode, scene);
+
+  addStateAndUpdate(*groupNode, node);
+  
   return groupNode;
 }
 
@@ -518,16 +618,10 @@ Group* parseObjNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
   }
   if (!objNode)
     std::cerr << "Unable to load object \'" << node_name << "\' path: " << geo_path << std::endl;
-    
+  
+  addStateAndUpdate(*objNode, node);
+  
   return objNode;
-}
-
-std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node)
-{
-}
-
-std::vector<UpdateCallback*> parseNodeUpdate(rapidxml::xml_node<>* node)
-{
 }
 
 /**
@@ -557,32 +651,8 @@ void vr::loadSceneGraph(rapidxml::xml_node<>* parent_node, Group* root, std::sha
     } else if(node_type == "transform") {
 
       auto transformNode = parseTransformNode(curr_node, scene);
-      transformNode->addUpdateCallback(new RotateCallback(1, glm::vec3(0,1,0)));
-
-      // --- Example that state works! --- //
-      std::shared_ptr<State> coolState(new State("green_lamp_state"));
-      std::shared_ptr<Light> light(new Light);
-      light->diffuse = glm::vec4(0.2, 1, 0.3, 1);
-      light->specular = glm::vec4(1, 0.1, 0.65, 0.4);
-      light->position = glm::vec4(0.0, -2.0, 2.0, 0.0);
-      coolState->addLight(light);
-      transformNode->setState(coolState);
-
       root->addChild(transformNode);
-    } else if(node_type == "state") {
 
-      auto newState = parseNodeState(curr_node);
-      root->setState(newState);
-
-    } else if(node_type == "update") {
-
-      auto updateCallbacks = parseNodeUpdate(curr_node);
-
-      for(auto c : updateCallbacks)
-        root->addUpdateCallback(c);
-
-    } else {
-      std::cerr << "Unknown node found: \'" << node_type << "\'" << std::endl;
     }
   }
 }
