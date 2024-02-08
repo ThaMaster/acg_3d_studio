@@ -54,7 +54,6 @@ bool Application::initResources(const std::string& model_filename, const std::st
     m_sceneRoot->getRootGroup()->addChild(objNode);
   }
   
-
   std::shared_ptr<Light> light1 = std::shared_ptr<Light>(new Light);
   light1->diffuse = glm::vec4(1, 1, 1, 1);
   light1->specular = glm::vec4(1, 1, 1, 1);
@@ -94,8 +93,6 @@ void Application::initView()
   position = glm::vec4(eye + glm::vec3(-8, 2, 0), 1);
   light->position = position;
 
-  m_sceneRoot->resetTransform();
-
   // Set the position/direction of the camera
   getCamera()->set(eye, direction, glm::vec3(0.0, 1.0, 0.0));
   getCamera()->setDefaultView(eye, direction, glm::vec3(0.0, 1.0, 0.0));
@@ -116,15 +113,12 @@ void Application::render(GLFWwindow* window)
   glClearColor(m_clearColor[0], m_clearColor[1], m_clearColor[2], m_clearColor[3]);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  m_sceneRoot->applyCamera();
   m_sceneRoot->render();
   m_fpsCounter->render(window);
 }
 
 void Application::update(GLFWwindow* window)
 {
-  m_sceneRoot->useProgram();
-
   render(window);
 }
 

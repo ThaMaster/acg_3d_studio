@@ -104,7 +104,16 @@ Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath, c
 
 void Shader::use()
 {
-  glUseProgram(m_programID);
+  GLint prog = 0;
+
+  glGetIntegerv(GL_CURRENT_PROGRAM, &prog);
+  if (prog != m_programID) {
+      /* std::cout << "\nSwitching programs!" << std::endl;
+      std::cout << "From: " << prog << std::endl;
+      std::cout << "To: " << m_programID << "\n" << std::endl; */
+
+      glUseProgram(m_programID);
+  }
 }
 
 GLint getLocation(GLuint program, const char* name)

@@ -12,12 +12,13 @@ Scene::Scene() : m_uniform_numberOfLights(-1)
   getRootGroup()->setState(std::shared_ptr<State>(new State("root_state")));
   getRootGroup()->getState()->setEnableLight(std::shared_ptr<bool>(new bool(true)));
   m_renderVisitor = new RenderVisitor();
+  m_renderVisitor->setCamera(m_camera);
   m_updateVisitor = new UpdateVisitor();
 }
 
 bool Scene::initShaders(const std::string& vshader_filename, const std::string& fshader_filename)
 {
-  auto shader = std::make_shared<vr::Shader>(vshader_filename, fshader_filename);
+  auto shader = std::shared_ptr<vr::Shader>(new Shader(vshader_filename, fshader_filename));
   if (!shader->valid())
     return false;
   getRootGroup()->getState()->setShader(shader);
@@ -35,20 +36,6 @@ std::shared_ptr<Camera> Scene::getCamera()
 }
 
 Scene::~Scene() {}
-
-void Scene::applyCamera()
-{
-  m_camera->apply(getRootGroup()->getState()->getShader());
-}
-
-void Scene::useProgram()
-{
-  getRootGroup()->getState()->getShader()->use();
-}
-
-void Scene::resetTransform()
-{
-}
 
 Geometry* Scene::buildGeometry(std::string geo_name, std::vector<glm::vec3> vertices, std::vector<GLshort> indices, std::vector<glm::vec3> normals, std::vector<glm::vec2> texCoords)
 {
@@ -131,7 +118,6 @@ Group* Scene::createDefaultScene()
 
 void Scene::render()
 {
-  m_renderVisitor->setCameraPos(getCamera()->getPosition());
   m_renderVisitor->visit(*m_rootGroup);
   m_updateVisitor->visit(*m_rootGroup);
 }

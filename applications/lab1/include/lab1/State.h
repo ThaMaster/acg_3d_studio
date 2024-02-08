@@ -32,6 +32,8 @@ class State
         std::shared_ptr<bool> getCullFace(void) { return m_cullFace;}
 
         std::string getStateName() { return m_stateName;}  
+
+        void setShaderSwitch(bool b) { m_shaderSwitch = b; }
         bool getShaderSwitch() { return m_shaderSwitch; }      
 
     private:
@@ -42,7 +44,7 @@ class State
         std::vector<std::shared_ptr<vr::Light>> m_lights;
         std::shared_ptr<bool> m_cullFace;
         std::shared_ptr<bool> m_enableLight;
-        bool m_shaderSwitch = false;
+        bool m_shaderSwitch;
 };
 
 #endif

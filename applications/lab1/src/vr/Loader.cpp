@@ -581,8 +581,6 @@ void addStateAndUpdate(Node& graph_node, rapidxml::xml_node<>* xml_node, std::sh
     for(auto callback : callbackVector)
       graph_node.addUpdateCallback(callback);
   }
-  std::cout << "done state and update" << std::endl;
-
 }
 
 /**
@@ -796,7 +794,4 @@ bool vr::loadSceneFile(const std::string& sceneFile, std::shared_ptr<Scene>& sce
   }
 
   return true;
-}void addObject(Group*);
-        
-        void setMaxRenderDistance(float dist);
-        float getMaxRenderDistance(void);
+}

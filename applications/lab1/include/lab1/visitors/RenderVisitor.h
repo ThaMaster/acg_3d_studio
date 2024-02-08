@@ -5,6 +5,7 @@
 #include "NodeVisitor.h"
 #include "vr/Shader.h"
 #include "lab1/State.h"
+#include "vr/Camera.h"
 
 class RenderVisitor : public NodeVisitor
 {
@@ -19,13 +20,13 @@ class RenderVisitor : public NodeVisitor
         void visit(Geometry& g) override;
         void visit(LOD& g) override;
 
-        void setCameraPos(glm::vec3 cameraPos) { m_camPos = cameraPos; }
         std::stack<std::shared_ptr<State>> m_stateStack;
 
-        float calcCameraDistance(glm::vec3 position);
+        void setCamera(std::shared_ptr<vr::Camera> c) { m_camera = c; }
+        std::shared_ptr<vr::Camera> getCamera(void) { return m_camera; }
 
     private:
-        glm::vec3 m_camPos;
+        std::shared_ptr<vr::Camera> m_camera;
         std::stack<glm::mat4> m_transformStack;
 };
 

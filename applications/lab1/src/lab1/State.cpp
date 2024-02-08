@@ -1,5 +1,6 @@
 #include "lab1/State.h"
 #include <iostream>
+
 State::State(const std::string& name) : m_stateName(name) {}
 State::~State() {}
 
@@ -23,11 +24,9 @@ std::shared_ptr<State> State::merge(std::shared_ptr<State> s)
     else 
         mergedState->setMaterial(m_material);
 
-    if(s->getShader() != nullptr) {
+    if(s->getShader()) {
         mergedState->setShader(s->getShader());
-        m_shaderSwitch = true;
     } else {
-        //std::cout << "old shader found!" << std::endl;
         mergedState->setShader(m_shader);
     }
     
@@ -51,12 +50,9 @@ std::shared_ptr<State> State::merge(std::shared_ptr<State> s)
 }
 
 void State::apply() 
-{    
-    std::cout << "Using vshader: " << m_shader->vPath << std::endl;
-    std::cout << "Using fshader: " << m_shader->fPath << std::endl;
-
+{
     m_shader->use();
-   
+
     if(m_material)
         m_material->apply(m_shader);
 

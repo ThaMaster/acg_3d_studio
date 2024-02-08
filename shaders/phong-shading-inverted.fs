@@ -56,7 +56,6 @@ void main()
   // initialize total lighting with ambient lighting
   vec3 totalLighting = vec3(scene_ambient) * vec3(material.ambient);
 
-
   // for all light sources
   for (int index = 0; index < numberOfLights; index++) 
   {
@@ -98,5 +97,5 @@ void main()
     totalLighting = totalLighting * diffuseTex.rgb;
   }
 
-  color = vec4(totalLighting, 1.0);
+  color = vec4(1.0-totalLighting.r, 1.0-totalLighting.g, 1.0-totalLighting.b, 1);
 }

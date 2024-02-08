@@ -51,21 +51,6 @@ namespace vr
     ~Scene();
 
     /**
-    Apply the camera
-    */
-    void applyCamera();
-
-    /**
-    Use the shader program
-    */
-    void useProgram();
-    
-    /**
-    Reset all nodes transform to its initial value
-    */
-    void resetTransform();
-
-    /**
     Render the whole scene
     */
     void render();

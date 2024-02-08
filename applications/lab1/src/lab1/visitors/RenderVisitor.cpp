@@ -35,11 +35,12 @@ void RenderVisitor::visit(Geometry& geo)
 {
     m_stateStack.push(m_stateStack.top()->merge(geo.getState()));
     auto state = m_stateStack.top();
+
     state->apply();
-    
-    geo.initShaders(state->getShader());
+    m_camera->apply(state->getShader());
 
     if(!geo.beenVisited) {
+        geo.initShaders(state->getShader());
         geo.upload();
         geo.beenVisited = true;
     }
@@ -50,7 +51,7 @@ void RenderVisitor::visit(Geometry& geo)
 
 void RenderVisitor::visit(LOD& lod)
 {
-    float distToCamera = lod.getDistanceToCamera(glm::vec4(m_camPos, 1.0f));
+    float distToCamera = lod.getDistanceToCamera(glm::vec4(m_camera->getPosition(), 1.0f));
     auto selectedObj = lod.getObjectToRender(distToCamera);
     if(selectedObj != nullptr) {
         selectedObj->accept(*this);

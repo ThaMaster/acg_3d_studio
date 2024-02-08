@@ -41,7 +41,7 @@ const int MaxNumberOfLights = 10;
 uniform LightSource lights[MaxNumberOfLights];
 
 // Some hard coded default ambient lighting
-vec4 scene_ambient = vec4(0.2, 0.2, 0.2, 1.0);
+vec4 scene_ambient = vec4(0.0, 1.0, 0.0, 1.0);
 
 // The front surface material
 uniform Material material;
@@ -55,7 +55,6 @@ void main()
 
   // initialize total lighting with ambient lighting
   vec3 totalLighting = vec3(scene_ambient) * vec3(material.ambient);
-
 
   // for all light sources
   for (int index = 0; index < numberOfLights; index++) 
@@ -98,5 +97,5 @@ void main()
     totalLighting = totalLighting * diffuseTex.rgb;
   }
 
-  color = vec4(totalLighting, 1.0);
+  color = vec4(totalLighting, 1);
 }
