@@ -57,6 +57,17 @@ It is worth mentioning that this table is subject to change during development o
 
 This section details the changes that occurs with each session of working on this project. After each programming session a new list with all the things that have been done and other information will be posted. This is to have a clear view of what has been done and what is needed to be fixed/added to the project.
 
+### Change log - 2024-02-08
+
+- Calculates the bounding box correctly now. The camera correctly initializes at the correct position and direction.
+- Implemented support for stating which shaders to use in the state in the XML file.
+- Created some shaders including one that inverts the colors.
+- Changed so that the scene node in the xml becomes a group, makes it possible to have state and *UpdateCallbakcs* for the whole scene.
+- The geometries now initializes the shaders and uploads the data directly in the loader.
+- Correctly handles the creation of the default scene.
+- Can now have multiple LOD files and they each get tracked seperately.
+- The distance between the camera and the LOD geometry now is calculated from the bounding box center of the geometry.
+
 ### Change log - 2024-02-06
 
 - Implemented the *Level of Detail (LOD)* node. You supply the node with geometries that it will select from depending on the distance from the camera.
@@ -120,6 +131,17 @@ This section details the changes that occurs with each session of working on thi
 ## TODO
 
 This section details what is to be done in the next programming session. This section is an attempt at keeping a good focus on what to work on the next time a programming session comences.
+
+### TODO - 2024-02-08
+
+- Change the way the camera snaps when reloading the scene.
+- Check the specification and control that all necessary requirements have been met.
+- Implement the support for having different textures in the states in the XML file.
+- Implement the support for having different material in teh states in the XML file.
+- Create additional *UpdateCallbacks*.
+- Refactor the code.
+- Comment the code.
+- Write the report.
 
 ### TODO - 2024-02-06
 
