@@ -17,7 +17,7 @@ class Node
     public:
         Node(const std::string& name = "" ) : m_name(name) {}
         virtual void accept(NodeVisitor& v) = 0;
-        virtual vr::BoundingBox calculateBoundingBox() = 0;
+        virtual vr::BoundingBox calculateBoundingBox(glm::mat4 m) = 0;
         std::string getName() { return m_name; }
 
         void addUpdateCallback(UpdateCallback* callback)

@@ -24,9 +24,12 @@ m_mouseSpeed(1),
 m_lastTime(0),
 m_speedup(1)
 {
-	m_direction = m_defDirection = glm::vec3(0.0f, 0.0f, -1.0f);
-	m_up = m_defPosition = glm::vec3(0.0f, 1.0f, 0.0f);
-	m_position = m_defPosition = glm::vec3(0.0f, -1.0f, 0.0f);
+	m_direction = glm::vec3(0.0f, 0.0f, -1.0f);
+	m_defDirection = glm::vec3(0.0f, 0.0f, -1.0f);
+	m_up = glm::vec3(0.0f, 1.0f, 0.0f);
+	m_defPosition = glm::vec3(0.0f, 1.0f, 0.0f);
+	m_position = glm::vec3(0.0f, -1.0f, 0.0f);
+	m_defPosition = glm::vec3(0.0f, -1.0f, 0.0f);
 
   m_screenSize[0] = 1280;
   m_screenSize[1] = 720;
@@ -39,9 +42,9 @@ m_speedup(1)
 
 void Camera::set(glm::vec3 eye, glm::vec3 direction, glm::vec3 up)
 {
-	m_position = eye;
-	m_direction = direction;
-	m_up = up;
+	m_position = m_defPosition = eye;
+	m_direction = m_defDirection = direction;
+	m_up = m_defUp = up;
 	m_verticalAngle = acos(sqrt(m_direction[2]));
 	m_verticalAngle = asin(m_direction[1]);
 }
@@ -73,9 +76,7 @@ glm::vec3 Camera::getPosition() const
 
 void Camera::setDefaultView(glm::vec3 pos, glm::vec3 dir, glm::vec3 up)
 {
-	m_defPosition = pos;
-	m_defDirection = dir;
-	m_defUp = up;
+	set(pos, dir, up);
 }
 
 void Camera::resetView()
@@ -90,7 +91,7 @@ void Camera::handleMouse(GLFWwindow *window, double xpos, double ypos)
 	const float mouseSpeedMultiplier = 0.005f; // Just to be able to use 1 as a good default value.
 
 	double xDiff = xpos-m_lastX + m_screenSize[0] / 2;
-	double yDiff = ypos- m_lastY + m_screenSize[1] / 2;
+	double yDiff = ypos-m_lastY + m_screenSize[1] / 2;
 
 	m_lastX = xpos;
 	m_lastY = ypos;

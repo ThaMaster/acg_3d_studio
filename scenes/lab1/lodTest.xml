@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene>
-    <group name="group1">
-        <lod name="cows" maxDistance="5000">
+    <lod name="cows1" maxDistance="1500">
+            <geometry name="cow_1" path="models/cows/cow_0.99.obj"/>
+            <geometry name="cow_2" path="models/cows/cow_0.5.obj"/>
+            <geometry name="cow_3" path="models/cows/cow_0.3.obj"/>
+            <geometry name="cow_4" path="models/cows/cow_0.1.obj"/>
+            <geometry name="cow_5" path="models/cows/cow_0.05.obj"/>
+            <geometry name="cow_6" path="models/cows/cow_0.01.obj"/>
+    </lod>
+    <transform name="trans1" translate="1000 0 0">
+        <lod name="cows2" maxDistance="1500">
             <geometry name="cow_1" path="models/cows/cow_0.99.obj"/>
             <geometry name="cow_2" path="models/cows/cow_0.5.obj"/>
             <geometry name="cow_3" path="models/cows/cow_0.3.obj"/>
@@ -9,5 +17,5 @@
             <geometry name="cow_5" path="models/cows/cow_0.05.obj"/>
             <geometry name="cow_6" path="models/cows/cow_0.01.obj"/>
         </lod>
-    </group>
+    </transform>
 </scene>

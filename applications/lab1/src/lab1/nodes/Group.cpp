@@ -1,11 +1,11 @@
 #include "lab1/nodes/Group.h"
 
-vr::BoundingBox Group::calculateBoundingBox()
+vr::BoundingBox Group::calculateBoundingBox(glm::mat4 m)
 {
     vr::BoundingBox box;
     for(auto c : getChildren())
     {
-        box.expand(c->calculateBoundingBox());
+        box.expand(c->calculateBoundingBox(m));
     }
     return box;
 }

@@ -14,15 +14,11 @@ class Group : public Node
         void addChild(Node* n);
 
         void accept(NodeVisitor& v) override;
-        vr::BoundingBox calculateBoundingBox() override;
+        vr::BoundingBox calculateBoundingBox(glm::mat4 m) override;
 
-        std::vector<Node*> getChildren() { return m_children; }
-
-        glm::mat4& getObject2WorldMat() { return m_object2world; }
-        void setObject2WorldMat(glm::mat4& m) { m_object2world = m; }
+        std::vector<Node*> getChildren() { return m_children; } 
 
     private:
-        glm::mat4 m_object2world;
         std::vector<Node*> m_children;
 };
 

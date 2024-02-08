@@ -47,15 +47,14 @@ bool Geometry::initShaders(std::shared_ptr<vr::Shader> shader)
     return true;
 }
 
-vr::BoundingBox Geometry::calculateBoundingBox()
+vr::BoundingBox Geometry::calculateBoundingBox(glm::mat4 m)
 {
     vr::BoundingBox box;
     for (auto v : vertices)
     {
-        glm::vec3 vTransformed = this->object2world * v;
+        glm::vec3 vTransformed = m * v;
         box.expand(vTransformed);
     }
-    box = box * this->object2world;
     return box;
 }
 

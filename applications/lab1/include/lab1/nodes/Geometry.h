@@ -6,7 +6,6 @@
 class Geometry : public Node
 {        
     public:
-
         std::vector<glm::vec4> vertices;
         std::vector<glm::vec3> normals;
         std::vector<glm::vec2> texCoords;
@@ -28,7 +27,7 @@ class Geometry : public Node
         void upload();
         void draw(std::shared_ptr<vr::Shader> shader, const glm::mat4& modelMatrix);
         void draw_bbox(std::shared_ptr<vr::Shader> shader);
-        virtual vr::BoundingBox calculateBoundingBox() override;
+        virtual vr::BoundingBox calculateBoundingBox(glm::mat4 m) override;
 
     private:
         GLuint m_vbo_vertices, m_vbo_normals, m_vbo_texCoords, m_ibo_elements;

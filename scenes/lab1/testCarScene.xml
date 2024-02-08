@@ -6,7 +6,7 @@
     <transform name="trans2" translate="0 -5 0">
         <geometry name="geo2" path="models/porsche_911_gt3.glb"/>
     </transform>
-    <transform name="trans3" translate="5 -5 0">
+    <transform name="trans3" translate="25 -5 0">
         <geometry name="geo3" path="models/porsche_911_gt3.glb"/>
     </transform>
     <transform name="trans4" translate="-5 0 0">

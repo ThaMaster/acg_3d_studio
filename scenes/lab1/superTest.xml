@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene>
-    <transform name="trans1" translate="1 1 1" scale="0.4 0.4 0.4">
-        <state>
-            <light position="0.0 2.0 0.0 0.0" specular="0.1 1.0 0.1 1.0" diffuse="0.1 1.0 0.1 1.0"/>
-        </state>
-        <update>
-            <rotate speed="1" axis="0 1 0"/>
-        </update>
+    <transform name="trans1" translate="5 0 0" scale="0.4 0.4 0.4">
         <geometry name="geo1" path="models/monkey.obj"/>
     </transform>
     <geometry name="geo1" path="models/monkey.obj"/>

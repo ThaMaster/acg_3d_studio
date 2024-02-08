@@ -259,7 +259,6 @@ void parseNodes(aiNode* root_node, MaterialVector& materials, std::stack<glm::ma
     }
 
     loadedGeo->setObject2WorldMat(transformStack.top());
-    objNode.setObject2WorldMat(transformStack.top());
 
     if (!materials.empty()) {
       std::shared_ptr<State> materialState(new State(loadedGeo->getName() + "_mat_state"));
@@ -690,9 +689,10 @@ LOD* parseLodNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
     lodChildType = node->name();
     if (!node || node->type() == rapidxml::node_comment || node->type() == rapidxml::node_doctype || lodChildType != "geometry")
         continue;
-    auto object = parseObjNode(node, scene);
-    lodNode->addObject(object);
+
+    lodNode->addObject(parseObjNode(node, scene));
   }
+  lodNode->addObject(new Group("empty"));
   return lodNode;
 }
 

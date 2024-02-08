@@ -78,7 +78,7 @@ void Application::setClearColor(const glm::f32vec4& clearColor)
 void Application::initView()
 {
   // Compute a bounding box around the whole scene
-  BoundingBox box = m_sceneRoot->getRootGroup()->calculateBoundingBox();
+  BoundingBox box = m_sceneRoot->getRootGroup()->calculateBoundingBox(glm::mat4(1));
   float radius = box.getRadius();
 
   // Compute the diagonal and a suitable distance so we can see the whole thing
