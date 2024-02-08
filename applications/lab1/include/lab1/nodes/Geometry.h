@@ -30,8 +30,6 @@ class Geometry : public Node
         void draw_bbox(std::shared_ptr<vr::Shader> shader);
         virtual vr::BoundingBox calculateBoundingBox() override;
 
-        bool beenVisited = false;
-
     private:
         GLuint m_vbo_vertices, m_vbo_normals, m_vbo_texCoords, m_ibo_elements;
         GLuint m_vao;
