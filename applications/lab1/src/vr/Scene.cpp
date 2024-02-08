@@ -107,6 +107,8 @@ Group* Scene::createDefaultScene()
   materialState->setMaterial(defaultMat);
   auto new_geo = buildGeometry("Default_Geo", vertices, indices, normals, texCoords);
   new_geo->setState(materialState);
+  new_geo->initShaders(m_rootGroup->getState()->getShader());
+  new_geo->upload();
 
   auto defTransform = new Transform("Default_Trans");
   defTransform->addUpdateCallback(new RotateCallback(1, glm::vec3(0,1,0)));
