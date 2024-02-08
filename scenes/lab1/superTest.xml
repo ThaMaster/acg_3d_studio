@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene>
-    <state enableLight="true"/>
     <transform name="trans1" translate="1 1 1" scale="0.4 0.4 0.4">
         <state>
-            <light position="0.0 -2.0 2.0 0.0" specular="1.0 1.0 1.0 1.0" diffuse="1.0 1.0 1.0 1.0"/>
+            <light position="0.0 2.0 0.0 0.0" specular="0.1 1.0 0.1 1.0" diffuse="0.1 1.0 0.1 1.0"/>
         </state>
         <update>
             <rotate speed="1" axis="0 1 0"/>

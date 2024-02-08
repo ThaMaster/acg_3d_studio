@@ -115,6 +115,7 @@ void Texture::bind()
 
 	if (m_valid)
 		glBindTexture(m_type, m_id);
+  	CHECK_GL_ERROR_LINE_FILE();
 }
 
 void Texture::unbind()

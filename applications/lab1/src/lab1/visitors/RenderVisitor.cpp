@@ -4,7 +4,6 @@
 #include "lab1/nodes/Geometry.h"
 #include "lab1/nodes/LOD.h"
 
-
 void RenderVisitor::visit(Group& group)
 {
     if(m_stateStack.empty()) {
@@ -23,8 +22,8 @@ void RenderVisitor::visit(Group& group)
 void RenderVisitor::visit(Transform& trans) 
 {
     m_stateStack.push(m_stateStack.top()->merge(trans.getState()));
-    
     m_transformStack.push(trans.getTransfromMat());
+
     for (auto child : trans.getChildren()) {
         child->accept(*this);
     }
@@ -35,13 +34,17 @@ void RenderVisitor::visit(Transform& trans)
 void RenderVisitor::visit(Geometry& geo)
 {
     m_stateStack.push(m_stateStack.top()->merge(geo.getState()));
-    m_stateStack.top()->apply();
+    auto state = m_stateStack.top();
+    state->apply();
+    
+    geo.initShaders(state->getShader());
+
     if(!geo.beenVisited) {
-        geo.initShaders(m_stateStack.top()->getShader());
         geo.upload();
         geo.beenVisited = true;
     }
-    geo.render(m_stateStack.top()->getShader(), m_transformStack.top());
+    
+    geo.draw(state->getShader(), m_transformStack.top());
     m_stateStack.pop();
 }
 

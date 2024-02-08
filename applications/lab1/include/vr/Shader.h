@@ -15,6 +15,9 @@ namespace vr
 
     Shader(const std::string& vertexPath, const std::string& fragmentPath, const std::string& geometryPath = "");
 
+    std::string vPath;
+    std::string fPath;
+
     /// \return true if the shader is valid
     bool valid() const;
 

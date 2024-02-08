@@ -504,13 +504,36 @@ std::vector<UpdateCallback*> parseNodeCallbacks(rapidxml::xml_node<>* node)
   return callbacks;
 }
 
+std::shared_ptr<Shader> parseStateShader(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
+{
+  std::string node_type = node->name();
+  rapidxml::xml_attribute<>* vShaderAttrib = node->first_attribute("vShaderPath");
+  rapidxml::xml_attribute<>* fShaderAttrib = node->first_attribute("fShaderPath");
+  if(!vShaderAttrib)
+    throw std::runtime_error("State(" + node_type + "): Missing vertex shader attribute!.\n");
+  std::string vShader_path = vShaderAttrib->value();
+  if (vShader_path.empty())
+    throw std::runtime_error("State(" + node_type + "): Empty path to vertex shader.\n");
+  if(!fShaderAttrib)
+    throw std::runtime_error("State(" + node_type + "): Missing fragment shader attribute!.\n");
+  std::string fShader_path = fShaderAttrib->value();
+  if (fShader_path.empty())
+    throw std::runtime_error("State(" + node_type + "): Empty path to fragment shader.\n");
+
+  auto shader = std::shared_ptr<vr::Shader>(new Shader(vShader_path, fShader_path));
+  if(!shader->valid())
+    throw std::runtime_error("ERROR: Invalid shader!.\n");
+
+  return shader;
+}
+
 /**
  * @brief 
  * 
  * @param node 
  * @return std::shared_ptr<State> 
  */
-std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node)
+std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
 {
   std::string state_name = getAttribute(node, "name");
   std::shared_ptr<State> newState(new State(state_name));
@@ -531,6 +554,8 @@ std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node)
 
     if(node_type == "light") {
       newState->addLight(parseStateLight(node));
+    } else if(node_type == "shaders") {
+      newState->setShader(parseStateShader(node, scene));
     } else {
       std::cout << "Unknow node: \'"<< node->name() << "\'" << std::endl;
     }
@@ -544,11 +569,11 @@ std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node)
  * @param graph_node 
  * @param xml_node 
  */
-void addStateAndUpdate(Node& graph_node, rapidxml::xml_node<>* xml_node)
+void addStateAndUpdate(Node& graph_node, rapidxml::xml_node<>* xml_node, std::shared_ptr<Scene>& scene)
 {
   rapidxml::xml_node<>* stateNode = xml_node->first_node("state");
-  if(stateNode) 
-    graph_node.setState(parseNodeState(stateNode));
+  if(stateNode)
+    graph_node.setState(parseNodeState(stateNode, scene));
 
   rapidxml::xml_node<>* updateNode = xml_node->first_node("update");
   if(updateNode) {
@@ -556,6 +581,8 @@ void addStateAndUpdate(Node& graph_node, rapidxml::xml_node<>* xml_node)
     for(auto callback : callbackVector)
       graph_node.addUpdateCallback(callback);
   }
+  std::cout << "done state and update" << std::endl;
+
 }
 
 /**
@@ -595,7 +622,7 @@ Transform* parseTransformNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>
 
   loadSceneGraph(node->first_node(), transformNode, scene);
 
-  addStateAndUpdate(*transformNode, node);
+  addStateAndUpdate(*transformNode, node, scene);
   return transformNode;
 }
 
@@ -607,11 +634,16 @@ Transform* parseTransformNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>
  */
 Group* parseGroupNode(rapidxml::xml_node<>* node,std::shared_ptr<Scene>& scene)
 {
-  std::string node_name = getAttribute(node, "name");
+
+  std::string node_name;
+  if (node->name() == "scene") 
+    node_name = "scene";
+  else
+    node_name = getAttribute(node, "name");
   auto groupNode = new Group(node_name);
   loadSceneGraph(node->first_node(), groupNode, scene);
 
-  addStateAndUpdate(*groupNode, node);
+  addStateAndUpdate(*groupNode, node, scene);
   
   return groupNode;
 }
@@ -641,7 +673,7 @@ Group* parseObjNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
   if (!objNode)
     std::cerr << "Unable to load object \'" << node_name << "\' path: " << geo_path << std::endl;
   
-  addStateAndUpdate(*objNode, node);
+  addStateAndUpdate(*objNode, node, scene);
   
   return objNode;
 }
@@ -676,10 +708,11 @@ void vr::loadSceneGraph(rapidxml::xml_node<>* parent_node, Group* root, std::sha
         return;
   
   std::string node_name;
+  std::string root_name = root->getName();
   for(rapidxml::xml_node<>* curr_node = parent_node; curr_node; curr_node = curr_node->next_sibling()) {
     std::string node_type = curr_node->name();
 
-    if(node_type == "group") {
+    if(node_type == "group" || node_type == "scene") {
       
       auto groupNode = parseGroupNode(curr_node, scene);
       root->addChild(groupNode);
@@ -746,8 +779,9 @@ bool vr::loadSceneFile(const std::string& sceneFile, std::shared_ptr<Scene>& sce
       throw std::runtime_error("File missing scene/");
 
     xmlpath.push_back("scene");
+    
     if(scene->getRootGroup()->getChildren().size() == 0){
-      loadSceneGraph(root_node->first_node(), scene->getRootGroup(), scene);
+      loadSceneGraph(root_node, scene->getRootGroup(), scene);
     }
   }
   catch (rapidxml::parse_error& error)

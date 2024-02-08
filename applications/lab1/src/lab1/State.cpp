@@ -14,7 +14,6 @@ std::shared_ptr<State> State::merge(std::shared_ptr<State> s)
         mergedState->setEnableLight(m_enableLight);
         for(auto l : m_lights)
             mergedState->addLight(l);
-
         return mergedState;
     }
     mergedState = std::shared_ptr<State>(new State("(" + m_stateName + " + " + s->getStateName() + ")" ));
@@ -24,10 +23,13 @@ std::shared_ptr<State> State::merge(std::shared_ptr<State> s)
     else 
         mergedState->setMaterial(m_material);
 
-    if(s->getShader()) 
+    if(s->getShader() != nullptr) {
         mergedState->setShader(s->getShader());
-    else 
+        m_shaderSwitch = true;
+    } else {
+        //std::cout << "old shader found!" << std::endl;
         mergedState->setShader(m_shader);
+    }
     
     for(auto l : m_lights)
         mergedState->addLight(l);
@@ -49,7 +51,12 @@ std::shared_ptr<State> State::merge(std::shared_ptr<State> s)
 }
 
 void State::apply() 
-{
+{    
+    std::cout << "Using vshader: " << m_shader->vPath << std::endl;
+    std::cout << "Using fshader: " << m_shader->fPath << std::endl;
+
+    m_shader->use();
+   
     if(m_material)
         m_material->apply(m_shader);
 

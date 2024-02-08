@@ -42,7 +42,7 @@ int Shader::createShader(const GLchar *source, GLenum shader_type, const char *d
 
 }
 
-Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath, const std::string& geometryPath) : m_valid(true)
+Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath, const std::string& geometryPath) : m_valid(true), vPath(vertexPath), fPath(fragmentPath)
 {
   // 1. retrieve the vertex/fragment source code from filePath
   std::string vertexCode;

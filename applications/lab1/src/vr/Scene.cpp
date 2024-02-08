@@ -20,7 +20,6 @@ bool Scene::initShaders(const std::string& vshader_filename, const std::string& 
   auto shader = std::make_shared<vr::Shader>(vshader_filename, fshader_filename);
   if (!shader->valid())
     return false;
-
   getRootGroup()->getState()->setShader(shader);
   return true;
 }
@@ -115,7 +114,6 @@ Group* Scene::createDefaultScene()
     glm::vec2(1.0f, 1.0f), 
     glm::vec2(0.0f, 1.0f) 
   };
-
 
   auto defaultMat = std::shared_ptr<Material>(new Material());
   auto materialState = std::shared_ptr<State>(new State("def_mat_state"));

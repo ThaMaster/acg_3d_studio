@@ -80,7 +80,6 @@ void Application::initView()
 {
   // Compute a bounding box around the whole scene
   BoundingBox box = m_sceneRoot->getRootGroup()->calculateBoundingBox();
-
   float radius = box.getRadius();
 
   // Compute the diagonal and a suitable distance so we can see the whole thing

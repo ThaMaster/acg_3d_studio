@@ -257,7 +257,7 @@ void Geometry::draw_bbox(std::shared_ptr<vr::Shader> shader)
   CHECK_GL_ERROR_LINE_FILE();
 }
 
-void Geometry::render(std::shared_ptr<vr::Shader> shader, const glm::mat4& modelMatrix)
+void Geometry::draw(std::shared_ptr<vr::Shader> shader, const glm::mat4& modelMatrix)
 {
   CHECK_GL_ERROR_LINE_FILE();
   if (m_useVAO) {
@@ -344,9 +344,9 @@ void Geometry::render(std::shared_ptr<vr::Shader> shader, const glm::mat4& model
     if (!m_useVAO)
       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->m_ibo_elements);
 
-      GLuint size = GLuint(this->elements.size());
-      glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_SHORT, 0);
-      CHECK_GL_ERROR_LINE_FILE();
+    GLuint size = GLuint(this->elements.size());
+    glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_SHORT, 0);
+    CHECK_GL_ERROR_LINE_FILE();
   }
   else {
     glDrawArrays(GL_TRIANGLES, 0, (GLsizei)this->vertices.size());
