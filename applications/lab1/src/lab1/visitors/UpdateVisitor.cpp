@@ -34,14 +34,12 @@ void UpdateVisitor::visit(Transform& trans)
 
 void UpdateVisitor::visit(Geometry& geo) 
 {
-    std::cout << "hello geo" << std::endl;
     std::vector<std::shared_ptr<UpdateCallback>> callbackVector = geo.getUpdateCallbacks();
     if(callbackVector.size() != 0)
     {
         for(auto uc : callbackVector )
             uc->update(geo);
     }
-    std::cout << "bye geo" << std::endl;
 }
 
 void UpdateVisitor::visit(LOD& lod) 
