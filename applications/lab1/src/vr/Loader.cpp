@@ -188,7 +188,7 @@ glm::mat4 assimpToGlmMatrix(const aiMatrix4x4& ai_matrix)
  * @param objNode 
  * @param aiScene 
  */
-void parseNodes(aiNode* root_node, MaterialVector& materials, std::stack<glm::mat4>& transformStack, Group& objNode, const aiScene* aiScene)
+void parseNodes(aiNode* root_node, MaterialVector& materials, std::stack<glm::mat4>& transformStack, Group& objNode, const aiScene* aiScene, std::shared_ptr<Scene>& scene)
 {
 
   glm::mat4 transform = assimpToGlmMatrix(root_node->mTransformation);
@@ -267,12 +267,14 @@ void parseNodes(aiNode* root_node, MaterialVector& materials, std::stack<glm::ma
       loadedGeo->setState(materialState);
     }
 
+    loadedGeo->initShaders(scene->getRootGroup()->getState()->getShader());
+    loadedGeo->upload();
     objNode.addChild(loadedGeo);
   }
 
   for (uint32_t i = 0; i < root_node->mNumChildren; i++)
   {
-    parseNodes(root_node->mChildren[i], materials, transformStack, objNode, aiScene);
+    parseNodes(root_node->mChildren[i], materials, transformStack, objNode, aiScene, scene);
   }
   transformStack.pop();
 }
@@ -284,7 +286,7 @@ void parseNodes(aiNode* root_node, MaterialVector& materials, std::stack<glm::ma
  * @param objName 
  * @return Group* 
  */
-Group* vr::load3DModelFile(const std::string& filename, const std::string& objName)
+Group* vr::load3DModelFile(const std::string& filename, const std::string& objName, std::shared_ptr<Scene>& scene)
 {
   std::string filepath = vr::FileSystem::findFile(filename);
   if (filepath.empty())
@@ -317,7 +319,7 @@ Group* vr::load3DModelFile(const std::string& filename, const std::string& objNa
   transformStack.push(glm::mat4());
 
   auto objNode = new Group(objName);
-  parseNodes(root_node, materials, transformStack, *objNode, aiScene);
+  parseNodes(root_node, materials, transformStack, *objNode, aiScene, scene);
   transformStack.pop();
 
   if (objNode->getChildren().empty())
@@ -663,7 +665,7 @@ Group* parseObjNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
 
   Group* objNode;
   if(!scene->objectExists(geo_path)) {
-    objNode = vr::load3DModelFile(geo_path, node_name);
+    objNode = vr::load3DModelFile(geo_path, node_name, scene);
     scene->addObject(geo_path, objNode);
   } else {
     objNode = scene->getObject(geo_path);

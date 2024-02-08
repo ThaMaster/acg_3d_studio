@@ -48,7 +48,7 @@ bool Application::initResources(const std::string& model_filename, const std::st
   {
     m_sceneRoot->getRootGroup()->addChild(m_sceneRoot->createDefaultScene());
   }else {
-    auto objNode = load3DModelFile(model_filename, model_filename);
+    auto objNode = load3DModelFile(model_filename, model_filename, m_sceneRoot);
     if (!objNode)
       return false;
     m_sceneRoot->getRootGroup()->addChild(objNode);

@@ -38,12 +38,6 @@ void RenderVisitor::visit(Geometry& geo)
 
     state->apply();
     m_camera->apply(state->getShader());
-
-    if(!geo.beenVisited) {
-        geo.initShaders(state->getShader());
-        geo.upload();
-        geo.beenVisited = true;
-    }
     
     geo.draw(state->getShader(), m_transformStack.top());
     m_stateStack.pop();
