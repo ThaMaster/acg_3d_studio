@@ -508,8 +508,8 @@ std::vector<UpdateCallback*> parseNodeCallbacks(rapidxml::xml_node<>* node)
 std::shared_ptr<Shader> parseStateShader(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
 {
   std::string node_type = node->name();
-  rapidxml::xml_attribute<>* vShaderAttrib = node->first_attribute("vShaderPath");
-  rapidxml::xml_attribute<>* fShaderAttrib = node->first_attribute("fShaderPath");
+  rapidxml::xml_attribute<>* vShaderAttrib = node->first_attribute("vPath");
+  rapidxml::xml_attribute<>* fShaderAttrib = node->first_attribute("fPath");
   if(!vShaderAttrib)
     throw std::runtime_error("State(" + node_type + "): Missing vertex shader attribute!.\n");
   std::string vShader_path = vShaderAttrib->value();
@@ -526,6 +526,46 @@ std::shared_ptr<Shader> parseStateShader(rapidxml::xml_node<>* node, std::shared
     throw std::runtime_error("ERROR: Invalid shader!.\n");
 
   return shader;
+}
+
+/* std::shared_ptr<Texture> parseStateTexture(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
+{
+  std::string texturePath = getAttribute(node, "path");
+  if (texturePath.empty()) {
+    std::cerr << "Unable to find texture: " << path.C_Str() << std::endl;
+  } else {
+    std::shared_ptr<vr::Texture> texture = std::make_shared<vr::Texture>();
+    if (!texture->create(texturePath.c_str(), 0))
+      std::cerr << "Error creating texture: " << texturePath << std::endl;
+    else
+      material->setTexture(texture, 0);
+  }
+  return texture;
+} */
+
+std::shared_ptr<Material> parseStateMaterial(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
+{
+  std::string node_type = node->name();
+  std::shared_ptr<vr::Material> material(new Material());
+
+  std::string ambient = getAttribute(node, "ambient");
+  glm::vec3 amb_vec;
+  if (getVec<glm::vec3>(amb_vec, ambient))
+    material->setAmbient(glm::vec4(amb_vec, 1));
+
+  std::string diffuse = getAttribute(node, "diffuse");
+  glm::vec3 diff_vec;
+  if (getVec<glm::vec3>(diff_vec, diffuse))
+    material->setDiffuse(glm::vec4(diff_vec, 1));
+
+  std::string specular = getAttribute(node, "specular");
+  glm::vec3 spec_vec;
+  if (getVec<glm::vec3>(spec_vec, specular))
+    material->setSpecular(glm::vec4(spec_vec, 1));
+  
+  float shininess = atof(getAttribute(node, "shininess").c_str());
+  material->setShininess(shininess);
+  return material;
 }
 
 /**
@@ -557,6 +597,10 @@ std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node, std::shared_pt
       newState->addLight(parseStateLight(node));
     } else if(node_type == "shaders") {
       newState->setShader(parseStateShader(node, scene));
+    } else if(node_type == "texture") {
+      //newState->setTexture(parseStateTexture(node, scene));
+    } else if(node_type == "material") {
+      newState->setMaterial(parseStateMaterial(node, scene));
     } else {
       std::cout << "Unknow node: \'"<< node->name() << "\'" << std::endl;
     }

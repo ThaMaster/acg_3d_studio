@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene>
     <transform name="trans1" translate="1 1 1" scale="0.4 0.4 0.4">
-        <geometry name="geo1" path="models/monkey.obj"/>
+        <state>
+            <material diffuse="1 1 1" specular="0 0 0" shininess="10"/>
+        </state>
+        <geometry name="geo1" path="models/porsche_911_gt3.glb"/>
     </transform>
-    <geometry name="geo1" path="models/monkey.obj"/>
+    <geometry name="geo2" path="models/sphere.obj"/>
 </scene>
