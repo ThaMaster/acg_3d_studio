@@ -137,7 +137,7 @@ This section details what is to be done in the next programming session. This se
 - Change the way the camera snaps when reloading the scene.
 - Check the specification and control that all necessary requirements have been met.
 - Implement the support for having different textures in the states in the XML file.
-- Implement the support for having different material in teh states in the XML file.
+- Implement the support for having different material in the states in the XML file.
 - Create additional *UpdateCallbacks*.
 - Refactor the code.
 - Comment the code.
