@@ -53,6 +53,98 @@ The keyboard shortcuts are summarized in the table below.
 
 It is worth mentioning that this table is subject to change during development of the program. Therefore it is good practice to always check this table if any uncertainties occur.
 
+## XML node guide
+
+This secition lists how to use each of the different nodes when creating a scene using the XML format. The first section explains the most basic nodes that is needed to create a basic scene. The later sections details some special nodes that can be used to switch shaders, create animation and more.
+
+### Basic Nodes
+
+This section details the basic nodes that are necessary to create a simple scene. The later sections will explain more complex nodes which can manipulate the scene in interesting ways.
+
+#### Scene
+
+```xml
+    <scene name="scene_name">
+        ...
+    </scene>
+```
+
+#### Group
+
+```xml
+    <group name="group_name">
+        ...
+    </group>
+```
+
+#### Transform
+
+```xml
+    <transform name="transform_name" translate="x y z" rotate="x y z" scale="x y z">
+        ...
+    </transform>
+```
+
+#### Geometry
+
+```xml
+    <geometry name="geometry_name" path="path/to/model"/>
+```
+
+### Level of Detail (LOD)
+
+```xml
+    <lod name="lod_name" maxDistance="float">
+        ...
+    </lod>
+```
+
+### Update Nodes
+
+```xml
+    <update>
+        ...
+    </update>
+```
+
+#### Rotation
+
+```xml
+    <rotate speed="float" axis="x y z"/>
+```
+
+### State Nodes
+
+```xml
+    <state name="state_name" enableCullface="true/false" enableLight="true/false">
+        ...
+    </state>
+```
+
+#### Light
+
+```xml
+    <light position="x y z" specular="r g b" diffuse="r g b"/>
+```
+
+#### Material
+
+```xml
+    <material ambient="r g b" specular="r g b" diffuse="r g b" shininess="float"/>
+```
+
+#### Texture
+
+```xml
+    <texture path="path/to/texture"/>
+```
+
+#### Shaders
+
+```xml
+    <shaders vPath="path/to/vertex/shader" fPath="path/to/fragment/shader"/>
+```
+
 ## Change log
 
 This section details the changes that occurs with each session of working on this project. After each programming session a new list with all the things that have been done and other information will be posted. This is to have a clear view of what has been done and what is needed to be fixed/added to the project.

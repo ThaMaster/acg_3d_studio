@@ -83,15 +83,11 @@ void State::initTextures(void)
 {
     if(!m_material) {
         m_material = std::make_shared<vr::Material>();
-        m_material->setDiffuse(glm::vec4(1,1,1,1));
-        m_material->setSpecular(glm::vec4(1,1,1,1));
-        m_material->setAmbient(glm::vec4(0.2, 0.2, 0.2, 1.0));
     }
 
     int unit = 0;
     for(auto t : m_textures)
     {
-        std::cout << "unit nr: " << unit << std::endl;
         m_material->setTexture(t, unit);
         unit++;
     }

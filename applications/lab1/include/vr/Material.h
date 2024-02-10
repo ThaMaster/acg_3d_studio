@@ -31,6 +31,7 @@ namespace vr
     glm::vec4 getAmbient() const;
     glm::vec4 getSpecular() const;
     glm::vec4 getDiffuse() const;
+    float getShininess() const;
 
     void setAmbient(const glm::vec4& color);
     void setSpecular(const glm::vec4& color);

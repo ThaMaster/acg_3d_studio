@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene>
-    <state>
-        <texture path="textures/Stylized_Stone_Floor_005_basecolor.jpg"/>
-    </state>
-    <geometry name="geo1" path="models/sphere.obj"/>
+    <transform translate="-1 0 0">
+        <state>
+            <shaders vPath="shaders/phong-shading.vs" fPath="shaders/phong-shading-inverted.fs"/>
+            <material ambient="0 0 1" specular="0 0 1" diffuse="0 0 1" shininess="20"/>
+            <texture path="textures/Stylized_Stone_Floor_005_basecolor.jpg"/>
+        </state>
+        <update>
+            <rotate speed="1" axis="0 1 0"/>
+        </update>
+        <transform translate="-1 -1 0" scale="0.5 0.5 0.5">
+            <geometry name="geo3" path="models/box.obj"/>
+        </transform>
+        <geometry name="geo2" path="models/sphere.obj"/>
+    </transform>
+    <transform translate="1 0 0">
+        <state>
+            <material ambient="0 1 0" specular="0 1 0" diffuse="0 1 0" shininess="20"/>
+            <texture path="textures/7997.jpg"/>
+        </state>
+        <update>
+            <rotate speed="1" axis="1 0 0"/>
+        </update>
+        <geometry name="geo1" path="models/sphere.obj"/>
+    </transform>
 </scene>

@@ -680,12 +680,8 @@ Transform* parseTransformNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>
  */
 Group* parseGroupNode(rapidxml::xml_node<>* node,std::shared_ptr<Scene>& scene)
 {
-
   std::string node_name;
-  if (node->name() == "scene") 
-    node_name = "scene";
-  else
-    node_name = getAttribute(node, "name");
+  node_name = getAttribute(node, "name");
   auto groupNode = new Group(node_name);
   loadSceneGraph(node->first_node(), groupNode, scene);
 
