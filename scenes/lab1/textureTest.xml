@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene>
+    <state>
+        <texture path="textures/Stylized_Stone_Floor_005_basecolor.jpg"/>
+    </state>
+    <geometry name="geo1" path="models/sphere.obj"/>
+</scene>

@@ -312,6 +312,7 @@ Group* vr::load3DModelFile(const std::string& filename, const std::string& objNa
 
   aiNode* root_node = aiScene->mRootNode;
   ExtractMaterials(aiScene, materials, filename);
+
   std::cout << "Found " << materials.size() << " materials" << std::endl;
 
   std::stack<glm::mat4> transformStack;
@@ -528,20 +529,20 @@ std::shared_ptr<Shader> parseStateShader(rapidxml::xml_node<>* node, std::shared
   return shader;
 }
 
-/* std::shared_ptr<Texture> parseStateTexture(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
+std::shared_ptr<Texture> parseStateTexture(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene, std::shared_ptr<State> &state)
 {
+  std::shared_ptr<vr::Texture> texture;
   std::string texturePath = getAttribute(node, "path");
   if (texturePath.empty()) {
-    std::cerr << "Unable to find texture: " << path.C_Str() << std::endl;
+    std::cerr << "Unable to find texture: Path Empty!" << std::endl;
   } else {
-    std::shared_ptr<vr::Texture> texture = std::make_shared<vr::Texture>();
-    if (!texture->create(texturePath.c_str(), 0))
+    texture = std::make_shared<vr::Texture>();
+    state->incTextureUnit();
+    if (!texture->create(texturePath.c_str(), state->getTextureUnit()))
       std::cerr << "Error creating texture: " << texturePath << std::endl;
-    else
-      material->setTexture(texture, 0);
   }
   return texture;
-} */
+}
 
 std::shared_ptr<Material> parseStateMaterial(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
 {
@@ -598,13 +599,15 @@ std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node, std::shared_pt
     } else if(node_type == "shaders") {
       newState->setShader(parseStateShader(node, scene));
     } else if(node_type == "texture") {
-      //newState->setTexture(parseStateTexture(node, scene));
+      newState->addTexture(parseStateTexture(node, scene, newState));
     } else if(node_type == "material") {
       newState->setMaterial(parseStateMaterial(node, scene));
     } else {
       std::cout << "Unknow node: \'"<< node->name() << "\'" << std::endl;
     }
   }
+  if(newState->getTextureUnit() != -1)
+    newState->initTextures();
   return newState;
 }
 

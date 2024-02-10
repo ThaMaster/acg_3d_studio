@@ -1,5 +1,6 @@
 #include "lab1/State.h"
 #include <iostream>
+#include "vr/Material.h"
 
 State::State(const std::string& name) : m_stateName(name) {}
 State::~State() {}
@@ -19,10 +20,10 @@ std::shared_ptr<State> State::merge(std::shared_ptr<State> s)
     }
     mergedState = std::shared_ptr<State>(new State("(" + m_stateName + " + " + s->getStateName() + ")" ));
 
-    if(s->getMaterial()) 
-        mergedState->setMaterial(s->getMaterial());
-    else 
+    if(m_material) 
         mergedState->setMaterial(m_material);
+    else 
+        mergedState->setMaterial(s->getMaterial());
 
     if(s->getShader()) {
         mergedState->setShader(s->getShader());
@@ -75,5 +76,23 @@ void State::apply()
             glEnable(GL_CULL_FACE);
         else
             glDisable(GL_CULL_FACE);
+    }
+}
+
+void State::initTextures(void)
+{
+    if(!m_material) {
+        m_material = std::make_shared<vr::Material>();
+        m_material->setDiffuse(glm::vec4(1,1,1,1));
+        m_material->setSpecular(glm::vec4(1,1,1,1));
+        m_material->setAmbient(glm::vec4(0.2, 0.2, 0.2, 1.0));
+    }
+
+    int unit = 0;
+    for(auto t : m_textures)
+    {
+        std::cout << "unit nr: " << unit << std::endl;
+        m_material->setTexture(t, unit);
+        unit++;
     }
 }
