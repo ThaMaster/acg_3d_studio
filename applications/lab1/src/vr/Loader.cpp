@@ -19,8 +19,7 @@
 
 #include <fstream>
 
-#include "lab1/visitors/RenderVisitor.h"
-#include "lab1/callbacks/RotateCallback.h"
+#include "lab1/callbacks/Callbacks.h"
 
 #include <vr/Light.h>
 
@@ -493,14 +492,23 @@ std::vector<UpdateCallback*> parseNodeCallbacks(rapidxml::xml_node<>* node)
     std::string node_type = node->name();
     if(node_type == "rotate") {
       
-      float amount = atof(getAttribute(node, "speed").c_str());
+      float speed = atof(getAttribute(node, "speed").c_str());
 
       std::string rotate = getAttribute(node, "axis");
       glm::vec3 axis;
       if (!getVec<glm::vec3>(axis, rotate))
         throw std::runtime_error("Rotate(" + node_type + "): Invalid rotation axis.\n");
       
-      callbacks.push_back(new RotateCallback(amount, axis));
+      callbacks.push_back(new RotateCallback(speed, axis));
+    } else if(node_type == "translate") {
+      float speed = atof(getAttribute(node, "speed").c_str());
+
+      std::string translate = getAttribute(node, "axis");
+      glm::vec3 axis;
+      if (!getVec<glm::vec3>(axis, translate))
+        throw std::runtime_error("Rotate(" + node_type + "): Invalid rotation axis.\n");
+      
+      callbacks.push_back(new TranslateCallback(speed, axis));
     } else {
       std::cout << "Unknown node type: \'" << node_type << "\'" << std::endl;
     }
@@ -666,8 +674,7 @@ Transform* parseTransformNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>
   glm::mat4 rx = glm::rotate(glm::mat4(), glm::radians(r_vec.x), glm::vec3(1, 0, 0));
   glm::mat4 ry = glm::rotate(glm::mat4(), glm::radians(r_vec.y), glm::vec3(0, 1, 0));
   glm::mat4 rz = glm::rotate(glm::mat4(), glm::radians(r_vec.z), glm::vec3(0, 0, 1));
-  auto t = mt * rz * ry * rx;
-  t = glm::scale(t, s_vec);
+  auto t = mt * ms * rz * ry * rx;
   transformNode->setTransformMat(t);
 
   loadSceneGraph(node->first_node(), transformNode, scene);

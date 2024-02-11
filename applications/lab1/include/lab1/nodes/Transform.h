@@ -1,5 +1,6 @@
 #ifndef TRANSFORM_H
 #define TRANSFROM_H
+#pragma once
 
 #include "Group.h"
 

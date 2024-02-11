@@ -22,11 +22,17 @@ void RenderVisitor::visit(Group& group)
 void RenderVisitor::visit(Transform& trans) 
 {
     m_stateStack.push(m_stateStack.top()->merge(trans.getState()));
-    m_transformStack.push(trans.getTransfromMat());
+
+    if(m_transformStack.empty()) {
+        m_transformStack.push(trans.getTransfromMat());
+    } else {
+        m_transformStack.push(m_transformStack.top() * trans.getTransfromMat());
+    }
 
     for (auto child : trans.getChildren()) {
         child->accept(*this);
     }
+
     m_transformStack.pop();
     m_stateStack.pop();
 }

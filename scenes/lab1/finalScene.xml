@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene>
+    <state name="sun_light_state">
+        <light position="10.0 5.0 0.0 0.0" specular="1.0 1.0 1.0 1.0" diffuse="1.0 1.0 1.0 1.0"/>
+    </state>
+    <geometry path="models/House01/House01.obj"/>
+    <transform translate="14 5.5 -43" scale="0.8 0.8 0.8">
+        <transform translate="1 0 0">
+            <geometry name="geo1" path="models/monkey.obj"/>
+        </transform>
+        <transform translate="0 0 3">
+            <update>
+                <rotate speed="1" axis="0 1 0"/>
+                <translate speed="1" axis="0.05 0 0"/>
+            </update>
+            <geometry name="geo2" path="models/monkey.obj"/>
+        </transform>
+    </transform>
+</scene>
