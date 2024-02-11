@@ -107,6 +107,12 @@ This section details the basic nodes that are necessary to create a simple scene
     </update>
 ```
 
+#### Translation
+
+```xml
+    <translate speed="float" axis="x y z"/>
+```
+
 #### Rotation
 
 ```xml
@@ -148,6 +154,19 @@ This section details the basic nodes that are necessary to create a simple scene
 ## Change log
 
 This section details the changes that occurs with each session of working on this project. After each programming session a new list with all the things that have been done and other information will be posted. This is to have a clear view of what has been done and what is needed to be fixed/added to the project.
+
+### Change log - 2024-02-11
+
+- Added some textures.
+- Changed such that if a material is already present and the user uses the material state, only the attributes of the material is carried. So it ewill no longer just switch materials.
+- Changed so that the Default material given by Assimp is ignored, this makes it now possible to specify materials and textures in the scene graph correctly but only for objects with no stated materials/textures.
+- Changed so that the shininess becomes the default value instead of 0 when not specifiying the value in the XML file.
+- Moved some functions from the header to the cpp file in the state.
+- Added a translation callback function and the ability to use it in the *UpdateCallback* node in the XML file.
+
+### Change log - 2024-02-10
+
+- Added the ability to change the texture of that should be used in the XML file. Will only work when objects does not state any textures in the file due to the nature of the scene graph not having presedence upwards.
 
 ### Change log - 2024-02-08
 
@@ -223,6 +242,24 @@ This section details the changes that occurs with each session of working on thi
 ## TODO
 
 This section details what is to be done in the next programming session. This section is an attempt at keeping a good focus on what to work on the next time a programming session comences.
+
+### TODO - 2024-02-11
+
+- Finish the presentation scene.
+- Think over how updating the position and orientation of an object should be done. Maybe combine them all to a single *UpdateCallback*?
+- Continue on the report.
+- Refactor the code.
+- Comment the code.
+
+### TODO - 2024-02-10
+
+- Need to see over the default values that Assimp gives a object that does not have any material.
+- Check the specification and write the report accordingly.
+- Test the program for potential bugs.
+- Create the scene for presenting the project.
+- Create additional *UpdateCallbacks*.
+- Refactor the code.
+- Comment the code.
 
 ### TODO - 2024-02-08
 
