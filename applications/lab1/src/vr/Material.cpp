@@ -16,11 +16,11 @@
 using namespace vr;
 
 /// Simple class for storing material properties
-Material::Material() : m_shininess(5)
+Material::Material() : m_shininess(10)
 {
   m_ambient = glm::vec4(0.2, 0.2, 0.2, 1.0);
-  m_diffuse = glm::vec4(1.0, 1.0, 1.0, 1.0);
-  m_specular = glm::vec4(1.0, 1.0, 1.0, 1.0);
+  m_diffuse = glm::vec4(0.8, 0.8, 0.8, 1.0);
+  m_specular = glm::vec4(0.8, 0.8, 0.8, 1.0);
   m_textures.resize(2);
 }
 
@@ -28,7 +28,7 @@ glm::vec4 Material::getAmbient() const { return m_ambient; }
 glm::vec4 Material::getSpecular() const { return m_specular; }
 glm::vec4 Material::getDiffuse() const { return m_diffuse; }
 float Material::getShininess() const { return m_shininess; }
-
+std::vector<std::shared_ptr<vr::Texture>> Material::getTextures(void) { return m_textures; }
 void Material::setAmbient(const glm::vec4& color)  { m_ambient = color; }
 void Material::setSpecular(const glm::vec4& color)  { m_specular = color; }
 void Material::setDiffuse(const glm::vec4& color)  { m_diffuse = color; }

@@ -11,6 +11,7 @@ Scene::Scene() : m_uniform_numberOfLights(-1)
   setRootGroup(new Group("root"));
   getRootGroup()->setState(std::shared_ptr<State>(new State("root_state")));
   getRootGroup()->getState()->setEnableLight(std::shared_ptr<bool>(new bool(true)));
+  getRootGroup()->getState()->setMaterial(std::shared_ptr<vr::Material>(new Material()));
   m_renderVisitor = new RenderVisitor();
   m_renderVisitor->setCamera(m_camera);
   m_updateVisitor = new UpdateVisitor();

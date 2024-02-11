@@ -21,7 +21,7 @@ namespace vr
 
     GLfloat m_shininess;
 
-    typedef std::vector<std::shared_ptr<vr::Texture> > TextureVector;
+    typedef std::vector<std::shared_ptr<vr::Texture>> TextureVector;
     TextureVector m_textures;
 
   public:
@@ -40,11 +40,12 @@ namespace vr
 
     /// Set a \p texture to the specified \p unit
     void setTexture(std::shared_ptr<vr::Texture> texture, unsigned int unit);
+    TextureVector getTextures(void);
 
     /// Apply the material to the choosen shader
     void apply(std::shared_ptr<vr::Shader> shader);
   };
 
-  typedef std::vector<std::shared_ptr<Material> > MaterialVector;
+  typedef std::vector<std::shared_ptr<Material>> MaterialVector;
 
 }

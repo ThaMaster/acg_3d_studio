@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene>
+    <state>
+        <material ambient="0 0 1" specular="0 0 1" diffuse="0 0 1" shininess="20"/>
+    </state>
+    <geometry name="geo2" path="models/Altair_Model/altair.3ds"/>
+</scene>

@@ -19,17 +19,7 @@ class State
         void setShader(std::shared_ptr<vr::Shader> s) { m_shader = s;}
         std::shared_ptr<vr::Shader> getShader(void) { return m_shader; }
 
-        void setMaterial(std::shared_ptr<vr::Material> m) 
-        {
-            if(!m_material) {
-                m_material = m;
-            } else {
-                m_material->setAmbient(m->getAmbient());
-                m_material->setDiffuse(m->getDiffuse());
-                m_material->setSpecular(m->getSpecular());
-                m_material->setShininess(m->getShininess());
-            }
-        }
+        void setMaterial(std::shared_ptr<vr::Material> m);
         std::shared_ptr<vr::Material> getMaterial(void) { return m_material; }
 
         void addTexture(std::shared_ptr<vr::Texture> t) 
@@ -37,6 +27,7 @@ class State
             m_textures.push_back(t); 
         }
 
+        void setTextures(std::vector<std::shared_ptr<vr::Texture>> textures);
         void initTextures(void);
         unsigned int getTextureUnit(void) { return m_curr_texture_unit; }
         void incTextureUnit(void) { m_curr_texture_unit++; }

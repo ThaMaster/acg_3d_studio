@@ -97,9 +97,14 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
   for (uint32_t i = 0; i < num_materials; i++)
   {
     std::shared_ptr<Material> material(new Material);
-
+    
     ai_material = scene->mMaterials[i];
-
+    std::string mat_name = ai_material->GetName().C_Str();
+    if(mat_name == "DefaultMaterial" || mat_name == "(null)") {
+      materials.push_back(nullptr);
+      continue; 
+    }
+    
     ai_material->Get(AI_MATKEY_COLOR_AMBIENT, color);
     material->setAmbient(glm::vec4(color.r, color.g, color.b, color.a));
 
@@ -190,7 +195,6 @@ glm::mat4 assimpToGlmMatrix(const aiMatrix4x4& ai_matrix)
  */
 void parseNodes(aiNode* root_node, MaterialVector& materials, std::stack<glm::mat4>& transformStack, Group& objNode, const aiScene* aiScene, std::shared_ptr<Scene>& scene)
 {
-
   glm::mat4 transform = assimpToGlmMatrix(root_node->mTransformation);
 
   glm::mat4 m = transformStack.top() * transform;
@@ -257,9 +261,7 @@ void parseNodes(aiNode* root_node, MaterialVector& materials, std::stack<glm::ma
         loadedGeo->elements.push_back(face.mIndices[k]);
       }
     }
-
     loadedGeo->setObject2WorldMat(transformStack.top());
-
     if (!materials.empty()) {
       std::shared_ptr<State> materialState(new State(loadedGeo->getName() + "_mat_state"));
       materialState->setMaterial(materials[mesh->mMaterialIndex]);
@@ -564,8 +566,10 @@ std::shared_ptr<Material> parseStateMaterial(rapidxml::xml_node<>* node, std::sh
   if (getVec<glm::vec3>(spec_vec, specular))
     material->setSpecular(glm::vec4(spec_vec, 1));
   
-  float shininess = atof(getAttribute(node, "shininess").c_str());
-  material->setShininess(shininess);
+  std::string shininess = getAttribute(node, "shininess");
+  if(!shininess.empty()) {
+    material->setShininess(atof(shininess.c_str()));
+  }
   return material;
 }
 

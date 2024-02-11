@@ -14,22 +14,31 @@ std::shared_ptr<State> State::merge(std::shared_ptr<State> s)
         mergedState->setShader(m_shader);
         mergedState->setCullFace(m_cullFace);
         mergedState->setEnableLight(m_enableLight);
+
         for(auto l : m_lights)
             mergedState->addLight(l);
+
+        if(m_material && m_material->getTextures().size() != 0)
+            mergedState->setTextures(m_material->getTextures());
+        
         return mergedState;
     }
+    
     mergedState = std::shared_ptr<State>(new State("(" + m_stateName + " + " + s->getStateName() + ")" ));
 
-    if(m_material) 
-        mergedState->setMaterial(m_material);
-    else 
+    if(s->getMaterial()) {
         mergedState->setMaterial(s->getMaterial());
-
-    if(s->getShader()) {
-        mergedState->setShader(s->getShader());
+        if(s->getMaterial()->getTextures().size() != 0)
+            mergedState->setTextures(s->getMaterial()->getTextures());
     } else {
-        mergedState->setShader(m_shader);
+        mergedState->setMaterial(m_material);
+        if(m_material->getTextures().size() != 0)
+            mergedState->setTextures(m_material->getTextures());
     }
+    if(s->getShader()) 
+        mergedState->setShader(s->getShader());
+    else 
+        mergedState->setShader(m_shader);
     
     for(auto l : m_lights)
         mergedState->addLight(l);
@@ -90,5 +99,27 @@ void State::initTextures(void)
     {
         m_material->setTexture(t, unit);
         unit++;
+    }
+}
+
+void State::setMaterial(std::shared_ptr<vr::Material> m) 
+{
+    if(!m_material) {
+        m_material = m;
+    } else {
+        m_material->setAmbient(m->getAmbient());
+        m_material->setDiffuse(m->getDiffuse());
+        m_material->setSpecular(m->getSpecular());
+        m_material->setShininess(m->getShininess());
+    }
+}
+
+void State::setTextures(std::vector<std::shared_ptr<vr::Texture>> textures) 
+{ 
+    int i = 0;
+    for(auto t : textures)
+    {
+        m_material->setTexture(t, i);
+        i++;
     }
 }
