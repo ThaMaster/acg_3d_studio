@@ -68,10 +68,11 @@ void main()
     }
     else // point light or spotlight (or other kind of light) 
     {
-      vec3 positionToLightSource = vec3(light.position - position);
+      vec4 positionWorld = v_inv * position;
+      vec3 positionToLightSource = vec3(light.position.xyz - positionWorld.xyz);
       float distance = length(positionToLightSource);
       lightDirection = normalize(positionToLightSource);
-      attenuation = 1.0;
+      attenuation = 1.0 / (1.0 + 0.09 * distance + 0.032 * (distance * distance));
     }
 
     vec3 diffuseReflection = attenuation
