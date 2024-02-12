@@ -3,8 +3,7 @@
     <state>
         <light position="-2.0 2.0 0.0 0.0" specular="1.0 0 0 1.0" diffuse="1.0 0 0 1.0"/>
         <light position="2.0 2.0 0.0 0.0" specular="0 1.0 0 1.0" diffuse="0 1.0 0 1.0"/>
-        <light position="-2.0 -2.0 0.0 0.0" specular="0 0 1.0 1.0" diffuse="0 0 1.0 1.0"/>
-        <light position="2.0 -2.0 0.0 0.0" specular="1.0 1.0 1.0 1.0" diffuse="1.0 1.0 1.0 1.0"/>
+        <light position="0.0 -2.0 0.0 0.0" specular="0 0 1.0 1.0" diffuse="0 0 1.0 1.0"/>
     </state>
     <geometry name="geo1" path="models/monkey.obj"/>
 </scene>
