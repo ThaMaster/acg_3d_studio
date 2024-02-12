@@ -476,9 +476,9 @@ std::shared_ptr<Light> parseStateLight(rapidxml::xml_node<>* node)
       throw std::runtime_error("Light(" + light_name + "): Invalid attenuation.\n");
     newLight->setAttenuation(a_vec.x, a_vec.y, a_vec.z);
   }
-  newLight->diffuse = d_vec;
-  newLight->specular = s_vec;
-  newLight->position = p_vec;
+  newLight->setDiffuse(d_vec);
+  newLight->setSpecular(s_vec);
+  newLight->setPosition(p_vec);
   return newLight;
 }
 

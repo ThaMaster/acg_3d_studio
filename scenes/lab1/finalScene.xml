@@ -2,7 +2,7 @@
 <scene>
     <state name="sun_light_state">
         <light position="10.0 5.0 0.0 0.0" specular="1.0 1.0 1.0 1.0" diffuse="1.0 1.0 1.0 1.0"/>
-        <light position="16.0 7.0 -19.0 1.0" specular="0.0 1.0 1.0 1.0" diffuse="0.0 1.0 1.0 1.0"/>
+        <light position="22 11 -33 1.0" specular="1.0 1.0 0.0 1.0" diffuse="1.0 1.0 0.0 1.0" attenuation="1.0 0.014 0.0007"/>
     </state>
     <geometry path="models/House01/House01.obj"/>
     <transform translate="22 15 -60" rotate="45 0 0" scale="0.04 0.04 0.04">

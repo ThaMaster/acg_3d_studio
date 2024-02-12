@@ -55,9 +55,10 @@ bool Application::initResources(const std::string& model_filename, const std::st
   }
   
   std::shared_ptr<Light> light1 = std::shared_ptr<Light>(new Light);
-  light1->diffuse = glm::vec4(1, 1, 1, 1);
-  light1->specular = glm::vec4(1, 1, 1, 1);
-  light1->position = glm::vec4(0.0, -2.0, 2.0, 0.0);
+  light1->setAmbient(glm::vec4(0.2, 0.2, 0.2, 1.0));
+  light1->setDiffuse(glm::vec4(1.0, 1.0, 1.0, 1.0));
+  light1->setSpecular(glm::vec4(1.0, 1.0, 1.0, 1.0));
+  light1->setPosition(glm::vec4(0.0, -2.0, 2.0, 0.0));
 
   m_sceneRoot->add(light1);
 
@@ -91,7 +92,7 @@ void Application::initView()
 
   glm::vec4 position;
   position = glm::vec4(eye + glm::vec3(-8, 2, 0), 1);
-  light->position = position;
+  light->setPosition(position);
 
   // Set the position/direction of the camera
   getCamera()->set(eye, direction, glm::vec3(0.0, 1.0, 0.0));

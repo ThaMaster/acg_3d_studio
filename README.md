@@ -119,6 +119,12 @@ This section details the basic nodes that are necessary to create a simple scene
     <rotate speed="float" axis="x y z"/>
 ```
 
+#### LightColor
+
+```xml
+    <lightColor diffuse="r g b" specular="r g b"/>
+```
+
 ### State Nodes
 
 ```xml

@@ -33,6 +33,7 @@ struct LightSource
   float constant;
   float linear;
   float quadratic;
+  vec4 ambient;
   vec4 position;
   vec4 diffuse;
   vec4 specular;
@@ -42,9 +43,6 @@ const int MaxNumberOfLights = 10;
 
 // This is the uniforms that our program communicates with
 uniform LightSource lights[MaxNumberOfLights];
-
-// Some hard coded default ambient lighting
-vec4 scene_ambient = vec4(0.2, 0.2, 0.2, 1.0);
 
 // The front surface material
 uniform Material material;
@@ -57,7 +55,7 @@ void main()
   float attenuation;
 
   // initialize total lighting with ambient lighting
-  vec3 totalLighting = vec3(scene_ambient) * vec3(material.ambient);
+  vec3 totalLighting = vec3(lights[0].ambient) * vec3(material.ambient);
 
   // for all light sources
   for (int index = 0; index < numberOfLights; index++) 

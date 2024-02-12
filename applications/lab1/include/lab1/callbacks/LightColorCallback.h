@@ -21,22 +21,22 @@ class LightColorCallback : public UpdateCallback
             {
                 for(auto l : trans_node.getState()->getLights())
                 {
-                    if(l->specular.r > 1 && m_changeSpec[0] > 0 || l->specular.r < 0 && m_changeSpec[0] < 0)
+                    if(l->getSpecular().r > 1 && m_changeSpec[0] > 0 || l->getSpecular().r < 0 && m_changeSpec[0] < 0)
                         m_changeSpec[0] *= -1;
-                    if(l->specular.g > 1 && m_changeSpec[1] > 0 || l->specular.g < 0 && m_changeSpec[1] < 0)
+                    if(l->getSpecular().g > 1 && m_changeSpec[1] > 0 || l->getSpecular().g < 0 && m_changeSpec[1] < 0)
                         m_changeSpec[1] *= -1;
-                    if(l->specular.b > 1 && m_changeSpec[2] > 0 || l->specular.b < 0 && m_changeSpec[2] < 0)
+                    if(l->getSpecular().b > 1 && m_changeSpec[2] > 0 || l->getSpecular().b < 0 && m_changeSpec[2] < 0)
                         m_changeSpec[2] *= -1;
                     
-                    if(l->diffuse.r > 1 && m_changeDiff[0] > 0 || l->diffuse.r < 0 && m_changeDiff[0] < 0)
+                    if(l->getDiffuse().r > 1 && m_changeDiff[0] > 0 || l->getDiffuse().r < 0 && m_changeDiff[0] < 0)
                         m_changeDiff[0] *= -1;
-                    if(l->diffuse.g > 1 && m_changeDiff[1] > 0 || l->diffuse.g < 0 && m_changeDiff[1] < 0) 
+                    if(l->getDiffuse().g > 1 && m_changeDiff[1] > 0 || l->getDiffuse().g < 0 && m_changeDiff[1] < 0) 
                         m_changeDiff[1] *= -1;
-                    if(l->diffuse.b > 1 && m_changeDiff[2] > 0 || l->diffuse.b < 0 && m_changeDiff[2] < 0)
+                    if(l->getDiffuse().b > 1 && m_changeDiff[2] > 0 || l->getDiffuse().b < 0 && m_changeDiff[2] < 0)
                         m_changeDiff[2] *= -1;
 
-                    l->specular += glm::vec4(m_changeSpec, 0.0);
-                    l->diffuse += glm::vec4(m_changeDiff, 0.0);
+                    l->setSpecular(l->getSpecular() + glm::vec4(m_changeSpec, 0.0));
+                    l->setDiffuse(l->getDiffuse() + glm::vec4(m_changeDiff, 0.0));
                 }
             }
         }
@@ -47,22 +47,22 @@ class LightColorCallback : public UpdateCallback
             {
                 for(auto l : group_node.getState()->getLights())
                 {
-                    if(l->specular.r > 1 && m_changeSpec[0] > 0 || l->specular.r < 0 && m_changeSpec[0] < 0)
+                    if(l->getSpecular().r > 1 && m_changeSpec[0] > 0 || l->getSpecular().r < 0 && m_changeSpec[0] < 0)
                         m_changeSpec[0] *= -1;
-                    if(l->specular.g > 1 && m_changeSpec[1] > 0 || l->specular.g < 0 && m_changeSpec[1] < 0)
+                    if(l->getSpecular().g > 1 && m_changeSpec[1] > 0 || l->getSpecular().g < 0 && m_changeSpec[1] < 0)
                         m_changeSpec[1] *= -1;
-                    if(l->specular.b > 1 && m_changeSpec[2] > 0 || l->specular.b < 0 && m_changeSpec[2] < 0)
+                    if(l->getSpecular().b > 1 && m_changeSpec[2] > 0 || l->getSpecular().b < 0 && m_changeSpec[2] < 0)
                         m_changeSpec[2] *= -1;
                     
-                    if(l->diffuse.r > 1 && m_changeDiff[0] > 0 || l->diffuse.r < 0 && m_changeDiff[0] < 0)
+                    if(l->getDiffuse().r > 1 && m_changeDiff[0] > 0 || l->getDiffuse().r < 0 && m_changeDiff[0] < 0)
                         m_changeDiff[0] *= -1;
-                    if(l->diffuse.g > 1 && m_changeDiff[1] > 0 || l->diffuse.g < 0 && m_changeDiff[1] < 0) 
+                    if(l->getDiffuse().g > 1 && m_changeDiff[1] > 0 || l->getDiffuse().g < 0 && m_changeDiff[1] < 0) 
                         m_changeDiff[1] *= -1;
-                    if(l->diffuse.b > 1 && m_changeDiff[2] > 0 || l->diffuse.b < 0 && m_changeDiff[2] < 0)
+                    if(l->getDiffuse().b > 1 && m_changeDiff[2] > 0 || l->getDiffuse().b < 0 && m_changeDiff[2] < 0)
                         m_changeDiff[2] *= -1;
 
-                    l->specular += glm::vec4(m_changeSpec, 0.0);
-                    l->diffuse += glm::vec4(m_changeDiff, 0.0);
+                    l->setSpecular(l->getSpecular() + glm::vec4(m_changeSpec, 0.0));
+                    l->setDiffuse(l->getDiffuse() + glm::vec4(m_changeDiff, 0.0));
                 }
             }
         }
@@ -72,22 +72,22 @@ class LightColorCallback : public UpdateCallback
             {
                 for(auto l : geo_node.getState()->getLights())
                 {
-                    if(l->specular.r > 1 && m_changeSpec[0] > 0 || l->specular.r < 0 && m_changeSpec[0] < 0)
+                    if(l->getSpecular().r > 1 && m_changeSpec[0] > 0 || l->getSpecular().r < 0 && m_changeSpec[0] < 0)
                         m_changeSpec[0] *= -1;
-                    if(l->specular.g > 1 && m_changeSpec[1] > 0 || l->specular.g < 0 && m_changeSpec[1] < 0)
+                    if(l->getSpecular().g > 1 && m_changeSpec[1] > 0 || l->getSpecular().g < 0 && m_changeSpec[1] < 0)
                         m_changeSpec[1] *= -1;
-                    if(l->specular.b > 1 && m_changeSpec[2] > 0 || l->specular.b < 0 && m_changeSpec[2] < 0)
+                    if(l->getSpecular().b > 1 && m_changeSpec[2] > 0 || l->getSpecular().b < 0 && m_changeSpec[2] < 0)
                         m_changeSpec[2] *= -1;
                     
-                    if(l->diffuse.r > 1 && m_changeDiff[0] > 0 || l->diffuse.r < 0 && m_changeDiff[0] < 0)
+                    if(l->getDiffuse().r > 1 && m_changeDiff[0] > 0 || l->getDiffuse().r < 0 && m_changeDiff[0] < 0)
                         m_changeDiff[0] *= -1;
-                    if(l->diffuse.g > 1 && m_changeDiff[1] > 0 || l->diffuse.g < 0 && m_changeDiff[1] < 0) 
+                    if(l->getDiffuse().g > 1 && m_changeDiff[1] > 0 || l->getDiffuse().g < 0 && m_changeDiff[1] < 0) 
                         m_changeDiff[1] *= -1;
-                    if(l->diffuse.b > 1 && m_changeDiff[2] > 0 || l->diffuse.b < 0 && m_changeDiff[2] < 0)
+                    if(l->getDiffuse().b > 1 && m_changeDiff[2] > 0 || l->getDiffuse().b < 0 && m_changeDiff[2] < 0)
                         m_changeDiff[2] *= -1;
 
-                    l->specular += glm::vec4(m_changeSpec, 0.0);
-                    l->diffuse += glm::vec4(m_changeDiff, 0.0);
+                    l->setSpecular(l->getSpecular() + glm::vec4(m_changeSpec, 0.0));
+                    l->setDiffuse(l->getDiffuse() + glm::vec4(m_changeDiff, 0.0));
                 }
             }
         }
@@ -97,22 +97,22 @@ class LightColorCallback : public UpdateCallback
             {
                 for(auto l : lod_node.getState()->getLights())
                 {
-                    if(l->specular.r > 1 && m_changeSpec[0] > 0 || l->specular.r < 0 && m_changeSpec[0] < 0)
+                    if(l->getSpecular().r > 1 && m_changeSpec[0] > 0 || l->getSpecular().r < 0 && m_changeSpec[0] < 0)
                         m_changeSpec[0] *= -1;
-                    if(l->specular.g > 1 && m_changeSpec[1] > 0 || l->specular.g < 0 && m_changeSpec[1] < 0)
+                    if(l->getSpecular().g > 1 && m_changeSpec[1] > 0 || l->getSpecular().g < 0 && m_changeSpec[1] < 0)
                         m_changeSpec[1] *= -1;
-                    if(l->specular.b > 1 && m_changeSpec[2] > 0 || l->specular.b < 0 && m_changeSpec[2] < 0)
+                    if(l->getSpecular().b > 1 && m_changeSpec[2] > 0 || l->getSpecular().b < 0 && m_changeSpec[2] < 0)
                         m_changeSpec[2] *= -1;
                     
-                    if(l->diffuse.r > 1 && m_changeDiff[0] > 0 || l->diffuse.r < 0 && m_changeDiff[0] < 0)
+                    if(l->getDiffuse().r > 1 && m_changeDiff[0] > 0 || l->getDiffuse().r < 0 && m_changeDiff[0] < 0)
                         m_changeDiff[0] *= -1;
-                    if(l->diffuse.g > 1 && m_changeDiff[1] > 0 || l->diffuse.g < 0 && m_changeDiff[1] < 0) 
+                    if(l->getDiffuse().g > 1 && m_changeDiff[1] > 0 || l->getDiffuse().g < 0 && m_changeDiff[1] < 0) 
                         m_changeDiff[1] *= -1;
-                    if(l->diffuse.b > 1 && m_changeDiff[2] > 0 || l->diffuse.b < 0 && m_changeDiff[2] < 0)
+                    if(l->getDiffuse().b > 1 && m_changeDiff[2] > 0 || l->getDiffuse().b < 0 && m_changeDiff[2] < 0)
                         m_changeDiff[2] *= -1;
 
-                    l->specular += glm::vec4(m_changeSpec, 0.0);
-                    l->diffuse += glm::vec4(m_changeDiff, 0.0);
+                    l->setSpecular(l->getSpecular() + glm::vec4(m_changeSpec, 0.0));
+                    l->setDiffuse(l->getDiffuse() + glm::vec4(m_changeDiff, 0.0));
                 }
             }
         }

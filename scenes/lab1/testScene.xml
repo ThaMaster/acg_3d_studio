@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene>
-    <geometry path="models/sphere.obj" />
-    <transform translate="1 1 1" scale="0.4 0.4 0.4">
-        <transform translate="1 1 1">
+    <geometry name="geo1" path="models/sphere.obj" />
+    <transform scale="0.4 0.4 0.4">
+        <transform translate="5 0 0">
             <geometry name="geo2" path="models/monkey.obj"/>
         </transform>
-        <transform>
-            <geometry name="geo2" path="models/monkey.obj"/>
+        <transform translate="0 2 0" rotate="0 90 0">
+            <geometry name="geo3" path="models/monkey.obj"/>
         </transform>
     </transform>
 </scene>

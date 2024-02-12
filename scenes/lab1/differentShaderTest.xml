@@ -6,12 +6,6 @@
         </state>
         <geometry name="geo1" path="models/porsche_911_gt3.glb"/>
     </transform>
-    <transform name="trans2" translate="0 0 0">
-        <state>
-            <shaders vPath="shaders/phong-shading.vs" fPath="shaders/phong-shading-green-ambient.fs"/>
-        </state>
-        <geometry name="geo2" path="models/porsche_911_gt3.glb"/>
-    </transform>
     <transform name="trans3" translate="5 0 0">
         <state>
             <shaders vPath="shaders/phong-shading.vs" fPath="shaders/phong-shading-inverted.fs"/>
