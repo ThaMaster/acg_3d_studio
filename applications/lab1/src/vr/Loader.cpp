@@ -454,6 +454,15 @@ std::shared_ptr<Light> parseStateLight(rapidxml::xml_node<>* node)
 {
   std::string light_name = node->name();
   std::shared_ptr<Light> newLight(new Light);
+
+  std::string ambient = getAttribute(node, "ambient");
+  if(!ambient.empty()) {
+    glm::vec4 am_vec;
+    if (!getVec<glm::vec4>(am_vec, ambient))
+      throw std::runtime_error("Light(" + light_name + "): Invalid ambient.\n");
+    newLight->setAmbient(am_vec);
+  }
+
   std::string diffuse = getAttribute(node, "diffuse");
   glm::vec4 d_vec;
   if (!getVec<glm::vec4>(d_vec, diffuse))
@@ -717,6 +726,16 @@ Group* parseGroupNode(rapidxml::xml_node<>* node,std::shared_ptr<Scene>& scene)
   loadSceneGraph(node->first_node(), groupNode, scene);
 
   addStateAndUpdate(*groupNode, node, scene);
+
+  std::string node_type = node->name();
+  if(node_type == "scene") {
+    auto state_ptr = std::shared_ptr<State>(groupNode->getState());
+    if(state_ptr && state_ptr->getLights().size() != 0)
+      scene->setUseDefaultLight(false);
+    else 
+      scene->setUseDefaultLight(true);
+    
+  }
   
   return groupNode;
 }

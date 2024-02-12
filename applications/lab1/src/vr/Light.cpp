@@ -10,6 +10,7 @@ using namespace vr;
 Light::Light() : enabled(true)
 {
   createGeometry();
+  m_ambient = glm::vec4(0.2, 0.2, 0.2, 1.0);
   m_att_constant = 1.0;
   m_att_linear = 0.09;
   m_att_quadratic = 0.032;
@@ -67,11 +68,11 @@ void Light::apply(std::shared_ptr<vr::Shader> shader, size_t idx)
   shader->setVec4(prefix + "diffuse", this->m_diffuse);
   shader->setVec4(prefix + "specular", this->m_specular);
   shader->setVec4(prefix + "position", this->m_position);
+  
   if(m_position.w == 1) {
     shader->setFloat(prefix + "constant", this->m_att_constant);
     shader->setFloat(prefix + "linear", this->m_att_linear);
     shader->setFloat(prefix + "quadratic", this->m_att_quadratic);
-  } else {
   }
 
 }

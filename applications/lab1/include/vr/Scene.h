@@ -82,8 +82,11 @@ namespace vr
 
     Group* createDefaultScene();
     Geometry* buildGeometry(std::string geo_name, std::vector<glm::vec3> vertices, std::vector<GLshort> indices, std::vector<glm::vec3> normals, std::vector<glm::vec2> texCoords);
+    void setUseDefaultLight(bool b) { m_useDefaultLight = b; }
+    bool getUseDefaultLight(void) { return m_useDefaultLight; }
 
   private:
+    bool m_useDefaultLight = true;
     GLint m_uniform_numberOfLights;
     Group *m_rootGroup;
     RenderVisitor *m_renderVisitor;

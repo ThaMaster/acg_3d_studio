@@ -53,14 +53,17 @@ bool Application::initResources(const std::string& model_filename, const std::st
       return false;
     m_sceneRoot->getRootGroup()->addChild(objNode);
   }
-  
-  std::shared_ptr<Light> light1 = std::shared_ptr<Light>(new Light);
-  light1->setAmbient(glm::vec4(0.2, 0.2, 0.2, 1.0));
-  light1->setDiffuse(glm::vec4(1.0, 1.0, 1.0, 1.0));
-  light1->setSpecular(glm::vec4(1.0, 1.0, 1.0, 1.0));
-  light1->setPosition(glm::vec4(0.0, -2.0, 2.0, 0.0));
 
-  m_sceneRoot->add(light1);
+  if(m_sceneRoot->getUseDefaultLight()) {
+    std::cout << "using default light!" << std::endl;
+    std::shared_ptr<Light> light1 = std::shared_ptr<Light>(new Light);
+    light1->setAmbient(glm::vec4(0.2, 0.2, 0.2, 1.0));
+    light1->setDiffuse(glm::vec4(1.0, 1.0, 1.0, 1.0));
+    light1->setSpecular(glm::vec4(1.0, 1.0, 1.0, 1.0));
+    light1->setPosition(glm::vec4(0.0, -2.0, 2.0, 0.0));
+
+    m_sceneRoot->add(light1);
+  }
 
   return 1;
 }
@@ -88,11 +91,13 @@ void Application::initView()
 
   glm::vec3 direction = glm::normalize(box.getCenter() - eye);
 
-  std::shared_ptr<Light> light = m_sceneRoot->getRootGroup()->getState()->getLights().front();
 
   glm::vec4 position;
   position = glm::vec4(eye + glm::vec3(-8, 2, 0), 1);
-  light->setPosition(position);
+  if(m_sceneRoot->getUseDefaultLight()) {
+    std::shared_ptr<Light> light = m_sceneRoot->getRootGroup()->getState()->getLights().front();
+    light->setPosition(position);
+  }
 
   // Set the position/direction of the camera
   getCamera()->set(eye, direction, glm::vec3(0.0, 1.0, 0.0));
