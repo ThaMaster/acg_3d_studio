@@ -2,7 +2,8 @@
 <scene>
     <state name="sun_light_state">
         <light position="10.0 5.0 5.0 0.0" ambient="0.0 0.0 0.0 1.0" specular="1.0 1.0 1.0 1.0" diffuse="1.0 1.0 1.0 1.0"/>
-        <light position="35 5 -17.5 1.0" specular="1.0 1.0 0.0 1.0" diffuse="1.0 1.0 0.0 1.0" attenuation="1.0 0.045 0.0075"/>
+        <light position="35 5 -17.5 1.0" specular="1.0 1.0 0.0 1.0" diffuse="1.0 1.0 0.0 1.0" attenuation="1.0 0.07 0.017"/>
+        <light position="40 5 -40 1.0" specular="0.0 0.5 1.0 1.0" diffuse="0.0 0.5 1.0 1.0" attenuation="1.0 0.09 0.032"/>
     </state>
     <geometry path="models/House01/House01.obj"/>
     <transform translate="22 15 -60" rotate="45 0 0" scale="0.04 0.04 0.04">
@@ -49,16 +50,13 @@
         </transform>
     </transform>
     <transform name="trans1" translate="5 3 -4" rotate="0 -90 0" scale="0.01 0.01 0.01">
-        <state>
-            <texture path="textures/Stylized_Stone_Floor_005_basecolor.jpg"/>
-        </state>
         <lod name="cow1" maxDistance="80">
-                <geometry name="cow_1" path="models/cows/cow_0.99.obj"/>
-                <geometry name="cow_2" path="models/cows/cow_0.5.obj"/>
-                <geometry name="cow_3" path="models/cows/cow_0.3.obj"/>
-                <geometry name="cow_4" path="models/cows/cow_0.1.obj"/>
-                <geometry name="cow_5" path="models/cows/cow_0.05.obj"/>
-                <geometry name="cow_6" path="models/cows/cow_0.01.obj"/>
+            <geometry name="cow_1" path="models/cows/cow_0.99.obj"/>
+            <geometry name="cow_2" path="models/cows/cow_0.5.obj"/>
+            <geometry name="cow_3" path="models/cows/cow_0.3.obj"/>
+            <geometry name="cow_4" path="models/cows/cow_0.1.obj"/>
+            <geometry name="cow_5" path="models/cows/cow_0.05.obj"/>
+            <geometry name="cow_6" path="models/cows/cow_0.01.obj"/>
         </lod>
     </transform>
     <transform name="trans1" translate="35 5 -20" rotate="0 90 0" scale="0.01 0.01 0.01">
@@ -66,25 +64,25 @@
             <material ambient="1.0 1.0 1.0" specular="0.4 0.1 0.2" diffuse="0.3 0.2 0.6"/>
         </state>
         <lod name="cow2" maxDistance="80">
-                <geometry name="cow_1" path="models/cows/cow_0.99.obj"/>
-                <geometry name="cow_2" path="models/cows/cow_0.5.obj"/>
-                <geometry name="cow_3" path="models/cows/cow_0.3.obj"/>
-                <geometry name="cow_4" path="models/cows/cow_0.1.obj"/>
-                <geometry name="cow_5" path="models/cows/cow_0.05.obj"/>
-                <geometry name="cow_6" path="models/cows/cow_0.01.obj"/>
-        </lod>DDDD
+            <geometry name="cow_1" path="models/cows/cow_0.99.obj"/>
+            <geometry name="cow_2" path="models/cows/cow_0.5.obj"/>
+            <geometry name="cow_3" path="models/cows/cow_0.3.obj"/>
+            <geometry name="cow_4" path="models/cows/cow_0.1.obj"/>
+            <geometry name="cow_5" path="models/cows/cow_0.05.obj"/>
+            <geometry name="cow_6" path="models/cows/cow_0.01.obj"/>
+        </lod>
     </transform>
     <transform name="trans1" translate="35 5 -15" rotate="0 -90 0" scale="0.01 0.01 0.01">
         <state>
             <material ambient="1.0 1.0 1.0" specular="1.0 0.1 0.2" diffuse="1.0 0.2 0.6"/>
         </state>
         <lod name="cow3" maxDistance="80">
-                <geometry name="cow_1" path="models/cows/cow_0.99.obj"/>
-                <geometry name="cow_2" path="models/cows/cow_0.5.obj"/>
-                <geometry name="cow_3" path="models/cows/cow_0.3.obj"/>
-                <geometry name="cow_4" path="models/cows/cow_0.1.obj"/>
-                <geometry name="cow_5" path="models/cows/cow_0.05.obj"/>
-                <geometry name="cow_6" path="models/cows/cow_0.01.obj"/>
+            <geometry name="cow_1" path="models/cows/cow_0.99.obj"/>
+            <geometry name="cow_2" path="models/cows/cow_0.5.obj"/>
+            <geometry name="cow_3" path="models/cows/cow_0.3.obj"/>
+            <geometry name="cow_4" path="models/cows/cow_0.1.obj"/>
+            <geometry name="cow_5" path="models/cows/cow_0.05.obj"/>
+            <geometry name="cow_6" path="models/cows/cow_0.01.obj"/>
         </lod>
     </transform>
 </scene>
