@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene>
     <state>
-        <light position="14.0 5.5 -43.0 1.0" specular="1.0 1.0 1.0 1.0" diffuse="1.0 1.0 1.0 1.0" attenuation="1.0 0.014 0.0007"/>
+        <light position="-2.0 2.0 0.0 0.0" specular="1.0 0 0 1.0" diffuse="1.0 0 0 1.0"/>
+        <light position="2.0 2.0 0.0 0.0" specular="0 1.0 0 1.0" diffuse="0 1.0 0 1.0"/>
+        <light position="-2.0 -2.0 0.0 0.0" specular="0 0 1.0 1.0" diffuse="0 0 1.0 1.0"/>
+        <light position="2.0 -2.0 0.0 0.0" specular="1.0 1.0 1.0 1.0" diffuse="1.0 1.0 1.0 1.0"/>
     </state>
-    <geometry name="geo1" path="models/House01/House01.obj"/>
+    <geometry name="geo1" path="models/monkey.obj"/>
 </scene>

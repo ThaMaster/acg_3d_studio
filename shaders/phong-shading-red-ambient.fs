@@ -30,6 +30,9 @@ struct Material
 struct LightSource
 {
   bool enabled;
+  float constant;
+  float linear;
+  float quadratic;
   vec4 position;
   vec4 diffuse;
   vec4 specular;
@@ -71,7 +74,7 @@ void main()
       vec3 positionToLightSource = vec3(light.position.xyz - positionWorld.xyz);
       float distance = length(positionToLightSource);
       lightDirection = normalize(positionToLightSource);
-      attenuation = 1.0 / (1.0 + 0.09 * distance + 0.032 * (distance * distance));
+      attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
     }
 
     vec3 diffuseReflection = attenuation

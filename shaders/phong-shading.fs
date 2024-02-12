@@ -30,12 +30,12 @@ struct Material
 struct LightSource
 {
   bool enabled;
-  vec4 position;
-  vec4 diffuse;
-  vec4 specular;
   float constant;
   float linear;
   float quadratic;
+  vec4 position;
+  vec4 diffuse;
+  vec4 specular;
 };
 
 const int MaxNumberOfLights = 10;
@@ -58,7 +58,6 @@ void main()
 
   // initialize total lighting with ambient lighting
   vec3 totalLighting = vec3(scene_ambient) * vec3(material.ambient);
-
 
   // for all light sources
   for (int index = 0; index < numberOfLights; index++) 

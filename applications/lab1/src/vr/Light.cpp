@@ -66,8 +66,10 @@ void Light::apply(std::shared_ptr<vr::Shader> shader, size_t idx)
   shader->setVec4(prefix + "diffuse", this->diffuse);
   shader->setVec4(prefix + "specular", this->specular);
   shader->setVec4(prefix + "position", this->position);
-  shader->setFloat(prefix + "constant", this->m_att_constant);
-  shader->setFloat(prefix + "linear", this->m_att_linear);
-  shader->setFloat(prefix + "quadratic", this->m_att_quadratic);
+  if(position.w == 1) {
+    shader->setFloat(prefix + "constant", this->m_att_constant);
+    shader->setFloat(prefix + "linear", this->m_att_linear);
+    shader->setFloat(prefix + "quadratic", this->m_att_quadratic);
+  }
 
 }
