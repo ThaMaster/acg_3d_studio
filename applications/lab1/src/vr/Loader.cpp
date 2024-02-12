@@ -468,7 +468,14 @@ std::shared_ptr<Light> parseStateLight(rapidxml::xml_node<>* node)
   glm::vec4 p_vec;
   if (!getVec<glm::vec4>(p_vec, position))
     throw std::runtime_error("Light(" + light_name  + "). Invalid position.\n ");
-  
+
+  std::string attenuation = getAttribute(node, "attenuation");
+  if(!attenuation.empty()) {
+    glm::vec3 a_vec;
+    if (!getVec<glm::vec3>(a_vec, attenuation))
+      throw std::runtime_error("Light(" + light_name + "): Invalid attenuation.\n");
+    newLight->setAttenuation(a_vec.x, a_vec.y, a_vec.z);
+  }
   newLight->diffuse = d_vec;
   newLight->specular = s_vec;
   newLight->position = p_vec;

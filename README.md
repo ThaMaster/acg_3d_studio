@@ -130,7 +130,7 @@ This section details the basic nodes that are necessary to create a simple scene
 #### Light
 
 ```xml
-    <light position="x y z" specular="r g b" diffuse="r g b"/>
+    <light position="x y z" specular="r g b" diffuse="r g b" attenuation="constant linear quadratic"/>
 ```
 
 #### Material

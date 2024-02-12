@@ -10,6 +10,9 @@ using namespace vr;
 Light::Light() : enabled(true)
 {
   createGeometry();
+  m_att_constant = 1.0;
+  m_att_linear = 0.09;
+  m_att_quadratic = 0.032;
 }
 
 void Light::createGeometry()
@@ -35,6 +38,13 @@ std::shared_ptr<Geometry>& Light::getGeometry()
   return m_geo; 
 }
 
+void Light::setAttenuation(float c, float l, float q)
+{
+  m_att_constant = c;
+  m_att_linear = l;
+  m_att_quadratic = q;
+}
+
 void Light::apply(std::shared_ptr<vr::Shader> shader, size_t idx)
 {
   int i = 0;
@@ -56,4 +66,8 @@ void Light::apply(std::shared_ptr<vr::Shader> shader, size_t idx)
   shader->setVec4(prefix + "diffuse", this->diffuse);
   shader->setVec4(prefix + "specular", this->specular);
   shader->setVec4(prefix + "position", this->position);
+  shader->setFloat(prefix + "constant", this->m_att_constant);
+  shader->setFloat(prefix + "linear", this->m_att_linear);
+  shader->setFloat(prefix + "quadratic", this->m_att_quadratic);
+
 }

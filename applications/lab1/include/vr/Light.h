@@ -21,10 +21,14 @@ namespace vr
     Light();
 
     void apply(std::shared_ptr<vr::Shader> shader, size_t idx);
-    
+    void setAttenuation(float c, float l, float q);    
   private:
     friend class Scene;
     std::shared_ptr<Geometry> m_geo;
+
+    float m_att_constant;
+    float m_att_linear;
+    float m_att_quadratic;
 
     void createGeometry();
     std::shared_ptr<Geometry>& getGeometry();
