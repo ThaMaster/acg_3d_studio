@@ -13,7 +13,6 @@ class UpdateCallback
         virtual void update(Transform&) = 0;
         virtual void update(Geometry&) = 0;
         virtual void update(LOD&) = 0;
-
 };
 
 #endif

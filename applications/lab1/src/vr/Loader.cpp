@@ -504,7 +504,7 @@ std::vector<UpdateCallback*> parseNodeCallbacks(rapidxml::xml_node<>* node)
       std::string rotate = getAttribute(node, "axis");
       glm::vec3 axis;
       if (!getVec<glm::vec3>(axis, rotate))
-        throw std::runtime_error("Rotate(" + node_type + "): Invalid rotation axis.\n");
+        throw std::runtime_error("Update(" + node_type + "): Invalid rotation axis.\n");
       
       callbacks.push_back(new RotateCallback(speed, axis));
     } else if(node_type == "translate") {
@@ -513,9 +513,22 @@ std::vector<UpdateCallback*> parseNodeCallbacks(rapidxml::xml_node<>* node)
       std::string translate = getAttribute(node, "axis");
       glm::vec3 axis;
       if (!getVec<glm::vec3>(axis, translate))
-        throw std::runtime_error("Rotate(" + node_type + "): Invalid rotation axis.\n");
+        throw std::runtime_error("Update(" + node_type + "): Invalid rotation axis.\n");
       
       callbacks.push_back(new TranslateCallback(speed, axis));
+    } else if(node_type == "lightColor") {
+
+      std::string specular = getAttribute(node, "specular");
+      glm::vec3 s_vec;
+      if (!getVec<glm::vec3>(s_vec, specular))
+        throw std::runtime_error("Update(" + node_type + "): Invalid specular value.\n");
+
+      std::string diffuse = getAttribute(node, "diffuse");
+      glm::vec3 d_vec;
+      if (!getVec<glm::vec3>(d_vec, diffuse))
+        throw std::runtime_error("Update(" + node_type + "): Invalid diffuse value.\n");
+
+      callbacks.push_back(new LightColorCallback(s_vec, d_vec));
     } else {
       std::cout << "Unknown node type: \'" << node_type << "\'" << std::endl;
     }
