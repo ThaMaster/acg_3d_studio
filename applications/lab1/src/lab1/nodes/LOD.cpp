@@ -20,7 +20,8 @@ Group* LOD::getObjectToRender(float distToCam)
 {
     float interval = m_maxRenderDistance / m_objects.size();
     int index = distToCam/interval;
-    if( index > m_objects.size()) {
+    
+    if( index >= m_objects.size()) {
         return m_objects.back();
     } else {
         return m_objects[index];

@@ -49,10 +49,14 @@ void RenderVisitor::visit(Geometry& geo)
 
 void RenderVisitor::visit(LOD& lod)
 {
+    m_stateStack.push(m_stateStack.top()->merge(lod.getState()));
+
     float distToCamera = lod.getDistanceToCamera(glm::vec4(m_camera->getPosition(), 1.0f));
     auto selectedObj = lod.getObjectToRender(distToCamera);
 
     if(selectedObj) {
         selectedObj->accept(*this);
     }
+
+    m_stateStack.pop();
 }

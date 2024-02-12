@@ -661,9 +661,9 @@ std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node, std::shared_pt
 void addStateAndUpdate(Node& graph_node, rapidxml::xml_node<>* xml_node, std::shared_ptr<Scene>& scene)
 {
   rapidxml::xml_node<>* stateNode = xml_node->first_node("state");
-  if(stateNode)
+  if(stateNode){
     graph_node.setState(parseNodeState(stateNode, scene));
-
+  }
   rapidxml::xml_node<>* updateNode = xml_node->first_node("update");
   if(updateNode) {
     auto callbackVector = parseNodeCallbacks(updateNode);
@@ -777,14 +777,15 @@ LOD* parseLodNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
   float maxDistance = atof(getAttribute(node, "maxDistance").c_str());
   lodNode->setMaxRenderDistance(maxDistance);
   std::string lodChildType;
-  for(node = node->first_node(); node; node = node->next_sibling())
+  for(rapidxml::xml_node<>* geo_node = node->first_node(); geo_node; geo_node = geo_node->next_sibling())
   {
-    lodChildType = node->name();
-    if (!node || node->type() == rapidxml::node_comment || node->type() == rapidxml::node_doctype || lodChildType != "geometry")
+    lodChildType = geo_node->name();
+    if (!geo_node || geo_node->type() == rapidxml::node_comment || geo_node->type() == rapidxml::node_doctype || lodChildType != "geometry")
         continue;
 
-    lodNode->addObject(parseObjNode(node, scene));
+    lodNode->addObject(parseObjNode(geo_node, scene));
   }
+  addStateAndUpdate(*lodNode, node, scene);
   lodNode->addObject(new Group("empty"));
   return lodNode;
 }

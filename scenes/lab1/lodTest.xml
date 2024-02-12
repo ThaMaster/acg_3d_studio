@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene>
+    
     <lod name="cows1" maxDistance="1500">
-            <geometry name="cow_1" path="models/cows/cow_0.99.obj"/>
-            <geometry name="cow_2" path="models/cows/cow_0.5.obj"/>
-            <geometry name="cow_3" path="models/cows/cow_0.3.obj"/>
-            <geometry name="cow_4" path="models/cows/cow_0.1.obj"/>
-            <geometry name="cow_5" path="models/cows/cow_0.05.obj"/>
-            <geometry name="cow_6" path="models/cows/cow_0.01.obj"/>
+        <state name="sun_light_state">
+            <light position="10.0 5.0 5.0 0.0" ambient="0.0 0.0 1.0 1.0" specular="0.0 0.0 1.0 1.0" diffuse="0.0 0.0 1.0 1.0"/>
+        </state>
+        <geometry name="cow_1" path="models/cows/cow_0.99.obj"/>
+        <geometry name="cow_2" path="models/cows/cow_0.5.obj"/>
+        <geometry name="cow_3" path="models/cows/cow_0.3.obj"/>
+        <geometry name="cow_4" path="models/cows/cow_0.1.obj"/>
+        <geometry name="cow_5" path="models/cows/cow_0.05.obj"/>
+        <geometry name="cow_6" path="models/cows/cow_0.01.obj"/>
     </lod>
     <transform name="trans1" translate="1000 0 0">
+        
         <lod name="cows2" maxDistance="1500">
             <geometry name="cow_1" path="models/cows/cow_0.99.obj"/>
             <geometry name="cow_2" path="models/cows/cow_0.5.obj"/>
