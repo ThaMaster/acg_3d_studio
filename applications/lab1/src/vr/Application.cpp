@@ -55,7 +55,6 @@ bool Application::initResources(const std::string& model_filename, const std::st
   }
 
   if(m_sceneRoot->getUseDefaultLight()) {
-    std::cout << "using default light!" << std::endl;
     std::shared_ptr<Light> light1 = std::shared_ptr<Light>(new Light);
     light1->setAmbient(glm::vec4(0.2, 0.2, 0.2, 1.0));
     light1->setDiffuse(glm::vec4(1.0, 1.0, 1.0, 1.0));
