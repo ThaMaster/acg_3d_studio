@@ -1,5 +1,7 @@
 #include "lab1/nodes/Group.h"
 
+std::vector<Node*> Group::getChildren() { return m_children; } 
+
 vr::BoundingBox Group::calculateBoundingBox(glm::mat4 m)
 {
     vr::BoundingBox box;

@@ -12,6 +12,17 @@ class Transform;
 class Geometry;
 class LOD;
 
+/**
+ * @brief Base class that all different types of 
+ *        NodeVisitors should derive from. They all
+ *        must implement the visit function with the
+ *        wanted functionality.
+ * 
+ * @author Christoffer Nordlander (c20cnr@cs.umu.se)
+ * 
+ * Version information:
+ *      2024-02-12: v1.0, first version. 
+ */
 class NodeVisitor
 {
     public:

@@ -10,6 +10,17 @@
 #include "lab1/nodes/Geometry.h"
 #include "lab1/nodes/LOD.h"
 
+/**
+ * @brief Class for changing the transform nodes transformation matrix by
+ *        using the given values to rotate the matrix of a transform node. 
+ *        It can be used with the TranslateCallback function to make the 
+ *        object move in a circle or other types of movement.
+ * 
+ * @author Christoffer Nordlander (c20cnr@cs.umu.se)
+ * 
+ * Version information:
+ *      2024-02-12: v1.0, first version. 
+ */
 class RotateCallback : public UpdateCallback
 {
     public:

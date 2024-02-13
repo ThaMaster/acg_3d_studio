@@ -60,3 +60,6 @@ void RenderVisitor::visit(LOD& lod)
 
     m_stateStack.pop();
 }
+
+void RenderVisitor::setCamera(std::shared_ptr<vr::Camera> c) { m_camera = c; }
+std::shared_ptr<vr::Camera> RenderVisitor::getCamera(void) { return m_camera; }

@@ -10,6 +10,16 @@
 #include "lab1/nodes/Geometry.h"
 #include "lab1/nodes/LOD.h"
 
+/**
+ * @brief Class for changing the transform nodes transformation matrix by
+ *        using the given values to translate the matrix for the transform
+ *        node.
+ * 
+ * @author Christoffer Nordlander (c20cnr@cs.umu.se)
+ * 
+ * Version information:
+ *      2024-02-12: v1.0, first version. 
+ */
 class TranslateCallback : public UpdateCallback
 {
     public:

@@ -78,12 +78,16 @@ std::string findTexture(const std::string& texturePath, const std::string& model
 }
 
 /**
- * @brief 
+ * @brief Function for extracting all the materials that is provided from
+ *        the loaded models file. If the model does not have any stated
+ *        materials, ignore the default materials from the Assimp loader.
  * 
- * @param scene 
- * @param materials 
- * @param modelPath 
- * @return size_t 
+ * @param scene     The aiScene object provided from the Assimp loader.
+ * @param materials The material vector that will be filled with the extracted
+ *                  materials.                 
+ * @param modelPath The path to the model where the materials should be stated.
+ * 
+ * @return size_t
  */
 size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const std::string modelPath)
 {
@@ -164,12 +168,7 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
   return materials.size();
 }
 
-/**
- * @brief 
- * 
- * @param ai_matrix 
- * @return glm::mat4 
- */
+
 glm::mat4 assimpToGlmMatrix(const aiMatrix4x4& ai_matrix)
 {
   glm::mat4 glm_matrix;
@@ -184,13 +183,16 @@ glm::mat4 assimpToGlmMatrix(const aiMatrix4x4& ai_matrix)
 }
 
 /**
- * @brief 
+ * @brief Function for parsing the nodes provided when loading
+ *        a model from a file using the Assimp Loader. It will
+ *        create a group node where all the sub-meshes of the
+ *        object are stored as geomerty nodes.
  * 
- * @param root_node 
- * @param materials 
- * @param transformStack 
- * @param objNode 
- * @param aiScene 
+ * @param root_node       The root node of the model.
+ * @param materials       The material vector where all the materials will be stored.
+ * @param transformStack  A stack of transformatoin matrices.
+ * @param objNode         The group node that represents the whole object.
+ * @param aiScene         The aiScene object provieded form the Assimp loader.
  */
 void parseNodes(aiNode* root_node, MaterialVector& materials, std::stack<glm::mat4>& transformStack, Group& objNode, const aiScene* aiScene, std::shared_ptr<Scene>& scene)
 {
@@ -280,11 +282,15 @@ void parseNodes(aiNode* root_node, MaterialVector& materials, std::stack<glm::ma
 }
 
 /**
- * @brief 
+ * @brief Function for handling all loading of 3D model files. Since
+ *        the program utilizes the Assimp loader, multiple different
+ *        model file formats are supported.
  * 
- * @param filename 
- * @param objName 
- * @return Group* 
+ * @param filename  The name of the model file.
+ * @param objName   The name of the geometry node.
+ * @param scene     The scene object.
+ * 
+ * @return Group*
  */
 Group* vr::load3DModelFile(const std::string& filename, const std::string& objName, std::shared_ptr<Scene>& scene)
 {
@@ -329,13 +335,6 @@ Group* vr::load3DModelFile(const std::string& filename, const std::string& objNa
   return objNode;
 }
 
-/**
- * @brief 
- * 
- * @tparam T 
- * @param string 
- * @return T 
- */
 template<class T>
 T readValue(const std::string& string) {
   std::stringstream ss;
@@ -345,12 +344,6 @@ T readValue(const std::string& string) {
   return result;
 }
 
-/**
- * @brief 
- * 
- * @param path 
- * @return std::string 
- */
 std::string pathToString(std::vector<std::string>& path)
 {
   std::string result;
@@ -360,15 +353,6 @@ std::string pathToString(std::vector<std::string>& path)
   return result;
 }
 
-/**
- * @brief 
- * 
- * @tparam ContainerT 
- * @param str 
- * @param tokens 
- * @param delimiters 
- * @param trimEmpty 
- */
 template < class ContainerT >
 void tokenize(const std::string& str, ContainerT& tokens,
   const std::string& delimiters = " ", bool trimEmpty = false)
@@ -394,16 +378,6 @@ void tokenize(const std::string& str, ContainerT& tokens,
   }
 }
 
-/**
- * @brief Get the Vec object
- * 
- * @tparam T 
- * @param vec 
- * @param string 
- * @param def 
- * @return true 
- * @return false 
- */
 template<class T>
 bool getVec(T& vec, const std::string& string, const T& def = T())
 {
@@ -425,13 +399,6 @@ bool getVec(T& vec, const std::string& string, const T& def = T())
   return true;
 }
 
-/**
- * @brief Get the Attribute object
- * 
- * @param node 
- * @param attribute 
- * @return std::string 
- */
 std::string getAttribute(rapidxml::xml_node<>* node, const std::string& attribute)
 {
   if (!node)
@@ -445,9 +412,15 @@ std::string getAttribute(rapidxml::xml_node<>* node, const std::string& attribut
 }
 
 /**
- * @brief 
+ * @brief Function for parsing a state node containing
+ *        light nodes. It will go through all the values
+ *        and parse them accordingly. The function will
+ *        only add ambient and/or attentuatoin factors if
+ *        they are found, otherwise it will use the default
+ *        values.
  * 
- * @param node 
+ * @param node The xml node representing the light.
+ * 
  * @return std::shared_ptr<Light> 
  */
 std::shared_ptr<Light> parseStateLight(rapidxml::xml_node<>* node)
@@ -492,9 +465,13 @@ std::shared_ptr<Light> parseStateLight(rapidxml::xml_node<>* node)
 }
 
 /**
- * @brief 
+ * @brief Function for parsing a xml node that represents
+ *        a UpdateCallback node. Since there can be multiple
+ *        different functions for a single update node,
+ *        iterate through all the siblings and parse them accordingly.
  * 
- * @param node 
+ * @param node The node representing the update node.
+ * 
  * @return std::vector<UpdateCallback*> 
  */
 std::vector<UpdateCallback*> parseNodeCallbacks(rapidxml::xml_node<>* node)
@@ -545,6 +522,20 @@ std::vector<UpdateCallback*> parseNodeCallbacks(rapidxml::xml_node<>* node)
   return callbacks;
 }
 
+/**
+ * @brief Function for parsing a xml node that represents
+ *        a shader node in the state. This function must
+ *        contain both a path to the Vertex Shader and
+ *        the Fragment shader so if only one of the shaders
+ *        wants to be changed, simply supply the same path
+ *        to the other one. Otherwise it will cause an error
+ *        to occur.
+ * 
+ * @param node  The xml node representing a shader node.
+ * @param scene The scene object.
+ * 
+ * @return std::shared_ptr<Shader> 
+ */
 std::shared_ptr<Shader> parseStateShader(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
 {
   std::string node_type = node->name();
@@ -568,6 +559,19 @@ std::shared_ptr<Shader> parseStateShader(rapidxml::xml_node<>* node, std::shared
   return shader;
 }
 
+/**
+ * @brief Function for parsing a xml node that represents
+ *        a texture inside a state node. It will simply
+ *        check for the path to the texture and create a 
+ *        texture from the file. It will then return the
+ *        created texture.
+ * 
+ * @param node  The xml node representing a texture.
+ * @param scene The scene object.
+ * @param state The state that is to contain the texture.
+ * 
+ * @return std::shared_ptr<Texture> 
+ */
 std::shared_ptr<Texture> parseStateTexture(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene, std::shared_ptr<State> &state)
 {
   std::shared_ptr<vr::Texture> texture;
@@ -583,6 +587,18 @@ std::shared_ptr<Texture> parseStateTexture(rapidxml::xml_node<>* node, std::shar
   return texture;
 }
 
+/**
+ * @brief Function for parsing a xml node that represents
+ *        a material inside a state node. It will iterate
+ *        through all the attributes and set them accordingly.
+ *        If any of them are missing, use the default value
+ *        instead.
+ * 
+ * @param node  The xml node representing a material.
+ * @param scene The scene object.
+ * 
+ * @return std::shared_ptr<Material> 
+ */
 std::shared_ptr<Material> parseStateMaterial(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
 {
   std::string node_type = node->name();
@@ -611,9 +627,14 @@ std::shared_ptr<Material> parseStateMaterial(rapidxml::xml_node<>* node, std::sh
 }
 
 /**
- * @brief 
+ * @brief Function for parsing a xml node that represents
+ *        a state. A state can contain two attributes and
+ *        multiple other information such as which shader
+ *        to use, texture and material. These are all parsed 
+ *        accordingly if they are present inside the state node.
  * 
- * @param node 
+ * @param node The node representing a state.
+ * 
  * @return std::shared_ptr<State> 
  */
 std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
@@ -647,16 +668,23 @@ std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node, std::shared_pt
       std::cout << "Unknow node: \'"<< node->name() << "\'" << std::endl;
     }
   }
+
   if(newState->getTextureUnit() != -1)
     newState->initTextures();
+
   return newState;
 }
 
 /**
- * @brief 
+ * @brief Function for adding potential states and
+ *        UpdateCallbacks to a given node. If the
+ *        xml node does not state any of these types
+ *        of objects, simply do nothing, otherwise add
+ *        them to the node.
  * 
- * @param graph_node 
- * @param xml_node 
+ * @param graph_node  The node to add potential state and UpdateCallbacks.
+ * @param xml_node    The xml node representing the node to update.
+ * @param scene       The scene object.
  */
 void addStateAndUpdate(Node& graph_node, rapidxml::xml_node<>* xml_node, std::shared_ptr<Scene>& scene)
 {
@@ -673,9 +701,15 @@ void addStateAndUpdate(Node& graph_node, rapidxml::xml_node<>* xml_node, std::sh
 }
 
 /**
- * @brief 
+ * @brief Function for parsing a xml node that represents a
+ *        transformation node. All values such as translation,
+ *        rotation and scaling will be attempted to parsed but
+ *        if they are not present it will use vectors where
+ *        each element are equal to 1.
  * 
- * @param node 
+ * @param node  The xml node representing a transform node.
+ * @param scene The scene object. 
+ * 
  * @return Transform* 
  */
 Transform* parseTransformNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
@@ -714,8 +748,13 @@ Transform* parseTransformNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>
 
 /**
  * @brief Function for parsing a single Group node from a given XML node.
+ *        if the group node is the entire scene, check whether it contains
+ *        any stated lights, if not signal the scene to add a default light
+ *        to use, otherwise use the stated light instead. The group can 
+ *        have states and UpdateCallbacks.
  * 
- * @param node The XML node.
+ * @param node  The xml node representing a group/scene node.
+ * @param scene The scene object. 
  * @return Group* 
  */
 Group* parseGroupNode(rapidxml::xml_node<>* node,std::shared_ptr<Scene>& scene)
@@ -741,10 +780,15 @@ Group* parseGroupNode(rapidxml::xml_node<>* node,std::shared_ptr<Scene>& scene)
 }
 
 /**
- * @brief Parses 
+ * @brief Function for parsing the xml node when a object is to be
+ *        added to the scene graph. Since a object can contain multiple
+ *        submeshes, create a group node and add geometries to the group 
+ *        node for each submesh. Object node can have states and 
+ *        UpdateCallbacks.
  * 
- * @param node 
- * @param scene 
+ * @param node    The xml node representing a Geometry node.
+ * @param scene   The scene object.
+ * 
  * @return Group* 
  */
 Group* parseObjNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
@@ -770,6 +814,18 @@ Group* parseObjNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
   return objNode;
 }
 
+/**
+ * @brief Function for parsing an xml node when a Level of Detail (LOD) 
+ *        node should be created. It will create a LOD object and
+ *        iterate through all the geometries that are inside the node
+ *        and parse them accordingly. The LOD node can have states and
+ *        UpdateCallbacks.
+ * 
+ * @param node  The xml node representing a LOD node.
+ * @param scene The scene object.
+ * 
+ * @return LOD* 
+ */
 LOD* parseLodNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
 {
   std::string node_name = getAttribute(node, "name");
@@ -791,11 +847,14 @@ LOD* parseLodNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
 }
 
 /**
- * @brief 
+ * @brief Function for parsing the scene graph and connecting
+ *        all the nodes togheter. It will iterate through the 
+ *        file recursively and add potential states and
+ *        UpdateCallbacks functions accordingly.
  * 
- * @param parent_node 
- * @param root 
- * @param scene 
+ * @param parent_node The xml node representing the parent node.
+ * @param root        The scene graph node that is currently being parsed.
+ * @param scene       The scene object.
  */
 void vr::loadSceneGraph(rapidxml::xml_node<>* parent_node, Group* root, std::shared_ptr<Scene>& scene) {
   if (!parent_node || parent_node->type() == rapidxml::node_comment || parent_node->type() == rapidxml::node_doctype)
@@ -830,12 +889,17 @@ void vr::loadSceneGraph(rapidxml::xml_node<>* parent_node, Group* root, std::sha
 }
 
 /**
- * @brief 
+ * @brief Function for loading a scene from a provided XML file. If
+ *        any errors are included in the scene, it will exit and
+ *        provided an error message. Also, if the scene does not
+ *        include a light, it will signal the scene to create a
+ *        default light to use.
  * 
- * @param sceneFile 
- * @param scene 
- * @return true 
- * @return false 
+ * @param sceneFile The path to the scene file to load.
+ * @param scene     The scene object.
+ * 
+ * @return true, if the scene was loaded successfully.
+ * @return false, otherwise.
  */
 bool vr::loadSceneFile(const std::string& sceneFile, std::shared_ptr<Scene>& scene)
 {

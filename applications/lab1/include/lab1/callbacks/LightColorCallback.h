@@ -10,6 +10,20 @@
 #include "lab1/nodes/Geometry.h"
 #include "lab1/nodes/LOD.h"
 
+/**
+ * @brief Class for updating the light values inside the state
+ *        of a given node. The update can either increase or decrease 
+ *        the light values and will switch the increase/decrease when
+ *        the highest/lowest value has been reached. It handles all the
+ *        nodes the same. The values of the increase in values can be different
+ *        for the specular and diffuse values, and can make very cool visual
+ *        effects.
+ * 
+ * @author Christoffer Nordlander (c20cnr@cs.umu.se)
+ * 
+ * Version information:
+ *      2024-02-12: v1.0, first version.  
+ */
 class LightColorCallback : public UpdateCallback
 {
     public:

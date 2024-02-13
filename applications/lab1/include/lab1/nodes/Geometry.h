@@ -3,14 +3,22 @@
 
 #include "Group.h"
 
+/**
+ * @brief A geometry node contains all the information regarding 
+ *        a mesh which includes vertices, normals, texture coordinates
+ *        and indices. The geometry node needs to first initialize
+ *        the attribute locations in the used shader and then upload
+ *        the geometry data to the buffers before being able to render 
+ *        the scene.
+ * 
+ * @author Christoffer Nordlander (c20cnr@cs.umu.se)
+ * 
+ * Version information:
+ *      2024-02-12: v1.0, first version. 
+ */
 class Geometry : public Node
 {        
     public:
-        std::vector<glm::vec4> vertices;
-        std::vector<glm::vec3> normals;
-        std::vector<glm::vec2> texCoords;
-        std::vector<GLushort> elements;
-
         Geometry(const std::string& name = "") : Node(name) {}
         ~Geometry();
         
@@ -29,7 +37,13 @@ class Geometry : public Node
         void draw_bbox(std::shared_ptr<vr::Shader> shader);
         virtual vr::BoundingBox calculateBoundingBox(glm::mat4 m) override;
 
+        std::vector<glm::vec4> vertices;
+        std::vector<glm::vec3> normals;
+        std::vector<glm::vec2> texCoords;
+        std::vector<GLushort> elements;
+        
     private:
+
         GLuint m_vbo_vertices, m_vbo_normals, m_vbo_texCoords, m_ibo_elements;
         GLuint m_vao;
         GLint m_attribute_v_coord;

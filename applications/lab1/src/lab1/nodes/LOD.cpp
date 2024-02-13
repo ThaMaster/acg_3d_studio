@@ -2,6 +2,11 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+void LOD::setMaxRenderDistance(float dist) { m_maxRenderDistance = dist; }
+float LOD::getMaxRenderDistance(void) { return m_maxRenderDistance; }
+std::vector<Group*> LOD::getObjects(void) { return m_objects; }
+void LOD::addObject(Group* obj) { m_objects.push_back(obj); }
+
 vr::BoundingBox LOD::calculateBoundingBox(glm::mat4 m)
 {
     for(auto g : getObjects()) 

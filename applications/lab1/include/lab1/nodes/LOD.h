@@ -3,25 +3,35 @@
 
 #include "Group.h"
 
+/**
+ * @brief A node that implements the Level of Detail (LOD)
+ *        functionality. Depending on the set max distance,
+ *        the node can supply a specific geometry depending
+ *        on the given distance.
+ * 
+ * @author Christoffer Nordlander (c20cnr@cs.umu.se)
+ * 
+ * Version information:
+ *      2024-02-12: v1.0, first version. 
+ */
 class LOD : public Node
 {
     public:
         LOD(const std::string& name = "") : Node(name) {}
-
+        ~LOD(){}
         void accept(NodeVisitor& v) override;
 
         vr::BoundingBox calculateBoundingBox(glm::mat4 m) override;
 
-        std::vector<Group*> getObjects(void) { return m_objects; }
-        void addObject(Group* obj) { m_objects.push_back(obj); }
+        std::vector<Group*> getObjects(void);
+        void addObject(Group* obj);
         Group* getObjectToRender(float distToCam);
         
-        void setMaxRenderDistance(float dist) { m_maxRenderDistance = dist; }
-        float getMaxRenderDistance(void) { return m_maxRenderDistance; }
+        void setMaxRenderDistance(float dist);
+        float getMaxRenderDistance(void);
 
         float getDistanceToCamera(glm::vec3 camPos);
 
-        bool firstTime = false;
     private:
         std::vector<Group*> m_objects;
         float m_maxRenderDistance;

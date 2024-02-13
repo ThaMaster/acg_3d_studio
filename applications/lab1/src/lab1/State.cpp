@@ -2,9 +2,39 @@
 #include <iostream>
 #include "vr/Material.h"
 
-State::State(const std::string& name) : m_stateName(name) {}
-State::~State() {}
+std::string State::getStateName() { return m_stateName;}  
 
+void State::setShader(std::shared_ptr<vr::Shader> s) { m_shader = s;}
+std::shared_ptr<vr::Shader> State::getShader(void) { return m_shader; }
+
+void State::addTexture(std::shared_ptr<vr::Texture> t) { m_textures.push_back(t); }
+unsigned int State::getTextureUnit(void) { return m_curr_texture_unit; }
+void State::incTextureUnit(void) { m_curr_texture_unit++; }
+
+void State::addLight(std::shared_ptr<vr::Light> light) { m_lights.push_back(light); }
+std::vector<std::shared_ptr<vr::Light>> State::getLights(void) { return m_lights; }
+void State::setEnableLight(std::shared_ptr<bool> b) { m_enableLight = b; }
+std::shared_ptr<bool> State::getEnableLight(void) { return m_enableLight; }
+
+void State::setCullFace(std::shared_ptr<bool> b) { m_cullFace = b; }
+std::shared_ptr<bool> State::getCullFace(void) { return m_cullFace; }
+
+void State::setShaderSwitch(bool b) { m_shaderSwitch = b; }
+bool State::getShaderSwitch() { return m_shaderSwitch; }   
+
+/**
+ * @brief Function for merging two states into one.
+ *        If the given state is not instanciated, copy
+ *        all the values to the merged state and return.
+ *        Otherwise each value of the incoming state needs
+ *        to be examined if it is set or not, if it is use
+ *        it in the merged state, if not use the value in the
+ *        current state instead.
+ * 
+ * @param s The state to merge with.
+ * 
+ * @return std::shared_ptr<State> 
+ */
 std::shared_ptr<State> State::merge(std::shared_ptr<State> s)
 {
     std::shared_ptr<State> mergedState;
@@ -59,6 +89,11 @@ std::shared_ptr<State> State::merge(std::shared_ptr<State> s)
     return mergedState;
 }
 
+/**
+ * @brief Function for uploading all the state
+ *        information to the shader that is present
+ *        in the current state.
+ */
 void State::apply() 
 {
     m_shader->use();
@@ -88,6 +123,11 @@ void State::apply()
     }
 }
 
+/**
+ * @brief Initializes the loaded textures with the correct
+ *        unit indices. This will be useful when the program
+ *        starts supporting multi-texturing.
+ */
 void State::initTextures(void)
 {
     if(!m_material) {
@@ -102,6 +142,15 @@ void State::initTextures(void)
     }
 }
 
+/**
+ * @brief Function for setting a material. If the current
+ *        state does not have a created material, set the
+ *        material directly to the incoming material. Otherwise,
+ *        just set all the material coefficients from the incomming
+ *        material.
+ * 
+ * @param m The material to set to the current one.
+ */
 void State::setMaterial(std::shared_ptr<vr::Material> m) 
 {
     if(!m_material) {
@@ -113,6 +162,8 @@ void State::setMaterial(std::shared_ptr<vr::Material> m)
         m_material->setShininess(m->getShininess());
     }
 }
+
+std::shared_ptr<vr::Material> State::getMaterial(void) { return m_material; }
 
 void State::setTextures(std::vector<std::shared_ptr<vr::Texture>> textures) 
 { 
