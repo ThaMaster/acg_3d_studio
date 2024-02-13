@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene>
-    <geometry path="models/sphere.obj" />>
+    <state>
+        <light ambient="0.0 0.0 0.0 1.0" position="0.0 0.0 0.0 0.0" specular="0.0 0.0 0.0 1.0" diffuse="0.0 0.0 0.0 1.0"/>
+    </state>
     <transform>
         <state>
             <light position="0.0 -2.0 0.0 0.0" specular="0 0 1.0 1.0" diffuse="0 0 1.0 1.0"/>

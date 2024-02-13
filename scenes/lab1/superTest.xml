@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<scene name="Scene name">
-    <transform name="trans1" translate="5 0 0" scale="0.4 0.4 0.4" rotate="45 0 0">
-        <geometry name="geo1" path="models/monkey.obj"/>
-    </transform>
-    <geometry name="geo1" path="models/monkey.obj"/>
-</scene>
