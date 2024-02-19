@@ -41,7 +41,6 @@ void Material::setTexture(std::shared_ptr<vr::Texture> texture, unsigned int uni
 
 void Material::apply(std::shared_ptr<vr::Shader> shader)
 {
-  GLint loc = 0;
   int i = 0;
 
   shader->setVec4("material.ambient", m_ambient);
@@ -57,8 +56,10 @@ void Material::apply(std::shared_ptr<vr::Shader> shader)
   {
     slots[i] = i;
     slotActive[i] = m_textures[i] != nullptr;
-    if (m_textures[i])
+    if (m_textures[i]) {
+      std::cout << "mat binds texture" << std::endl;
       m_textures[i]->bind();
+    }
   }
   CHECK_GL_ERROR_LINE_FILE();
   shader->setIntVector("material.textures", slots);

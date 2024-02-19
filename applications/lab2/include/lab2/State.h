@@ -64,7 +64,6 @@ class State
         void setMaterial(std::shared_ptr<vr::Material> m);
         std::shared_ptr<vr::Material> getMaterial(void);
 
-        void addTexture(std::shared_ptr<vr::Texture> t);
 
         /**
          * @brief Initializes the loaded textures with the correct
@@ -72,9 +71,10 @@ class State
          *        starts supporting multi-texturing.
          */
         void initTextures(void);
+        void addTexture(std::shared_ptr<vr::Texture> t);
         void setTextures(std::vector<std::shared_ptr<vr::Texture>> textures);
-        unsigned int getTextureUnit(void);
-        void incTextureUnit(void);
+        void applyTextures(std::shared_ptr<vr::Shader> shader);
+        std::vector<std::shared_ptr<vr::Texture>> getTextures(void);
 
         void addLight(std::shared_ptr<vr::Light> light);
         std::vector<std::shared_ptr<vr::Light>> getLights(void);
@@ -89,6 +89,7 @@ class State
 
         void setShaderSwitch(bool b);
         bool getShaderSwitch();
+
    
     private:
         std::string m_stateName;

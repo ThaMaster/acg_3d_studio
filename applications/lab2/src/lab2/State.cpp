@@ -8,8 +8,7 @@ void State::setShader(std::shared_ptr<vr::Shader> s) { m_shader = s;}
 std::shared_ptr<vr::Shader> State::getShader(void) { return m_shader; }
 
 void State::addTexture(std::shared_ptr<vr::Texture> t) { m_textures.push_back(t); }
-unsigned int State::getTextureUnit(void) { return m_curr_texture_unit; }
-void State::incTextureUnit(void) { m_curr_texture_unit++; }
+std::vector<std::shared_ptr<vr::Texture>> State::getTextures(void) { return m_textures; }
 
 void State::addLight(std::shared_ptr<vr::Light> light) { m_lights.push_back(light); }
 std::vector<std::shared_ptr<vr::Light>> State::getLights(void) { return m_lights; }
@@ -48,23 +47,24 @@ std::shared_ptr<State> State::merge(std::shared_ptr<State> s)
         for(auto l : m_lights)
             mergedState->addLight(l);
 
-        if(m_material && m_material->getTextures().size() != 0)
-            mergedState->setTextures(m_material->getTextures());
-        
+        if(m_textures.size() != 0)
+            mergedState->setTextures(m_textures);
+
         return mergedState;
     }
     
     mergedState = std::shared_ptr<State>(new State("(" + m_stateName + " + " + s->getStateName() + ")" ));
 
-    if(s->getMaterial()) {
+    if(s->getMaterial())
         mergedState->setMaterial(s->getMaterial());
-        if(s->getMaterial()->getTextures().size() != 0)
-            mergedState->setTextures(s->getMaterial()->getTextures());
-    } else {
+    else 
         mergedState->setMaterial(m_material);
-        if(m_material->getTextures().size() != 0)
-            mergedState->setTextures(m_material->getTextures());
-    }
+
+    if(s->getTextures().size() != 0)
+        mergedState->setTextures(s->getTextures());
+    else
+        mergedState->setTextures(m_textures);
+
     if(s->getShader()) 
         mergedState->setShader(s->getShader());
     else 
@@ -85,7 +85,7 @@ std::shared_ptr<State> State::merge(std::shared_ptr<State> s)
         mergedState->setEnableLight(s->getEnableLight());
     else 
         mergedState->setEnableLight(m_enableLight);
-
+        
     return mergedState;
 }
 
@@ -98,8 +98,12 @@ void State::apply()
 {
     m_shader->use();
 
-    if(m_material)
+    if(m_material) {
         m_material->apply(m_shader);
+    }
+
+    if(m_textures.size() != 0)
+        applyTextures(m_shader);
 
     m_shader->setInt("numberOfLights", (GLint)m_lights.size());
 
@@ -121,25 +125,7 @@ void State::apply()
         else
             glDisable(GL_CULL_FACE);
     }
-}
-
-/**
- * @brief Initializes the loaded textures with the correct
- *        unit indices. This will be useful when the program
- *        starts supporting multi-texturing.
- */
-void State::initTextures(void)
-{
-    if(!m_material) {
-        m_material = std::make_shared<vr::Material>();
-    }
-
-    int unit = 0;
-    for(auto t : m_textures)
-    {
-        m_material->setTexture(t, unit);
-        unit++;
-    }
+    
 }
 
 /**
@@ -151,26 +137,29 @@ void State::initTextures(void)
  * 
  * @param m The material to set to the current one.
  */
-void State::setMaterial(std::shared_ptr<vr::Material> m) 
-{
-    if(!m_material) {
-        m_material = m;
-    } else {
-        m_material->setAmbient(m->getAmbient());
-        m_material->setDiffuse(m->getDiffuse());
-        m_material->setSpecular(m->getSpecular());
-        m_material->setShininess(m->getShininess());
-    }
-}
+void State::setMaterial(std::shared_ptr<vr::Material> m) { m_material = m; }
 
 std::shared_ptr<vr::Material> State::getMaterial(void) { return m_material; }
 
-void State::setTextures(std::vector<std::shared_ptr<vr::Texture>> textures) 
-{ 
+void State::setTextures(std::vector<std::shared_ptr<vr::Texture>> t) { m_textures = t; }
+
+void State::applyTextures(std::shared_ptr<vr::Shader> shader)
+{
     int i = 0;
-    for(auto t : textures)
+
+    std::vector<int> slotActive;
+    std::vector<int> slots; 
+    slotActive.resize(m_textures.size());
+    slots.resize(m_textures.size());
+    for (int i = 0; i < m_textures.size(); i++)
     {
-        m_material->setTexture(t, i);
-        i++;
+        slots[i] = i;
+        slotActive[i] = m_textures[i] != nullptr;
+        if (m_textures[i]) {
+            m_textures[i]->bind();
+        }
     }
+
+    shader->setIntVector("texture.textures", slots);
+    shader->setIntVector("texture.activeTextures", slotActive);
 }

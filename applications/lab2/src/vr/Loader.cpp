@@ -138,7 +138,7 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
         if (!texture->create(texturePath.c_str(), 0))
           std::cerr << "Error creating texture: " << texturePath << std::endl;
         else
-          material->setTexture(texture, 0);
+          material->setTexture(texture, i);
       }
     }
 
@@ -568,20 +568,19 @@ std::shared_ptr<Shader> parseStateShader(rapidxml::xml_node<>* node, std::shared
  * 
  * @param node  The xml node representing a texture.
  * @param scene The scene object.
- * @param state The state that is to contain the texture.
  * 
  * @return std::shared_ptr<Texture> 
  */
-std::shared_ptr<Texture> parseStateTexture(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene, std::shared_ptr<State> &state)
+std::shared_ptr<Texture> parseTexture(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene, int texUnit)
 {
   std::shared_ptr<vr::Texture> texture;
   std::string texturePath = getAttribute(node, "path");
   if (texturePath.empty()) {
     std::cerr << "Unable to find texture: Path Empty!" << std::endl;
+    std::cout << "Node name: " << node->name() << std::endl;
   } else {
     texture = std::make_shared<vr::Texture>();
-    state->incTextureUnit();
-    if (!texture->create(texturePath.c_str(), state->getTextureUnit()))
+    if (!texture->create(texturePath.c_str(), texUnit))
       std::cerr << "Error creating texture: " << texturePath << std::endl;
   }
   return texture;
@@ -605,24 +604,39 @@ std::shared_ptr<Material> parseStateMaterial(rapidxml::xml_node<>* node, std::sh
   std::shared_ptr<vr::Material> material(new Material());
 
   std::string ambient = getAttribute(node, "ambient");
-  glm::vec3 amb_vec;
-  if (getVec<glm::vec3>(amb_vec, ambient))
-    material->setAmbient(glm::vec4(amb_vec, 1));
+  if(!ambient.empty()) {
+    glm::vec3 amb_vec;
+    if (getVec<glm::vec3>(amb_vec, ambient))
+      material->setAmbient(glm::vec4(amb_vec, 1));
+  }
 
   std::string diffuse = getAttribute(node, "diffuse");
-  glm::vec3 diff_vec;
-  if (getVec<glm::vec3>(diff_vec, diffuse))
-    material->setDiffuse(glm::vec4(diff_vec, 1));
+  if(!diffuse.empty()) {
+    glm::vec3 diff_vec;
+    if (getVec<glm::vec3>(diff_vec, diffuse))
+      material->setDiffuse(glm::vec4(diff_vec, 1));
+  }
 
   std::string specular = getAttribute(node, "specular");
-  glm::vec3 spec_vec;
-  if (getVec<glm::vec3>(spec_vec, specular))
-    material->setSpecular(glm::vec4(spec_vec, 1));
+  if(!specular.empty()) {
+    glm::vec3 spec_vec;
+    if (getVec<glm::vec3>(spec_vec, specular))
+      material->setSpecular(glm::vec4(spec_vec, 1));
+  }
   
   std::string shininess = getAttribute(node, "shininess");
-  if(!shininess.empty()) {
+  if(!shininess.empty()) 
     material->setShininess(atof(shininess.c_str()));
+  
+  int textUnit = 0;
+  rapidxml::xml_node<>* texNode;
+  for(texNode = node->first_node("texture"); texNode; texNode = texNode->next_sibling("texture"))
+  {
+    std::cout << texNode->name() << std::endl;
+    material->setTexture(parseTexture(texNode, scene, textUnit), textUnit);
+    textUnit++;
   }
+  
   return material;
 }
 
@@ -650,6 +664,7 @@ std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node, std::shared_pt
   if(!enableLight.empty())
     newState->setEnableLight(std::shared_ptr<bool>(new bool(enableLight == "1" || enableLight == "true")));
 
+  int texUnit = 0;
   for(node = node->first_node(); node; node = node->next_sibling())
   {
     std::string node_type = node->name();
@@ -661,16 +676,14 @@ std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node, std::shared_pt
     } else if(node_type == "shaders") {
       newState->setShader(parseStateShader(node, scene));
     } else if(node_type == "texture") {
-      newState->addTexture(parseStateTexture(node, scene, newState));
+      newState->addTexture(parseTexture(node, scene, texUnit));
+      texUnit++;
     } else if(node_type == "material") {
       newState->setMaterial(parseStateMaterial(node, scene));
     } else {
       std::cout << "Unknow node: \'"<< node->name() << "\'" << std::endl;
     }
   }
-
-  if(newState->getTextureUnit() != -1)
-    newState->initTextures();
 
   return newState;
 }
@@ -689,9 +702,9 @@ std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node, std::shared_pt
 void addStateAndUpdate(Node& graph_node, rapidxml::xml_node<>* xml_node, std::shared_ptr<Scene>& scene)
 {
   rapidxml::xml_node<>* stateNode = xml_node->first_node("state");
-  if(stateNode){
+  if(stateNode)
     graph_node.setState(parseNodeState(stateNode, scene));
-  }
+  
   rapidxml::xml_node<>* updateNode = xml_node->first_node("update");
   if(updateNode) {
     auto callbackVector = parseNodeCallbacks(updateNode);

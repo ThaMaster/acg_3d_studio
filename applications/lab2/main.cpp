@@ -131,8 +131,8 @@ int main(int argc, char** argv)
   if (argc > 1)
     model_filename = argv[1];
 
-  std::string v_shader_filename = "shaders/phong-shading.vs";
-  std::string  f_shader_filename = "shaders/phong-shading.fs";
+  std::string v_shader_filename = "shaders/shadowmap.vs";
+  std::string  f_shader_filename = "shaders/shadowmap.fs";
 
   if (argc < 2 ) {
     std::cerr << "Loading default scene! " << model_filename << std::endl;
