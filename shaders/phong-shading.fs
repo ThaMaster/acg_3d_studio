@@ -14,6 +14,12 @@ uniform int numberOfLights;
 
 const int MAX_TEXTURES=2;
 
+struct Texture
+{
+  bool activeTextures[MAX_TEXTURES];
+  sampler2D textures[MAX_TEXTURES];
+}
+
 // declaration of a Material structure
 struct Material
 {
@@ -21,6 +27,7 @@ struct Material
     vec4 diffuse;
     vec4 specular;
 
+    float opacity;
     float shininess;
     bool activeTextures[MAX_TEXTURES];
     sampler2D textures[MAX_TEXTURES];
@@ -46,6 +53,7 @@ uniform LightSource lights[MaxNumberOfLights];
 
 // The front surface material
 uniform Material material;
+uniform Texture textures;
 
 void main()
 {
@@ -92,12 +100,20 @@ void main()
     totalLighting = totalLighting + diffuseReflection + specularReflection;
   }
 
-  // How we could check for a diffuse texture map
-  if (material.activeTextures[0])
+  // Iterate over each texture
+  for (int i = 0; i < MAX_TEXTURES; i++)
   {
-    vec4 diffuseTex = texture2D(material.textures[0], texCoord);
-    totalLighting = totalLighting * diffuseTex.rgb;
+      if (material.activeTextures[i])
+      {
+          vec4 matTexColor = texture2D(material.textures[i], texCoord);
+          totalLighting = mix(totalLighting, matTexColor, matTexColor.a);
+      }
+      
+      if (texture.activeTextures[i])
+      {
+          vec4 textureColor = texture2D(texture.textures[i], texCoord);
+          totalLighting *= mix(totalLighting, totalLighting*textureColor, textureColor.a);
+      }
   }
-
-  color = vec4(totalLighting, 1.0);
+  color = vec4(totalLighting.rgb, totalLighting.a * material.opacity);
 }

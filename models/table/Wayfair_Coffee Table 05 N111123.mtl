@@ -1,0 +1,151 @@
+# 
+# Wavefront material file
+# Converted by the DEEP Exploration  Deep Exploration 6.3 x64 6.3.3.8069
+# Right Hemisphere, LTD
+# http://www.righthemisphere.com/
+# 
+
+newmtl Ceramic
+Ka 0.780392 0.74902 0
+Kd 0.611765 0.611765 0.360784
+Ks 1 1 1
+illum 2
+Ns 1024
+map_Kd 
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl Metal
+Ka 0.929412 0.756863 0.4
+Kd 0.929412 0.756863 0.4
+Ks 1 1 1
+illum 2
+Ns 1024
+map_Kd 
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl Plastic
+Ka 0.788235 0.756863 0.654902
+Kd 0.905882 0.905882 0.905882
+Ks 1 1 1
+illum 2
+Ns 512
+map_Kd 
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl Wood
+Ka 0.901961 0.901961 0.901961
+Kd 1 1 1
+Ks 1 1 1
+illum 2
+Ns 181.019
+map_Kd ssxx2wq3.png
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl Glass
+Ka 0.921569 0.980392 0.964706
+Kd 0.905882 0.905882 0.905882
+Ks 1 1 1
+illum 2
+Ns 2048
+d 0.5
+map_Kd 
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl Rubber
+Ka 0.180392 0.180392 0.180392
+Kd 0.180392 0.180392 0.180392
+Ks 1 1 1
+illum 2
+Ns 256
+map_Kd 
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl Pages
+Ka 1 1 1
+Kd 0.968628 0.929412 0.854902
+Ks 1 1 1
+illum 2
+Ns 45.2548
+map_Kd 
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl Book_4
+Ka 0.901961 0.901961 0.901961
+Kd 1 1 1
+Ks 1 1 1
+illum 2
+Ns 445.722
+map_Kd eed55555.png
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl Book_5
+Ka 0.901961 0.901961 0.901961
+Kd 1 1 1
+Ks 1 1 1
+illum 2
+Ns 445.722
+map_Kd hhh777t6.png
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 

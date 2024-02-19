@@ -55,6 +55,9 @@ bool Texture::create(const char* image, unsigned int slot, GLenum texType, GLenu
 
 	if (numColCh == 3)
 		texFormat = GL_RGB;
+	
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);	
 
 	// Generates an OpenGL texture object
 	glGenTextures(1, &m_id);

@@ -21,6 +21,7 @@ struct Material
     vec4 diffuse;
     vec4 specular;
 
+    float opacity;
     float shininess;
     bool activeTextures[MAX_TEXTURES];
     sampler2D textures[MAX_TEXTURES];
@@ -106,15 +107,15 @@ void main()
         if (material.activeTextures[i])
         {
             vec4 matTexColor = texture2D(material.textures[i], texCoord);
-            totalLighting *= matTexColor;
+            totalLighting = mix(totalLighting, matTexColor, matTexColor.a);
         }
         
         if (texture.activeTextures[i])
         {
             vec4 textureColor = texture2D(texture.textures[i], texCoord);
-            totalLighting = mix(totalLighting, totalLighting*textureColor, textureColor.a);
+            totalLighting = mix(totalLighting, textureColor, textureColor.a);
         }
     }
 
-    color = totalLighting;
+    color = vec4(totalLighting.rgb, totalLighting.a * material.opacity);
 }

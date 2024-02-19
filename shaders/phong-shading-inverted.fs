@@ -21,6 +21,7 @@ struct Material
     vec4 diffuse;
     vec4 specular;
 
+    float opacity;
     float shininess;
     bool activeTextures[MAX_TEXTURES];
     sampler2D textures[MAX_TEXTURES];
@@ -99,5 +100,5 @@ void main()
     totalLighting = totalLighting * diffuseTex.rgb;
   }
 
-  color = vec4(1.0-totalLighting.r, 1.0-totalLighting.g, 1.0-totalLighting.b, 1);
+  color = vec4(1.0-totalLighting.r, 1.0-totalLighting.g, 1.0-totalLighting.b, material.opacity);
 }

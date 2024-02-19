@@ -94,7 +94,7 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
   uint32_t num_materials = scene->mNumMaterials;
   aiMaterial* ai_material;
   aiColor4D color(0.0f, 0.0f, 0.0f, 1.0f);
-  GLfloat shiniess;
+  GLfloat shiniess, opacity = 1.0f, transparency = 0.0f;
   aiString path;
 
   for (uint32_t i = 0; i < num_materials; i++)
@@ -108,7 +108,7 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
       materials.push_back(nullptr);
       continue; 
     }
-    
+
     ai_material->Get(AI_MATKEY_COLOR_AMBIENT, color);
     material->setAmbient(glm::vec4(color.r, color.g, color.b, color.a));
 
@@ -121,10 +121,15 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
     //ai_material->Get(AI_MATKEY_COLOR_EMISSIVE, color);
     //material->setAmbient(glm::vec4(color.r, color.g, color.b, color.a));
 
-    aiReturn result = ai_material->Get(AI_MATKEY_SHININESS, shiniess);
-    if(result == AI_SUCCESS)
+    if(ai_material->Get(AI_MATKEY_SHININESS, shiniess) == AI_SUCCESS)
       material->setShininess(shiniess);
-    
+
+    if(ai_material->Get(AI_MATKEY_OPACITY, opacity) == AI_SUCCESS) {
+      material->setOpacity(opacity);
+    } else {
+      material->setOpacity(1.0f);
+    }
+
     if (ai_material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
     {
       aiString res("res\\");
@@ -141,6 +146,7 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
           std::cerr << "Error creating texture: " << diffuseTexPath << std::endl;
         else {
           material->setTexture(texture, texUnit);
+          texUnit++;
         }
       }
     }
@@ -150,6 +156,20 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
       aiString res("res\\");
       path.Clear();
       ai_material->GetTexture(aiTextureType_SPECULAR, 0, &path);
+      std::string specularTexPath = findTexture(path.C_Str(), modelPath);
+      if (specularTexPath.empty())
+      {
+        std::cerr << "Unable to find specular texture: " << path.C_Str() << std::endl;
+      }
+      else {
+        std::shared_ptr<vr::Texture> texture = std::make_shared<vr::Texture>();
+        if (!texture->create(specularTexPath.c_str(), texUnit))
+          std::cerr << "Error creating texture: " << specularTexPath << std::endl;
+        else {
+          material->setTexture(texture, texUnit);
+          texUnit++;
+        }
+      }
     }
 
     if (ai_material->GetTextureCount(aiTextureType_HEIGHT) > 0)
