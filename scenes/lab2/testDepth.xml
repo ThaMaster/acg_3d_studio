@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene>
     <state>
-        <light ambient="0.5 0.5 0.5 1.0" position="0.0 1.0 0.0 0.0" specular="0.5 0.5 0.5 1.0" diffuse="0.5 0.5 0.5 1.0"/>
-        <texture path="textures/trans.png"/>
-        <texture path="textures/7997.jpg"/>
+        <light ambient="1.0 1.0 1.0 1.0" position="0.0 2.0 0.0 1.0" specular="1.0 1.0 1.0 1.0" diffuse="1.0 1.0 1.0 1.0"/>
     </state>
-    <geometry name="geo1" path="models/sphere.obj" />
+    <geometry name="geo1" path="models/texturedBox.obj" />
 </scene>

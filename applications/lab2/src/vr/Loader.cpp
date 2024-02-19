@@ -25,11 +25,11 @@
 
 using namespace vr;
 
-std::string findTexture(const std::string& texturePath, const std::string& modelPath)
+std::string findTexture(const std::string& diffuseTexPath, const std::string& modelPath)
 {
-  bool found = vr::FileSystem::exists(texturePath);
+  bool found = vr::FileSystem::exists(diffuseTexPath);
   if (found)
-    return texturePath;
+    return diffuseTexPath;
 
   std::string newPath;
 
@@ -37,14 +37,14 @@ std::string findTexture(const std::string& texturePath, const std::string& model
 
   // Search in the same path as the model:
   std::string modelDir = vr::FileSystem::getDirectory(modelPath);
-  newPath = modelDir + "/" + texturePath;
+  newPath = modelDir + "/" + diffuseTexPath;
   found = vr::FileSystem::exists(newPath);
   if (found)
     return newPath;
 
   // What if we only keep the last directory name+filename?
 
-  auto directories = vr::FileSystem::splitPath(texturePath);
+  auto directories = vr::FileSystem::splitPath(diffuseTexPath);
   auto count = directories.size();
   if (count > 1) {
     newPath = directories[count - 2] + "/" + directories[count - 1];
@@ -67,7 +67,7 @@ std::string findTexture(const std::string& texturePath, const std::string& model
   }
 
   // Search using the VR_PATH environment variable then.
-  newPath = vrpath + "/" + texturePath;
+  newPath = vrpath + "/" + diffuseTexPath;
 
   found = vr::FileSystem::exists(newPath);
   if (found)
@@ -99,6 +99,7 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
 
   for (uint32_t i = 0; i < num_materials; i++)
   {
+    int texUnit = 0;
     std::shared_ptr<Material> material(new Material);
     
     ai_material = scene->mMaterials[i];
@@ -120,25 +121,27 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
     //ai_material->Get(AI_MATKEY_COLOR_EMISSIVE, color);
     //material->setAmbient(glm::vec4(color.r, color.g, color.b, color.a));
 
-    ai_material->Get(AI_MATKEY_SHININESS, shiniess);
-    material->setShininess(shiniess);
-
+    aiReturn result = ai_material->Get(AI_MATKEY_SHININESS, shiniess);
+    if(result == AI_SUCCESS)
+      material->setShininess(shiniess);
+    
     if (ai_material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
     {
       aiString res("res\\");
       ai_material->GetTexture(aiTextureType_DIFFUSE, 0, &path);
 
-      std::string texturePath = findTexture(path.C_Str(), modelPath);
-      if (texturePath.empty())
+      std::string diffuseTexPath = findTexture(path.C_Str(), modelPath);
+      if (diffuseTexPath.empty())
       {
-        std::cerr << "Unable to find texture: " << path.C_Str() << std::endl;
+        std::cerr << "Unable to find diffuse texture: " << path.C_Str() << std::endl;
       }
       else {
         std::shared_ptr<vr::Texture> texture = std::make_shared<vr::Texture>();
-        if (!texture->create(texturePath.c_str(), 0))
-          std::cerr << "Error creating texture: " << texturePath << std::endl;
-        else
-          material->setTexture(texture, i);
+        if (!texture->create(diffuseTexPath.c_str(), texUnit))
+          std::cerr << "Error creating texture: " << diffuseTexPath << std::endl;
+        else {
+          material->setTexture(texture, texUnit);
+        }
       }
     }
 
@@ -310,7 +313,6 @@ Group* vr::load3DModelFile(const std::string& filename, const std::string& objNa
     aiProcess_Triangulate |
     aiProcess_JoinIdenticalVertices |
     aiProcess_SortByPType);
-
   if (!aiScene)
   {
     std::cerr << "Couldn't load model: " << filepath << " Error Importing Asset: " << importer.GetErrorString() << std::endl;
@@ -319,7 +321,6 @@ Group* vr::load3DModelFile(const std::string& filename, const std::string& objNa
 
   aiNode* root_node = aiScene->mRootNode;
   ExtractMaterials(aiScene, materials, filename);
-
   std::cout << "Found " << materials.size() << " materials" << std::endl;
 
   std::stack<glm::mat4> transformStack;
@@ -331,7 +332,6 @@ Group* vr::load3DModelFile(const std::string& filename, const std::string& objNa
 
   if (objNode->getChildren().empty())
     std::cerr << " File " << filepath << " did not contain any mesh data" << std::endl;
-
   return objNode;
 }
 
@@ -574,14 +574,13 @@ std::shared_ptr<Shader> parseStateShader(rapidxml::xml_node<>* node, std::shared
 std::shared_ptr<Texture> parseTexture(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene, int texUnit)
 {
   std::shared_ptr<vr::Texture> texture;
-  std::string texturePath = getAttribute(node, "path");
-  if (texturePath.empty()) {
+  std::string diffuseTexPath = getAttribute(node, "path");
+  if (diffuseTexPath.empty()) {
     std::cerr << "Unable to find texture: Path Empty!" << std::endl;
-    std::cout << "Node name: " << node->name() << std::endl;
   } else {
     texture = std::make_shared<vr::Texture>();
-    if (!texture->create(texturePath.c_str(), texUnit))
-      std::cerr << "Error creating texture: " << texturePath << std::endl;
+    if (!texture->create(diffuseTexPath.c_str(), texUnit))
+      std::cerr << "Error creating texture: " << diffuseTexPath << std::endl;
   }
   return texture;
 }
@@ -632,7 +631,6 @@ std::shared_ptr<Material> parseStateMaterial(rapidxml::xml_node<>* node, std::sh
   rapidxml::xml_node<>* texNode;
   for(texNode = node->first_node("texture"); texNode; texNode = texNode->next_sibling("texture"))
   {
-    std::cout << texNode->name() << std::endl;
     material->setTexture(parseTexture(texNode, scene, textUnit), textUnit);
     textUnit++;
   }

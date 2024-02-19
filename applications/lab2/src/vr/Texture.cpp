@@ -8,6 +8,8 @@
 #include <vr/glErrorUtil.h>
 using namespace vr;
 
+Texture::Texture() : m_id(0), m_type(0), m_valid(false), m_textureSlot(0){}
+Texture::~Texture(){ cleanup(); }
 
 bool Texture::create(const char* image, unsigned int slot, GLenum texType, GLenum pixelType) 
 {
@@ -86,15 +88,6 @@ bool Texture::create(const char* image, unsigned int slot, GLenum texType, GLenu
 	return true;
 }
 
-Texture::Texture() : m_id(0), m_type(0), m_valid(false), m_textureSlot(0)
-{
-}
-
-Texture::~Texture()
-{
-	cleanup();
-}
-
 bool Texture::isValid()
 {
 	return m_valid;
@@ -113,8 +106,9 @@ void Texture::bind()
 {
 	glActiveTexture(GL_TEXTURE0 + m_textureSlot);
 
-	if (m_valid)
+	if (m_valid) 
 		glBindTexture(m_type, m_id);
+	
   	CHECK_GL_ERROR_LINE_FILE();
 }
 
@@ -126,7 +120,6 @@ void Texture::unbind()
 
 void Texture::cleanup()
 {
-
 	if (m_valid)
 		glDeleteTextures(1, &m_id);
 

@@ -12,7 +12,7 @@ uniform mat4 m, v, p;
 uniform mat4 v_inv;
 uniform int numberOfLights;
 
-const int MAX_TEXTURES=2;
+const int MAX_TEXTURES=10;
 
 // declaration of a Material structure
 struct Material
@@ -105,14 +105,14 @@ void main()
     {
         if (material.activeTextures[i])
         {
-            vec4 materialTextureColor = texture2D(material.textures[i], texCoord);
-            totalLighting *= materialTextureColor;
+            vec4 matTexColor = texture2D(material.textures[i], texCoord);
+            totalLighting *= matTexColor;
         }
         
         if (texture.activeTextures[i])
         {
             vec4 textureColor = texture2D(texture.textures[i], texCoord);
-            totalLighting *= textureColor;
+            totalLighting = mix(totalLighting, totalLighting*textureColor, textureColor.a);
         }
     }
 

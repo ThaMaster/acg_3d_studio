@@ -21,7 +21,8 @@ Material::Material() : m_shininess(10)
   m_ambient = glm::vec4(0.2, 0.2, 0.2, 1.0);
   m_diffuse = glm::vec4(0.8, 0.8, 0.8, 1.0);
   m_specular = glm::vec4(0.8, 0.8, 0.8, 1.0);
-  m_textures.resize(2);
+  m_shininess = 10.0f;
+  m_textures.resize(10);
 }
 
 glm::vec4 Material::getAmbient() const { return m_ambient; }
@@ -41,8 +42,6 @@ void Material::setTexture(std::shared_ptr<vr::Texture> texture, unsigned int uni
 
 void Material::apply(std::shared_ptr<vr::Shader> shader)
 {
-  int i = 0;
-
   shader->setVec4("material.ambient", m_ambient);
   shader->setVec4("material.specular", m_specular);
   shader->setVec4("material.diffuse", m_diffuse);
@@ -57,7 +56,6 @@ void Material::apply(std::shared_ptr<vr::Shader> shader)
     slots[i] = i;
     slotActive[i] = m_textures[i] != nullptr;
     if (m_textures[i]) {
-      std::cout << "mat binds texture" << std::endl;
       m_textures[i]->bind();
     }
   }
