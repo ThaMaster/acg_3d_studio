@@ -99,7 +99,7 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
 
   for (uint32_t i = 0; i < num_materials; i++)
   {
-    int texUnit = 0;
+    int texUnit = 1;
     std::shared_ptr<Material> material(new Material);
     
     ai_material = scene->mMaterials[i];
@@ -124,11 +124,11 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
     if(ai_material->Get(AI_MATKEY_SHININESS, shiniess) == AI_SUCCESS)
       material->setShininess(shiniess);
 
-    if(ai_material->Get(AI_MATKEY_OPACITY, opacity) == AI_SUCCESS) {
-      material->setOpacity(opacity);
-    } else {
-      material->setOpacity(1.0f);
-    }
+    // if(ai_material->Get(AI_MATKEY_OPACITY, opacity) == AI_SUCCESS) {
+    //   material->setOpacity(opacity);
+    // } else {
+    //   material->setOpacity(1.0f);
+    // }
 
     if (ai_material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
     {
@@ -177,6 +177,20 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
       aiString res("res\\");
       path.Clear();
       ai_material->GetTexture(aiTextureType_HEIGHT, 0, &path);
+      std::string heightPath = findTexture(path.C_Str(), modelPath);
+      if (heightPath.empty())
+      {
+        std::cerr << "Unable to find specular texture: " << path.C_Str() << std::endl;
+      }
+      else {
+        std::shared_ptr<vr::Texture> texture = std::make_shared<vr::Texture>();
+        if (!texture->create(heightPath.c_str(), 0))
+          std::cerr << "Error creating texture: " << heightPath << std::endl;
+        else {
+          std::cout << "SHOULD USE NORMAL MAP!" << std::endl;
+          material->setTexture(texture, 0);
+        }
+      }
     }
 
     if (ai_material->GetTextureCount(aiTextureType_DISPLACEMENT) > 0)
@@ -239,8 +253,8 @@ void parseNodes(aiNode* root_node, MaterialVector& materials, std::stack<glm::ma
     loadedGeo->vertices.resize(num_vertices);
     loadedGeo->normals.resize(num_vertices);
     loadedGeo->texCoords.resize(num_vertices);
-
-    //tangents.resize(num_vertices);
+    loadedGeo->tangents.resize(num_vertices);
+    loadedGeo->bitangents.resize(num_vertices);
 
     for (uint32_t j = 0; j < num_vertices; j++)
     {
@@ -250,9 +264,8 @@ void parseNodes(aiNode* root_node, MaterialVector& materials, std::stack<glm::ma
       glm::vec3 tangent;
       if (mesh->HasTangentsAndBitangents())
       {
-        tangent.x = mesh->mTangents[j].x;
-        tangent.y = mesh->mTangents[j].y;
-        tangent.z = mesh->mTangents[j].z;
+        loadedGeo->tangents[j] = glm::vec3(mesh->mTangents[j].x, mesh->mTangents[j].y, mesh->mTangents[j].z);
+        loadedGeo->bitangents[j] = glm::vec3(mesh->mBitangents[j].x, mesh->mBitangents[j].y, mesh->mBitangents[j].z);
       }
 
       glm::vec2 tex_coord;

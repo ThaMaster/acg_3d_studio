@@ -4,6 +4,7 @@
 in vec4 position;  // position of the vertex (and fragment) in eye space
 in vec3 normal ;  // surface normal vector in eye space
 in vec2 texCoord; // Texture coordinate
+in mat3 TBN;
 
 // The end result of this shader
 out vec4 color;
@@ -21,7 +22,7 @@ struct Material
     vec4 diffuse;
     vec4 specular;
 
-    float opacity;
+    //float opacity;
     float shininess;
     bool activeTextures[MAX_TEXTURES];
     sampler2D textures[MAX_TEXTURES];
@@ -40,10 +41,12 @@ struct LightSource
   float constant;
   float linear;
   float quadratic;
+
   vec4 ambient;
-  vec4 position;
   vec4 diffuse;
   vec4 specular;
+
+  vec4 position;
 };
 
 const int MaxNumberOfLights = 10;
@@ -57,7 +60,16 @@ uniform Texture texture;
 
 void main()
 {
-    vec3 normalDirection = normalize(normal);
+    vec3 fNormal;
+    if(material.activeTextures[0]) {
+        vec3 fNormal = texture2D(material.textures[0], texCoord).rgb;
+        fNormal = normalize(fNormal * 2.0 - 1.0);
+        fNormal = normalize(TBN * fNormal);
+    } else {
+        fNormal = normal;
+    }
+
+    vec3 normalDirection = normalize(fNormal);
     vec3 viewDirection = normalize(vec3(v_inv * vec4(0.0, 0.0, 0.0, 1.0) - position));
     vec3 lightDirection;
     float attenuation;
@@ -117,5 +129,5 @@ void main()
         }
     }
 
-    color = vec4(totalLighting.rgb, totalLighting.a * material.opacity);
+    color = totalLighting;
 }

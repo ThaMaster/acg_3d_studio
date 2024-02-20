@@ -41,14 +41,18 @@ class Geometry : public Node
         std::vector<glm::vec3> normals;
         std::vector<glm::vec2> texCoords;
         std::vector<GLushort> elements;
+        std::vector<glm::vec3> tangents;
+        std::vector<glm::vec3> bitangents;
         
     private:
 
-        GLuint m_vbo_vertices, m_vbo_normals, m_vbo_texCoords, m_ibo_elements;
+        GLuint m_vbo_vertices, m_vbo_normals, m_vbo_texCoords, m_ibo_elements, m_vbo_tangents, m_vbo_bitangents;
         GLuint m_vao;
         GLint m_attribute_v_coord;
         GLint m_attribute_v_normal;
         GLint m_attribute_v_texCoords;
+        GLint m_attribute_v_tangents;
+        GLint m_attribute_v_bitangents;
 
         //GLint m_uniform_m;
         //GLint m_uniform_m_3x3_inv_transp;

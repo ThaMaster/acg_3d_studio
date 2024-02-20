@@ -20,7 +20,7 @@ namespace vr
     glm::vec4 m_ambient, m_diffuse, m_specular;
 
     GLfloat m_shininess;
-    GLfloat m_opacity;
+    //GLfloat m_opacity;
 
     typedef std::vector<std::shared_ptr<vr::Texture>> TextureVector;
     TextureVector m_textures;
@@ -38,8 +38,8 @@ namespace vr
     void setSpecular(const glm::vec4& color);
     void setDiffuse(const glm::vec4& color);
 
-    float getOpacity() const;
-    void setOpacity(float f);
+    // float getOpacity() const;
+    // void setOpacity(float f);
 
     void setShininess(float s);
 
