@@ -94,9 +94,9 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
   uint32_t num_materials = scene->mNumMaterials;
   aiMaterial* ai_material;
   aiColor4D color(0.0f, 0.0f, 0.0f, 1.0f);
-  GLfloat shiniess, opacity = 1.0f, transparency = 0.0f;
+  GLfloat shiniess;
+  GLfloat opacity = 1.0f;
   aiString path;
-
   for (uint32_t i = 0; i < num_materials; i++)
   {
     int texUnit = 1;
@@ -124,11 +124,11 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
     if(ai_material->Get(AI_MATKEY_SHININESS, shiniess) == AI_SUCCESS)
       material->setShininess(shiniess);
 
-    // if(ai_material->Get(AI_MATKEY_OPACITY, opacity) == AI_SUCCESS) {
-    //   material->setOpacity(opacity);
-    // } else {
-    //   material->setOpacity(1.0f);
-    // }
+    if(ai_material->Get(AI_MATKEY_OPACITY, opacity) == AI_SUCCESS) {
+      material->setOpacity(opacity);
+    } else {
+      material->setOpacity(1.0f);
+    }
 
     if (ai_material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
     {
@@ -163,20 +163,19 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
       }
       else {
         std::shared_ptr<vr::Texture> texture = std::make_shared<vr::Texture>();
-        if (!texture->create(specularTexPath.c_str(), texUnit))
+        if (!texture->create(specularTexPath.c_str(), 2))
           std::cerr << "Error creating texture: " << specularTexPath << std::endl;
         else {
-          material->setTexture(texture, texUnit);
-          texUnit++;
+          material->setTexture(texture, 2);
         }
       }
     }
 
-    if (ai_material->GetTextureCount(aiTextureType_HEIGHT) > 0)
+    if (ai_material->GetTextureCount(aiTextureType_NORMALS) > 0)
     {
       aiString res("res\\");
       path.Clear();
-      ai_material->GetTexture(aiTextureType_HEIGHT, 0, &path);
+      ai_material->GetTexture(aiTextureType_NORMALS, 0, &path);
       std::string heightPath = findTexture(path.C_Str(), modelPath);
       if (heightPath.empty())
       {
@@ -187,7 +186,6 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
         if (!texture->create(heightPath.c_str(), 0))
           std::cerr << "Error creating texture: " << heightPath << std::endl;
         else {
-          std::cout << "SHOULD USE NORMAL MAP!" << std::endl;
           material->setTexture(texture, 0);
         }
       }
@@ -199,6 +197,7 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
       path.Clear();
       ai_material->GetTexture(aiTextureType_DISPLACEMENT, 0, &path);
     }
+    
     materials.push_back(material);
   }
 
@@ -660,12 +659,22 @@ std::shared_ptr<Material> parseStateMaterial(rapidxml::xml_node<>* node, std::sh
   if(!shininess.empty()) 
     material->setShininess(atof(shininess.c_str()));
   
-  int textUnit = 0;
   rapidxml::xml_node<>* texNode;
+  int textUnit = 5;
   for(texNode = node->first_node("texture"); texNode; texNode = texNode->next_sibling("texture"))
   {
-    material->setTexture(parseTexture(texNode, scene, textUnit), textUnit);
-    textUnit++;
+    std::string map_type = getAttribute(texNode, "mapType");
+    if(!map_type.empty()) {
+      if(map_type == "diffuse")
+        material->setTexture(parseTexture(texNode, scene, 1), 1);
+      else if(map_type == "specular")
+        material->setTexture(parseTexture(texNode, scene, 2), 2);
+      else if(map_type == "normal")
+        material->setTexture(parseTexture(texNode, scene, 0), 0);
+    } else {
+      material->setTexture(parseTexture(texNode, scene, textUnit), textUnit);
+      textUnit++;
+    }
   }
   
   return material;
@@ -695,7 +704,7 @@ std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node, std::shared_pt
   if(!enableLight.empty())
     newState->setEnableLight(std::shared_ptr<bool>(new bool(enableLight == "1" || enableLight == "true")));
 
-  int texUnit = 0;
+  int texUnit = 5;
   for(node = node->first_node(); node; node = node->next_sibling())
   {
     std::string node_type = node->name();

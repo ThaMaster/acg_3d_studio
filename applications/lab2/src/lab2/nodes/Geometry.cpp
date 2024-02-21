@@ -13,11 +13,13 @@ Geometry::~Geometry()
 
     if (m_vbo_normals != 0)
         glDeleteBuffers(1, &m_vbo_normals);
+    
+    if (m_vbo_tangents != 0)
+        glDeleteBuffers(1, &m_vbo_tangents);
 
     if (m_ibo_elements != 0)
         glDeleteBuffers(1, &m_ibo_elements);
 }
-
 
 void Geometry::accept(NodeVisitor& v)
 {
@@ -26,25 +28,30 @@ void Geometry::accept(NodeVisitor& v)
 
 bool Geometry::initShaders(std::shared_ptr<vr::Shader> shader)
 {
-    shader->use();
+  shader->use();
+
+  const char* attribute_name;
+  attribute_name = "vertex_position";
+  m_attribute_v_coord = shader->getAttribute(attribute_name); // glGetAttribLocation(program, attribute_name);
+  if (m_attribute_v_coord == -1)
+      return false;
+
+  attribute_name = "vertex_normal";
+  m_attribute_v_normal = shader->getAttribute(attribute_name);
+  if (m_attribute_v_normal == -1)
+      return false;
+
+  attribute_name = "vertex_texCoord";
+  m_attribute_v_texCoords = shader->getAttribute(attribute_name);
+  if (m_attribute_v_texCoords == -1)
+      return false;
+      
+  attribute_name = "vertex_tangent";
+  m_attribute_v_tangents = shader->getAttribute(attribute_name);
+  if (m_attribute_v_tangents == -1)
+      return false;
   
-    const char* attribute_name;
-    attribute_name = "vertex_position";
-    m_attribute_v_coord = shader->getAttribute(attribute_name); // glGetAttribLocation(program, attribute_name);
-    if (m_attribute_v_coord == -1)
-        return false;
-
-    attribute_name = "vertex_normal";
-    m_attribute_v_normal = shader->getAttribute(attribute_name);
-    if (m_attribute_v_normal == -1)
-        return false;
-
-    attribute_name = "vertex_texCoord";
-    m_attribute_v_texCoords = shader->getAttribute(attribute_name);
-    if (m_attribute_v_texCoords == -1)
-        return false;
-
-    return true;
+  return true;
 }
 
 vr::BoundingBox Geometry::calculateBoundingBox(glm::mat4 m)
@@ -113,6 +120,14 @@ void Geometry::upload()
         CHECK_GL_ERROR_LINE_FILE();
     }
 
+    if (this->tangents.size() > 0) {
+        glGenBuffers(1, &this->m_vbo_tangents);
+        glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo_tangents);
+        glBufferData(GL_ARRAY_BUFFER, this->tangents.size() * sizeof(this->tangents[0]),
+        this->tangents.data(), GL_STATIC_DRAW);
+        CHECK_GL_ERROR_LINE_FILE();
+    }
+
     if (m_useVAO)
     {
         glEnableVertexAttribArray(m_attribute_v_coord);
@@ -150,6 +165,22 @@ void Geometry::upload()
         0                   // offset of first element
         );
         glDisableVertexAttribArray(m_attribute_v_texCoords);
+
+        if(m_attribute_v_tangents) {
+
+          glEnableVertexAttribArray(m_attribute_v_tangents);
+          glBindBuffer(GL_ARRAY_BUFFER, m_vbo_tangents);
+          glVertexAttribPointer(
+          m_attribute_v_tangents, // attribute
+          3,                  // number of elements per vertex, here (x,y,z)
+          GL_FLOAT,           // the type of each element
+          GL_FALSE,           // take our values as-is
+          0,                  // no extra data between each position
+          0                   // offset of first element
+          );
+          glDisableVertexAttribArray(m_attribute_v_tangents);
+
+        }
     }
 
     if (this->elements.size() > 0) {
@@ -305,13 +336,28 @@ void Geometry::draw(std::shared_ptr<vr::Shader> shader, const glm::mat4& modelMa
       glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo_texCoords);
       glVertexAttribPointer(
         m_attribute_v_texCoords, // attribute
-        2,                  // number of elements per vertex, here (x,y,z)
+        2,                  // number of elements per vertex, here (x,y)
         GL_FLOAT,           // the type of each element
         GL_FALSE,           // take our values as-is
         0,                  // no extra data between each position
         0                   // offset of first element
       );
     }
+
+    if (this->m_vbo_tangents != 0)
+    {
+      glEnableVertexAttribArray(m_attribute_v_tangents);
+      glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo_tangents);
+      glVertexAttribPointer(
+        m_attribute_v_tangents, // attribute
+        3,                  // number of elements per vertex, here (x,y,z)
+        GL_FLOAT,           // the type of each element
+        GL_FALSE,           // take our values as-is
+        0,                  // no extra data between each position
+        0                   // offset of first element
+      );
+    }
+
   }
   else {
     glEnableVertexAttribArray(m_attribute_v_coord);
@@ -320,6 +366,9 @@ void Geometry::draw(std::shared_ptr<vr::Shader> shader, const glm::mat4& modelMa
     CHECK_GL_ERROR_LINE_FILE();
     if (m_vbo_texCoords != 0)
       glEnableVertexAttribArray(m_attribute_v_texCoords);
+    if (m_vbo_tangents != 0)
+      glEnableVertexAttribArray(m_attribute_v_tangents);
+
     CHECK_GL_ERROR_LINE_FILE();
     
   }
@@ -359,7 +408,8 @@ void Geometry::draw(std::shared_ptr<vr::Shader> shader, const glm::mat4& modelMa
 
   if (this->m_vbo_texCoords != 0)
     glDisableVertexAttribArray(m_attribute_v_texCoords);
-  
+  if (this->m_vbo_tangents != 0)
+    glDisableVertexAttribArray(m_attribute_v_tangents);
   if (m_useVAO)
     glBindVertexArray(0);
 }

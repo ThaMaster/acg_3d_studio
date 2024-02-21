@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene>
+    <state>
+        <material>
+            <texture mapType="diffuse" path="textures/container2.png"/>
+            <texture mapType="specular" path="textures/container2_specular.png"/>
+        </material>
+    </state>
+    <geometry name="geo1" path="models/box.obj" />
+</scene>

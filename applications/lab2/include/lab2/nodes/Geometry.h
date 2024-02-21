@@ -48,14 +48,8 @@ class Geometry : public Node
 
         GLuint m_vbo_vertices, m_vbo_normals, m_vbo_texCoords, m_ibo_elements, m_vbo_tangents, m_vbo_bitangents;
         GLuint m_vao;
-        GLint m_attribute_v_coord;
-        GLint m_attribute_v_normal;
-        GLint m_attribute_v_texCoords;
-        GLint m_attribute_v_tangents;
-        GLint m_attribute_v_bitangents;
-
-        //GLint m_uniform_m;
-        //GLint m_uniform_m_3x3_inv_transp;
+        GLint m_attribute_v_coord, m_attribute_v_normal, m_attribute_v_texCoords;
+        GLint m_attribute_v_tangents, m_attribute_v_bitangents;
 
         bool m_useVAO = true;
         glm::mat4 m_initialTransform;

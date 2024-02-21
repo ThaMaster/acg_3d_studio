@@ -16,7 +16,8 @@ using namespace vr;
 
 Application::Application(unsigned int width, unsigned height) : 
   m_screenSize(width, height), 
-  m_clearColor(1, 1, 1, 1)
+  m_clearColor(1, 1, 1, 1),
+  m_lastTime(0)
 {
   m_fpsCounter = std::make_shared<FPSCounter>();
   m_fpsCounter->setFontScale(0.5f);
@@ -56,10 +57,10 @@ bool Application::initResources(const std::string& model_filename, const std::st
 
   if(m_sceneRoot->getUseDefaultLight()) {
     std::shared_ptr<Light> light1 = std::shared_ptr<Light>(new Light);
-    light1->setAmbient(glm::vec4(0.3, 0.3, 0.3, 1.0));
+    light1->setAmbient(glm::vec4(0.0, 0.0, 0.0, 1.0));
     light1->setDiffuse(glm::vec4(1.0, 1.0, 1.0, 1.0));
     light1->setSpecular(glm::vec4(1.0, 1.0, 1.0, 1.0));
-    light1->setPosition(glm::vec4(0.0, -2.0, 2.0, 0.0));
+    light1->setPosition(glm::vec4(0.0, -2.0, 2.0, 1.0));
 
     m_sceneRoot->getRootGroup()->getState()->addLight(light1);
   }
@@ -125,6 +126,24 @@ void Application::update(GLFWwindow* window)
 void Application::processInput(GLFWwindow* window)
 {
   getCamera()->processInput(window);
+
+  if(m_sceneRoot->getUseDefaultLight())
+  {
+    float currentTime = (float)glfwGetTime();
+	  float deltaTime = float(currentTime - m_lastTime);
+    float m_speed = 0.1f;
+    glm::vec4 deltaPos = glm::vec4(0.0f);
+    std::shared_ptr<vr::Light> light = m_sceneRoot->getRootGroup()->getState()->getLights()[0];
+    if(light) {
+      if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) deltaPos.z -= m_speed;
+      if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS) deltaPos.z += m_speed;
+      if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS) deltaPos.x -= m_speed;
+      if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) deltaPos.x += m_speed;
+      if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) deltaPos.y += m_speed;
+      if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) deltaPos.y -= m_speed; 
+      light->setPosition(light->getPosition() + deltaPos);
+    }
+  }
 }
 
 void Application::setScreenSize(unsigned int width, unsigned int height)

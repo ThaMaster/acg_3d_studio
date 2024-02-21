@@ -19,7 +19,6 @@ namespace vr {
     */
     Application(unsigned int width, unsigned int height);
 
-
     /**
     Destructor
     */
@@ -49,5 +48,6 @@ namespace vr {
     std::string m_loadedFilename, m_loadedVShader, m_loadedFShader;
     glm::uvec2 m_screenSize;
     glm::f32vec4 m_clearColor;
+    float m_lastTime;
   };
 }

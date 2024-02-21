@@ -22,7 +22,7 @@ struct Material
     vec4 diffuse;
     vec4 specular;
 
-    //float opacity;
+    float opacity;
     float shininess;
     bool activeTextures[MAX_TEXTURES];
     sampler2D textures[MAX_TEXTURES];
@@ -60,19 +60,28 @@ uniform Texture texture;
 
 void main()
 {
-    vec3 fNormal;
+    vec3 fNormal = normalize(normal);
+    // texture at [0] represent the normal map! Other textures should not use this position!
     if(material.activeTextures[0]) {
-        vec3 fNormal = texture2D(material.textures[0], texCoord).rgb;
-        fNormal = normalize(fNormal * 2.0 - 1.0);
+        fNormal = texture2D(material.textures[0], texCoord).rgb;
+        fNormal = fNormal * 2.0 - 1.0;
         fNormal = normalize(TBN * fNormal);
-    } else {
-        fNormal = normal;
-    }
-
-    vec3 normalDirection = normalize(fNormal);
+    } 
+    vec3 normalDirection = fNormal;
+    
     vec3 viewDirection = normalize(vec3(v_inv * vec4(0.0, 0.0, 0.0, 1.0) - position));
     vec3 lightDirection;
     float attenuation;
+
+    vec4 diffuseColor = material.diffuse;
+    if(material.activeTextures[1]) {
+        diffuseColor = texture2D(material.textures[1], texCoord);
+    }
+
+    vec4 specularColor = material.specular;
+    if(material.activeTextures[2]) {
+        specularColor = texture2D(material.textures[2], texCoord);
+    }
 
     // initialize total lighting with ambient lighting
     vec4 totalLighting = lights[0].ambient * material.ambient;
@@ -96,7 +105,7 @@ void main()
         }
 
         vec4 diffuseReflection = attenuation
-        * light.diffuse * material.diffuse
+        * light.diffuse * diffuseColor
         * max(0.0, dot(normalDirection, lightDirection));
 
         vec4 specularReflection;
@@ -106,28 +115,28 @@ void main()
         }
         else // light source on the right side
         {
-            specularReflection = attenuation * light.specular * material.specular
+            specularReflection = attenuation * light.specular * specularColor
             * pow(max(0.0, dot(reflect(-lightDirection, normalDirection), viewDirection)), material.shininess);
         }
 
         totalLighting = totalLighting + diffuseReflection + specularReflection;
     }
-
-    // Iterate over each texture
-    for (int i = 0; i < MAX_TEXTURES; i++)
+    for(int i = 5; i < MAX_TEXTURES; i++)
     {
         if (material.activeTextures[i])
         {
-            vec4 matTexColor = texture2D(material.textures[i], texCoord);
-            totalLighting = mix(totalLighting, matTexColor, matTexColor.a);
+            vec3 matTexColor = texture2D(material.textures[i], texCoord).rgb;
+            totalLighting.rgb *= matTexColor;
         }
-        
+    }
+    // Iterate over each texture
+    for (int i = 0; i < MAX_TEXTURES; i++)
+    {
         if (texture.activeTextures[i])
         {
             vec4 textureColor = texture2D(texture.textures[i], texCoord);
             totalLighting = mix(totalLighting, textureColor, textureColor.a);
         }
     }
-
-    color = totalLighting;
+    color = vec4(totalLighting.rgb, 1.0 * material.opacity);
 }

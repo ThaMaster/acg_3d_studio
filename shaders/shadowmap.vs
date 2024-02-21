@@ -26,8 +26,10 @@ void main()
   normal = normalize(m_3x3_inv_transp * vertex_normal);
 
   vec3 T = normalize(vec3(m * vec4(vertex_tangent, 0.0)));
-  vec3 B = normalize(vec3(m * vec4(vertex_bitangent, 0.0)));
   vec3 N = normalize(vec3(m * vec4(vertex_normal, 0.0)));
+  // Re-orthogonalize with the Gram-Schmidt process
+  T = normalize(T - dot(T,N) * N);
+  vec3 B = cross(N, T);
 
   TBN = mat3(T, B, N);
 
