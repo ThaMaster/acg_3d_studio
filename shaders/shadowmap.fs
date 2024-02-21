@@ -63,23 +63,25 @@ void main()
     vec3 fNormal = normalize(normal);
     // texture at [0] represent the normal map! Other textures should not use this position!
     if(material.activeTextures[0]) {
-        fNormal = texture2D(material.textures[0], texCoord).rgb;
-        fNormal = fNormal * 2.0 - 1.0;
-        fNormal = normalize(TBN * fNormal);
-    } 
-    vec3 normalDirection = fNormal;
+        vec3 normalMap = texture2D(material.textures[0], texCoord).rgb;
+        normalMap = normalMap * 2.0 - 1.0;
+        fNormal = normalize(TBN * normalMap);
+    }
     
+    vec3 normalDirection = fNormal;
     vec3 viewDirection = normalize(vec3(v_inv * vec4(0.0, 0.0, 0.0, 1.0) - position));
     vec3 lightDirection;
     float attenuation;
 
     vec4 diffuseColor = material.diffuse;
-    if(material.activeTextures[1]) {
+    if(material.activeTextures[1]) 
+    {
         diffuseColor = texture2D(material.textures[1], texCoord);
     }
 
     vec4 specularColor = material.specular;
-    if(material.activeTextures[2]) {
+    if(material.activeTextures[2]) 
+    {
         specularColor = texture2D(material.textures[2], texCoord);
     }
 
@@ -118,9 +120,14 @@ void main()
             specularReflection = attenuation * light.specular * specularColor
             * pow(max(0.0, dot(reflect(-lightDirection, normalDirection), viewDirection)), material.shininess);
         }
-
-        totalLighting = totalLighting + diffuseReflection + specularReflection;
+        
+        if(material.shininess != 0) {
+            totalLighting = totalLighting + diffuseReflection + specularReflection;
+        } else {
+            totalLighting = totalLighting + diffuseReflection;
+        }
     }
+    // Iterate over other potentially set material textures.
     for(int i = 5; i < MAX_TEXTURES; i++)
     {
         if (material.activeTextures[i])

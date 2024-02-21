@@ -122,7 +122,8 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
     //material->setAmbient(glm::vec4(color.r, color.g, color.b, color.a));
 
     if(ai_material->Get(AI_MATKEY_SHININESS, shiniess) == AI_SUCCESS)
-      material->setShininess(shiniess);
+        material->setShininess(shiniess);
+  
 
     if(ai_material->Get(AI_MATKEY_OPACITY, opacity) == AI_SUCCESS) {
       material->setOpacity(opacity);
@@ -658,6 +659,7 @@ std::shared_ptr<Material> parseStateMaterial(rapidxml::xml_node<>* node, std::sh
   std::string shininess = getAttribute(node, "shininess");
   if(!shininess.empty()) 
     material->setShininess(atof(shininess.c_str()));
+  
   
   rapidxml::xml_node<>* texNode;
   int textUnit = 5;
