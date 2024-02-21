@@ -12,7 +12,6 @@ namespace vr
   class Light
   {
   public:
-
     Light();
 
     void apply(std::shared_ptr<vr::Shader> shader, size_t idx);

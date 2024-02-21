@@ -5,6 +5,7 @@
 #include "NodeVisitor.h"
 #include "vr/Shader.h"
 #include "lab2/State.h"
+#include "lab2/RenderToTexture.h"
 #include "vr/Camera.h"
 
 /**

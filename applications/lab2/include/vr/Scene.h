@@ -10,6 +10,7 @@
 #include <vr/Camera.h>
 #include <vr/Shader.h>
 
+#include "lab2/RenderToTexture.h"
 #include "lab2/nodes/Group.h"
 #include "lab2/nodes/Geometry.h"
 #include "lab2/visitors/RenderVisitor.h"
@@ -86,6 +87,7 @@ namespace vr
     bool getUseDefaultLight(void) { return m_useDefaultLight; }
 
   private:
+    std::shared_ptr<RenderToTexture> m_renderToTexture;
     bool m_useDefaultLight = true;
     GLint m_uniform_numberOfLights;
     Group *m_rootGroup;

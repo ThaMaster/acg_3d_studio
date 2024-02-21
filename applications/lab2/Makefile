@@ -223,6 +223,30 @@ src/glad.c.s:
 	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab2/CMakeFiles/lab2.dir/build.make applications/lab2/CMakeFiles/lab2.dir/src/glad.c.s
 .PHONY : src/glad.c.s
 
+src/lab2/RenderToTexture.o: src/lab2/RenderToTexture.cpp.o
+.PHONY : src/lab2/RenderToTexture.o
+
+# target to build an object file
+src/lab2/RenderToTexture.cpp.o:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab2/CMakeFiles/lab2.dir/build.make applications/lab2/CMakeFiles/lab2.dir/src/lab2/RenderToTexture.cpp.o
+.PHONY : src/lab2/RenderToTexture.cpp.o
+
+src/lab2/RenderToTexture.i: src/lab2/RenderToTexture.cpp.i
+.PHONY : src/lab2/RenderToTexture.i
+
+# target to preprocess a source file
+src/lab2/RenderToTexture.cpp.i:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab2/CMakeFiles/lab2.dir/build.make applications/lab2/CMakeFiles/lab2.dir/src/lab2/RenderToTexture.cpp.i
+.PHONY : src/lab2/RenderToTexture.cpp.i
+
+src/lab2/RenderToTexture.s: src/lab2/RenderToTexture.cpp.s
+.PHONY : src/lab2/RenderToTexture.s
+
+# target to generate assembly for a file
+src/lab2/RenderToTexture.cpp.s:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab2/CMakeFiles/lab2.dir/build.make applications/lab2/CMakeFiles/lab2.dir/src/lab2/RenderToTexture.cpp.s
+.PHONY : src/lab2/RenderToTexture.cpp.s
+
 src/lab2/State.o: src/lab2/State.cpp.o
 .PHONY : src/lab2/State.o
 
@@ -746,6 +770,9 @@ help:
 	@echo "... src/glad.o"
 	@echo "... src/glad.i"
 	@echo "... src/glad.s"
+	@echo "... src/lab2/RenderToTexture.o"
+	@echo "... src/lab2/RenderToTexture.i"
+	@echo "... src/lab2/RenderToTexture.s"
 	@echo "... src/lab2/State.o"
 	@echo "... src/lab2/State.i"
 	@echo "... src/lab2/State.s"

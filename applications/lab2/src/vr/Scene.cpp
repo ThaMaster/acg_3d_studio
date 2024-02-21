@@ -7,6 +7,7 @@ using namespace vr;
 
 Scene::Scene() : m_uniform_numberOfLights(-1)
 {
+  // m_renderToTexture = std::shared_ptr<RenderToTexture>(new RenderToTexture());
   m_camera = std::shared_ptr<Camera>(new Camera);
   setRootGroup(new Group("root"));
   getRootGroup()->setState(std::shared_ptr<State>(new State("root_state")));
@@ -15,6 +16,7 @@ Scene::Scene() : m_uniform_numberOfLights(-1)
   m_renderVisitor = new RenderVisitor();
   m_renderVisitor->setCamera(m_camera);
   m_updateVisitor = new UpdateVisitor();
+  // m_renderToTexture->createRenderTarget();
 }
 
 bool Scene::initShaders(const std::string& vshader_filename, const std::string& fshader_filename)

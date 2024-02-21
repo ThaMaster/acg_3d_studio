@@ -38,6 +38,7 @@ struct Texture
 struct LightSource
 {
   bool enabled;
+
   float constant;
   float linear;
   float quadratic;
@@ -61,7 +62,7 @@ uniform Texture texture;
 void main()
 {
     vec3 fNormal = normalize(normal);
-    // texture at [0] represent the normal map! Other textures should not use this position!
+    // textures[0] represent the normal map! Other textures should not use this position!
     if(material.activeTextures[0]) {
         vec3 normalMap = texture2D(material.textures[0], texCoord).rgb;
         normalMap = normalMap * 2.0 - 1.0;
@@ -120,7 +121,7 @@ void main()
             specularReflection = attenuation * light.specular * specularColor
             * pow(max(0.0, dot(reflect(-lightDirection, normalDirection), viewDirection)), material.shininess);
         }
-        
+
         if(material.shininess != 0) {
             totalLighting = totalLighting + diffuseReflection + specularReflection;
         } else {
@@ -145,5 +146,5 @@ void main()
             totalLighting = mix(totalLighting, textureColor, textureColor.a);
         }
     }
-    color = vec4(totalLighting.rgb, 1.0 * material.opacity);
+    color = vec4(totalLighting.rgb, totalLighting.a * material.opacity);
 }
