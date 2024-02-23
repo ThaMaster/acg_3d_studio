@@ -45,6 +45,9 @@ namespace vr
     */
     void setNearFar(const glm::vec2& nearFar);
 
+    glm::vec2 getNearFar(void);
+
+
     /**
     Set the horizontal field of view
     \param fov The new fov

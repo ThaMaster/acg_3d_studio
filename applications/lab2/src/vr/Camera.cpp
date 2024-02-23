@@ -210,6 +210,11 @@ void Camera::setNearFar(const glm::vec2& nearFar)
   m_nearFar = nearFar;
 }
 
+glm::vec2 Camera::getNearFar(void)
+{
+	return m_nearFar;
+}
+
 void Camera::apply(std::shared_ptr<vr::Shader> shader)
 {
 	// Initializes matrices since otherwise they will be the null matrix

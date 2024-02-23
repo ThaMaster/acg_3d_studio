@@ -5,9 +5,10 @@ in vec4 position;  // position of the vertex (and fragment) in eye space
 in vec3 normal ;  // surface normal vector in eye space
 in vec2 texCoord; // Texture coordinate
 in mat3 TBN;
+in vec4 shadowCoord;
 
 // The end result of this shader
-out vec4 color;
+layout(location = 0) out vec4 color;
 
 uniform mat4 m, v, p;
 uniform mat4 v_inv;
@@ -57,10 +58,28 @@ uniform LightSource lights[MaxNumberOfLights];
 
 // The front surface material
 uniform Material material;
-uniform Texture texture;
+uniform Texture fragTexture;
+uniform sampler2D shadowMap;
+
+float ShadowCalculation(vec4 fragPosLightSpace)
+{
+    // perform perspective divide
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    // transform to [0,1] range
+    projCoords = projCoords * 0.5 + 0.5;
+    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+    float closestDepth = texture(shadowMap, projCoords.xy).r; 
+    // get depth of current fragment from light's perspective
+    float currentDepth = projCoords.z;
+    // check whether current frag pos is in shadow
+    float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
+
+    return shadow;
+}
 
 void main()
 {
+    float shadow = ShadowCalculation(shadowCoord);
     vec3 fNormal = normalize(normal);
     // textures[0] represent the normal map! Other textures should not use this position!
     if(material.activeTextures[0]) {
@@ -107,7 +126,7 @@ void main()
             attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
         }
 
-        vec4 diffuseReflection = attenuation
+        vec4 diffuseReflection = (1.0 - shadow) * attenuation
         * light.diffuse * diffuseColor
         * max(0.0, dot(normalDirection, lightDirection));
 
@@ -118,11 +137,11 @@ void main()
         }
         else // light source on the right side
         {
-            specularReflection = attenuation * light.specular * specularColor
-            * pow(max(0.0, dot(reflect(-lightDirection, normalDirection), viewDirection)), material.shininess);
+            specularReflection = (1.0 - shadow) * attenuation * light.specular * specularColor
+            * pow(max(0.0, dot(reflect(-lightDirection, normalDirection), viewDirection)), 30);
         }
 
-        if(material.shininess != 0) {
+        if(material.shininess == 0) {
             totalLighting = totalLighting + diffuseReflection + specularReflection;
         } else {
             totalLighting = totalLighting + diffuseReflection;
@@ -140,11 +159,11 @@ void main()
     // Iterate over each texture
     for (int i = 0; i < MAX_TEXTURES; i++)
     {
-        if (texture.activeTextures[i])
+        if (fragTexture.activeTextures[i])
         {
-            vec4 textureColor = texture2D(texture.textures[i], texCoord);
+            vec4 textureColor = texture2D(fragTexture.textures[i], texCoord);
             totalLighting = mix(totalLighting, textureColor, textureColor.a);
         }
     }
-    color = vec4(totalLighting.rgb, totalLighting.a * material.opacity);
+    color = texture(shadowMap, texCoord);
 }

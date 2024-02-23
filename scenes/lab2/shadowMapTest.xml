@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene>
+    <transform translate="0 0 0">
+        <geometry name="geo1" path="models/box.obj" />
+    </transform>
+    <transform translate="1 0 -3" scale ="2 2 2">
+        <geometry name="geo1" path="models/box.obj" />
+    </transform>
+    <transform translate="0 -1d -3" scale ="8 1 8">
+        <geometry name="geo1" path="models/box.obj"/>
+    </transform>
+    <transform translate="0 0 -5" scale ="5 7 1">
+        <geometry name="geo1" path="models/box.obj"/>
+    </transform>
+</scene>

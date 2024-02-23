@@ -3,6 +3,7 @@
 #include "lab2/nodes/Transform.h"
 #include "lab2/nodes/Geometry.h"
 #include "lab2/nodes/LOD.h"
+#include "vr/Light.h"
 
 void RenderVisitor::visit(Group& group)
 {
@@ -41,9 +42,26 @@ void RenderVisitor::visit(Geometry& geo)
 {
     m_stateStack.push(m_stateStack.top()->merge(geo.getState()));
     auto state = m_stateStack.top();
-    state->apply();
-    m_camera->apply(state->getShader());
-    geo.draw(state->getShader(), m_transformStack.top());
+    glm::mat4 lightMatrix = m_rtt->calcLightMatrix(state->getLights()[0]->getPosition(), m_camera->getNearFar());
+    glm::mat4 biasMatrix(
+			0.5, 0.0, 0.0, 0.0, 
+			0.0, 0.5, 0.0, 0.0,
+			0.0, 0.0, 0.5, 0.0,
+			0.5, 0.5, 0.5, 1.0
+		);
+    if(m_depthPass) {
+        glClear(GL_DEPTH_BUFFER_BIT);
+        m_rtt->switchToFramebuffer();
+        m_rtt->getDepthShader()->use();
+        m_rtt->getDepthShader()->setMat4("lightMatrix", lightMatrix);
+        geo.draw(m_rtt->getDepthShader(), m_transformStack.top(), m_depthPass);
+        m_rtt->defaultBuffer();
+    } else {
+        m_rtt->apply(state->getShader());
+        state->apply();
+        m_camera->apply(state->getShader());
+        geo.draw(state->getShader(), m_transformStack.top(), m_depthPass);
+    }
     m_stateStack.pop();
 }
 
@@ -63,3 +81,9 @@ void RenderVisitor::visit(LOD& lod)
 
 void RenderVisitor::setCamera(std::shared_ptr<vr::Camera> c) { m_camera = c; }
 std::shared_ptr<vr::Camera> RenderVisitor::getCamera(void) { return m_camera; }
+
+void RenderVisitor::setDepthPass(bool b) { m_depthPass = b; }
+bool RenderVisitor::getDepthPass(void) { return m_depthPass; }
+
+void RenderVisitor::setRTT(std::shared_ptr<RenderToTexture> rtt) {m_rtt = rtt; }
+std::shared_ptr<RenderToTexture> RenderVisitor::getRTT(void) { return m_rtt; }

@@ -37,9 +37,17 @@ class RenderVisitor : public NodeVisitor
         void setCamera(std::shared_ptr<vr::Camera> c);
         std::shared_ptr<vr::Camera> getCamera(void);
 
+        void setRTT(std::shared_ptr<RenderToTexture> rtt);
+        std::shared_ptr<RenderToTexture> getRTT(void);
+
+        void setDepthPass(bool b);
+        bool getDepthPass(void);
+
     private:
+        bool m_depthPass = false;
         std::shared_ptr<vr::Camera> m_camera;
         std::stack<glm::mat4> m_transformStack;
+        std::shared_ptr<RenderToTexture> m_rtt;
 };
 
 #endif

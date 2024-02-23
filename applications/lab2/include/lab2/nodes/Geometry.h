@@ -33,7 +33,7 @@ class Geometry : public Node
         void setObject2WorldMat(glm::mat4& m);
 
         void upload();
-        void draw(std::shared_ptr<vr::Shader> shader, const glm::mat4& modelMatrix);
+        void draw(std::shared_ptr<vr::Shader> shader, const glm::mat4& modelMatrix, bool depthPass);
         void draw_bbox(std::shared_ptr<vr::Shader> shader);
         virtual vr::BoundingBox calculateBoundingBox(glm::mat4 m) override;
 

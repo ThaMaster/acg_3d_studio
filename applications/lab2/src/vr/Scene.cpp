@@ -7,7 +7,7 @@ using namespace vr;
 
 Scene::Scene() : m_uniform_numberOfLights(-1)
 {
-  // m_renderToTexture = std::shared_ptr<RenderToTexture>(new RenderToTexture());
+  m_renderToTexture = std::shared_ptr<RenderToTexture>(new RenderToTexture());
   m_camera = std::shared_ptr<Camera>(new Camera);
   setRootGroup(new Group("root"));
   getRootGroup()->setState(std::shared_ptr<State>(new State("root_state")));
@@ -16,7 +16,8 @@ Scene::Scene() : m_uniform_numberOfLights(-1)
   m_renderVisitor = new RenderVisitor();
   m_renderVisitor->setCamera(m_camera);
   m_updateVisitor = new UpdateVisitor();
-  // m_renderToTexture->createRenderTarget();
+  m_renderToTexture->createRenderTarget();
+  m_renderVisitor->setRTT(m_renderToTexture);
 }
 
 bool Scene::initShaders(const std::string& vshader_filename, const std::string& fshader_filename)
@@ -123,6 +124,10 @@ Group* Scene::createDefaultScene()
 
 void Scene::render()
 {
+  m_renderVisitor->setDepthPass(true);
+  m_renderVisitor->visit(*m_rootGroup);
+  m_renderVisitor->setDepthPass(false);
+  
   m_renderVisitor->visit(*m_rootGroup);
   m_updateVisitor->visit(*m_rootGroup);
 }

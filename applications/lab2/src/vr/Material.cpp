@@ -58,6 +58,7 @@ void Material::apply(std::shared_ptr<vr::Shader> shader)
   slots.resize(m_textures.size());
   for (int i = 0; i < m_textures.size(); i++)
   {
+    std::cout << i << std::endl;
     slots[i] = i;
     slotActive[i] = m_textures[i] != nullptr;
     if (m_textures[i]) {

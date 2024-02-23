@@ -6,6 +6,7 @@ layout(location = 2) in vec2 vertex_texCoord;
 layout(location = 3) in vec3 vertex_tangent;
 layout(location = 4) in vec3 vertex_bitangent;
 
+out vec4 shadowCoord;
 out vec4 position;  // position of the vertex (and fragment) in world space
 out vec3 normal;  // surface normal vector in world space
 out vec2 texCoord; 
@@ -17,12 +18,16 @@ uniform mat4 m, v, p;
 // Inverse transpose of model matrix for transforming normals
 uniform mat3 m_3x3_inv_transp;
 
+uniform mat4 lightMatrix;
+
 void main()
 {
   mat4 mv = v * m;
   texCoord = vertex_texCoord;
 
   position = mv * vertex_position;
+  shadowCoord = lightMatrix * (m * vertex_position);
+
   normal = normalize(m_3x3_inv_transp * vertex_normal);
 
   vec3 T = normalize(vec3(m * vec4(vertex_tangent, 0.0)));
@@ -34,4 +39,6 @@ void main()
   TBN = mat3(T, B, N);
 
   gl_Position = p * position;
+
+
 }

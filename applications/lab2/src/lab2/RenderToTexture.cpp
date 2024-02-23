@@ -1,40 +1,33 @@
 #include <memory>
-
-#include "vr/Shader.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "lab2/RenderToTexture.h"
 
-RenderToTexture::RenderToTexture() {}
+RenderToTexture::RenderToTexture() 
+{
+    m_depthShader = std::shared_ptr<vr::Shader>(new vr::Shader("shaders/depthRTT.vs", "shaders/depthRTT.fs"));
+}
+
 RenderToTexture::~RenderToTexture() {}
 
 bool RenderToTexture::createRenderTarget(void)
 {
-    m_frameBuffer = 0;
     glGenFramebuffers(1, &m_frameBuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, m_frameBuffer);
 
-    glGenTextures(1, &m_renderedTexture);
-    glBindTexture(GL_TEXTURE_2D, m_renderedTexture);
-
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1920, 1080, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glBindTexture(GL_TEXTURE_2D, 0);
-
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_renderedTexture, 0);
-    unsigned int rbo;
-    glGenRenderbuffers(1, &rbo);
-    glBindRenderbuffer(GL_RENDERBUFFER, rbo); 
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1920, 600);  
-    glBindRenderbuffer(GL_RENDERBUFFER, 0);
-
-    /* glGenRenderbuffers(1, &m_depthRenderBuffer);
-    glBindRenderbuffer(GL_RENDERBUFFER, m_depthRenderBuffer);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1920, 1080);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthRenderBuffer); */
-
-    /* GLenum drawBuffers[1] = { GL_COLOR_ATTACHMENT0 };
-    glDrawBuffers(1, drawBuffers); */
+    glGenTextures(1, &m_depthTexture);
+	glActiveTexture(GL_TEXTURE11);
+    glBindTexture(GL_TEXTURE_2D, m_depthTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0,GL_DEPTH_COMPONENT, 1024, 1024, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depthTexture, 0);
+    glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
 
     if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         return false;
@@ -42,35 +35,33 @@ bool RenderToTexture::createRenderTarget(void)
     return true;
 }
 
-void RenderToTexture::renderTexture(std::shared_ptr<vr::Shader> shader)
+void RenderToTexture::switchToFramebuffer()
 {
-    GLuint quad_VertexArrayID;
-    glGenVertexArrays(1, &quad_VertexArrayID);
-    glBindVertexArray(quad_VertexArrayID);
-
-    static const GLfloat g_quad_vertex_buffer_data[] = {
-        -1.0f, -1.0f, 0.0f,
-        1.0f, -1.0f, 0.0f,
-        -1.0f,  1.0f, 0.0f,
-        -1.0f,  1.0f, 0.0f,
-        1.0f, -1.0f, 0.0f,
-        1.0f,  1.0f, 0.0f,
-    };
-
-    GLuint quad_vertexbuffer;
-    glGenBuffers(1, &quad_vertexbuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, quad_vertexbuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(g_quad_vertex_buffer_data), g_quad_vertex_buffer_data, GL_STATIC_DRAW);
-    GLuint texID = glGetUniformLocation(shader->program(), "renderedTexture");
-
+    glViewport(0,0,1024,1024);
     glBindFramebuffer(GL_FRAMEBUFFER, m_frameBuffer);
-    glViewport(0,0,1920,1080);
+    glClear(GL_DEPTH_BUFFER_BIT);
 }
 
 void RenderToTexture::defaultBuffer() {
     glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f); 
-    glClear(GL_COLOR_BUFFER_BIT);
+    glViewport(0,0,1980,1080);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+void RenderToTexture::apply(std::shared_ptr<vr::Shader> s)
+{
+    glActiveTexture(GL_TEXTURE11);
+    glBindTexture(GL_TEXTURE_2D, m_depthTexture);
+    s->setInt("shadowMap", 11);
+}
 
+glm::mat4 RenderToTexture::calcLightMatrix(glm::vec4 l_pos, glm::vec2 nearFar)
+{
+    // Spotlight or directional light?
+    glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10,10,-10,10, nearFar.x, nearFar.y);
+	glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(l_pos), glm::vec3(0,0,0), glm::vec3(0,1,0));
+    glm::mat4 depthModelMatrix = glm::mat4(1.0);
+    return depthProjectionMatrix * depthViewMatrix * depthModelMatrix;
+}
+
+std::shared_ptr<vr::Shader> RenderToTexture::getDepthShader(void) { return m_depthShader; }
