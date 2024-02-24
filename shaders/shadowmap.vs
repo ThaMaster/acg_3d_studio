@@ -6,7 +6,7 @@ layout(location = 2) in vec2 vertex_texCoord;
 layout(location = 3) in vec3 vertex_tangent;
 layout(location = 4) in vec3 vertex_bitangent;
 
-out vec4 shadowCoord;
+out vec4 fragSpacePos;
 out vec4 position;  // position of the vertex (and fragment) in world space
 out vec3 normal;  // surface normal vector in world space
 out vec2 texCoord; 
@@ -26,7 +26,7 @@ void main()
   texCoord = vertex_texCoord;
 
   position = mv * vertex_position;
-  shadowCoord = lightMatrix * (m * vertex_position);
+  fragSpacePos = lightMatrix * m * vertex_position;
 
   normal = normalize(m_3x3_inv_transp * vertex_normal);
 

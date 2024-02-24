@@ -60,7 +60,7 @@ bool Application::initResources(const std::string& model_filename, const std::st
     light1->setAmbient(glm::vec4(0.0, 0.0, 0.0, 1.0));
     light1->setDiffuse(glm::vec4(1.0, 1.0, 1.0, 1.0));
     light1->setSpecular(glm::vec4(1.0, 1.0, 1.0, 1.0));
-    light1->setPosition(glm::vec4(0.0, 1.0, 0.0, 0.0));
+    light1->setPosition(glm::vec4(1.0, 1.0, 1.0, 0.0));
 
     m_sceneRoot->getRootGroup()->getState()->addLight(light1);
   }

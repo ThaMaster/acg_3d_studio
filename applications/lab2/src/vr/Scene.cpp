@@ -125,13 +125,11 @@ Group* Scene::createDefaultScene()
 void Scene::render()
 {
   m_renderVisitor->setDepthPass(true);
-  glClear(GL_DEPTH_BUFFER_BIT);
+  m_renderVisitor->getRTT()->getDepthShader()->use();
   m_renderVisitor->getRTT()->switchToFramebuffer();
   m_renderVisitor->visit(*m_rootGroup);
   m_renderVisitor->getRTT()->defaultBuffer();
   m_renderVisitor->setDepthPass(false);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  
   m_renderVisitor->visit(*m_rootGroup);
   m_updateVisitor->visit(*m_rootGroup);
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene>
-    <transform translate="0 0 0">
+    <transform translate="0 0 0" rotate="45 45 0">
         <geometry name="geo1" path="models/box.obj" />
     </transform>
     <transform translate="1 0 -3" scale ="2 2 2">

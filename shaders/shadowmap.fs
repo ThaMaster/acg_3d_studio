@@ -5,7 +5,7 @@ in vec4 position;  // position of the vertex (and fragment) in eye space
 in vec3 normal ;  // surface normal vector in eye space
 in vec2 texCoord; // Texture coordinate
 in mat3 TBN;
-in vec4 shadowCoord;
+in vec4 fragSpacePos;
 
 // The end result of this shader
 layout(location = 0) out vec4 color;
@@ -67,19 +67,40 @@ float ShadowCalculation(vec4 fragPosLightSpace)
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
     // transform to [0,1] range
     projCoords = projCoords * 0.5 + 0.5;
-    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
-    float closestDepth = texture(shadowMap, projCoords.xy).r; 
     // get depth of current fragment from light's perspective
     float currentDepth = projCoords.z;
+
+    vec3 fNormal = normalize(normal);
+    vec4 lightDir;
+    if (0.0 == lights[0].position.w) // directional light?
+    {
+        lightDir = lights[0].position;
+    }
+
+    float bias = max(0.05 * (1.0 - dot(normal, lightDir.xyz)), 0.005);
     // check whether current frag pos is in shadow
-    float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
+    float shadow = 0.0;
+    vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
+    for(int x = 0; x <= 1; x++)
+    {
+        for(int y = 0; y <= 1; y++)
+        {
+            float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
+            shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
+        }
+    }
+
+    shadow /= 9.0;
+
+    if(projCoords.z > 1.0)
+        shadow = 0.0;
 
     return shadow;
 }
 
 void main()
 {
-    float shadow = ShadowCalculation(shadowCoord);
+    float shadow = ShadowCalculation(fragSpacePos);
     vec3 fNormal = normalize(normal);
     // textures[0] represent the normal map! Other textures should not use this position!
     if(material.activeTextures[0]) {
@@ -126,7 +147,7 @@ void main()
             attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
         }
 
-        vec4 diffuseReflection = (1.0 - shadow) * attenuation
+        vec4 diffuseReflection = attenuation
         * light.diffuse * diffuseColor
         * max(0.0, dot(normalDirection, lightDirection));
 
@@ -137,14 +158,14 @@ void main()
         }
         else // light source on the right side
         {
-            specularReflection = (1.0 - shadow) * attenuation * light.specular * specularColor
-            * pow(max(0.0, dot(reflect(-lightDirection, normalDirection), viewDirection)), 30);
+            specularReflection = attenuation * light.specular * specularColor
+            * pow(max(0.0, dot(reflect(-lightDirection, normalDirection), viewDirection)), material.shininess);
         }
 
-        if(material.shininess == 0) {
-            totalLighting = totalLighting + diffuseReflection + specularReflection;
+        if(material.shininess != 0) {
+            totalLighting = totalLighting + (1.0 - shadow) * (diffuseReflection + specularReflection);
         } else {
-            totalLighting = totalLighting + diffuseReflection;
+            totalLighting = totalLighting + (1.0 - shadow) * diffuseReflection;
         }
     }
     // Iterate over other potentially set material textures.
@@ -165,5 +186,6 @@ void main()
             totalLighting = mix(totalLighting, textureColor, textureColor.a);
         }
     }
-    color = texture(shadowMap, texCoord);
+
+    color = vec4(totalLighting.rgb, totalLighting.a * material.opacity);
 }

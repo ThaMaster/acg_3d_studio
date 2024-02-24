@@ -159,6 +159,6 @@ void State::applyTextures(std::shared_ptr<vr::Shader> shader)
             m_textures[i]->bind();
     }
 
-    shader->setIntVector("texture.textures", slots);
-    shader->setIntVector("texture.activeTextures", slotActive);
+    shader->setIntVector("fragTexture.textures", slots);
+    shader->setIntVector("fragTexture.activeTextures", slotActive);
 }
