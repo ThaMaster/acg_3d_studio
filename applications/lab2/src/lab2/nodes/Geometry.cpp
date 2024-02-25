@@ -21,6 +21,8 @@ Geometry::~Geometry()
         glDeleteBuffers(1, &m_ibo_elements);
 }
 
+void Geometry::setIsGround(bool b) { m_is_ground = b; }
+
 void Geometry::accept(NodeVisitor& v)
 {
     v.visit(*this);
@@ -57,10 +59,14 @@ bool Geometry::initShaders(std::shared_ptr<vr::Shader> shader)
 vr::BoundingBox Geometry::calculateBoundingBox(glm::mat4 m)
 {
     vr::BoundingBox box;
-    for (auto v : vertices)
-    {
-        glm::vec3 vTransformed = m * v;
-        box.expand(vTransformed);
+    if(!m_is_ground) {
+      for (auto v : vertices)
+      {
+          glm::vec3 vTransformed = m * v;
+          box.expand(vTransformed);
+      }
+    } else {
+      box.expand(glm::vec3(0.0, 0.0, 0.0));
     }
     return box;
 }
@@ -127,9 +133,12 @@ void Geometry::upload()
         this->tangents.data(), GL_STATIC_DRAW);
         CHECK_GL_ERROR_LINE_FILE();
     }
+    CHECK_GL_ERROR_LINE_FILE();
 
     if (m_useVAO)
     {
+    CHECK_GL_ERROR_LINE_FILE();
+
         glEnableVertexAttribArray(m_attribute_v_coord);
         glBindBuffer(GL_ARRAY_BUFFER, m_vbo_vertices);
         glVertexAttribPointer(
@@ -141,6 +150,7 @@ void Geometry::upload()
         0                   // offset of first element
         );
         glDisableVertexAttribArray(m_attribute_v_coord);
+    CHECK_GL_ERROR_LINE_FILE();
 
         glEnableVertexAttribArray(m_attribute_v_normal);
         glBindBuffer(GL_ARRAY_BUFFER, m_vbo_normals);
@@ -153,6 +163,7 @@ void Geometry::upload()
         0                   // offset of first element
         );
         glDisableVertexAttribArray(m_attribute_v_normal);
+    CHECK_GL_ERROR_LINE_FILE();
         
         glEnableVertexAttribArray(m_attribute_v_texCoords);
         glBindBuffer(GL_ARRAY_BUFFER, m_vbo_texCoords);
@@ -165,6 +176,7 @@ void Geometry::upload()
         0                   // offset of first element
         );
         glDisableVertexAttribArray(m_attribute_v_texCoords);
+        CHECK_GL_ERROR_LINE_FILE();
 
         if(m_attribute_v_tangents) {
 
@@ -179,9 +191,11 @@ void Geometry::upload()
           0                   // offset of first element
           );
           glDisableVertexAttribArray(m_attribute_v_tangents);
-
+          CHECK_GL_ERROR_LINE_FILE();
         }
+        CHECK_GL_ERROR_LINE_FILE();
     }
+    CHECK_GL_ERROR_LINE_FILE();
 
     if (this->elements.size() > 0) {
         glGenBuffers(1, &this->m_ibo_elements);
@@ -289,6 +303,11 @@ void Geometry::draw_bbox(std::shared_ptr<vr::Shader> shader)
 
 void Geometry::draw(std::shared_ptr<vr::Shader> shader, const glm::mat4& modelMatrix, bool depthPass)
 {
+  if(m_is_ground)
+    glDisable(GL_CULL_FACE);
+  else
+    glEnable(GL_CULL_FACE);
+
   CHECK_GL_ERROR_LINE_FILE();
   if (m_useVAO) {
     glBindVertexArray(m_vao);

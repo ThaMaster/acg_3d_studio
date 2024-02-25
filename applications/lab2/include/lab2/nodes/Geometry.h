@@ -37,6 +37,8 @@ class Geometry : public Node
         void draw_bbox(std::shared_ptr<vr::Shader> shader);
         virtual vr::BoundingBox calculateBoundingBox(glm::mat4 m) override;
 
+        void setIsGround(bool b);
+
         std::vector<glm::vec4> vertices;
         std::vector<glm::vec3> normals;
         std::vector<glm::vec2> texCoords;
@@ -50,7 +52,7 @@ class Geometry : public Node
         GLuint m_vao;
         GLint m_attribute_v_coord, m_attribute_v_normal, m_attribute_v_texCoords;
         GLint m_attribute_v_tangents, m_attribute_v_bitangents;
-
+        bool m_is_ground = false;
         bool m_useVAO = true;
         glm::mat4 m_initialTransform;
         glm::mat4 object2world;

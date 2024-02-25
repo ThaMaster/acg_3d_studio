@@ -54,6 +54,7 @@ bool Application::initResources(const std::string& model_filename, const std::st
       return false;
     m_sceneRoot->getRootGroup()->addChild(objNode);
   }
+  m_sceneRoot->addGroundPlane();
 
   if(m_sceneRoot->getUseDefaultLight()) {
     std::shared_ptr<Light> light1 = std::shared_ptr<Light>(new Light);
@@ -112,7 +113,6 @@ void Application::initView()
 void Application::render(GLFWwindow* window)
 {
   glClearColor(m_clearColor[0], m_clearColor[1], m_clearColor[2], m_clearColor[3]);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   m_sceneRoot->render();
   m_fpsCounter->render(window);
@@ -143,6 +143,15 @@ void Application::processInput(GLFWwindow* window)
       if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) deltaPos.y -= m_speed; 
       light->setPosition(light->getPosition() + deltaPos);
     }
+  }
+  if(glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS) {
+    if(!m_spacePressed) {
+      m_sceneRoot->setUseShadowMap(!m_sceneRoot->getUseShadowMap());
+      m_spacePressed = true;
+    }
+  }
+  if(glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_RELEASE) {
+    m_spacePressed = false;
   }
 }
 

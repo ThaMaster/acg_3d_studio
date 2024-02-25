@@ -43,11 +43,11 @@ namespace vr {
   private:
     // Parent of all to be rendered
     std::shared_ptr<Scene> m_sceneRoot;
-
     std::shared_ptr<FPSCounter> m_fpsCounter;
     std::string m_loadedFilename, m_loadedVShader, m_loadedFShader;
     glm::uvec2 m_screenSize;
     glm::f32vec4 m_clearColor;
     float m_lastTime;
+    bool m_spacePressed = false;
   };
 }

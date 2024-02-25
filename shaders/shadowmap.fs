@@ -59,40 +59,40 @@ uniform LightSource lights[MaxNumberOfLights];
 // The front surface material
 uniform Material material;
 uniform Texture fragTexture;
+
+uniform bool useShadowMap;
 uniform sampler2D shadowMap;
 
-float ShadowCalculation(vec4 fragPosLightSpace)
+float shadowCalculation(vec4 fragPosLightSpace)
 {
     // perform perspective divide
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
     // transform to [0,1] range
     projCoords = projCoords * 0.5 + 0.5;
 
-    projCoords = clamp(projCoords, 0.0, 1.0);
-
     // get depth of current fragment from light's perspective
     float currentDepth = projCoords.z;
 
-    vec4 lightDir;
-    if (0.0 == lights[0].position.w) // directional light?
-    {
-        lightDir = lights[0].position;
-    }
+    vec3 lightDir = normalize(lights[0].position - fragPosLightSpace).xyz;
 
-    float bias = max(0.025 * (1.0 - dot(normal, lightDir.xyz)), 0.0);
+     float bias = max(0.002 * (1.0 - dot(normal, lightDir)), 0.001);
     // check whether current frag pos is in shadow
     float shadow = 0.0;
     vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
-    for(int x = -1; x <= 1; x++)
+    const int halfkernelWidth = 2;
+    for(int x = -halfkernelWidth; x <= halfkernelWidth; ++x)
     {
-        for(int y = -1; y <= 1; y++)
+        for(int y = -halfkernelWidth; y <= halfkernelWidth; ++y)
         {
             float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
             shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
         }
     }
-
-    shadow /= 9.0;
+    shadow /= ((halfkernelWidth*2+1)*(halfkernelWidth*2+1));
+    
+    // keep the shadow at 0.0 when outside the far_plane region of the light's frustum.
+    if(projCoords.z > 1.0)
+        shadow = 0.0;
 
     if(projCoords.z > 1.0)
         shadow = 0.0;
@@ -102,7 +102,10 @@ float ShadowCalculation(vec4 fragPosLightSpace)
 
 void main()
 {
-    float shadow = ShadowCalculation(fragSpacePos);
+    float shadow = 0.0;
+    if(useShadowMap) {
+        shadow = shadowCalculation(fragSpacePos);
+    }
     vec3 fNormal = normalize(normal);
     // textures[0] represent the normal map! Other textures should not use this position!
     if(material.activeTextures[0]) {

@@ -56,6 +56,7 @@ void Material::apply(std::shared_ptr<vr::Shader> shader)
   std::vector<int> slots; 
   slotActive.resize(m_textures.size());
   slots.resize(m_textures.size());
+  CHECK_GL_ERROR_LINE_FILE();
   for (int i = 0; i < m_textures.size(); i++)
   {
     slots[i] = i;

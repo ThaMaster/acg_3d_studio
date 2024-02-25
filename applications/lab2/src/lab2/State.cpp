@@ -44,8 +44,9 @@ std::shared_ptr<State> State::merge(std::shared_ptr<State> s)
         mergedState->setCullFace(m_cullFace);
         mergedState->setEnableLight(m_enableLight);
 
-        for(auto l : m_lights)
+        for(auto l : m_lights) {
             mergedState->addLight(l);
+        }
 
         if(m_textures.size() != 0)
             mergedState->setTextures(m_textures);

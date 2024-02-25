@@ -18,6 +18,7 @@ uniform mat4 m, v, p;
 // Inverse transpose of model matrix for transforming normals
 uniform mat3 m_3x3_inv_transp;
 
+uniform bool useShadowMap;
 uniform mat4 lightMatrix;
 
 void main()
@@ -26,7 +27,9 @@ void main()
   texCoord = vertex_texCoord;
 
   position = mv * vertex_position;
-  fragSpacePos = lightMatrix * m * vertex_position;
+  if(useShadowMap) {
+    fragSpacePos = lightMatrix * m * vertex_position;
+  }
 
   normal = normalize(m_3x3_inv_transp * vertex_normal);
 

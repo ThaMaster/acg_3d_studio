@@ -85,10 +85,14 @@ namespace vr
     Geometry* buildGeometry(std::string geo_name, std::vector<glm::vec3> vertices, std::vector<GLshort> indices, std::vector<glm::vec3> normals, std::vector<glm::vec2> texCoords);
     void setUseDefaultLight(bool b) { m_useDefaultLight = b; }
     bool getUseDefaultLight(void) { return m_useDefaultLight; }
+    void addGroundPlane();
+    void setUseShadowMap(bool b);
+    bool getUseShadowMap(void);
 
   private:
     std::shared_ptr<RenderToTexture> m_renderToTexture;
     bool m_useDefaultLight = true;
+    bool m_useShadowMap = true;
     GLint m_uniform_numberOfLights;
     Group *m_rootGroup;
     RenderVisitor *m_renderVisitor;

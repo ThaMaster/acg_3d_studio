@@ -34,10 +34,9 @@ void Scene::add(std::shared_ptr<Light>& light)
   getRootGroup()->getState()->addLight(light);
 }
 
-std::shared_ptr<Camera> Scene::getCamera()
-{
-  return m_camera;
-}
+std::shared_ptr<Camera> Scene::getCamera() { return m_camera; }
+void Scene::setUseShadowMap(bool b) { m_useShadowMap = b; }
+bool Scene::getUseShadowMap(void) { return m_useShadowMap; }
 
 Scene::~Scene() {}
 
@@ -112,7 +111,9 @@ Group* Scene::createDefaultScene()
   auto new_geo = buildGeometry("Default_Geo", vertices, indices, normals, texCoords);
   new_geo->setState(materialState);
   new_geo->initShaders(m_rootGroup->getState()->getShader());
+  CHECK_GL_ERROR_LINE_FILE();
   new_geo->upload();
+  CHECK_GL_ERROR_LINE_FILE();
 
   auto defTransform = new Transform("Default_Trans");
   defTransform->addUpdateCallback(new RotateCallback(1, glm::vec3(0,1,0)));
@@ -122,14 +123,54 @@ Group* Scene::createDefaultScene()
   return defaultScene;
 }
 
+void Scene::addGroundPlane()
+{  
+  auto groundGroup = new Group("Ground_Plane_Group");
+  std::vector<glm::vec3> vertices = {
+    glm::vec3(-500.0f, 0.0f, -500.0f),
+    glm::vec3(500.0f, 0.0f, -500.0f),
+    glm::vec3(500.0f, 0.0f, 500.0f),
+    glm::vec3(-500.0f, 0.0f, 500.0f)
+  };
+
+  std::vector<GLshort> indices = {
+    0, 1, 2,
+    2, 3, 0
+  };
+  
+  std::vector<glm::vec3> normals = {
+    glm::normalize(glm::vec3(0.0f, 1.0f, 0.0f)),
+    glm::normalize(glm::vec3(0.0f, 1.0f, 0.0f)),
+    glm::normalize(glm::vec3(0.0f, 1.0f, 0.0f)),
+    glm::normalize(glm::vec3(0.0f, 1.0f, 0.0f))
+  };
+
+  std::vector<glm::vec2> texCoords = {
+    glm::vec2(0.0f, 0.0f),
+    glm::vec2(1.0f, 0.0f),
+    glm::vec2(1.0f, 1.0f),
+    glm::vec2(0.0f, 1.0f)
+  };
+
+  auto groundPlane = buildGeometry("Ground_Plane", vertices, indices, normals, texCoords);
+  groundPlane->setIsGround(true);
+  groundPlane->initShaders(m_rootGroup->getState()->getShader());
+  groundPlane->upload();
+  groundGroup->addChild(groundPlane);
+  m_rootGroup->addChild(groundGroup);
+}
+
 void Scene::render()
 {
-  m_renderVisitor->setDepthPass(true);
-  m_renderVisitor->getRTT()->getDepthShader()->use();
-  m_renderVisitor->getRTT()->switchToFramebuffer();
-  m_renderVisitor->visit(*m_rootGroup);
-  m_renderVisitor->getRTT()->defaultBuffer();
-  m_renderVisitor->setDepthPass(false);
+  m_renderVisitor->setUseShadowMap(m_useShadowMap);
+  if(m_useShadowMap) {
+    m_renderVisitor->setDepthPass(true);
+    m_renderVisitor->getRTT()->getDepthShader()->use();
+    m_renderVisitor->getRTT()->switchToFramebuffer();
+    m_renderVisitor->visit(*m_rootGroup);
+    m_renderVisitor->getRTT()->defaultBuffer();
+    m_renderVisitor->setDepthPass(false);
+  }
   m_renderVisitor->visit(*m_rootGroup);
   m_updateVisitor->visit(*m_rootGroup);
 }
