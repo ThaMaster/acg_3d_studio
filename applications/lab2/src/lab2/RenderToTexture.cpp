@@ -43,6 +43,7 @@ void RenderToTexture::switchToFramebuffer()
     glBindFramebuffer(GL_FRAMEBUFFER, m_frameBuffer);
     glViewport(0,0,1024,1024);
     glClear(GL_DEPTH_BUFFER_BIT);
+    glCullFace(GL_FRONT);
 }
 
 void RenderToTexture::defaultBuffer() 
@@ -50,6 +51,7 @@ void RenderToTexture::defaultBuffer()
     glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
     glViewport(0,0,1980,1080);
     glClear(GL_DEPTH_BUFFER_BIT);
+    glCullFace(GL_BACK);
 }
 
 void RenderToTexture::apply(std::shared_ptr<vr::Shader> s)
