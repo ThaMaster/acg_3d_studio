@@ -29,16 +29,17 @@ bool Scene::initShaders(const std::string& vshader_filename, const std::string& 
   return true;
 }
 
-void Scene::add(std::shared_ptr<Light>& light)
-{
-  getRootGroup()->getState()->addLight(light);
-}
-
 std::shared_ptr<Camera> Scene::getCamera() { return m_camera; }
 void Scene::setUseShadowMap(bool b) { m_useShadowMap = b; }
 bool Scene::getUseShadowMap(void) { return m_useShadowMap; }
 void Scene::setUseGroundPlane(bool b) { m_useGroundPlane = b; }
 bool Scene::getUseGroundPlane(void) { return m_useGroundPlane; }
+
+RenderVisitor *Scene::getRenderVisitor(void) { return m_renderVisitor; }
+std::shared_ptr<Light> Scene::getLight(int i) { return m_sceneLights[i]; }
+std::vector<std::shared_ptr<Light>> Scene::getLights() { return m_sceneLights; }
+void Scene::addLight(std::shared_ptr<Light> newLight) { m_sceneLights.push_back(newLight); }
+
 
 Scene::~Scene() {}
 
@@ -158,7 +159,7 @@ void Scene::addGroundPlane()
   auto groundMat = std::shared_ptr<vr::Material>(new Material());
   groundMat->setSpecular(glm::vec4(0.0, 0.0, 0.0, 1.0));
   groundState->setMaterial(groundMat);
-  auto groundPlane = buildGeometry("Ground_Plane", vertices, indices, normals, texCoords);
+  auto groundPlane = buildGeometry("ground_geo", vertices, indices, normals, texCoords);
   groundPlane->setIsGround(true);
   groundPlane->initShaders(m_rootGroup->getState()->getShader());
   groundPlane->upload();
@@ -169,18 +170,17 @@ void Scene::addGroundPlane()
 
 void Scene::render()
 {
-  if(m_useDefaultLight) {
-    m_renderVisitor->setLightMatrix(m_rootGroup->getState()->getLights()[0]->calcLightMatrix(m_rootGroup->calculateBoundingBox(glm::mat4(1)), m_camera->getNearFar()));
-  }
-  
+  m_renderVisitor->setLightMatrices(m_rootGroup->getLights());
   m_renderVisitor->setUseShadowMap(m_useShadowMap);
-  if(!m_useShadowMap) {
+
+  if(m_useShadowMap) {
     m_renderVisitor->setDepthPass(true);
     m_renderVisitor->getRTT()->switchToDepthbuffer();
     m_renderVisitor->visit(*m_rootGroup);
     m_renderVisitor->getRTT()->defaultBuffer();
     m_renderVisitor->setDepthPass(false);
   }
+
   m_renderVisitor->visit(*m_rootGroup);
   m_updateVisitor->visit(*m_rootGroup);
 }

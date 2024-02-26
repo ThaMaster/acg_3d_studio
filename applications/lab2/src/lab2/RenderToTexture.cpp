@@ -16,9 +16,10 @@ bool RenderToTexture::createRenderTarget(void)
 {
     CHECK_GL_ERROR_LINE_FILE();
     glGenFramebuffers(1, &m_frameBuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_frameBuffer);
 
     glGenTextures(1, &m_depthTexture);
-	glActiveTexture(GL_TEXTURE0);
+	glActiveTexture(GL_TEXTURE10);
     glBindTexture(GL_TEXTURE_2D, m_depthTexture);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, 2048, 2048, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -28,7 +29,6 @@ bool RenderToTexture::createRenderTarget(void)
     float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
     glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor); 
 
-    glBindFramebuffer(GL_FRAMEBUFFER, m_frameBuffer);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depthTexture, 0);
     glDrawBuffer(GL_NONE);
     glReadBuffer(GL_NONE);
@@ -56,7 +56,6 @@ void RenderToTexture::defaultBuffer()
     CHECK_GL_ERROR_LINE_FILE();
     glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
     glViewport(0,0,1980,1080);
-    glClear(GL_DEPTH_BUFFER_BIT);
     glCullFace(GL_BACK);
     CHECK_GL_ERROR_LINE_FILE();
 }

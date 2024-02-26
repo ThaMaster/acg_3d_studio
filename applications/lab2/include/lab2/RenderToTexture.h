@@ -12,8 +12,8 @@ class RenderToTexture
         ~RenderToTexture();
 
         bool createRenderTarget(void);
-        void switchToDepthbuffer();
-        void defaultBuffer(void);
+        void switchToDepthbuffer(void);
+        void defaultBuffer();
 
         std::shared_ptr<vr::Shader> getDepthShader(void);
 

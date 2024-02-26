@@ -85,4 +85,10 @@ bool RenderVisitor::getUseShadowMap(void) { return m_useShadowMap; }
 void RenderVisitor::setRTT(std::shared_ptr<RenderToTexture> rtt) {m_rtt = rtt; }
 std::shared_ptr<RenderToTexture> RenderVisitor::getRTT(void) { return m_rtt; }
 
-void RenderVisitor::setLightMatrix(glm::mat4 lm) { m_lightMatrix = lm; }
+void RenderVisitor::setLightMatrices(std::vector<glm::mat4> l_mats)
+{
+    for(auto m : l_mats)
+    { 
+        m_lightMatrices.push_back(l_mats); 
+    }
+}

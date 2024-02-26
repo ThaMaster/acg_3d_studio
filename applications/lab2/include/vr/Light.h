@@ -52,6 +52,7 @@ namespace vr
     void createGeometry();
     std::shared_ptr<Geometry>& getGeometry();
   };
+  
   typedef std::vector<std::shared_ptr<Light> > LightVector;
 
 

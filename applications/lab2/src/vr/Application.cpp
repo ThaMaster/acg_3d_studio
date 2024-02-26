@@ -58,14 +58,14 @@ bool Application::initResources(const std::string& model_filename, const std::st
   if(m_sceneRoot->getUseGroundPlane())
     m_sceneRoot->addGroundPlane();
 
-  if(m_sceneRoot->getUseDefaultLight()) {
+  if(m_sceneRoot->getLights().size() == 0) {
     std::shared_ptr<Light> light1 = std::shared_ptr<Light>(new Light);
     light1->setAmbient(glm::vec4(0.1, 0.1, 0.1, 1.0));
     light1->setDiffuse(glm::vec4(1.0, 1.0, 1.0, 1.0));
     light1->setSpecular(glm::vec4(1.0, 1.0, 1.0, 1.0));
     light1->setPosition(glm::vec4(0.0, 1.0, 1.0, 0.0));
-
     m_sceneRoot->getRootGroup()->getState()->addLight(light1);
+    m_sceneRoot->addLight(light1);
   }
 
   return 1;
@@ -128,11 +128,18 @@ void Application::update(GLFWwindow* window)
 void Application::processInput(GLFWwindow* window)
 {
   getCamera()->processInput(window);
-  if(m_sceneRoot->getUseDefaultLight())
-  {
-    std::shared_ptr<vr::Light> light = m_sceneRoot->getRootGroup()->getState()->getLights()[0];
-    if(light) {
-      lightInput(window, light);
+
+  std::shared_ptr<vr::Light> light = m_sceneRoot->getLight(m_selectedLight);
+  if(light) {
+    lightInput(window, light);
+  }
+
+  if(glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
+    if(!m_lightSwitchPressed) {
+      m_selectedLight++;
+      if(m_selectedLight == m_sceneRoot->getLights().size())
+        m_selectedLight = 0;
+      m_lightSwitchPressed = true;
     }
   }
 
@@ -145,6 +152,9 @@ void Application::processInput(GLFWwindow* window)
 
   if(glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_RELEASE)
     m_spacePressed = false;
+
+  if(glfwGetKey(window, GLFW_KEY_T) == GLFW_RELEASE)
+    m_lightSwitchPressed = false;
 }
 
 void Application::lightInput(GLFWwindow* window, std::shared_ptr<vr::Light> light)

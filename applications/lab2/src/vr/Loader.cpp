@@ -488,6 +488,7 @@ std::shared_ptr<Light> parseStateLight(rapidxml::xml_node<>* node)
   newLight->setDiffuse(d_vec);
   newLight->setSpecular(s_vec);
   newLight->setPosition(p_vec);
+
   return newLight;
 }
 
@@ -708,7 +709,9 @@ std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node, std::shared_pt
         continue;
 
     if(node_type == "light") {
-      newState->addLight(parseStateLight(node));
+      auto newLight = parseStateLight(node);
+      newState->addLight(newLight);
+      scene->addLight(newLight);
     } else if(node_type == "shaders") {
       newState->setShader(parseStateShader(node, scene));
     } else if(node_type == "texture") {
@@ -816,12 +819,7 @@ Group* parseGroupNode(rapidxml::xml_node<>* node,std::shared_ptr<Scene>& scene)
 
   std::string node_type = node->name();
   if(node_type == "scene") {
-    auto state_ptr = std::shared_ptr<State>(groupNode->getState());
-    if(state_ptr && state_ptr->getLights().size() != 0)
-      scene->setUseDefaultLight(false);
-    else 
-      scene->setUseDefaultLight(true);
-    
+    auto state_ptr = std::shared_ptr<State>(groupNode->getState());    
   }
   
   return groupNode;

@@ -38,12 +38,6 @@ namespace vr
     bool initShaders(const std::string& vshader_filename, const std::string& fshader_filename);
 
     /**
-    Add a lightsource
-    \param light - A new light source<
-    */
-    void add(std::shared_ptr<Light>& light);
-
-    /**
     Get the camera
     \return The camera
     */
@@ -83,19 +77,20 @@ namespace vr
 
     Group* createDefaultScene();
     Geometry* buildGeometry(std::string geo_name, std::vector<glm::vec3> vertices, std::vector<GLshort> indices, std::vector<glm::vec3> normals, std::vector<glm::vec2> texCoords);
-    void setUseDefaultLight(bool b) { m_useDefaultLight = b; }
-    bool getUseDefaultLight(void) { return m_useDefaultLight; }
+
     void addGroundPlane();
     void setUseShadowMap(bool b);
     bool getUseShadowMap(void);
     void setUseGroundPlane(bool b);
     bool getUseGroundPlane(void);
 
-    RenderVisitor *getRenderVisitor(void) { return m_renderVisitor; }
+    RenderVisitor *getRenderVisitor(void);
+    std::shared_ptr<Light> getLight(int i);
+    std::vector<std::shared_ptr<Light>> getLights();
+    void addLight(std::shared_ptr<Light> newLight);
 
   private:
     std::shared_ptr<RenderToTexture> m_renderToTexture;
-    bool m_useDefaultLight = true;
     bool m_useShadowMap = true;
     bool m_useGroundPlane = true;
     GLint m_uniform_numberOfLights;
@@ -104,5 +99,7 @@ namespace vr
     UpdateVisitor *m_updateVisitor;
     std::shared_ptr<Camera> m_camera;
     std::map<std::string, Group*> m_loadedObjects;
+
+    std::vector<std::shared_ptr<Light>> m_sceneLights;
   };
 }
