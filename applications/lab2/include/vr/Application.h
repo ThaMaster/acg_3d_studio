@@ -42,7 +42,7 @@ namespace vr {
     void setClearColor(const glm::f32vec4& clearColor);
     
   private:
-    // Parent of all to be rendered
+    BoundingBox m_bbox;
     std::shared_ptr<Scene> m_sceneRoot;
     std::shared_ptr<FPSCounter> m_fpsCounter;
     std::string m_loadedFilename, m_loadedVShader, m_loadedFShader;

@@ -5,6 +5,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "lab2/nodes/Geometry.h"
 
+#include <glm/gtx/string_cast.hpp>
+
 using namespace vr;
 
 Light::Light() : enabled(true)
@@ -24,6 +26,8 @@ void Light::setDiffuse(glm::vec4 d) { m_diffuse = d; }
 glm::vec4 Light::getDiffuse(void) { return m_diffuse; }
 void Light::setSpecular(glm::vec4 s) { m_specular = s; }
 glm::vec4 Light::getSpecular(void) { return m_specular; }
+
+glm::mat4 Light::getLightMatrix(void) { return m_lightMatrix; }
 
 void Light::createGeometry()
 {
@@ -67,10 +71,7 @@ void Light::apply(std::shared_ptr<vr::Shader> shader, size_t idx)
   str << "lights[" << idx << "].";
   std::string prefix = str.str();
 
-  GLint loc = -1;
-  std::string uniform_name;
-
-  uniform_name = prefix + "enabled";
+  std::string uniform_name = prefix + "enabled";
 
   shader->setInt(uniform_name, enabled);
   shader->setVec4(prefix + "ambient", this->m_ambient);
@@ -85,11 +86,17 @@ void Light::apply(std::shared_ptr<vr::Shader> shader, size_t idx)
   }
 }
 
-glm::mat4 Light::calcLightMatrix(vr::BoundingBox box, glm::vec2 nearFar)
+void Light::calcLightMatrix(vr::BoundingBox box, glm::vec2 nearFar)
 {
-    glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(m_position) + box.getCenter(), box.getCenter(), glm::vec3(0,1,0));
-    auto radius = box.getRadius();
-    glm::mat4 depthProjectionMatrix = glm::ortho<float>(-radius*1.5, radius*1.5, -radius*1.5, radius*1.5, -radius, nearFar.y);
+  glm::mat4 depthViewMatrix = glm::mat4(1.0f);
+  glm::mat4 depthProjectionMatrix = glm::mat4(1.0f);
 
-    return depthProjectionMatrix * depthViewMatrix;
+  if(m_position.w == 0.0f) 
+  {
+    depthViewMatrix = glm::lookAt(glm::vec3(m_position) + box.getCenter(), box.getCenter(), glm::vec3(0,1,0));
+    auto radius = box.getRadius();
+    depthProjectionMatrix = glm::ortho<float>(-radius*1.5, radius*1.5, -radius*1.5, radius*1.5, -radius, nearFar.y);
+  }
+
+  m_lightMatrix = depthProjectionMatrix * depthViewMatrix;
 }

@@ -43,16 +43,16 @@ void RenderVisitor::visit(Geometry& geo)
     m_stateStack.push(m_stateStack.top()->merge(geo.getState()));
     auto state = m_stateStack.top();
     if(m_depthPass) {
-        m_rtt->applyLightMatrix(m_lightMatrix);
+        m_rtt->applyLightMatrix(m_lightMatrices[m_currLight]);
         geo.draw(m_rtt->getDepthShader(), m_transformStack.top(), m_depthPass);
     } else {
         state->apply();
-        state->applyLightMatrix(m_lightMatrix);
+        state->applyLightMatrices(m_lightMatrices);
         state->getShader()->setBool("useShadowMap", m_useShadowMap);
         m_camera->apply(state->getShader());
         
         if(m_useShadowMap)
-            m_rtt->apply(state->getShader());
+            m_rtt->apply(state->getShader(), 0);
 
         geo.draw(state->getShader(), m_transformStack.top(), m_depthPass);
     }
@@ -85,10 +85,6 @@ bool RenderVisitor::getUseShadowMap(void) { return m_useShadowMap; }
 void RenderVisitor::setRTT(std::shared_ptr<RenderToTexture> rtt) {m_rtt = rtt; }
 std::shared_ptr<RenderToTexture> RenderVisitor::getRTT(void) { return m_rtt; }
 
-void RenderVisitor::setLightMatrices(std::vector<glm::mat4> l_mats)
-{
-    for(auto m : l_mats)
-    { 
-        m_lightMatrices.push_back(l_mats); 
-    }
-}
+void RenderVisitor::setLightMatrices(std::vector<glm::mat4> l_mats) { m_lightMatrices = l_mats; }
+
+void RenderVisitor::setCurrentLight(int l_idx) { m_currLight = l_idx; }

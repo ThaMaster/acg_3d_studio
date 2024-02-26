@@ -1,11 +1,13 @@
 #version 410 core
 
+const int MaxNumberOfLights = 10;
+
 // From vertex shader
 in vec4 position;  // position of the vertex (and fragment) in eye space
 in vec3 normal ;  // surface normal vector in eye space
 in vec2 texCoord; // Texture coordinate
 in mat3 TBN;
-in vec4 fragSpacePos;
+in vec4 fragSpacePos[MaxNumberOfLights];
 
 // The end result of this shader
 layout(location = 0) out vec4 color;
@@ -49,9 +51,9 @@ struct LightSource
   vec4 specular;
 
   vec4 position;
-};
 
-const int MaxNumberOfLights = 10;
+  mat4 lightMatrix;
+};
 
 // This is the uniforms that our program communicates with
 uniform LightSource lights[MaxNumberOfLights];
@@ -63,17 +65,17 @@ uniform Texture fragTexture;
 uniform bool useShadowMap;
 uniform sampler2D shadowMap;
 
-float shadowCalculation(vec4 fragPosLightSpace)
+float directionalShadow(int lightIndex)
 {
     // perform perspective divide
-    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    vec3 projCoords = fragSpacePos[lightIndex].xyz / fragSpacePos[lightIndex].w;
     // transform to [0,1] range
     projCoords = projCoords * 0.5 + 0.5;
 
     // get depth of current fragment from light's perspective
     float currentDepth = projCoords.z;
 
-    vec3 lightDir = normalize(vec3(lights[0].position));
+    vec3 lightDir = normalize(vec3(lights[lightIndex].position));
 
     //float bias = max(0.002 * (1.0 - dot(normal, lightDir)), 0.001);
     float bias = max(0.001 * (1.0 - dot(normal, lightDir)), 0.0001);
@@ -100,10 +102,7 @@ float shadowCalculation(vec4 fragPosLightSpace)
 
 void main()
 {
-    float shadow = 0.0;
-    if(useShadowMap) {
-        shadow = shadowCalculation(fragSpacePos);
-    }
+    
     vec3 fNormal = normalize(normal);
     // textures[0] represent the normal map! Other textures should not use this position!
     if(material.activeTextures[0]) {
@@ -135,10 +134,13 @@ void main()
     // for all light sources
     for (int index = 0; index < numberOfLights; index++) 
     {
+        float shadow = 0.0;
         LightSource light = lights[index];
         if (0.0 == light.position.w) // directional light?
         {
-            
+            if(useShadowMap) {
+                shadow = directionalShadow(index);
+            }   
             attenuation = 1.0; // no attenuation
             lightDirection = normalize(vec3(light.position));
         }

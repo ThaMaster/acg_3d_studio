@@ -47,6 +47,7 @@ class RenderVisitor : public NodeVisitor
         bool getUseShadowMap(void);
 
         void setLightMatrices(std::vector<glm::mat4> l_mats);
+        void setCurrentLight(int i_idx);
 
     private:
         bool m_depthPass = false;
@@ -55,6 +56,7 @@ class RenderVisitor : public NodeVisitor
         std::stack<glm::mat4> m_transformStack;
         std::vector<glm::mat4> m_lightMatrices;
         std::shared_ptr<RenderToTexture> m_rtt;
+        int m_currLight;
 };
 
 #endif

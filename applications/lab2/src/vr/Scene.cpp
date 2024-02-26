@@ -16,7 +16,6 @@ Scene::Scene() : m_uniform_numberOfLights(-1)
   m_renderVisitor = new RenderVisitor();
   m_renderVisitor->setCamera(m_camera);
   m_updateVisitor = new UpdateVisitor();
-  m_renderToTexture->createRenderTarget();
   m_renderVisitor->setRTT(m_renderToTexture);
 }
 
@@ -168,15 +167,25 @@ void Scene::addGroundPlane()
   m_rootGroup->addChild(groundGroup);
 }
 
+void Scene::addLightMatrix(glm::mat4 lm) { m_lightMatrices.push_back(lm); }
+void Scene::updateLightMatrix(int idx, BoundingBox box, glm::vec2 nearFar)
+{
+  m_sceneLights[idx]->calcLightMatrix(box, nearFar);
+  m_lightMatrices[idx] = m_sceneLights[idx]->getLightMatrix();
+}
+
 void Scene::render()
 {
-  m_renderVisitor->setLightMatrices(m_rootGroup->getLights());
+  m_renderVisitor->setLightMatrices(m_lightMatrices);
   m_renderVisitor->setUseShadowMap(m_useShadowMap);
 
   if(m_useShadowMap) {
     m_renderVisitor->setDepthPass(true);
     m_renderVisitor->getRTT()->switchToDepthbuffer();
-    m_renderVisitor->visit(*m_rootGroup);
+    for(int i = 0; i < m_sceneLights.size(); i++) {
+      m_renderVisitor->setCurrentLight(i);
+      m_renderVisitor->visit(*m_rootGroup);
+    }
     m_renderVisitor->getRTT()->defaultBuffer();
     m_renderVisitor->setDepthPass(false);
   }

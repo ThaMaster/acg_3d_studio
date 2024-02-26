@@ -12,6 +12,9 @@
 #include <vr/Scene.h>
 #include <vr/Loader.h>
 
+#include <glm/gtx/string_cast.hpp>
+
+
 using namespace vr;
 
 Application::Application(unsigned int width, unsigned height) : 
@@ -66,6 +69,8 @@ bool Application::initResources(const std::string& model_filename, const std::st
     light1->setPosition(glm::vec4(0.0, 1.0, 1.0, 0.0));
     m_sceneRoot->getRootGroup()->getState()->addLight(light1);
     m_sceneRoot->addLight(light1);
+    m_sceneRoot->addLightMatrix(light1->getLightMatrix());
+    m_sceneRoot->getRTT()->addRenderTarget();
   }
 
   return 1;
@@ -85,14 +90,14 @@ void Application::setClearColor(const glm::f32vec4& clearColor)
 void Application::initView()
 {
   // Compute a bounding box around the whole scene
-  BoundingBox box = m_sceneRoot->getRootGroup()->calculateBoundingBox(glm::mat4(1));  
-  float radius = box.getRadius();
+  m_bbox = m_sceneRoot->getRootGroup()->calculateBoundingBox(glm::mat4(1));  
+  float radius = m_bbox.getRadius();
 
   // Compute the diagonal and a suitable distance so we can see the whole thing
   float distance = radius * 1.5f;
   glm::vec3 eye = glm::vec3(0, radius, distance);
 
-  glm::vec3 direction = glm::normalize(box.getCenter() - eye);
+  glm::vec3 direction = glm::normalize(m_bbox.getCenter() - eye);
 
   glm::vec4 position;
   position = glm::vec4(eye + glm::vec3(-8, 2, 0), 1);
@@ -104,6 +109,10 @@ void Application::initView()
 
   // Compute the default movement speed based on the radius of the scene
   getCamera()->setSpeed(0.7f * radius);
+
+  for(int i = 0; i < m_sceneRoot->getLights().size(); i++) {
+    m_sceneRoot->updateLightMatrix(i, m_bbox, getCamera()->getNearFar());
+  }
 
   glEnable(GL_CULL_FACE);
   glEnable(GL_DEPTH_TEST);
@@ -132,6 +141,7 @@ void Application::processInput(GLFWwindow* window)
   std::shared_ptr<vr::Light> light = m_sceneRoot->getLight(m_selectedLight);
   if(light) {
     lightInput(window, light);
+    m_sceneRoot->updateLightMatrix(m_selectedLight, m_bbox, getCamera()->getNearFar());
   }
 
   if(glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
@@ -171,6 +181,7 @@ void Application::lightInput(GLFWwindow* window, std::shared_ptr<vr::Light> ligh
     if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) deltaPos.y += m_speed;
     if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) deltaPos.y -= m_speed; 
     light->setPosition(light->getPosition() + deltaPos);
+
   }
 }
 

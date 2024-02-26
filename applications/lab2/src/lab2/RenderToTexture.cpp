@@ -1,6 +1,7 @@
 #include <memory>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <sstream>
 
 #include "lab2/RenderToTexture.h"
 #include <vr/glErrorUtil.h>
@@ -8,19 +9,19 @@
 RenderToTexture::RenderToTexture() 
 {
     m_depthShader = std::shared_ptr<vr::Shader>(new vr::Shader("shaders/depthRTT.vs", "shaders/depthRTT.fs"));
+    CHECK_GL_ERROR_LINE_FILE();
+    glGenFramebuffers(1, &m_frameBuffer);
 }
 
 RenderToTexture::~RenderToTexture() {}
 
-bool RenderToTexture::createRenderTarget(void)
+bool RenderToTexture::addRenderTarget()
 {
-    CHECK_GL_ERROR_LINE_FILE();
-    glGenFramebuffers(1, &m_frameBuffer);
+    GLuint newDepthTexture;
     glBindFramebuffer(GL_FRAMEBUFFER, m_frameBuffer);
-
-    glGenTextures(1, &m_depthTexture);
-	glActiveTexture(GL_TEXTURE10);
-    glBindTexture(GL_TEXTURE_2D, m_depthTexture);
+    glGenTextures(1, &newDepthTexture);
+	glActiveTexture(GL_TEXTURE10 + m_numRenderTargets);
+    glBindTexture(GL_TEXTURE_2D, newDepthTexture);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, 2048, 2048, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -28,15 +29,18 @@ bool RenderToTexture::createRenderTarget(void)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
     float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
     glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor); 
-
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depthTexture, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, newDepthTexture, 0);
     glDrawBuffer(GL_NONE);
     glReadBuffer(GL_NONE);
+
+    m_depthTextures.push_back(newDepthTexture);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         return false;
     CHECK_GL_ERROR_LINE_FILE();
+
+    m_numRenderTargets++;
     return true;
 }
 
@@ -60,18 +64,17 @@ void RenderToTexture::defaultBuffer()
     CHECK_GL_ERROR_LINE_FILE();
 }
 
-void RenderToTexture::apply(std::shared_ptr<vr::Shader> s)
+void RenderToTexture::apply(std::shared_ptr<vr::Shader> s, unsigned int unit)
 {
     CHECK_GL_ERROR_LINE_FILE();
-    glActiveTexture(GL_TEXTURE10);
-    glBindTexture(GL_TEXTURE_2D, m_depthTexture);
-    s->setInt("shadowMap", 10);
+    glActiveTexture(GL_TEXTURE10 + unit);
+    glBindTexture(GL_TEXTURE_2D, m_depthTextures[unit]);
+    s->setInt("shadowMap", 10 + unit);
     CHECK_GL_ERROR_LINE_FILE();
 }
 
 void RenderToTexture::applyLightMatrix(glm::mat4 lm)
 {
-    // Maybe calculate multiple light matrices and set them as an array in shader????
     m_depthShader->setMat4("lightMatrix", lm);
 }
 

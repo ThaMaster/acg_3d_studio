@@ -9,12 +9,14 @@
 #include <vr/Light.h>
 #include <vr/Camera.h>
 #include <vr/Shader.h>
+#include <vr/BoundingBox.h>
 
 #include "lab2/RenderToTexture.h"
 #include "lab2/nodes/Group.h"
 #include "lab2/nodes/Geometry.h"
 #include "lab2/visitors/RenderVisitor.h"
 #include "lab2/visitors/UpdateVisitor.h"
+
 namespace vr
 {
   /**
@@ -89,6 +91,12 @@ namespace vr
     std::vector<std::shared_ptr<Light>> getLights();
     void addLight(std::shared_ptr<Light> newLight);
 
+    std::vector<glm::mat4> getLightMatrices(void) { return m_lightMatrices; }
+    void addLightMatrix(glm::mat4 lm);
+    void updateLightMatrix(int idx, BoundingBox box, glm::vec2 nearFar);
+
+    std::shared_ptr<RenderToTexture> getRTT(void) { return m_renderToTexture; }
+
   private:
     std::shared_ptr<RenderToTexture> m_renderToTexture;
     bool m_useShadowMap = true;
@@ -101,5 +109,6 @@ namespace vr
     std::map<std::string, Group*> m_loadedObjects;
 
     std::vector<std::shared_ptr<Light>> m_sceneLights;
+    std::vector<glm::mat4> m_lightMatrices;
   };
 }

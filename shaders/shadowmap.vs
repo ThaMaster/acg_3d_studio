@@ -6,7 +6,9 @@ layout(location = 2) in vec2 vertex_texCoord;
 layout(location = 3) in vec3 vertex_tangent;
 layout(location = 4) in vec3 vertex_bitangent;
 
-out vec4 fragSpacePos;
+const int MaxNumberOfLights = 10;
+
+out vec4 fragSpacePos[MaxNumberOfLights];
 out vec4 position;  // position of the vertex (and fragment) in world space
 out vec3 normal;  // surface normal vector in world space
 out vec2 texCoord; 
@@ -19,7 +21,25 @@ uniform mat4 m, v, p;
 uniform mat3 m_3x3_inv_transp;
 
 uniform bool useShadowMap;
-uniform mat4 lightMatrix;
+struct LightSource
+{
+  bool enabled;
+
+  float constant;
+  float linear;
+  float quadratic;
+
+  vec4 ambient;
+  vec4 diffuse;
+  vec4 specular;
+
+  vec4 position;
+  mat4 lightMatrix;
+};
+
+
+// This is the uniforms that our program communicates with
+uniform LightSource lights[MaxNumberOfLights];
 
 void main()
 {
@@ -29,7 +49,8 @@ void main()
   position = mv * vertex_position;
   
   if(useShadowMap) {
-    fragSpacePos = lightMatrix * m * vertex_position;
+    for(int i = 0; i < MaxNumberOfLights; i++)
+      fragSpacePos[i] = lights[i].lightMatrix * m * vertex_position;
   }
 
   normal = normalize(m_3x3_inv_transp * vertex_normal);

@@ -1,5 +1,6 @@
 #include "lab2/State.h"
 #include <iostream>
+#include <sstream>
 #include "vr/Material.h"
 
 std::string State::getStateName() { return m_stateName;}  
@@ -163,9 +164,16 @@ void State::applyTextures(std::shared_ptr<vr::Shader> shader)
     shader->setIntVector("fragTexture.activeTextures", slotActive);
 }
 
-void State::applyLightMatrix(glm::mat4 lm)
+void State::applyLightMatrices(std::vector<glm::mat4> lms)
 {
     // Maybe calculate multiple light matrices and set them as an array in shader????
-    if(m_shader)
-        m_shader->setMat4("lightMatrix", lm);
+    if(m_shader) {
+        std::stringstream str;
+        for(int i = 0; i < lms.size(); i++)
+        {
+            str << "lights[" << i << "].";
+            std::string prefix = str.str();
+            m_shader->setMat4(prefix + "lightMatrix", lms[i]);
+        }
+    }
 }
