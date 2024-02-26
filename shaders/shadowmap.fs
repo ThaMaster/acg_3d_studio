@@ -73,9 +73,10 @@ float shadowCalculation(vec4 fragPosLightSpace)
     // get depth of current fragment from light's perspective
     float currentDepth = projCoords.z;
 
-    vec3 lightDir = normalize(lights[0].position - fragPosLightSpace).xyz;
+    vec3 lightDir = normalize(vec3(lights[0].position));
 
-     float bias = max(0.002 * (1.0 - dot(normal, lightDir)), 0.001);
+    //float bias = max(0.002 * (1.0 - dot(normal, lightDir)), 0.001);
+    float bias = max(0.001 * (1.0 - dot(normal, lightDir)), 0.0001);
     // check whether current frag pos is in shadow
     float shadow = 0.0;
     vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
@@ -85,15 +86,12 @@ float shadowCalculation(vec4 fragPosLightSpace)
         for(int y = -halfkernelWidth; y <= halfkernelWidth; ++y)
         {
             float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
-            shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
+            shadow += currentDepth - bias > pcfDepth ? 0.80 : 0.0;
         }
     }
     shadow /= ((halfkernelWidth*2+1)*(halfkernelWidth*2+1));
     
     // keep the shadow at 0.0 when outside the far_plane region of the light's frustum.
-    if(projCoords.z > 1.0)
-        shadow = 0.0;
-
     if(projCoords.z > 1.0)
         shadow = 0.0;
 
@@ -140,6 +138,7 @@ void main()
         LightSource light = lights[index];
         if (0.0 == light.position.w) // directional light?
         {
+            
             attenuation = 1.0; // no attenuation
             lightDirection = normalize(vec3(light.position));
         }

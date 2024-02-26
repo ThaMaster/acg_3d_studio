@@ -5,6 +5,7 @@
 #include <vector>
 #include <vr/Shader.h>
 
+#include "vr/BoundingBox.h"
 class Geometry;
 namespace vr
 {
@@ -30,7 +31,7 @@ namespace vr
     void setSpecular(glm::vec4 s);
     glm::vec4 getSpecular(void);
 
-    glm::mat4 calcLightMatrix(glm::vec2 nearFar);
+    glm::mat4 calcLightMatrix(vr::BoundingBox box, glm::vec2 nearFar);
 
   private:
     friend class Scene;

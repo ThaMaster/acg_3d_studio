@@ -129,10 +129,10 @@ void Scene::addGroundPlane()
 {  
   auto groundGroup = new Group("Ground_Plane_Group");
   std::vector<glm::vec3> vertices = {
-    glm::vec3(-500.0f, 0.0f, -500.0f),
-    glm::vec3(500.0f, 0.0f, -500.0f),
-    glm::vec3(500.0f, 0.0f, 500.0f),
-    glm::vec3(-500.0f, 0.0f, 500.0f)
+    glm::vec3(-1000.0f, 0.0f, -1000.0f),
+    glm::vec3(1000.0f, 0.0f, -1000.0f),
+    glm::vec3(1000.0f, 0.0f, 1000.0f),
+    glm::vec3(-1000.0f, 0.0f, 1000.0f)
   };
 
   std::vector<GLshort> indices = {
@@ -154,21 +154,29 @@ void Scene::addGroundPlane()
     glm::vec2(0.0f, 1.0f)
   };
 
+  auto groundState = std::shared_ptr<State>(new State("ground_state"));
+  auto groundMat = std::shared_ptr<vr::Material>(new Material());
+  groundMat->setSpecular(glm::vec4(0.0, 0.0, 0.0, 1.0));
+  groundState->setMaterial(groundMat);
   auto groundPlane = buildGeometry("Ground_Plane", vertices, indices, normals, texCoords);
   groundPlane->setIsGround(true);
   groundPlane->initShaders(m_rootGroup->getState()->getShader());
   groundPlane->upload();
   groundGroup->addChild(groundPlane);
+  groundGroup->setState(groundState);
   m_rootGroup->addChild(groundGroup);
 }
 
 void Scene::render()
 {
+  if(m_useDefaultLight) {
+    m_renderVisitor->setLightMatrix(m_rootGroup->getState()->getLights()[0]->calcLightMatrix(m_rootGroup->calculateBoundingBox(glm::mat4(1)), m_camera->getNearFar()));
+  }
+  
   m_renderVisitor->setUseShadowMap(m_useShadowMap);
-  if(m_useShadowMap) {
+  if(!m_useShadowMap) {
     m_renderVisitor->setDepthPass(true);
-    m_renderVisitor->getRTT()->getDepthShader()->use();
-    m_renderVisitor->getRTT()->switchToFramebuffer();
+    m_renderVisitor->getRTT()->switchToDepthbuffer();
     m_renderVisitor->visit(*m_rootGroup);
     m_renderVisitor->getRTT()->defaultBuffer();
     m_renderVisitor->setDepthPass(false);

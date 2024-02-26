@@ -83,12 +83,13 @@ void Light::apply(std::shared_ptr<vr::Shader> shader, size_t idx)
     shader->setFloat(prefix + "linear", this->m_att_linear);
     shader->setFloat(prefix + "quadratic", this->m_att_quadratic);
   }
-
 }
 
-glm::mat4 Light::calcLightMatrix(glm::vec2 nearFar)
+glm::mat4 Light::calcLightMatrix(vr::BoundingBox box, glm::vec2 nearFar)
 {
-    glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10,10,-10,10, nearFar.x, nearFar.y);
-    glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(m_position), glm::vec3(0,0,0), glm::vec3(0,1,0));
+    glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(m_position) + box.getCenter(), box.getCenter(), glm::vec3(0,1,0));
+    auto radius = box.getRadius();
+    glm::mat4 depthProjectionMatrix = glm::ortho<float>(-radius*1.5, radius*1.5, -radius*1.5, radius*1.5, -radius, nearFar.y);
+
     return depthProjectionMatrix * depthViewMatrix;
 }

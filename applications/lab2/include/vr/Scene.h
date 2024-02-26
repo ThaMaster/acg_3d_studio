@@ -91,6 +91,8 @@ namespace vr
     void setUseGroundPlane(bool b);
     bool getUseGroundPlane(void);
 
+    RenderVisitor *getRenderVisitor(void) { return m_renderVisitor; }
+
   private:
     std::shared_ptr<RenderToTexture> m_renderToTexture;
     bool m_useDefaultLight = true;

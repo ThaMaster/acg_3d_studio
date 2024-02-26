@@ -98,7 +98,6 @@ void Geometry::upload()
   {
     // Create a Vertex Array Object that will handle all VBO:s of this Mesh
     glGenVertexArrays(1, &m_vao);
-    CHECK_GL_ERROR_LINE_FILE();
     glBindVertexArray(m_vao);
     CHECK_GL_ERROR_LINE_FILE();
   }
@@ -133,8 +132,6 @@ void Geometry::upload()
     this->tangents.data(), GL_STATIC_DRAW);
     CHECK_GL_ERROR_LINE_FILE();
   }
-  CHECK_GL_ERROR_LINE_FILE();
-
   if (m_useVAO)
   {
     CHECK_GL_ERROR_LINE_FILE();
@@ -177,11 +174,9 @@ void Geometry::upload()
     );
     glDisableVertexAttribArray(m_attribute_v_texCoords);
     CHECK_GL_ERROR_LINE_FILE();
-    glEnableVertexAttribArray(m_attribute_v_tangents);
-    CHECK_GL_ERROR_LINE_FILE();
 
+    glEnableVertexAttribArray(m_attribute_v_tangents);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo_tangents);
-    CHECK_GL_ERROR_LINE_FILE();
     glVertexAttribPointer(
     m_attribute_v_tangents, // attribute
     3,                  // number of elements per vertex, here (x,y,z)
@@ -190,13 +185,10 @@ void Geometry::upload()
     0,                  // no extra data between each position
     0                   // offset of first element
     );
-    CHECK_GL_ERROR_LINE_FILE();
     glDisableVertexAttribArray(m_attribute_v_tangents);
     CHECK_GL_ERROR_LINE_FILE();
     
   }
-  CHECK_GL_ERROR_LINE_FILE();
-
   if (this->elements.size() > 0) {
       glGenBuffers(1, &this->m_ibo_elements);
       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->m_ibo_elements);

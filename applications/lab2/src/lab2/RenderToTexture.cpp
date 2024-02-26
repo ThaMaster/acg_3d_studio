@@ -40,14 +40,14 @@ bool RenderToTexture::createRenderTarget(void)
     return true;
 }
 
-void RenderToTexture::switchToFramebuffer()
+void RenderToTexture::switchToDepthbuffer()
 {
     CHECK_GL_ERROR_LINE_FILE();
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    m_depthShader->use();
     glBindFramebuffer(GL_FRAMEBUFFER, m_frameBuffer);
     glViewport(0,0,2048,2048);
     glClear(GL_DEPTH_BUFFER_BIT);
-    //glCullFace(GL_FRONT);
+    glCullFace(GL_FRONT);
     CHECK_GL_ERROR_LINE_FILE();
 }
 
@@ -57,7 +57,7 @@ void RenderToTexture::defaultBuffer()
     glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
     glViewport(0,0,1980,1080);
     glClear(GL_DEPTH_BUFFER_BIT);
-    //glCullFace(GL_BACK);
+    glCullFace(GL_BACK);
     CHECK_GL_ERROR_LINE_FILE();
 }
 
@@ -70,10 +70,10 @@ void RenderToTexture::apply(std::shared_ptr<vr::Shader> s)
     CHECK_GL_ERROR_LINE_FILE();
 }
 
-void RenderToTexture::applyLightMatrix(std::shared_ptr<vr::Light> light, glm::vec2 nearFar)
+void RenderToTexture::applyLightMatrix(glm::mat4 lm)
 {
     // Maybe calculate multiple light matrices and set them as an array in shader????
-    m_depthShader->setMat4("lightMatrix", light->calcLightMatrix(nearFar));
+    m_depthShader->setMat4("lightMatrix", lm);
 }
 
 std::shared_ptr<vr::Shader> RenderToTexture::getDepthShader(void) { return m_depthShader; }

@@ -57,14 +57,13 @@ bool Application::initResources(const std::string& model_filename, const std::st
 
   if(m_sceneRoot->getUseGroundPlane())
     m_sceneRoot->addGroundPlane();
-  
 
   if(m_sceneRoot->getUseDefaultLight()) {
     std::shared_ptr<Light> light1 = std::shared_ptr<Light>(new Light);
-    light1->setAmbient(glm::vec4(0.0, 0.0, 0.0, 1.0));
+    light1->setAmbient(glm::vec4(0.1, 0.1, 0.1, 1.0));
     light1->setDiffuse(glm::vec4(1.0, 1.0, 1.0, 1.0));
     light1->setSpecular(glm::vec4(1.0, 1.0, 1.0, 1.0));
-    light1->setPosition(glm::vec4(1.0, 1.0, 1.0, 0.0));
+    light1->setPosition(glm::vec4(0.0, 1.0, 1.0, 0.0));
 
     m_sceneRoot->getRootGroup()->getState()->addLight(light1);
   }
@@ -86,7 +85,7 @@ void Application::setClearColor(const glm::f32vec4& clearColor)
 void Application::initView()
 {
   // Compute a bounding box around the whole scene
-  BoundingBox box = m_sceneRoot->getRootGroup()->calculateBoundingBox(glm::mat4(1));
+  BoundingBox box = m_sceneRoot->getRootGroup()->calculateBoundingBox(glm::mat4(1));  
   float radius = box.getRadius();
 
   // Compute the diagonal and a suitable distance so we can see the whole thing
@@ -125,8 +124,6 @@ void Application::update(GLFWwindow* window)
 {
   render(window);
 }
-
-
 
 void Application::processInput(GLFWwindow* window)
 {

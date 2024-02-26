@@ -27,6 +27,7 @@ void main()
   texCoord = vertex_texCoord;
 
   position = mv * vertex_position;
+  
   if(useShadowMap) {
     fragSpacePos = lightMatrix * m * vertex_position;
   }

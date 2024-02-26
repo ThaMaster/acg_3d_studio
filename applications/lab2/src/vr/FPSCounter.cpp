@@ -1,6 +1,6 @@
 #include <vr/FPSCounter.h>
+#include <iostream>
 #include <sstream>
-
 #include <iomanip>
 
 using namespace vr;
@@ -29,6 +29,7 @@ void FPSCounter::render(GLFWwindow* window)
   m_text.setText(str.str());
   m_text.render(width, height);
 }
+
 void FPSCounter::setFontScale(float scale)
 {
   m_text.setScale(scale);

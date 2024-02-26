@@ -147,7 +147,6 @@ void State::setTextures(std::vector<std::shared_ptr<vr::Texture>> t) { m_texture
 void State::applyTextures(std::shared_ptr<vr::Shader> shader)
 {
     int i = 0;
-
     std::vector<int> slotActive;
     std::vector<int> slots; 
     slotActive.resize(m_textures.size());
@@ -160,14 +159,13 @@ void State::applyTextures(std::shared_ptr<vr::Shader> shader)
             m_textures[i]->bind();
         }
     }
-
     shader->setIntVector("fragTexture.textures", slots);
     shader->setIntVector("fragTexture.activeTextures", slotActive);
 }
 
-void State::applyLightMatrix(glm::vec2 nearFar)
+void State::applyLightMatrix(glm::mat4 lm)
 {
     // Maybe calculate multiple light matrices and set them as an array in shader????
     if(m_shader)
-        m_shader->setMat4("lightMatrix", m_lights[0]->calcLightMatrix(nearFar));
+        m_shader->setMat4("lightMatrix", lm);
 }

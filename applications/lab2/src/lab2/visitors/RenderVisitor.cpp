@@ -43,11 +43,11 @@ void RenderVisitor::visit(Geometry& geo)
     m_stateStack.push(m_stateStack.top()->merge(geo.getState()));
     auto state = m_stateStack.top();
     if(m_depthPass) {
-        m_rtt->applyLightMatrix(state->getLights()[0], m_camera->getNearFar());
+        m_rtt->applyLightMatrix(m_lightMatrix);
         geo.draw(m_rtt->getDepthShader(), m_transformStack.top(), m_depthPass);
     } else {
         state->apply();
-        state->applyLightMatrix(m_camera->getNearFar());
+        state->applyLightMatrix(m_lightMatrix);
         state->getShader()->setBool("useShadowMap", m_useShadowMap);
         m_camera->apply(state->getShader());
         
@@ -84,3 +84,5 @@ bool RenderVisitor::getUseShadowMap(void) { return m_useShadowMap; }
 
 void RenderVisitor::setRTT(std::shared_ptr<RenderToTexture> rtt) {m_rtt = rtt; }
 std::shared_ptr<RenderToTexture> RenderVisitor::getRTT(void) { return m_rtt; }
+
+void RenderVisitor::setLightMatrix(glm::mat4 lm) { m_lightMatrix = lm; }

@@ -12,14 +12,14 @@ class RenderToTexture
         ~RenderToTexture();
 
         bool createRenderTarget(void);
-        void switchToFramebuffer();
+        void switchToDepthbuffer();
         void defaultBuffer(void);
 
         std::shared_ptr<vr::Shader> getDepthShader(void);
 
         void apply(std::shared_ptr<vr::Shader> s);
 
-        void applyLightMatrix(std::shared_ptr<vr::Light> light, glm::vec2 nearFar);
+        void applyLightMatrix(glm::mat4 lm);
 
     private:
         std::shared_ptr<vr::Shader> m_depthShader;
