@@ -88,11 +88,14 @@ namespace vr
     void addGroundPlane();
     void setUseShadowMap(bool b);
     bool getUseShadowMap(void);
+    void setUseGroundPlane(bool b);
+    bool getUseGroundPlane(void);
 
   private:
     std::shared_ptr<RenderToTexture> m_renderToTexture;
     bool m_useDefaultLight = true;
     bool m_useShadowMap = true;
+    bool m_useGroundPlane = true;
     GLint m_uniform_numberOfLights;
     Group *m_rootGroup;
     RenderVisitor *m_renderVisitor;

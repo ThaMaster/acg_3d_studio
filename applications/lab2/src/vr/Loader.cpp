@@ -814,8 +814,7 @@ Transform* parseTransformNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>
  */
 Group* parseGroupNode(rapidxml::xml_node<>* node,std::shared_ptr<Scene>& scene)
 {
-  std::string node_name;
-  node_name = getAttribute(node, "name");
+  std::string node_name = getAttribute(node, "name");
   auto groupNode = new Group(node_name);
   loadSceneGraph(node->first_node(), groupNode, scene);
 
@@ -915,12 +914,18 @@ void vr::loadSceneGraph(rapidxml::xml_node<>* parent_node, Group* root, std::sha
   if (!parent_node || parent_node->type() == rapidxml::node_comment || parent_node->type() == rapidxml::node_doctype)
         return;
   
-  std::string node_name;
   std::string root_name = root->getName();
   for(rapidxml::xml_node<>* curr_node = parent_node; curr_node; curr_node = curr_node->next_sibling()) {
     std::string node_type = curr_node->name();
 
-    if(node_type == "group" || node_type == "scene") {
+    if(node_type == "scene") {
+      std::string useGround = getAttribute(curr_node, "useGround");
+      if(!useGround.empty())
+        scene->setUseGroundPlane(useGround == "1" || useGround == "true");
+      auto groupNode = parseGroupNode(curr_node, scene);
+      root->addChild(groupNode);
+
+    } else if(node_type == "group") {
       
       auto groupNode = parseGroupNode(curr_node, scene);
       root->addChild(groupNode);
@@ -993,9 +998,7 @@ bool vr::loadSceneFile(const std::string& sceneFile, std::shared_ptr<Scene>& sce
 
     xmlpath.push_back("scene");
     
-    if(scene->getRootGroup()->getChildren().size() == 0){
-      loadSceneGraph(root_node, scene->getRootGroup(), scene);
-    }
+    loadSceneGraph(root_node, scene->getRootGroup(), scene);
   }
   catch (rapidxml::parse_error& error)
   {

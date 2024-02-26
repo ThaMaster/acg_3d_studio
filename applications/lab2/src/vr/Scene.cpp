@@ -37,6 +37,8 @@ void Scene::add(std::shared_ptr<Light>& light)
 std::shared_ptr<Camera> Scene::getCamera() { return m_camera; }
 void Scene::setUseShadowMap(bool b) { m_useShadowMap = b; }
 bool Scene::getUseShadowMap(void) { return m_useShadowMap; }
+void Scene::setUseGroundPlane(bool b) { m_useGroundPlane = b; }
+bool Scene::getUseGroundPlane(void) { return m_useGroundPlane; }
 
 Scene::~Scene() {}
 

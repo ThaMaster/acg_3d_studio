@@ -54,7 +54,10 @@ bool Application::initResources(const std::string& model_filename, const std::st
       return false;
     m_sceneRoot->getRootGroup()->addChild(objNode);
   }
-  m_sceneRoot->addGroundPlane();
+
+  if(m_sceneRoot->getUseGroundPlane())
+    m_sceneRoot->addGroundPlane();
+  
 
   if(m_sceneRoot->getUseDefaultLight()) {
     std::shared_ptr<Light> light1 = std::shared_ptr<Light>(new Light);
@@ -113,7 +116,7 @@ void Application::initView()
 void Application::render(GLFWwindow* window)
 {
   glClearColor(m_clearColor[0], m_clearColor[1], m_clearColor[2], m_clearColor[3]);
-
+  glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
   m_sceneRoot->render();
   m_fpsCounter->render(window);
 }
