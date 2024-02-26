@@ -8,17 +8,17 @@
 
 Geometry::~Geometry()
 {
-    if (m_vbo_vertices != 0)
-        glDeleteBuffers(1, &m_vbo_vertices);
+  if (m_vbo_vertices != 0)
+      glDeleteBuffers(1, &m_vbo_vertices);
 
-    if (m_vbo_normals != 0)
-        glDeleteBuffers(1, &m_vbo_normals);
-    
-    if (m_vbo_tangents != 0)
-        glDeleteBuffers(1, &m_vbo_tangents);
+  if (m_vbo_normals != 0)
+      glDeleteBuffers(1, &m_vbo_normals);
+  
+  if (m_vbo_tangents != 0)
+      glDeleteBuffers(1, &m_vbo_tangents);
 
-    if (m_ibo_elements != 0)
-        glDeleteBuffers(1, &m_ibo_elements);
+  if (m_ibo_elements != 0)
+      glDeleteBuffers(1, &m_ibo_elements);
 }
 
 void Geometry::setIsGround(bool b) { m_is_ground = b; }
@@ -47,11 +47,12 @@ bool Geometry::initShaders(std::shared_ptr<vr::Shader> shader)
   m_attribute_v_texCoords = shader->getAttribute(attribute_name);
   if (m_attribute_v_texCoords == -1)
       return false;
-      
+  
   attribute_name = "vertex_tangent";
   m_attribute_v_tangents = shader->getAttribute(attribute_name);
   if (m_attribute_v_tangents == -1)
       return false;
+  
   
   return true;
 }
@@ -93,127 +94,126 @@ void Geometry::setObject2WorldMat(glm::mat4& m)
 
 void Geometry::upload() 
 {
-    if (m_useVAO)
-    {
-        // Create a Vertex Array Object that will handle all VBO:s of this Mesh
-        glGenVertexArrays(1, &m_vao);
-        CHECK_GL_ERROR_LINE_FILE();
-        glBindVertexArray(m_vao);
-        CHECK_GL_ERROR_LINE_FILE();
-    }
+  if (m_useVAO)
+  {
+    // Create a Vertex Array Object that will handle all VBO:s of this Mesh
+    glGenVertexArrays(1, &m_vao);
+    CHECK_GL_ERROR_LINE_FILE();
+    glBindVertexArray(m_vao);
+    CHECK_GL_ERROR_LINE_FILE();
+  }
 
-    if (this->vertices.size() > 0) {
-        glGenBuffers(1, &this->m_vbo_vertices);
-        glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo_vertices);
-        glBufferData(GL_ARRAY_BUFFER, this->vertices.size() * sizeof(this->vertices[0]),
-        this->vertices.data(), GL_STATIC_DRAW);
-        CHECK_GL_ERROR_LINE_FILE();
-    }
+  if (this->vertices.size() > 0) {
+    glGenBuffers(1, &this->m_vbo_vertices);
+    glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo_vertices);
+    glBufferData(GL_ARRAY_BUFFER, this->vertices.size() * sizeof(this->vertices[0]),
+    this->vertices.data(), GL_STATIC_DRAW);
+    CHECK_GL_ERROR_LINE_FILE();
+  }
 
-    if (this->normals.size() > 0) {
-        glGenBuffers(1, &this->m_vbo_normals);
-        glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo_normals);
-        glBufferData(GL_ARRAY_BUFFER, this->normals.size() * sizeof(this->normals[0]),
-            this->normals.data(), GL_STATIC_DRAW);
-        CHECK_GL_ERROR_LINE_FILE();
-    }
+  if (this->normals.size() > 0) {
+    glGenBuffers(1, &this->m_vbo_normals);
+    glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo_normals);
+    glBufferData(GL_ARRAY_BUFFER, this->normals.size() * sizeof(this->normals[0]),
+    this->normals.data(), GL_STATIC_DRAW);
+    CHECK_GL_ERROR_LINE_FILE();
+  }
 
-    if (this->texCoords.size() > 0) {
-        glGenBuffers(1, &this->m_vbo_texCoords);
-        glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo_texCoords);
-        glBufferData(GL_ARRAY_BUFFER, this->texCoords.size() * sizeof(this->texCoords[0]),
-        this->texCoords.data(), GL_STATIC_DRAW);
-        CHECK_GL_ERROR_LINE_FILE();
-    }
+  if (this->texCoords.size() > 0) {
+    glGenBuffers(1, &this->m_vbo_texCoords);
+    glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo_texCoords);
+    glBufferData(GL_ARRAY_BUFFER, this->texCoords.size() * sizeof(this->texCoords[0]),
+    this->texCoords.data(), GL_STATIC_DRAW);
+    CHECK_GL_ERROR_LINE_FILE();
+  }
+  if (this->tangents.size() > 0) {
+    glGenBuffers(1, &this->m_vbo_tangents);
+    glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo_tangents);
+    glBufferData(GL_ARRAY_BUFFER, this->tangents.size() * sizeof(this->tangents[0]),
+    this->tangents.data(), GL_STATIC_DRAW);
+    CHECK_GL_ERROR_LINE_FILE();
+  }
+  CHECK_GL_ERROR_LINE_FILE();
 
-    if (this->tangents.size() > 0) {
-        glGenBuffers(1, &this->m_vbo_tangents);
-        glBindBuffer(GL_ARRAY_BUFFER, this->m_vbo_tangents);
-        glBufferData(GL_ARRAY_BUFFER, this->tangents.size() * sizeof(this->tangents[0]),
-        this->tangents.data(), GL_STATIC_DRAW);
-        CHECK_GL_ERROR_LINE_FILE();
-    }
+  if (m_useVAO)
+  {
     CHECK_GL_ERROR_LINE_FILE();
 
-    if (m_useVAO)
-    {
+    glEnableVertexAttribArray(m_attribute_v_coord);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbo_vertices);
+    glVertexAttribPointer(
+    m_attribute_v_coord,  // attribute
+    4,                  // number of elements per vertex, here (x,y,z,w)
+    GL_FLOAT,           // the type of each element
+    GL_FALSE,           // take our values as-is
+    0,                  // no extra data between each position
+    0                   // offset of first element
+    );
+    glDisableVertexAttribArray(m_attribute_v_coord);
     CHECK_GL_ERROR_LINE_FILE();
 
-        glEnableVertexAttribArray(m_attribute_v_coord);
-        glBindBuffer(GL_ARRAY_BUFFER, m_vbo_vertices);
-        glVertexAttribPointer(
-        m_attribute_v_coord,  // attribute
-        4,                  // number of elements per vertex, here (x,y,z,w)
-        GL_FLOAT,           // the type of each element
-        GL_FALSE,           // take our values as-is
-        0,                  // no extra data between each position
-        0                   // offset of first element
-        );
-        glDisableVertexAttribArray(m_attribute_v_coord);
+    glEnableVertexAttribArray(m_attribute_v_normal);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbo_normals);
+    glVertexAttribPointer(
+    m_attribute_v_normal, // attribute
+    3,                  // number of elements per vertex, here (x,y,z)
+    GL_FLOAT,           // the type of each element
+    GL_FALSE,           // take our values as-is
+    0,                  // no extra data between each position
+    0                   // offset of first element
+    );
+    glDisableVertexAttribArray(m_attribute_v_normal);
+    CHECK_GL_ERROR_LINE_FILE();
+      
+    glEnableVertexAttribArray(m_attribute_v_texCoords);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbo_texCoords);
+    glVertexAttribPointer(
+    m_attribute_v_texCoords, // attribute
+    2,                  // number of elements per vertex, here (x,y)
+    GL_FLOAT,           // the type of each element
+    GL_FALSE,           // take our values as-is
+    0,                  // no extra data between each position
+    0                   // offset of first element
+    );
+    glDisableVertexAttribArray(m_attribute_v_texCoords);
+    CHECK_GL_ERROR_LINE_FILE();
+    glEnableVertexAttribArray(m_attribute_v_tangents);
     CHECK_GL_ERROR_LINE_FILE();
 
-        glEnableVertexAttribArray(m_attribute_v_normal);
-        glBindBuffer(GL_ARRAY_BUFFER, m_vbo_normals);
-        glVertexAttribPointer(
-        m_attribute_v_normal, // attribute
-        3,                  // number of elements per vertex, here (x,y,z)
-        GL_FLOAT,           // the type of each element
-        GL_FALSE,           // take our values as-is
-        0,                  // no extra data between each position
-        0                   // offset of first element
-        );
-        glDisableVertexAttribArray(m_attribute_v_normal);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbo_tangents);
     CHECK_GL_ERROR_LINE_FILE();
-        
-        glEnableVertexAttribArray(m_attribute_v_texCoords);
-        glBindBuffer(GL_ARRAY_BUFFER, m_vbo_texCoords);
-        glVertexAttribPointer(
-        m_attribute_v_texCoords, // attribute
-        2,                  // number of elements per vertex, here (x,y)
-        GL_FLOAT,           // the type of each element
-        GL_FALSE,           // take our values as-is
-        0,                  // no extra data between each position
-        0                   // offset of first element
-        );
-        glDisableVertexAttribArray(m_attribute_v_texCoords);
-        CHECK_GL_ERROR_LINE_FILE();
-
-        if(m_attribute_v_tangents) {
-
-          glEnableVertexAttribArray(m_attribute_v_tangents);
-          glBindBuffer(GL_ARRAY_BUFFER, m_vbo_tangents);
-          glVertexAttribPointer(
-          m_attribute_v_tangents, // attribute
-          3,                  // number of elements per vertex, here (x,y,z)
-          GL_FLOAT,           // the type of each element
-          GL_FALSE,           // take our values as-is
-          0,                  // no extra data between each position
-          0                   // offset of first element
-          );
-          glDisableVertexAttribArray(m_attribute_v_tangents);
-          CHECK_GL_ERROR_LINE_FILE();
-        }
-        CHECK_GL_ERROR_LINE_FILE();
-    }
+    glVertexAttribPointer(
+    m_attribute_v_tangents, // attribute
+    3,                  // number of elements per vertex, here (x,y,z)
+    GL_FLOAT,           // the type of each element
+    GL_FALSE,           // take our values as-is
+    0,                  // no extra data between each position
+    0                   // offset of first element
+    );
     CHECK_GL_ERROR_LINE_FILE();
-
-    if (this->elements.size() > 0) {
-        glGenBuffers(1, &this->m_ibo_elements);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->m_ibo_elements);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->elements.size() * sizeof(this->elements[0]),
-        this->elements.data(), GL_STATIC_DRAW);
-    }
-
+    glDisableVertexAttribArray(m_attribute_v_tangents);
     CHECK_GL_ERROR_LINE_FILE();
+    
+  }
+  CHECK_GL_ERROR_LINE_FILE();
 
-    if (m_useVAO)
-    {
-        // Now release VAO
-        glEnableVertexAttribArray(0);  // Disable our Vertex Array Object  
-        glBindVertexArray(0); // Disable our Vertex Buffer Object
-        CHECK_GL_ERROR_LINE_FILE();
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    }
+  if (this->elements.size() > 0) {
+      glGenBuffers(1, &this->m_ibo_elements);
+      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->m_ibo_elements);
+      glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->elements.size() * sizeof(this->elements[0]),
+      this->elements.data(), GL_STATIC_DRAW);
+  }
+
+  CHECK_GL_ERROR_LINE_FILE();
+
+  if (m_useVAO)
+  {
+      // Now release VAO
+      glEnableVertexAttribArray(0);  // Disable our Vertex Array Object  
+      glBindVertexArray(0); // Disable our Vertex Buffer Object
+      CHECK_GL_ERROR_LINE_FILE();
+      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+  }
 }
 
 void Geometry::draw_bbox(std::shared_ptr<vr::Shader> shader)

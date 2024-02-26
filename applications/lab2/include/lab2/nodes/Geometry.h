@@ -44,14 +44,14 @@ class Geometry : public Node
         std::vector<glm::vec2> texCoords;
         std::vector<GLushort> elements;
         std::vector<glm::vec3> tangents;
-        std::vector<glm::vec3> bitangents;
         
     private:
 
-        GLuint m_vbo_vertices, m_vbo_normals, m_vbo_texCoords, m_ibo_elements, m_vbo_tangents, m_vbo_bitangents;
+        GLuint m_vbo_vertices, m_vbo_normals, m_vbo_texCoords, m_ibo_elements;
+        GLuint m_vbo_tangents = 0;
         GLuint m_vao;
         GLint m_attribute_v_coord, m_attribute_v_normal, m_attribute_v_texCoords;
-        GLint m_attribute_v_tangents, m_attribute_v_bitangents;
+        GLint m_attribute_v_tangents;
         bool m_is_ground = false;
         bool m_useVAO = true;
         glm::mat4 m_initialTransform;

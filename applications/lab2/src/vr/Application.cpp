@@ -126,35 +126,44 @@ void Application::update(GLFWwindow* window)
   render(window);
 }
 
+
+
 void Application::processInput(GLFWwindow* window)
 {
   getCamera()->processInput(window);
-
   if(m_sceneRoot->getUseDefaultLight())
   {
-    float currentTime = (float)glfwGetTime();
-	  float deltaTime = float(currentTime - m_lastTime);
-    float m_speed = 0.1f;
-    glm::vec4 deltaPos = glm::vec4(0.0f);
     std::shared_ptr<vr::Light> light = m_sceneRoot->getRootGroup()->getState()->getLights()[0];
     if(light) {
-      if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) deltaPos.z -= m_speed;
-      if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS) deltaPos.z += m_speed;
-      if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS) deltaPos.x -= m_speed;
-      if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) deltaPos.x += m_speed;
-      if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) deltaPos.y += m_speed;
-      if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) deltaPos.y -= m_speed; 
-      light->setPosition(light->getPosition() + deltaPos);
+      lightInput(window, light);
     }
   }
+
   if(glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS) {
     if(!m_spacePressed) {
       m_sceneRoot->setUseShadowMap(!m_sceneRoot->getUseShadowMap());
       m_spacePressed = true;
     }
   }
-  if(glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_RELEASE) {
+
+  if(glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_RELEASE)
     m_spacePressed = false;
+}
+
+void Application::lightInput(GLFWwindow* window, std::shared_ptr<vr::Light> light)
+{
+  float currentTime = (float)glfwGetTime();
+  float deltaTime = float(currentTime - m_lastTime);
+  float m_speed = 0.1f;
+  glm::vec4 deltaPos = glm::vec4(0.0f);
+  if(light) {
+    if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) deltaPos.z -= m_speed;
+    if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS) deltaPos.z += m_speed;
+    if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS) deltaPos.x -= m_speed;
+    if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) deltaPos.x += m_speed;
+    if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) deltaPos.y += m_speed;
+    if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) deltaPos.y -= m_speed; 
+    light->setPosition(light->getPosition() + deltaPos);
   }
 }
 

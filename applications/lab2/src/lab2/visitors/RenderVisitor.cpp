@@ -42,16 +42,18 @@ void RenderVisitor::visit(Geometry& geo)
 {
     m_stateStack.push(m_stateStack.top()->merge(geo.getState()));
     auto state = m_stateStack.top();
-    glm::mat4 lightMatrix = m_rtt->calcLightMatrix(state->getLights()[0]->getPosition(), m_camera->getNearFar());
     if(m_depthPass) {
-        m_rtt->getDepthShader()->setMat4("lightMatrix", lightMatrix);
+        m_rtt->applyLightMatrix(state->getLights()[0], m_camera->getNearFar());
         geo.draw(m_rtt->getDepthShader(), m_transformStack.top(), m_depthPass);
     } else {
         state->apply();
-        m_rtt->apply(state->getShader());
+        state->applyLightMatrix(m_camera->getNearFar());
         state->getShader()->setBool("useShadowMap", m_useShadowMap);
-        state->getShader()->setMat4("lightMatrix", lightMatrix);
         m_camera->apply(state->getShader());
+        
+        if(m_useShadowMap)
+            m_rtt->apply(state->getShader());
+
         geo.draw(state->getShader(), m_transformStack.top(), m_depthPass);
     }
 

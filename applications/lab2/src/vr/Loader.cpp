@@ -253,29 +253,23 @@ void parseNodes(aiNode* root_node, MaterialVector& materials, std::stack<glm::ma
     loadedGeo->vertices.resize(num_vertices);
     loadedGeo->normals.resize(num_vertices);
     loadedGeo->texCoords.resize(num_vertices);
-    loadedGeo->tangents.resize(num_vertices);
-    loadedGeo->bitangents.resize(num_vertices);
+    if(mesh->HasTangentsAndBitangents()) {
+      loadedGeo->tangents.resize(num_vertices);
+    }
 
     for (uint32_t j = 0; j < num_vertices; j++)
     {
       loadedGeo->vertices[j] = glm::vec4(mesh->mVertices[j].x, mesh->mVertices[j].y, mesh->mVertices[j].z, 1);
       loadedGeo->normals[j] = glm::vec3(mesh->mNormals[j].x, mesh->mNormals[j].y, mesh->mNormals[j].z);
 
-      glm::vec3 tangent;
       if (mesh->HasTangentsAndBitangents())
       {
         loadedGeo->tangents[j] = glm::vec3(mesh->mTangents[j].x, mesh->mTangents[j].y, mesh->mTangents[j].z);
-        loadedGeo->bitangents[j] = glm::vec3(mesh->mBitangents[j].x, mesh->mBitangents[j].y, mesh->mBitangents[j].z);
       }
 
-      glm::vec2 tex_coord;
       if (mesh->mTextureCoords[0])
-      {
-        tex_coord.x = mesh->mTextureCoords[0][j].x;
-        tex_coord.y = mesh->mTextureCoords[0][j].y;
-
-        loadedGeo->texCoords[j] = tex_coord;
-      }
+        loadedGeo->texCoords[j] = glm::vec2(mesh->mTextureCoords[0][j].x, mesh->mTextureCoords[0][j].y);
+      
 
       // Ignore color
       //       if (mesh->HasVertexColors(j))

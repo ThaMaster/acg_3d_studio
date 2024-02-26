@@ -18,7 +18,7 @@ bool RenderToTexture::createRenderTarget(void)
     glGenFramebuffers(1, &m_frameBuffer);
 
     glGenTextures(1, &m_depthTexture);
-	glActiveTexture(GL_TEXTURE0 + 10);
+	glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_depthTexture);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, 2048, 2048, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -64,17 +64,16 @@ void RenderToTexture::defaultBuffer()
 void RenderToTexture::apply(std::shared_ptr<vr::Shader> s)
 {
     CHECK_GL_ERROR_LINE_FILE();
-    glActiveTexture(GL_TEXTURE0 + 10);
+    glActiveTexture(GL_TEXTURE10);
     glBindTexture(GL_TEXTURE_2D, m_depthTexture);
     s->setInt("shadowMap", 10);
     CHECK_GL_ERROR_LINE_FILE();
 }
 
-glm::mat4 RenderToTexture::calcLightMatrix(glm::vec4 l_pos, glm::vec2 nearFar)
+void RenderToTexture::applyLightMatrix(std::shared_ptr<vr::Light> light, glm::vec2 nearFar)
 {
-    glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10,10,-10,10, nearFar.x, nearFar.y);
-    glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(l_pos), glm::vec3(0,0,0), glm::vec3(0,1,0));
-    return depthProjectionMatrix * depthViewMatrix;
+    // Maybe calculate multiple light matrices and set them as an array in shader????
+    m_depthShader->setMat4("lightMatrix", light->calcLightMatrix(nearFar));
 }
 
 std::shared_ptr<vr::Shader> RenderToTexture::getDepthShader(void) { return m_depthShader; }

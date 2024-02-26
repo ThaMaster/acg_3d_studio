@@ -37,6 +37,7 @@ namespace vr {
     void update(GLFWwindow* window);
 
     void processInput(GLFWwindow* window);
+    void lightInput(GLFWwindow* window, std::shared_ptr<vr::Light> light);
 
     void setClearColor(const glm::f32vec4& clearColor);
     

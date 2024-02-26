@@ -2,7 +2,7 @@
 #define RENDERTOTEXTURE_H
 
 #include "vr/Shader.h"
-
+#include "vr/Light.h"
 #include <glad/glad.h>
 
 class RenderToTexture 
@@ -16,9 +16,10 @@ class RenderToTexture
         void defaultBuffer(void);
 
         std::shared_ptr<vr::Shader> getDepthShader(void);
-        glm::mat4 calcLightMatrix(glm::vec4 l_pos, glm::vec2 nearFar);
 
         void apply(std::shared_ptr<vr::Shader> s);
+
+        void applyLightMatrix(std::shared_ptr<vr::Light> light, glm::vec2 nearFar);
 
     private:
         std::shared_ptr<vr::Shader> m_depthShader;

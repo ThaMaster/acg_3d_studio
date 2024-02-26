@@ -15,15 +15,22 @@ namespace vr
     Light();
 
     void apply(std::shared_ptr<vr::Shader> shader, size_t idx);
+
     void setAttenuation(float c, float l, float q);    
-    void setPosition(glm::vec4 p) { m_position = p; }
-    glm::vec4 getPosition(void) { return m_position; }
-    void setAmbient(glm::vec4 a) { m_ambient = a; }
-    glm::vec4 getAmbient(void) { return m_ambient; }
-    void setDiffuse(glm::vec4 d) { m_diffuse = d; }
-    glm::vec4 getDiffuse(void) { return m_diffuse; }
-    void setSpecular(glm::vec4 s) { m_specular = s; }
-    glm::vec4 getSpecular(void) { return m_specular; }
+
+    void setPosition(glm::vec4 p);
+    glm::vec4 getPosition(void);
+
+    void setAmbient(glm::vec4 a);
+    glm::vec4 getAmbient(void);
+
+    void setDiffuse(glm::vec4 d);
+    glm::vec4 getDiffuse(void);
+    
+    void setSpecular(glm::vec4 s);
+    glm::vec4 getSpecular(void);
+
+    glm::mat4 calcLightMatrix(glm::vec2 nearFar);
 
   private:
     friend class Scene;
@@ -38,6 +45,8 @@ namespace vr
     float m_att_constant;
     float m_att_linear;
     float m_att_quadratic;
+
+    float m_lastTime;
 
     void createGeometry();
     std::shared_ptr<Geometry>& getGeometry();

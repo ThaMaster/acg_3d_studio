@@ -16,6 +16,15 @@ Light::Light() : enabled(true)
   m_att_quadratic = 0.032;
 }
 
+void Light::setPosition(glm::vec4 p) { m_position = p; }
+glm::vec4 Light::getPosition(void) { return m_position; }
+void Light::setAmbient(glm::vec4 a) { m_ambient = a; }
+glm::vec4 Light::getAmbient(void) { return m_ambient; }
+void Light::setDiffuse(glm::vec4 d) { m_diffuse = d; }
+glm::vec4 Light::getDiffuse(void) { return m_diffuse; }
+void Light::setSpecular(glm::vec4 s) { m_specular = s; }
+glm::vec4 Light::getSpecular(void) { return m_specular; }
+
 void Light::createGeometry()
 {
   m_geo = std::shared_ptr<Geometry>(new Geometry("light"));
@@ -75,4 +84,11 @@ void Light::apply(std::shared_ptr<vr::Shader> shader, size_t idx)
     shader->setFloat(prefix + "quadratic", this->m_att_quadratic);
   }
 
+}
+
+glm::mat4 Light::calcLightMatrix(glm::vec2 nearFar)
+{
+    glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10,10,-10,10, nearFar.x, nearFar.y);
+    glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(m_position), glm::vec3(0,0,0), glm::vec3(0,1,0));
+    return depthProjectionMatrix * depthViewMatrix;
 }

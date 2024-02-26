@@ -111,7 +111,7 @@ void State::apply()
     size_t i = 0;
     if(m_enableLight) {
         if(m_lights.size() != 0 && *m_enableLight)
-        {
+        {            
             for(auto l : m_lights)
             {
                 l->apply(m_shader, i);
@@ -156,10 +156,18 @@ void State::applyTextures(std::shared_ptr<vr::Shader> shader)
     {
         slots[i] = i;
         slotActive[i] = m_textures[i] != nullptr;
-        if (m_textures[i])
+        if (m_textures[i]) {
             m_textures[i]->bind();
+        }
     }
 
     shader->setIntVector("fragTexture.textures", slots);
     shader->setIntVector("fragTexture.activeTextures", slotActive);
+}
+
+void State::applyLightMatrix(glm::vec2 nearFar)
+{
+    // Maybe calculate multiple light matrices and set them as an array in shader????
+    if(m_shader)
+        m_shader->setMat4("lightMatrix", m_lights[0]->calcLightMatrix(nearFar));
 }

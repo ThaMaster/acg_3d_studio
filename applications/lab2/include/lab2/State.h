@@ -90,6 +90,7 @@ class State
         void setShaderSwitch(bool b);
         bool getShaderSwitch();
 
+        void applyLightMatrix(glm::vec2 nearFar);
    
     private:
         std::string m_stateName;
