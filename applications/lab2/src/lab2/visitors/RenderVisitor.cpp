@@ -52,7 +52,7 @@ void RenderVisitor::visit(Geometry& geo)
         m_camera->apply(state->getShader());
         
         if(m_useShadowMap)
-            m_rtt->apply(state->getShader(), 0);
+            m_rtt->apply(state->getShader());
 
         geo.draw(state->getShader(), m_transformStack.top(), m_depthPass);
     }

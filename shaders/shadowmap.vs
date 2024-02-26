@@ -17,10 +17,13 @@ out mat3 TBN; // The TBN matrix;
 // model, view and projection transform
 uniform mat4 m, v, p;
 
+
 // Inverse transpose of model matrix for transforming normals
 uniform mat3 m_3x3_inv_transp;
 
 uniform bool useShadowMap;
+
+uniform int numberOfLights;
 struct LightSource
 {
   bool enabled;
@@ -34,9 +37,9 @@ struct LightSource
   vec4 specular;
 
   vec4 position;
+
   mat4 lightMatrix;
 };
-
 
 // This is the uniforms that our program communicates with
 uniform LightSource lights[MaxNumberOfLights];
@@ -49,7 +52,7 @@ void main()
   position = mv * vertex_position;
   
   if(useShadowMap) {
-    for(int i = 0; i < MaxNumberOfLights; i++)
+    for(int i = 0; i < numberOfLights; i++)
       fragSpacePos[i] = lights[i].lightMatrix * m * vertex_position;
   }
 

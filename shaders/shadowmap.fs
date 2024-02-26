@@ -63,7 +63,7 @@ uniform Material material;
 uniform Texture fragTexture;
 
 uniform bool useShadowMap;
-uniform sampler2D shadowMap;
+uniform sampler2D shadowMaps[MaxNumberOfLights];
 
 float directionalShadow(int lightIndex)
 {
@@ -81,14 +81,14 @@ float directionalShadow(int lightIndex)
     float bias = max(0.001 * (1.0 - dot(normal, lightDir)), 0.0001);
     // check whether current frag pos is in shadow
     float shadow = 0.0;
-    vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
+    vec2 texelSize = 1.0 / textureSize(shadowMaps[lightIndex], 0);
     const int halfkernelWidth = 2;
     for(int x = -halfkernelWidth; x <= halfkernelWidth; ++x)
     {
         for(int y = -halfkernelWidth; y <= halfkernelWidth; ++y)
         {
-            float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
-            shadow += currentDepth - bias > pcfDepth ? 0.80 : 0.0;
+            float pcfDepth = texture(shadowMaps[lightIndex], projCoords.xy + vec2(x, y) * texelSize).r;
+            shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
         }
     }
     shadow /= ((halfkernelWidth*2+1)*(halfkernelWidth*2+1));
@@ -102,7 +102,6 @@ float directionalShadow(int lightIndex)
 
 void main()
 {
-    
     vec3 fNormal = normalize(normal);
     // textures[0] represent the normal map! Other textures should not use this position!
     if(material.activeTextures[0]) {

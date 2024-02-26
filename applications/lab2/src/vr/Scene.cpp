@@ -181,11 +181,13 @@ void Scene::render()
 
   if(m_useShadowMap) {
     m_renderVisitor->setDepthPass(true);
-    m_renderVisitor->getRTT()->switchToDepthbuffer();
+
     for(int i = 0; i < m_sceneLights.size(); i++) {
+      m_renderVisitor->getRTT()->switchToDepthbuffer(i);
       m_renderVisitor->setCurrentLight(i);
       m_renderVisitor->visit(*m_rootGroup);
     }
+
     m_renderVisitor->getRTT()->defaultBuffer();
     m_renderVisitor->setDepthPass(false);
   }
