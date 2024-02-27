@@ -9,14 +9,19 @@ Scene::Scene() : m_uniform_numberOfLights(-1)
 {
   m_renderToTexture = std::shared_ptr<RenderToTexture>(new RenderToTexture());
   m_camera = std::shared_ptr<Camera>(new Camera);
-  setRootGroup(new Group("root"));
-  getRootGroup()->setState(std::shared_ptr<State>(new State("root_state")));
-  getRootGroup()->getState()->setEnableLight(std::shared_ptr<bool>(new bool(true)));
-  getRootGroup()->getState()->setMaterial(std::shared_ptr<vr::Material>(new Material()));
   m_renderVisitor = new RenderVisitor();
   m_renderVisitor->setCamera(m_camera);
   m_updateVisitor = new UpdateVisitor();
   m_renderVisitor->setRTT(m_renderToTexture);
+}
+
+void Scene::setDefaultRootState(Group &g)
+{
+  auto newRootState = std::shared_ptr<State>(new State("root_state"));
+  newRootState->setShader(m_defaultShader);
+  newRootState->setEnableLight(std::shared_ptr<bool>(new bool(true)));
+  newRootState->setMaterial(std::shared_ptr<vr::Material>(new Material()));
+  g.setState(newRootState);
 }
 
 bool Scene::initShaders(const std::string& vshader_filename, const std::string& fshader_filename)
@@ -24,7 +29,7 @@ bool Scene::initShaders(const std::string& vshader_filename, const std::string& 
   auto shader = std::shared_ptr<vr::Shader>(new Shader(vshader_filename, fshader_filename));
   if (!shader->valid())
     return false;
-  getRootGroup()->getState()->setShader(shader);
+  m_defaultShader = shader;
   return true;
 }
 
@@ -106,13 +111,12 @@ Group* Scene::createDefaultScene()
     glm::vec2(1.0f, 1.0f), 
     glm::vec2(0.0f, 1.0f) 
   };
-
   auto defaultMat = std::shared_ptr<Material>(new Material());
   auto materialState = std::shared_ptr<State>(new State("def_mat_state"));
   materialState->setMaterial(defaultMat);
   auto new_geo = buildGeometry("Default_Geo", vertices, indices, normals, texCoords);
   new_geo->setState(materialState);
-  new_geo->initShaders(m_rootGroup->getState()->getShader());
+  new_geo->initShaders(m_defaultShader);
   CHECK_GL_ERROR_LINE_FILE();
   new_geo->upload();
   CHECK_GL_ERROR_LINE_FILE();
@@ -160,7 +164,7 @@ void Scene::addGroundPlane()
   groundState->setMaterial(groundMat);
   auto groundPlane = buildGeometry("ground_geo", vertices, indices, normals, texCoords);
   groundPlane->setIsGround(true);
-  groundPlane->initShaders(m_rootGroup->getState()->getShader());
+  groundPlane->initShaders(m_defaultShader);
   groundPlane->upload();
   groundGroup->addChild(groundPlane);
   groundGroup->setState(groundState);

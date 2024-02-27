@@ -57,6 +57,8 @@ namespace vr
       m_rootGroup = g;
     }
 
+    void setDefaultRootState(Group& g);
+
     Group* getRootGroup()
     {
       return m_rootGroup;
@@ -97,6 +99,8 @@ namespace vr
 
     std::shared_ptr<RenderToTexture> getRTT(void) { return m_renderToTexture; }
 
+    std::shared_ptr<Shader> getDefaultShader(void) { return m_defaultShader; }
+
   private:
     std::shared_ptr<RenderToTexture> m_renderToTexture;
     bool m_useShadowMap = true;
@@ -107,6 +111,8 @@ namespace vr
     UpdateVisitor *m_updateVisitor;
     std::shared_ptr<Camera> m_camera;
     std::map<std::string, Group*> m_loadedObjects;
+
+    std::shared_ptr<Shader> m_defaultShader;
 
     std::vector<std::shared_ptr<Light>> m_sceneLights;
     std::vector<glm::mat4> m_lightMatrices;

@@ -299,7 +299,7 @@ void parseNodes(aiNode* root_node, MaterialVector& materials, std::stack<glm::ma
       loadedGeo->setState(materialState);
     }
 
-    loadedGeo->initShaders(scene->getRootGroup()->getState()->getShader());
+    loadedGeo->initShaders(scene->getDefaultShader());
     loadedGeo->upload();
     objNode.addChild(loadedGeo);
   }
@@ -743,9 +743,15 @@ std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node, std::shared_pt
 void addStateAndUpdate(Node& graph_node, rapidxml::xml_node<>* xml_node, std::shared_ptr<Scene>& scene)
 {
   rapidxml::xml_node<>* stateNode = xml_node->first_node("state");
-  if(stateNode)
-    graph_node.setState(parseNodeState(stateNode, scene));
-  
+  if(stateNode) {
+    auto newState = parseNodeState(stateNode, scene);
+    if(!graph_node.getState()) {
+      graph_node.setState(newState);
+    } else {
+      auto mergedState = graph_node.getState()->merge(newState);
+      graph_node.setState(mergedState);
+    }
+  }
   rapidxml::xml_node<>* updateNode = xml_node->first_node("update");
   if(updateNode) {
     auto callbackVector = parseNodeCallbacks(updateNode);
@@ -811,7 +817,7 @@ Transform* parseTransformNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>
  * @param scene The scene object. 
  * @return Group* 
  */
-Group* parseGroupNode(rapidxml::xml_node<>* node,std::shared_ptr<Scene>& scene)
+Group* parseGroupNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
 {
   std::string node_name = getAttribute(node, "name");
   auto groupNode = new Group(node_name);
@@ -819,11 +825,7 @@ Group* parseGroupNode(rapidxml::xml_node<>* node,std::shared_ptr<Scene>& scene)
 
   addStateAndUpdate(*groupNode, node, scene);
 
-  std::string node_type = node->name();
-  if(node_type == "scene") {
-    auto state_ptr = std::shared_ptr<State>(groupNode->getState());    
-  }
-  
+  std::string node_type = node->name();  
   return groupNode;
 }
 
@@ -905,6 +907,7 @@ LOD* parseLodNode(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene)
  * @param scene       The scene object.
  */
 void vr::loadSceneGraph(rapidxml::xml_node<>* parent_node, Group* root, std::shared_ptr<Scene>& scene) {
+
   if (!parent_node || parent_node->type() == rapidxml::node_comment || parent_node->type() == rapidxml::node_doctype)
         return;
   
@@ -912,14 +915,7 @@ void vr::loadSceneGraph(rapidxml::xml_node<>* parent_node, Group* root, std::sha
   for(rapidxml::xml_node<>* curr_node = parent_node; curr_node; curr_node = curr_node->next_sibling()) {
     std::string node_type = curr_node->name();
 
-    if(node_type == "scene") {
-      std::string useGround = getAttribute(curr_node, "useGround");
-      if(!useGround.empty())
-        scene->setUseGroundPlane(useGround == "1" || useGround == "true");
-      auto groupNode = parseGroupNode(curr_node, scene);
-      root->addChild(groupNode);
-
-    } else if(node_type == "group") {
+    if(node_type == "group") {
       
       auto groupNode = parseGroupNode(curr_node, scene);
       root->addChild(groupNode);
@@ -987,12 +983,20 @@ bool vr::loadSceneFile(const std::string& sceneFile, std::shared_ptr<Scene>& sce
     doc.parse<rapidxml::parse_trim_whitespace | rapidxml::parse_normalize_whitespace | rapidxml::parse_full>(xmlFile.data());
 
     root_node = doc.first_node("scene");
-    if (!root_node)
+    if (root_node) {
+      scene->setRootGroup(new Group("scene_root"));
+      std::string useGround = getAttribute(root_node, "useGround");
+      if(!useGround.empty())
+        scene->setUseGroundPlane(useGround == "1" || useGround == "true");
+      scene->setDefaultRootState(*scene->getRootGroup());
+      addStateAndUpdate(*scene->getRootGroup(), root_node, scene);
+
+    } else {
       throw std::runtime_error("File missing scene/");
+    }
 
     xmlpath.push_back("scene");
-    
-    loadSceneGraph(root_node, scene->getRootGroup(), scene);
+    loadSceneGraph(root_node->first_node(), scene->getRootGroup(), scene);
   }
   catch (rapidxml::parse_error& error)
   {

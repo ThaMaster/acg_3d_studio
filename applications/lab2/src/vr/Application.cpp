@@ -25,7 +25,6 @@ Application::Application(unsigned int width, unsigned height) :
   m_fpsCounter = std::make_shared<FPSCounter>();
   m_fpsCounter->setFontScale(0.5f);
   m_fpsCounter->setColor(glm::vec4(0.2, 1.0, 1.0, 1.0));
-
 }
 
 bool Application::initResources(const std::string& model_filename, const std::string& vshader_filename, std::string& fshader_filename)
@@ -48,14 +47,21 @@ bool Application::initResources(const std::string& model_filename, const std::st
     if (!loadSceneFile(model_filename, m_sceneRoot))
       return false;
   }
-  else if(model_filename.empty())
+  else 
   {
-    m_sceneRoot->getRootGroup()->addChild(m_sceneRoot->createDefaultScene());
-  }else {
-    auto objNode = load3DModelFile(model_filename, model_filename, m_sceneRoot);
-    if (!objNode)
-      return false;
-    m_sceneRoot->getRootGroup()->addChild(objNode);
+    auto newRootGroup = new Group("root_group");
+    m_sceneRoot->setDefaultRootState(*newRootGroup);
+  
+    if(model_filename.empty()) {
+      newRootGroup->addChild(m_sceneRoot->createDefaultScene());
+      m_sceneRoot->setRootGroup(newRootGroup);
+    } else {
+      auto objNode = load3DModelFile(model_filename, model_filename, m_sceneRoot);
+      if (!objNode)
+        return false;
+      newRootGroup->addChild(objNode);
+      m_sceneRoot->setRootGroup(newRootGroup);
+    }
   }
 
   if(m_sceneRoot->getUseGroundPlane())
