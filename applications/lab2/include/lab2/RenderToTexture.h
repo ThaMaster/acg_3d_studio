@@ -11,8 +11,11 @@ class RenderToTexture
         RenderToTexture();
         ~RenderToTexture();
 
-        bool addRenderTarget();
-        void switchToDepthbuffer(unsigned int unit);
+        bool addDepthMap();
+        bool addDepthCubemap();
+
+        void switchToDepthTexture(unsigned int unit);
+        void switchToDepthCubemap(unsigned int unit);
         void defaultBuffer();
 
         std::shared_ptr<vr::Shader> getDepthShader(void);
@@ -21,13 +24,11 @@ class RenderToTexture
 
         void applyLightMatrix(glm::mat4 lms);
 
-        void bindDepthTexture(unsigned int unit);
-
     private:
         std::shared_ptr<vr::Shader> m_depthShader;
         std::vector<GLuint> m_depthTextures;
-        GLuint m_frameBuffer;
-        GLuint m_renderedTexture;
+        std::vector<GLuint> m_depthCubeMaps;
+        GLuint m_depthBuffer;
         int m_numRenderTargets = 0;
 };
 

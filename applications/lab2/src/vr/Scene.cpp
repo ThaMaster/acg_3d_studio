@@ -174,7 +174,7 @@ void Scene::addGroundPlane()
 void Scene::addLightMatrix(glm::mat4 lm) { m_lightMatrices.push_back(lm); }
 void Scene::updateLightMatrix(int idx, BoundingBox box, glm::vec2 nearFar)
 {
-  m_sceneLights[idx]->calcLightMatrix(box, nearFar);
+  m_sceneLights[idx]->calcLightMatrices(box, nearFar);
   m_lightMatrices[idx] = m_sceneLights[idx]->getLightMatrix();
 }
 
@@ -187,7 +187,11 @@ void Scene::render()
     m_renderVisitor->setDepthPass(true);
 
     for(int i = 0; i < m_sceneLights.size(); i++) {
-      m_renderVisitor->getRTT()->switchToDepthbuffer(i);
+      if(m_sceneLights[i]->getPosition().w == 0.0) {
+        m_renderVisitor->getRTT()->switchToDepthTexture(i);
+      } else {
+        m_renderVisitor->getRTT()->switchToDepthCubemap(i);
+      }
       m_renderVisitor->setCurrentLight(i);
       m_renderVisitor->visit(*m_rootGroup);
     }

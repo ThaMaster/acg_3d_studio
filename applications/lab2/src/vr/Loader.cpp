@@ -713,7 +713,7 @@ std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node, std::shared_pt
       newState->addLight(newLight);
       scene->addLight(newLight);
       scene->addLightMatrix(newLight->getLightMatrix());
-      scene->getRTT()->addRenderTarget();
+      scene->getRTT()->addDepthMap();
     } else if(node_type == "shaders") {
       newState->setShader(parseStateShader(node, scene));
     } else if(node_type == "texture") {

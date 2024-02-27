@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene useGround="true">
-    <state>
-        <light position="1.0 3.0 0.0 1.0" ambient="0.0 0.0 0.0 1.0" diffuse="1.0 0.0 0.0 1.0" specular="0.0 0.0 0.0 1.0"/>
-        <light position="-1.0 3.0 0.0 1.0" ambient="0.0 0.0 0.0 1.0" diffuse="0.0 1.0 0.0 1.0" specular="0.0 1.0 0.0 1.0"/>
-    </state>
     <group>
         <state>
-            <light position="1.0 3.0 -1.0 1.0" ambient="0.0 0.0 0.0 1.0" diffuse="0.0 0.0 1.0 1.0" specular="0.0 0.0 1.0 1.0"/>
+            <light position="1.0 3.0 -1.0 0.0" ambient="0.0 0.0 0.0 1.0" diffuse="0.0 0.0 1.0 1.0" specular="0.0 0.0 1.0 1.0"/>
         </state>
-        <transform translate="0 2 0" scale ="10 1 10">
+        <transform translate="0 6 0" scale ="10 1 10">
             <geometry name="geo1" path="models/box.obj"/>
         </transform>
-        <transform translate="0 0 0" scale ="2 10 2">
+        <transform translate="0 4 0" scale ="2 10 2">
             <geometry name="geo2" path="models/box.obj"/>
         </transform>
     </group>

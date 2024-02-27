@@ -76,7 +76,7 @@ bool Application::initResources(const std::string& model_filename, const std::st
     m_sceneRoot->getRootGroup()->getState()->addLight(light1);
     m_sceneRoot->addLight(light1);
     m_sceneRoot->addLightMatrix(light1->getLightMatrix());
-    m_sceneRoot->getRTT()->addRenderTarget();
+    m_sceneRoot->getRTT()->addDepthMap();
   }
 
   return 1;
