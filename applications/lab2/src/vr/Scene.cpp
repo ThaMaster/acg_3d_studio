@@ -195,7 +195,11 @@ void Scene::render()
     m_renderVisitor->setDepthPass(true);
 
     for(int i = 0; i < m_sceneLights.size(); i++) {
-      m_renderVisitor->getRTT()->switchToDepthTexture(i);
+      if(m_sceneLights[i]->getPosition().w == 0.0) {
+        m_renderVisitor->getRTT()->switchToDepthTexture(i);
+      }else {
+        m_renderVisitor->getRTT()->switchToDepthCubeMap(i);
+      }
       m_renderVisitor->setCurrentLightPos(m_sceneLights[i]->getPosition());
       m_renderVisitor->setCurrentLight(i);
       m_renderVisitor->visit(*m_rootGroup);

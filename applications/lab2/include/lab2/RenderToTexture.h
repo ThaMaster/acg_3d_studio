@@ -12,10 +12,10 @@ class RenderToTexture
         ~RenderToTexture();
 
         bool addDepthMap();
-        bool addDepthCubemap();
+        bool addDepthCubeMap();
 
         void switchToDepthTexture(unsigned int unit);
-        void switchToDepthCubemap(unsigned int unit);
+        void switchToDepthCubeMap(unsigned int unit);
         void defaultBuffer();
 
         std::shared_ptr<vr::Shader> getDepthShader(void);
@@ -29,6 +29,7 @@ class RenderToTexture
         std::vector<GLuint> m_depthTextures;
         std::vector<GLuint> m_depthCubeMaps;
         GLuint m_depthBuffer;
+        int m_num_depth_components = 0;
 };
 
 #endif

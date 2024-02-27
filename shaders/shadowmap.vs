@@ -55,6 +55,8 @@ void main()
     for(int i = 0; i < numberOfLights; i++) {
       if(lights[i].position.w == 0.0) {
         fragSpacePos[i] = lights[i].lightMatrices[0] * m * vertex_position;
+      } else {
+        fragSpacePos[i] = m * vertex_position;
       }
     }
   }

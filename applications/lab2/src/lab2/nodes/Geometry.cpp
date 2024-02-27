@@ -387,8 +387,10 @@ void Geometry::draw(std::shared_ptr<vr::Shader> shader, const glm::mat4& modelMa
 
   /* Apply object's transformation matrix */
   glm::mat4 obj2World = modelMatrix * this->object2world;
+  CHECK_GL_ERROR_LINE_FILE();
   
   shader->setMat4("m", obj2World);
+  CHECK_GL_ERROR_LINE_FILE();
 
   /* 
   Transform normal vectors with transpose of inverse of upper left
@@ -396,7 +398,7 @@ void Geometry::draw(std::shared_ptr<vr::Shader> shader, const glm::mat4& modelMa
   */
   glm::mat3 m_3x3_inv_transp = glm::transpose(glm::inverse(glm::mat3(obj2World)));
   if(!depthPass) shader->setMat3("m_3x3_inv_transp", m_3x3_inv_transp);
-
+  CHECK_GL_ERROR_LINE_FILE();
   /* Push each element in buffer_vertices to the vertex shader */
   if (this->m_ibo_elements != 0) 
   {

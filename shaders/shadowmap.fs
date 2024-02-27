@@ -15,7 +15,7 @@ layout(location = 0) out vec4 color;
 uniform mat4 m, v, p;
 uniform mat4 v_inv;
 uniform int numberOfLights;
-
+uniform float far_plane;
 const int MAX_TEXTURES=10;
 
 // declaration of a Material structure
@@ -64,6 +64,7 @@ uniform Texture fragTexture;
 
 uniform bool useShadowMap;
 uniform sampler2D shadowMaps[MaxNumberOfLights];
+uniform samplerCube shadowCubeMaps[MaxNumberOfLights];
 
 float directionalShadow(int lightIndex)
 {
@@ -77,8 +78,8 @@ float directionalShadow(int lightIndex)
 
     vec3 lightDir = normalize(vec3(lights[lightIndex].position));
 
-    //float bias = max(0.002 * (1.0 - dot(normal, lightDir)), 0.001);
     float bias = max(0.001 * (1.0 - dot(normal, lightDir)), 0.0001);
+    //float bias = 0.05;
     // check whether current frag pos is in shadow
     float shadow = 0.0;
     vec2 texelSize = 1.0 / textureSize(shadowMaps[lightIndex], 0);
@@ -99,6 +100,36 @@ float directionalShadow(int lightIndex)
 
     return shadow;
 }
+
+float pointShadow(int lightIndex)
+{
+    vec3 fragToLight = vec3(fragSpacePos[lightIndex].xyz - lights[lightIndex].position.xyz);
+    
+    float closestDepth = texture(shadowCubeMaps[lightIndex], fragToLight).r;
+    closestDepth *= far_plane;
+    
+    float currentDepth = length(fragToLight);
+
+    float bias = 0.005;
+    float shadow = currentDepth < closestDepth ? 1.0 : 0.0; 
+    return shadow;
+}
+
+vec4 visualizeDepthCubeMap(int lightIndex)
+{
+    vec3 fragToLight = vec3(fragSpacePos[lightIndex] - lights[lightIndex].position);
+    
+    float closestDepth = texture(shadowCubeMaps[lightIndex], fragToLight).r;
+    closestDepth *= far_plane;
+    
+    float currentDepth = length(fragToLight);
+
+    float bias = 0.005;
+    float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0; 
+    
+    return vec4(vec3(closestDepth / far_plane), 1.0);
+}
+
 
 void main()
 {
@@ -145,6 +176,9 @@ void main()
         }
         else // point light or spotlight (or other kind of light) 
         {
+            if(useShadowMap) {
+                shadow = pointShadow(index);
+            }
             vec4 positionWorld = v_inv * position;
             vec3 positionToLightSource = vec3(light.position.xyz - positionWorld.xyz);
             float distance = length(positionToLightSource);
@@ -192,5 +226,5 @@ void main()
         }
     }
 
-    color = vec4(totalLighting.rgb, totalLighting.a * material.opacity);
+    color = visualizeDepthCubeMap(0);
 }

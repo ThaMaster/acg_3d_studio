@@ -50,6 +50,7 @@ void RenderVisitor::visit(Geometry& geo)
         state->apply();
         state->getShader()->setBool("useShadowMap", m_useShadowMap);
         m_camera->apply(state->getShader());
+        
         if(m_useShadowMap)
             m_rtt->applyDepthMaps(state->getShader());
 
