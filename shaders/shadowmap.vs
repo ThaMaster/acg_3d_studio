@@ -38,7 +38,7 @@ struct LightSource
 
   vec4 position;
 
-  mat4 lightMatrix;
+  mat4 lightMatrices[6];
 };
 
 // This is the uniforms that our program communicates with
@@ -52,8 +52,11 @@ void main()
   position = mv * vertex_position;
   
   if(useShadowMap) {
-    for(int i = 0; i < numberOfLights; i++)
-      fragSpacePos[i] = lights[i].lightMatrix * m * vertex_position;
+    for(int i = 0; i < numberOfLights; i++) {
+      if(lights[i].position.w == 0.0) {
+        fragSpacePos[i] = lights[i].lightMatrices[0] * m * vertex_position;
+      }
+    }
   }
 
   normal = normalize(m_3x3_inv_transp * vertex_normal);

@@ -32,7 +32,6 @@ namespace vr
     glm::vec4 getSpecular(void);
 
     void calcLightMatrices(vr::BoundingBox box, glm::vec2 nearFar);
-    glm::mat4 getLightMatrix(void);
     std::vector<glm::mat4> getLightMatrices(void);
 
   private:
@@ -45,7 +44,6 @@ namespace vr
     glm::vec4 m_diffuse;
     glm::vec4 m_specular;
 
-    glm::mat4 m_lightMatrix = glm::mat4(1.0f);
     std::vector<glm::mat4> m_lightMatrices;
 
     GLuint m_shadowMap = 0;

@@ -46,17 +46,19 @@ class RenderVisitor : public NodeVisitor
         void setUseShadowMap(bool b);
         bool getUseShadowMap(void);
 
-        void setLightMatrices(std::vector<glm::mat4> l_mats);
+        void setLightMatrices(std::vector<std::vector<glm::mat4>> l_mats);
         void setCurrentLight(int i_idx);
+        void setCurrentLightPos(glm::vec4 l_pos);
 
     private:
         bool m_depthPass = false;
         bool m_useShadowMap = true;
         std::shared_ptr<vr::Camera> m_camera;
         std::stack<glm::mat4> m_transformStack;
-        std::vector<glm::mat4> m_lightMatrices;
+        std::vector<std::vector<glm::mat4>> m_lightMatrices;
         std::shared_ptr<RenderToTexture> m_rtt;
         int m_currLight;
+        glm::vec4 m_currLightPos;
 };
 
 #endif

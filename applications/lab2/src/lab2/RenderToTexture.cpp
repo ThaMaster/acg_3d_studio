@@ -2,9 +2,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <sstream>
-
 #include "lab2/RenderToTexture.h"
 #include <vr/glErrorUtil.h>
+#include <glm/gtx/string_cast.hpp>
 
 RenderToTexture::RenderToTexture() 
 {
@@ -83,7 +83,7 @@ void RenderToTexture::defaultBuffer()
     CHECK_GL_ERROR_LINE_FILE();
 }
 
-void RenderToTexture::apply(std::shared_ptr<vr::Shader> s)
+void RenderToTexture::applyDepthMaps(std::shared_ptr<vr::Shader> s)
 {
     int unit = 0;
     for(auto tex : m_depthTextures) {
@@ -95,9 +95,20 @@ void RenderToTexture::apply(std::shared_ptr<vr::Shader> s)
     CHECK_GL_ERROR_LINE_FILE();
 }
 
-void RenderToTexture::applyLightMatrix(glm::mat4 lm)
+void RenderToTexture::applyDepthData(std::vector<glm::mat4> lms, glm::vec4 l_pos, float farPlane)
 {
-    m_depthShader->setMat4("lightMatrix", lm);
+    if(l_pos.w == 0.0) {
+        m_depthShader->setMat4("lightMatrices[0]", lms[0]);
+    } else {
+        for(int i = 0; i < 6; i++) {
+            std::stringstream matStr;
+            matStr << "lightMatrices[" << i << "].";
+            std::string matPref = matStr.str();
+            m_depthShader->setMat4(matPref, lms[i]);
+        }
+    }
+    //m_depthShader->setVec4("lightPos", l_pos);
+    //m_depthShader->setFloat("far_plane", farPlane);
 }
 
 std::shared_ptr<vr::Shader> RenderToTexture::getDepthShader(void) { return m_depthShader; }

@@ -171,11 +171,19 @@ void Scene::addGroundPlane()
   m_rootGroup->addChild(groundGroup);
 }
 
-void Scene::addLightMatrix(glm::mat4 lm) { m_lightMatrices.push_back(lm); }
-void Scene::updateLightMatrix(int idx, BoundingBox box, glm::vec2 nearFar)
+void Scene::addLightMatrices(std::vector<glm::mat4> lm) 
+{
+  std::vector<glm::mat4> newLightMatrices;
+  for(int i = 0; i < 6; i++) 
+    newLightMatrices.push_back(lm[i]);
+
+  m_lightMatrices.push_back(newLightMatrices); 
+}
+
+void Scene::updateLightMatrices(int idx, BoundingBox box, glm::vec2 nearFar)
 {
   m_sceneLights[idx]->calcLightMatrices(box, nearFar);
-  m_lightMatrices[idx] = m_sceneLights[idx]->getLightMatrix();
+  m_lightMatrices[idx] = m_sceneLights[idx]->getLightMatrices();
 }
 
 void Scene::render()
@@ -187,15 +195,11 @@ void Scene::render()
     m_renderVisitor->setDepthPass(true);
 
     for(int i = 0; i < m_sceneLights.size(); i++) {
-      if(m_sceneLights[i]->getPosition().w == 0.0) {
-        m_renderVisitor->getRTT()->switchToDepthTexture(i);
-      } else {
-        m_renderVisitor->getRTT()->switchToDepthCubemap(i);
-      }
+      m_renderVisitor->getRTT()->switchToDepthTexture(i);
+      m_renderVisitor->setCurrentLightPos(m_sceneLights[i]->getPosition());
       m_renderVisitor->setCurrentLight(i);
       m_renderVisitor->visit(*m_rootGroup);
     }
-
     m_renderVisitor->getRTT()->defaultBuffer();
     m_renderVisitor->setDepthPass(false);
   }

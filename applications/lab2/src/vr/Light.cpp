@@ -16,6 +16,9 @@ Light::Light() : enabled(true)
   m_att_constant = 1.0;
   m_att_linear = 0.09;
   m_att_quadratic = 0.032;
+  
+  for(int i = 0; i < 6; i++)
+    m_lightMatrices.push_back(glm::mat4(1.0f));
 }
 
 void Light::setPosition(glm::vec4 p) { m_position = p; }
@@ -27,7 +30,6 @@ glm::vec4 Light::getDiffuse(void) { return m_diffuse; }
 void Light::setSpecular(glm::vec4 s) { m_specular = s; }
 glm::vec4 Light::getSpecular(void) { return m_specular; }
 
-glm::mat4 Light::getLightMatrix(void) { return m_lightMatrix; }
 std::vector<glm::mat4> Light::getLightMatrices(void) { return m_lightMatrices; }
 
 void Light::createGeometry()
@@ -80,34 +82,47 @@ void Light::apply(std::shared_ptr<vr::Shader> shader, size_t idx)
   shader->setVec4(prefix + "specular", this->m_specular);
   shader->setVec4(prefix + "position", this->m_position);
   
-  if(m_position.w == 1) {
+  if(m_position.w == 0.0) {
+    shader->setMat4(prefix + "lightMatrices[0]", m_lightMatrices[0]);
+  } else {
     shader->setFloat(prefix + "constant", this->m_att_constant);
     shader->setFloat(prefix + "linear", this->m_att_linear);
     shader->setFloat(prefix + "quadratic", this->m_att_quadratic);
+
+    for(int i = 0; i < 6; i++) {
+      std::stringstream matStr;
+      matStr << "lightMatrices[" << i << "].";
+      std::string matPref = matStr.str();
+      shader->setMat4(prefix + matPref, this->m_lightMatrices[i]);
+    }
   }
 }
 
 void Light::calcLightMatrices(vr::BoundingBox box, glm::vec2 nearFar)
 {
+  std::vector<glm::mat4> newLightMatrices;
   glm::mat4 depthViewMatrix = glm::mat4(1.0f);
   glm::mat4 depthProjectionMatrix = glm::mat4(1.0f);
   auto radius = box.getRadius();
+  if(m_position.w == 0.0) {
+    depthViewMatrix = glm::lookAt(glm::vec3(m_position) + box.getCenter(), box.getCenter(), glm::vec3(0,1,0));
+    depthProjectionMatrix = glm::ortho<float>(-radius*1.5, radius*1.5, -radius*1.5, radius*1.5, -radius, nearFar.y);
+    newLightMatrices.push_back(depthProjectionMatrix * depthViewMatrix);
+  } else {
+    depthProjectionMatrix = glm::perspective(glm::radians(90.0f),(float)2048/(float)2048, -radius, nearFar.y);
+    newLightMatrices.push_back(depthProjectionMatrix * 
+      glm::lookAt(glm::vec3(m_position), glm::vec3(m_position) + glm::vec3( 1.0, 0.0, 0.0), glm::vec3(0.0, -1.0, 0.0)));
+    newLightMatrices.push_back(depthProjectionMatrix * 
+      glm::lookAt(glm::vec3(m_position), glm::vec3(m_position) + glm::vec3( -1.0, 0.0, 0.0), glm::vec3(0.0, -1.0, 0.0)));
+    newLightMatrices.push_back(depthProjectionMatrix * 
+      glm::lookAt(glm::vec3(m_position), glm::vec3(m_position) + glm::vec3( 0.0, 1.0, 0.0), glm::vec3(0.0, 0.0, -1.0)));
+    newLightMatrices.push_back(depthProjectionMatrix * 
+      glm::lookAt(glm::vec3(m_position), glm::vec3(m_position) + glm::vec3( 0.0, -1.0, 0.0), glm::vec3(0.0, 0.0, -1.0)));
+    newLightMatrices.push_back(depthProjectionMatrix * 
+      glm::lookAt(glm::vec3(m_position), glm::vec3(m_position) + glm::vec3( 0.0, 0.0, -1.0), glm::vec3(0.0, -1.0, 0.0)));
+    newLightMatrices.push_back(depthProjectionMatrix * 
+      glm::lookAt(glm::vec3(m_position), glm::vec3(m_position) + glm::vec3( 0.0, 0.0, -1.0), glm::vec3(0.0, -1.0, 0.0)));
+  }
+  m_lightMatrices = newLightMatrices;
 
-  depthViewMatrix = glm::lookAt(glm::vec3(m_position) + box.getCenter(), box.getCenter(), glm::vec3(0,1,0));
-  depthProjectionMatrix = glm::ortho<float>(-radius*1.5, radius*1.5, -radius*1.5, radius*1.5, -radius, nearFar.y);
-  m_lightMatrix = depthProjectionMatrix * depthViewMatrix;
-
-  depthProjectionMatrix = glm::perspective(glm::radians(90.0f),(float)2048/(float)2048, -radius, nearFar.y);
-  m_lightMatrices.push_back(depthProjectionMatrix * 
-    glm::lookAt(glm::vec3(m_position), glm::vec3(m_position) + glm::vec3( 1.0, 0.0, 0.0), glm::vec3(0.0, -1.0, 0.0)));
-  m_lightMatrices.push_back(depthProjectionMatrix * 
-    glm::lookAt(glm::vec3(m_position), glm::vec3(m_position) + glm::vec3( -1.0, 0.0, 0.0), glm::vec3(0.0, -1.0, 0.0)));
-  m_lightMatrices.push_back(depthProjectionMatrix * 
-    glm::lookAt(glm::vec3(m_position), glm::vec3(m_position) + glm::vec3( 0.0, 1.0, 0.0), glm::vec3(0.0, 0.0, -1.0)));
-  m_lightMatrices.push_back(depthProjectionMatrix * 
-    glm::lookAt(glm::vec3(m_position), glm::vec3(m_position) + glm::vec3( 0.0, -1.0, 0.0), glm::vec3(0.0, 0.0, -1.0)));
-  m_lightMatrices.push_back(depthProjectionMatrix * 
-    glm::lookAt(glm::vec3(m_position), glm::vec3(m_position) + glm::vec3( 0.0, 0.0, -1.0), glm::vec3(0.0, -1.0, 0.0)));
-  m_lightMatrices.push_back(depthProjectionMatrix * 
-    glm::lookAt(glm::vec3(m_position), glm::vec3(m_position) + glm::vec3( 0.0, 0.0, -1.0), glm::vec3(0.0, -1.0, 0.0)));
 }

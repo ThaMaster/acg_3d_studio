@@ -1,9 +1,10 @@
 #version 410 core
 
-// Ouput data
-//layout(location = 0) out float fragmentdepth;
+// in vec4 FragPos;
 
-void main(){
-    // Not really needed, OpenGL does it anyway
-    //gl_FragDepth = gl_FragCoord.z;
+// uniform vec4 lightPos;
+// uniform float far_plane;
+
+void main()
+{
 }

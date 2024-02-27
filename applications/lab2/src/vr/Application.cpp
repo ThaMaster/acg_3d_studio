@@ -75,7 +75,7 @@ bool Application::initResources(const std::string& model_filename, const std::st
     light1->setPosition(glm::vec4(0.0, 1.0, 1.0, 0.0));
     m_sceneRoot->getRootGroup()->getState()->addLight(light1);
     m_sceneRoot->addLight(light1);
-    m_sceneRoot->addLightMatrix(light1->getLightMatrix());
+    m_sceneRoot->addLightMatrices(light1->getLightMatrices());
     m_sceneRoot->getRTT()->addDepthMap();
   }
 
@@ -117,7 +117,7 @@ void Application::initView()
   getCamera()->setSpeed(0.7f * radius);
 
   for(int i = 0; i < m_sceneRoot->getLights().size(); i++) {
-    m_sceneRoot->updateLightMatrix(i, m_bbox, getCamera()->getNearFar());
+    m_sceneRoot->updateLightMatrices(i, m_bbox, getCamera()->getNearFar());
   }
 
   glEnable(GL_CULL_FACE);
@@ -147,7 +147,7 @@ void Application::processInput(GLFWwindow* window)
   std::shared_ptr<vr::Light> light = m_sceneRoot->getLight(m_selectedLight);
   if(light) {
     lightInput(window, light);
-    m_sceneRoot->updateLightMatrix(m_selectedLight, m_bbox, getCamera()->getNearFar());
+    m_sceneRoot->updateLightMatrices(m_selectedLight, m_bbox, getCamera()->getNearFar());
   }
 
   if(glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {

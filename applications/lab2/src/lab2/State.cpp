@@ -163,18 +163,3 @@ void State::applyTextures(std::shared_ptr<vr::Shader> shader)
     shader->setIntVector("fragTexture.textures", slots);
     shader->setIntVector("fragTexture.activeTextures", slotActive);
 }
-
-void State::applyLightMatrices(std::vector<glm::mat4> lms)
-{
-    // Maybe calculate multiple light matrices and set them as an array in shader????
-    if(m_shader) 
-    {
-        for(int i = 0; i < lms.size(); i++)
-        {
-            std::stringstream str;
-            str << "lights[" << i << "].";
-            std::string prefix = str.str();
-            m_shader->setMat4(prefix + "lightMatrix", lms[i]);
-        }
-    }
-}

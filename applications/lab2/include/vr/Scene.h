@@ -93,9 +93,9 @@ namespace vr
     std::vector<std::shared_ptr<Light>> getLights();
     void addLight(std::shared_ptr<Light> newLight);
 
-    std::vector<glm::mat4> getLightMatrices(void) { return m_lightMatrices; }
-    void addLightMatrix(glm::mat4 lm);
-    void updateLightMatrix(int idx, BoundingBox box, glm::vec2 nearFar);
+    std::vector<std::vector<glm::mat4>> getLightMatrices(void) { return m_lightMatrices; }
+    void addLightMatrices(std::vector<glm::mat4> lm);
+    void updateLightMatrices(int idx, BoundingBox box, glm::vec2 nearFar);
 
     std::shared_ptr<RenderToTexture> getRTT(void) { return m_renderToTexture; }
 
@@ -115,6 +115,6 @@ namespace vr
     std::shared_ptr<Shader> m_defaultShader;
 
     std::vector<std::shared_ptr<Light>> m_sceneLights;
-    std::vector<glm::mat4> m_lightMatrices;
+    std::vector<std::vector<glm::mat4>> m_lightMatrices;
   };
 }

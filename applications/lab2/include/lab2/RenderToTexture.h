@@ -20,16 +20,15 @@ class RenderToTexture
 
         std::shared_ptr<vr::Shader> getDepthShader(void);
 
-        void apply(std::shared_ptr<vr::Shader> s);
+        void applyDepthMaps(std::shared_ptr<vr::Shader> s);
 
-        void applyLightMatrix(glm::mat4 lms);
+        void applyDepthData(std::vector<glm::mat4> lms, glm::vec4 l_pos, float farPlane);
 
     private:
         std::shared_ptr<vr::Shader> m_depthShader;
         std::vector<GLuint> m_depthTextures;
         std::vector<GLuint> m_depthCubeMaps;
         GLuint m_depthBuffer;
-        int m_numRenderTargets = 0;
 };
 
 #endif

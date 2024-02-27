@@ -52,7 +52,7 @@ struct LightSource
 
   vec4 position;
 
-  mat4 lightMatrix;
+  mat4 lightMatrices[6];
 };
 
 // This is the uniforms that our program communicates with

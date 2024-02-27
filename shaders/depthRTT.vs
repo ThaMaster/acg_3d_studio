@@ -4,11 +4,15 @@
 layout(location = 0) in vec4 vertex_position;
 
 // Values that stay constant for the whole mesh.
-uniform mat4 lightMatrix;
+uniform mat4 lightMatrices[6];
 
 // model, view and projection transform
 uniform mat4 m;
+uniform vec4 lightPos;
 
-void main() {
-    gl_Position =  lightMatrix * m * vertex_position;
+void main() 
+{
+    if(lightPos.w == 0.0) {
+        gl_Position = lightMatrices[0] * m * vertex_position;
+    } 
 }
