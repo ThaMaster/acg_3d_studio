@@ -8,7 +8,7 @@
 
 RenderToTexture::RenderToTexture() 
 {
-    m_depthShader = std::shared_ptr<vr::Shader>(new vr::Shader("shaders/depthRTT.vs", "shaders/depthRTT.fs"));
+    m_depthShader = std::shared_ptr<vr::Shader>(new vr::Shader("shaders/depthRTT.vs", "shaders/depthRTT.fs", "shaders/depthRTT.gs"));
     CHECK_GL_ERROR_LINE_FILE();
     glGenFramebuffers(1, &m_depthBuffer);
 }
@@ -107,8 +107,8 @@ void RenderToTexture::applyDepthData(std::vector<glm::mat4> lms, glm::vec4 l_pos
             m_depthShader->setMat4(matPref, lms[i]);
         }
     }
-    //m_depthShader->setVec4("lightPos", l_pos);
-    //m_depthShader->setFloat("far_plane", farPlane);
+    m_depthShader->setVec4("lightPos", l_pos);
+    m_depthShader->setFloat("far_plane", farPlane);
 }
 
 std::shared_ptr<vr::Shader> RenderToTexture::getDepthShader(void) { return m_depthShader; }

@@ -14,5 +14,7 @@ void main()
 {
     if(lightPos.w == 0.0) {
         gl_Position = lightMatrices[0] * m * vertex_position;
-    } 
+    } else {
+        gl_Position = m * vertex_position;
+    }
 }
