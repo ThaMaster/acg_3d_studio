@@ -67,6 +67,14 @@ void RenderToTexture::switchToDepthTexture(unsigned int unit)
     CHECK_GL_ERROR_LINE_FILE();
 }
 
+/**
+ * @brief Function for switching to the depth frame buffer and
+ *        bind the depth cube map texture that should be created
+ *        for a specific light.
+ * 
+ * @param unit The texture unit that represents the
+ *             current lights depth texture / depth cubemap.
+ */
 void RenderToTexture::switchToDepthCubeMap(unsigned int unit)
 {
     CHECK_GL_ERROR_LINE_FILE();
@@ -78,6 +86,12 @@ void RenderToTexture::switchToDepthCubeMap(unsigned int unit)
     CHECK_GL_ERROR_LINE_FILE();
 }
 
+/**
+ * @brief Function for switching to the default frame buffer
+ *        that is used for rendering the scene as usual. This
+ *        function should be called AFTER the different depth
+ *        maps have been rendered and applied to textures.
+ */
 void RenderToTexture::defaultBuffer() 
 {
     CHECK_GL_ERROR_LINE_FILE();
@@ -88,7 +102,15 @@ void RenderToTexture::defaultBuffer()
     CHECK_GL_ERROR_LINE_FILE();
 }
 
-void RenderToTexture::applyDepthMaps(std::shared_ptr<vr::Shader> s)
+/**
+ * @brief Function for applying all the depth textures and depth
+ *        cube maps to a specific shader. Both textures will start
+ *        from texture unit 10 but will not be applied to the index
+ *        of the array if it is not set by the system.
+ * 
+ * @param shader The shader to set the depth maps.
+ */
+void RenderToTexture::applyDepthMaps(std::shared_ptr<vr::Shader> shader)
 {
     std::vector<int> cubeMapSlots;
     cubeMapSlots.resize(m_depthCubeMaps.size());
@@ -103,12 +125,12 @@ void RenderToTexture::applyDepthMaps(std::shared_ptr<vr::Shader> s)
         if(m_depthTextures[unit] != -1) {
             glActiveTexture(GL_TEXTURE10 + unit);
             glBindTexture(GL_TEXTURE_2D, m_depthTextures[unit]);
-            s->setInt(("shadowMaps[" + std::to_string(i) + "]").c_str(), 10 + unit);
+            shader->setInt(("shadowMaps[" + std::to_string(i) + "]").c_str(), 10 + unit);
         }
         if(m_depthCubeMaps[unit] != -1) {
             glActiveTexture(GL_TEXTURE10 + unit);
             glBindTexture(GL_TEXTURE_CUBE_MAP, m_depthCubeMaps[unit]);
-            s->setInt(("shadowCubeMaps[" + std::to_string(i) + "]").c_str(), 10 + unit);
+            shader->setInt(("shadowCubeMaps[" + std::to_string(i) + "]").c_str(), 10 + unit);
         }
         i++;
     }
@@ -126,9 +148,9 @@ void RenderToTexture::applyDepthData(std::vector<glm::mat4> lms, glm::vec4 l_pos
             std::string matPref = matStr.str();
             m_depthShader->setMat4(matPref, lms[i]);
         }
+        m_depthShader->setFloat("far_plane", farPlane);
     }
     m_depthShader->setVec4("lightPos", l_pos);
-    m_depthShader->setFloat("far_plane", farPlane);
 }
 
 std::shared_ptr<vr::Shader> RenderToTexture::getDepthShader(void) { return m_depthShader; }

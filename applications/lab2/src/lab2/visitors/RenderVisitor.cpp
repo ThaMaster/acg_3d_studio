@@ -52,9 +52,8 @@ void RenderVisitor::visit(Geometry& geo)
         state->getShader()->setFloat("far_plane", getCamera()->getNearFar().y);
         m_camera->apply(state->getShader());
         
-        if(m_useShadowMap) {
+        if(m_useShadowMap)
             m_rtt->applyDepthMaps(state->getShader());
-        }
 
         geo.draw(state->getShader(), m_transformStack.top(), m_depthPass);
     }

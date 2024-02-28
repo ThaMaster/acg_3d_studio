@@ -18,7 +18,7 @@ void main()
         }
         EndPrimitive();
 
-    } else {
+    } if(lightPos.w != 0.0) {
         for(int face = 0; face < 6; ++face)
         {
             gl_Layer = face; // built-in variable that specifies to which face we render.

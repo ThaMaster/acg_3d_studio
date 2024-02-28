@@ -369,8 +369,7 @@ void Geometry::draw(std::shared_ptr<vr::Shader> shader, const glm::mat4& modelMa
       );
     }
 
-  }
-  else {
+  } else {
     glEnableVertexAttribArray(m_attribute_v_coord);
     CHECK_GL_ERROR_LINE_FILE();
     glEnableVertexAttribArray(m_attribute_v_normal);
@@ -404,7 +403,7 @@ void Geometry::draw(std::shared_ptr<vr::Shader> shader, const glm::mat4& modelMa
   {
     if (!m_useVAO)
       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->m_ibo_elements);
-
+    CHECK_GL_ERROR_LINE_FILE();
     GLuint size = GLuint(this->elements.size());
     glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_SHORT, 0);
     CHECK_GL_ERROR_LINE_FILE();
