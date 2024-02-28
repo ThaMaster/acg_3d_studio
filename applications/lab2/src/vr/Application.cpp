@@ -32,23 +32,21 @@ bool Application::initResources(const std::string& model_filename, const std::st
   m_loadedVShader = vshader_filename;
   m_loadedFShader = fshader_filename;
   m_loadedFilename = model_filename;
-
   m_sceneRoot = std::shared_ptr<Scene>(new Scene);
 
   if (!m_sceneRoot->initShaders(vshader_filename, fshader_filename))
     return false;
+
   getCamera()->setScreenSize(m_screenSize);
   
   std::string ext = vr::FileSystem::getFileExtension(model_filename);
 
   // Ok lets load this as our own "scene file format"
-  if (ext == "xml" || ext == "XML")
-  {
+  if (ext == "xml" || ext == "XML") {
     if (!loadSceneFile(model_filename, m_sceneRoot))
       return false;
-  }
-  else 
-  {
+  } else {
+
     auto newRootGroup = new Group("root_group");
     m_sceneRoot->setDefaultRootState(*newRootGroup);
   
@@ -63,7 +61,6 @@ bool Application::initResources(const std::string& model_filename, const std::st
       m_sceneRoot->setRootGroup(newRootGroup);
     }
   }
-
   if(m_sceneRoot->getUseGroundPlane())
     m_sceneRoot->addGroundPlane();
 
@@ -75,7 +72,6 @@ bool Application::initResources(const std::string& model_filename, const std::st
     light1->setPosition(glm::vec4(0.0, 1.0, 1.0, 0.0));
     m_sceneRoot->getRootGroup()->getState()->addLight(light1);
     m_sceneRoot->addLight(light1);
-    m_sceneRoot->addLightMatrices(light1->getLightMatrices());
     m_sceneRoot->getRTT()->addDepthMap();
   }
 

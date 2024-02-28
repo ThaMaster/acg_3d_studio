@@ -44,7 +44,7 @@ void RenderVisitor::visit(Geometry& geo)
     m_stateStack.push(m_stateStack.top()->merge(geo.getState()));
     auto state = m_stateStack.top();
     if(m_depthPass) {
-        m_rtt->applyDepthData(m_lightMatrices[m_currLight], m_currLightPos, m_camera->getNearFar().y);
+        m_rtt->applyDepthData(m_currLight->getLightMatrices(), m_currLight->getPosition(), m_camera->getNearFar().y);
         geo.draw(m_rtt->getDepthShader(), m_transformStack.top(), m_depthPass);
     } else {
         state->apply();
@@ -87,7 +87,4 @@ bool RenderVisitor::getUseShadowMap(void) { return m_useShadowMap; }
 void RenderVisitor::setRTT(std::shared_ptr<RenderToTexture> rtt) {m_rtt = rtt; }
 std::shared_ptr<RenderToTexture> RenderVisitor::getRTT(void) { return m_rtt; }
 
-void RenderVisitor::setLightMatrices(std::vector<std::vector<glm::mat4>> l_mats) { m_lightMatrices = l_mats; }
-
-void RenderVisitor::setCurrentLight(int l_idx) { m_currLight = l_idx; }
-void RenderVisitor::setCurrentLightPos(glm::vec4 l_pos) { m_currLightPos = l_pos; }
+void RenderVisitor::setCurrentLight(std::shared_ptr<vr::Light> light) { m_currLight = light; }

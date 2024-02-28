@@ -9,9 +9,10 @@
 RenderToTexture::RenderToTexture() 
 {
     m_depthShader = std::shared_ptr<vr::Shader>(new vr::Shader("shaders/depthRTT.vs", "shaders/depthRTT.fs", "shaders/depthRTT.gs"));
-    m_depthTextures.resize(10);
-    m_depthCubeMaps.resize(10);
-
+    for(int i = 0; i < 10; i++) {
+        m_depthTextures.push_back(-1);
+        m_depthCubeMaps.push_back(-1);
+    }
     CHECK_GL_ERROR_LINE_FILE();
     glGenFramebuffers(1, &m_depthBuffer);
 }
@@ -89,20 +90,26 @@ void RenderToTexture::defaultBuffer()
 
 void RenderToTexture::applyDepthMaps(std::shared_ptr<vr::Shader> s)
 {
+    std::vector<int> cubeMapSlots;
+    cubeMapSlots.resize(m_depthCubeMaps.size());
+    std::vector<int> mapSlots; 
+    mapSlots.resize(m_depthTextures.size());
     int unit = 0;
     int i = 0;
-    for(unit; unit < m_depthTextures.size(); unit++ ) {
-        glActiveTexture(GL_TEXTURE10 + unit);
-        glBindTexture(GL_TEXTURE_2D, m_depthTextures[i]);
-        s->setInt(("shadowMaps[" + std::to_string(i) + "]").c_str(), 10 + unit);
-        i++;
-    }
+    for(int unit = 0; unit < m_depthTextures.size(); unit++ ) {
+        cubeMapSlots[unit] = m_depthCubeMaps[unit] != -1;
+        mapSlots[unit] = m_depthTextures[unit] != -1;
 
-    i = 0;
-    for(unit; unit < m_depthCubeMaps.size(); unit++ ) {
-        glActiveTexture(GL_TEXTURE10 + unit);
-        glBindTexture(GL_TEXTURE_CUBE_MAP, m_depthCubeMaps[i]);
-        s->setInt(("shadowCubeMaps[" + std::to_string(i) + "]").c_str(), 10 + unit);
+        if(m_depthTextures[unit] != -1) {
+            glActiveTexture(GL_TEXTURE10 + unit);
+            glBindTexture(GL_TEXTURE_2D, m_depthTextures[unit]);
+            s->setInt(("shadowMaps[" + std::to_string(i) + "]").c_str(), 10 + unit);
+        }
+        if(m_depthCubeMaps[unit] != -1) {
+            glActiveTexture(GL_TEXTURE10 + unit);
+            glBindTexture(GL_TEXTURE_CUBE_MAP, m_depthCubeMaps[unit]);
+            s->setInt(("shadowCubeMaps[" + std::to_string(i) + "]").c_str(), 10 + unit);
+        }
         i++;
     }
     CHECK_GL_ERROR_LINE_FILE();

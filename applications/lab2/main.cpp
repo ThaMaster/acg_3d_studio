@@ -132,7 +132,7 @@ int main(int argc, char** argv)
     model_filename = argv[1];
 
   std::string v_shader_filename = "shaders/shadowmap.vs";
-  std::string  f_shader_filename = "shaders/shadowmap.fs";
+  std::string f_shader_filename = "shaders/shadowmap.fs";
 
   if (argc < 2 ) {
     std::cerr << "Loading default scene! " << model_filename << std::endl;

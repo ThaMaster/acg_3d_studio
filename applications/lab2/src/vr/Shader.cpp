@@ -48,7 +48,6 @@ Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath, c
   std::string vertexCode;
   std::string fragmentCode;
   std::string geometryCode;  
-  
   try
   {
     vertexCode = readFileContent(vertexPath);

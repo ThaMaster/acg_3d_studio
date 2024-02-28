@@ -711,9 +711,7 @@ std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node, std::shared_pt
     if(node_type == "light") {
       auto newLight = parseStateLight(node);
       newState->addLight(newLight);
-      scene->addLight(newLight);
-      scene->addLightMatrices(newLight->getLightMatrices());
-      
+      scene->addLight(newLight);      
       if(newLight->getPosition().w == 0.0)
         scene->getRTT()->addDepthMap();
       else
