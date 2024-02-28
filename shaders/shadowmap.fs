@@ -105,13 +105,26 @@ float pointShadow(int lightIndex)
 {
     vec3 fragToLight = vec3(fragSpacePos[lightIndex].xyz - lights[lightIndex].position.xyz);
     
-    float closestDepth = texture(shadowCubeMaps[lightIndex], fragToLight).r;
-    closestDepth *= far_plane;
-    
     float currentDepth = length(fragToLight);
 
-    float bias = 0.005;
-    float shadow = currentDepth < closestDepth ? 1.0 : 0.0; 
+    float shadow  = 0.0;
+    float bias    = 0.05; 
+    float samples = 4.0;
+    float offset  = 0.1;
+    for(float x = -offset; x < offset; x += offset / (samples * 0.5))
+    {
+        for(float y = -offset; y < offset; y += offset / (samples * 0.5))
+        {
+            for(float z = -offset; z < offset; z += offset / (samples * 0.5))
+            {
+                float closestDepth = texture(shadowCubeMaps[lightIndex], fragToLight + vec3(x, y, z)).r; 
+                closestDepth *= far_plane;   // undo mapping [0;1]
+                if(currentDepth - bias > closestDepth)
+                    shadow += 1.0;
+            }
+        }
+    }
+    shadow /= (samples * samples * samples);
     return shadow;
 }
 
@@ -226,5 +239,5 @@ void main()
         }
     }
 
-    color = visualizeDepthCubeMap(0);
+    color = vec4(totalLighting.rgb, totalLighting.a * material.opacity);
 }

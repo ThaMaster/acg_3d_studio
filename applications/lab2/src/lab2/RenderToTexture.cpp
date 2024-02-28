@@ -97,6 +97,7 @@ void RenderToTexture::applyDepthMaps(std::shared_ptr<vr::Shader> s)
         s->setInt(("shadowMaps[" + std::to_string(i) + "]").c_str(), 10 + unit);
         i++;
     }
+
     i = 0;
     for(unit; unit < m_depthCubeMaps.size(); unit++ ) {
         glActiveTexture(GL_TEXTURE10 + unit);
