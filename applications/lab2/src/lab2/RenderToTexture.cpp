@@ -23,6 +23,7 @@ bool RenderToTexture::addDepthMap()
 {
     GLuint newDepthTexture;
     glGenTextures(1, &newDepthTexture);
+	glActiveTexture(GL_TEXTURE10 + m_num_depth_components);
     glBindTexture(GL_TEXTURE_2D, newDepthTexture);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, 2048, 2048, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -41,6 +42,7 @@ bool RenderToTexture::addDepthCubeMap()
 {
     GLuint newDepthCubemap;
     glGenTextures(1, &newDepthCubemap);
+	glActiveTexture(GL_TEXTURE10 + m_num_depth_components);
     glBindTexture(GL_TEXTURE_CUBE_MAP, newDepthCubemap);
     for(unsigned int i = 0; i < 6; ++i) {
         glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_DEPTH_COMPONENT, 2048, 2048, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
@@ -49,7 +51,9 @@ bool RenderToTexture::addDepthCubeMap()
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE); 
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+
     m_depthCubeMaps[m_num_depth_components] = newDepthCubemap;
     m_num_depth_components++;
     return true;
@@ -63,7 +67,6 @@ void RenderToTexture::switchToDepthTexture(unsigned int unit)
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depthTextures[unit], 0);
     glViewport(0,0,2048,2048);
     glClear(GL_DEPTH_BUFFER_BIT);
-    glCullFace(GL_FRONT);
     CHECK_GL_ERROR_LINE_FILE();
 }
 
@@ -112,21 +115,15 @@ void RenderToTexture::defaultBuffer()
  */
 void RenderToTexture::applyDepthMaps(std::shared_ptr<vr::Shader> shader)
 {
-    std::vector<int> cubeMapSlots;
-    cubeMapSlots.resize(m_depthCubeMaps.size());
-    std::vector<int> mapSlots; 
-    mapSlots.resize(m_depthTextures.size());
-    int unit = 0;
     int i = 0;
-    for(int unit = 0; unit < m_depthTextures.size(); unit++ ) {
-        cubeMapSlots[unit] = m_depthCubeMaps[unit] != -1;
-        mapSlots[unit] = m_depthTextures[unit] != -1;
+    for(int unit = 0; unit < m_num_depth_components; unit++ ) {
 
         if(m_depthTextures[unit] != -1) {
             glActiveTexture(GL_TEXTURE10 + unit);
             glBindTexture(GL_TEXTURE_2D, m_depthTextures[unit]);
             shader->setInt(("shadowMaps[" + std::to_string(i) + "]").c_str(), 10 + unit);
         }
+
         if(m_depthCubeMaps[unit] != -1) {
             glActiveTexture(GL_TEXTURE10 + unit);
             glBindTexture(GL_TEXTURE_CUBE_MAP, m_depthCubeMaps[unit]);

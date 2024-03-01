@@ -1,88 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<scene useGround="false">
+<scene useGround="true">
     <state name="sun_light_state">
-        <light position="10.0 5.0 5.0 0.0" ambient="0.0 0.0 0.0 1.0" specular="1.0 1.0 1.0 1.0" diffuse="1.0 1.0 1.0 1.0"/>
-        <light position="35 5 -17.5 1.0" specular="1.0 1.0 0.0 1.0" diffuse="1.0 1.0 0.0 1.0" attenuation="1.0 0.07 0.017"/>
-        <light position="40 5 -40 1.0" specular="0.0 0.5 1.0 1.0" diffuse="0.0 0.5 1.0 1.0" attenuation="1.0 0.09 0.032"/>
+        <light position="1.5 1.0 1.5 0.0" ambient="0.0 0.0 0.0 1.0" specular="1.0 1.0 1.0 1.0" diffuse="1.0 1.0 1.0 1.0"/>
+        <light position="0.0 4.0 1.0 1.0" ambient="0.0 0.0 0.0 1.0" specular="1.0 0.0 0.0 1.0" diffuse="1.0 0.0 0.0 1.0"/>
+        <light position="4.0 4.0 1.0 1.0" ambient="0.0 0.0 0.0 1.0" specular="0.0 1.0 0.0 1.0" diffuse="0.0 1.0 0.0 1.0"/>
+        <light position="8.0 4.0 1.0 1.0" ambient="0.0 0.0 0.0 1.0" specular="0.0 0.0 1.0 1.0" diffuse="0.0 0.0 1.0 1.0"/>
     </state>
-    <geometry path="models/House01/House01.obj"/>
-    <transform translate="22 15 -60" rotate="45 0 0" scale="0.04 0.04 0.04">
-        <geometry path="models/5426_C3PO_Robot_Star_Wars.obj"/>
-    </transform>
-    <transform translate="22 10 -32" rotate="-45 180 0" scale="0.04 0.04 0.04">
+    <transform translate="4 5.1 0" rotate="0 0 0" scale="0.04 0.04 0.04">
+        <update>
+            <rotate speed="-4" axis="0 1 0"/>
+        </update>
         <geometry path="models/Altair_Model/altair.3ds"/>
     </transform>
-    <transform translate="14 5.5 -43" scale="0.8 0.8 0.8">
-        <transform translate="1 0 0">
-            <geometry name="geo1" path="models/monkey.obj"/>
-        </transform>
-        <transform translate="0 0 3">
+    <group name="monkey_group">
+        <transform translate="2.0 2.0 2.0" scale="0.6 0.6 0.6">
             <update>
-                <rotate speed="1" axis="0 1 0"/>
-                <translate speed="1" axis="0.05 0 0"/>
+                <translate speed="0.1" axis="0 0 1"/>
+                <rotate speed="1.5" axis="0 1 0"/>
             </update>
-            <geometry name="geo2" path="models/monkey.obj"/>
+            <geometry name="monkey_1" path="models/monkey.obj"/>
         </transform>
-    </transform>
-
-    <transform translate="22 15 -32" rotate="0 45 90">
+        <transform translate="6.0 2.0 2.0" scale="0.6 0.6 0.6">
+            <update>
+                <translate speed="-0.1" axis="0 0 1"/>
+                <rotate speed="1.5" axis="0 1 0"/>
+            </update>
+            <geometry name="monkey_1" path="models/monkey.obj"/>
+        </transform>
+    </group>
+    <group name="concrete_group">
+        <transform translate="11.0 0.0 4.0" scale="1.5 1.5 1.5">
+            <geometry name="concrete_1" path="models/concrete/concrete_road_barrier_02_4k.gltf"/>
+        </transform>
+        <transform translate="-3.0 0.0 4.0" scale="1.5 1.5 1.5">
+            <geometry name="concrete_2" path="models/concrete/concrete_road_barrier_02_4k.gltf"/>
+        </transform>
+    </group>
+    <group name="pillar_group">
         <state>
-            <material ambient="1 1 1" specular=" 0 0 1" diffuse=" 0 0 1" />
-            <texture path="textures/7997.jpg"/>
+            <material>
+                <texture mapType="diffuse" path="textures/container2.png"/>
+                <texture mapType="specular" path="textures/container2_specular.png"/>
+            </material>
         </state>
-        <transform translate="0 0 0">
-            <update>
-                <rotate speed="1" axis="0 1 0"/>
-            </update>
-            <geometry name="ball" path="models/sphere.obj"/>
+        <transform translate="0.0 2.5 -4.0" scale="8.0 5.0 0.25">
+            <geometry name="wall_1" path="models/box.obj" />
         </transform>
-        <transform translate="2 0 0">
-            <update>
-                <rotate speed="1" axis="0 1 0"/>
-            </update>
-            <geometry name="ball2" path="models/sphere.obj"/>
+        <transform translate="8.0 2.5 -4.0" scale="8.0 5.0 0.25">
+            <geometry name="wall_1" path="models/box.obj" />
         </transform>
-        <transform translate="4 0 0">
-            <update>
-                <rotate speed="1" axis="0 1 0"/>
-            </update>
-            <geometry name="ball3" path="models/sphere.obj"/>
+        <transform translate="-4.0 2.5 0.0" scale="0.25 5.0 8.0">
+            <geometry name="wall_2" path="models/box.obj" />
         </transform>
-    </transform>
-    <transform name="trans1" translate="5 3 -4" rotate="0 -90 0" scale="0.01 0.01 0.01">
-        <lod name="cow1" maxDistance="80">
-            <geometry name="cow_1" path="models/cows/cow_0.99.obj"/>
-            <geometry name="cow_2" path="models/cows/cow_0.5.obj"/>
-            <geometry name="cow_3" path="models/cows/cow_0.3.obj"/>
-            <geometry name="cow_4" path="models/cows/cow_0.1.obj"/>
-            <geometry name="cow_5" path="models/cows/cow_0.05.obj"/>
-            <geometry name="cow_6" path="models/cows/cow_0.01.obj"/>
-        </lod>
-    </transform>
-    <transform name="trans1" translate="35 5 -20" rotate="0 90 0" scale="0.01 0.01 0.01">
-        <state>
-            <material ambient="1.0 1.0 1.0" specular="0.4 0.1 0.2" diffuse="0.3 0.2 0.6"/>
-        </state>
-        <lod name="cow2" maxDistance="80">
-            <geometry name="cow_1" path="models/cows/cow_0.99.obj"/>
-            <geometry name="cow_2" path="models/cows/cow_0.5.obj"/>
-            <geometry name="cow_3" path="models/cows/cow_0.3.obj"/>
-            <geometry name="cow_4" path="models/cows/cow_0.1.obj"/>
-            <geometry name="cow_5" path="models/cows/cow_0.05.obj"/>
-            <geometry name="cow_6" path="models/cows/cow_0.01.obj"/>
-        </lod>
-    </transform>
-    <transform name="trans1" translate="35 5 -15" rotate="0 -90 0" scale="0.01 0.01 0.01">
-        <state>
-            <material ambient="1.0 1.0 1.0" specular="1.0 0.1 0.2" diffuse="1.0 0.2 0.6"/>
-        </state>
-        <lod name="cow3" maxDistance="80">
-            <geometry name="cow_1" path="models/cows/cow_0.99.obj"/>
-            <geometry name="cow_2" path="models/cows/cow_0.5.obj"/>
-            <geometry name="cow_3" path="models/cows/cow_0.3.obj"/>
-            <geometry name="cow_4" path="models/cows/cow_0.1.obj"/>
-            <geometry name="cow_5" path="models/cows/cow_0.05.obj"/>
-            <geometry name="cow_6" path="models/cows/cow_0.01.obj"/>
-        </lod>
-    </transform>
+        <transform translate="12.0 2.5 0.0" scale="0.25 5.0 8.0">
+            <geometry name="wall_2" path="models/box.obj" />
+        </transform>
+        <transform translate="0.0 2.5 2.0" scale="0.25.0 5.0 4.0">
+            <geometry name="half_wall_1" path="models/box.obj" />
+        </transform>
+        <transform translate="4.0 2.5 2.0" scale="0.25.0 5.0 4.0">
+            <geometry name="half_wall_2" path="models/box.obj" />
+        </transform>
+        <transform translate="8.0 2.5 2.0" scale="0.25.0 5.0 4.0">
+            <geometry name="half_wall_3" path="models/box.obj" />
+        </transform>
+        <transform translate="0.0 5.0 0.0" scale="8.0 0.25 8.0">
+            <geometry name="ceiling_1" path="models/box.obj" />
+        </transform>
+        <transform translate="8.0 5.0 0.0" scale="8.0 0.25 8.0">
+            <geometry name="ceiling_2" path="models/box.obj" />
+        </transform>
+    </group>
+    <group name="lod_group">
+        <transform translate="0 5 0" rotate="0 90 0" scale="0.01 0.01 0.01">
+            <state>
+                <material ambient="1.0 1.0 1.0" specular="0.4 0.1 0.2" diffuse="0.3 0.2 0.6"/>
+            </state>
+            <lod name="cow1" maxDistance="50">
+                <geometry name="cow_1" path="models/cows/cow_0.99.obj"/>
+                <geometry name="cow_2" path="models/cows/cow_0.5.obj"/>
+                <geometry name="cow_3" path="models/cows/cow_0.3.obj"/>
+                <geometry name="cow_4" path="models/cows/cow_0.1.obj"/>
+                <geometry name="cow_5" path="models/cows/cow_0.05.obj"/>
+                <geometry name="cow_6" path="models/cows/cow_0.01.obj"/>
+            </lod>
+        </transform>
+        <transform translate="8 5 0" rotate="0 90 0" scale="0.01 0.01 0.01">
+            <state>
+                <material ambient="1.0 1.0 1.0" specular="0.2 0.8 0.8" diffuse="0.3 0.8 0.8"/>
+            </state>
+            <lod name="cow1" maxDistance="50">
+                <geometry name="cow_1" path="models/cows/cow_0.99.obj"/>
+                <geometry name="cow_2" path="models/cows/cow_0.5.obj"/>
+                <geometry name="cow_3" path="models/cows/cow_0.3.obj"/>
+                <geometry name="cow_4" path="models/cows/cow_0.1.obj"/>
+                <geometry name="cow_5" path="models/cows/cow_0.05.obj"/>
+                <geometry name="cow_6" path="models/cows/cow_0.01.obj"/>
+            </lod>
+        </transform>
+    </group>
 </scene>

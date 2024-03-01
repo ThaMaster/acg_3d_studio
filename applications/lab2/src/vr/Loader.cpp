@@ -143,10 +143,10 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
       }
       else {
         std::shared_ptr<vr::Texture> texture = std::make_shared<vr::Texture>();
-        if (!texture->create(diffuseTexPath.c_str(), texUnit))
+        if (!texture->create(diffuseTexPath.c_str(), 1))
           std::cerr << "Error creating texture: " << diffuseTexPath << std::endl;
         else {
-          material->setTexture(texture, texUnit);
+          material->setTexture(texture, 1);
           texUnit++;
         }
       }
