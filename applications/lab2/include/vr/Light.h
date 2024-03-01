@@ -31,6 +31,14 @@ namespace vr
     void setSpecular(glm::vec4 s);
     glm::vec4 getSpecular(void);
 
+    /**
+     * @brief Calculates the matrices to transform the fragments from
+     *        world space to light space. The matrices will then be
+     *        stored in the lights matrix vector.
+     * 
+     * @param box     The bounding box of the scene.
+     * @param nearFar The near and far plane of the view frustum.
+     */
     void calcLightMatrices(vr::BoundingBox box, glm::vec2 nearFar);
     std::vector<glm::mat4> getLightMatrices(void);
 

@@ -20,6 +20,7 @@
  * 
  * Version information:
  *      2024-02-12: v1.0, first version. 
+ *      2024-03-01: v1.1, second version, can now handle multiple textures.
  */
 class State 
 {
@@ -49,30 +50,22 @@ class State
          */
         void apply();
 
-        void setShader(std::shared_ptr<vr::Shader> s);
-        std::shared_ptr<vr::Shader> getShader(void);
-
-        /**
-         * @brief Function for setting a material. If the current
-         *        state does not have a created material, set the
-         *        material directly to the incoming material. Otherwise,
-         *        just set all the material coefficients from the incomming
-         *        material.
-         * 
-         * @param m The material to set to the current one.
-         */
-        void setMaterial(std::shared_ptr<vr::Material> m);
-        std::shared_ptr<vr::Material> getMaterial(void);
-
-
         /**
          * @brief Initializes the loaded textures with the correct
          *        unit indices. This will be useful when the program
          *        starts supporting multi-texturing.
          */
         void initTextures(void);
+
         void addTexture(std::shared_ptr<vr::Texture> t);
         void setTextures(std::vector<std::shared_ptr<vr::Texture>> textures);
+
+        /**
+         * @brief Applies all the textures on the current state to
+         *        the specified shader.
+         * 
+         * @param shader The shader to apply the textures to.
+         */
         void applyTextures(std::shared_ptr<vr::Shader> shader);
         std::vector<std::shared_ptr<vr::Texture>> getTextures(void);
 
@@ -84,6 +77,12 @@ class State
 
         void setCullFace(std::shared_ptr<bool> b);
         std::shared_ptr<bool> getCullFace(void);
+
+        void setShader(std::shared_ptr<vr::Shader> s);
+        std::shared_ptr<vr::Shader> getShader(void);
+        
+        void setMaterial(std::shared_ptr<vr::Material> m);
+        std::shared_ptr<vr::Material> getMaterial(void);
 
         std::string getStateName(); 
 

@@ -15,6 +15,8 @@
  * 
  * Version information:
  *      2024-02-12: v1.0, first version. 
+ *      2024-03-01: v1.1, second version, now ignores to upload some values if the
+ *                                        current render is a depth render.
  */
 class Geometry : public Node
 {        

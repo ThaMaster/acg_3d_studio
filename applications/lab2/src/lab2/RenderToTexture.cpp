@@ -19,7 +19,7 @@ RenderToTexture::RenderToTexture()
 
 RenderToTexture::~RenderToTexture() {}
 
-bool RenderToTexture::addDepthMap()
+void RenderToTexture::addDepthMap()
 {
     GLuint newDepthTexture;
     glGenTextures(1, &newDepthTexture);
@@ -35,10 +35,9 @@ bool RenderToTexture::addDepthMap()
 
     m_depthTextures[m_num_depth_components] = newDepthTexture;
     m_num_depth_components++;
-    return true;
 }
 
-bool RenderToTexture::addDepthCubeMap()
+void RenderToTexture::addDepthCubeMap()
 {
     GLuint newDepthCubemap;
     glGenTextures(1, &newDepthCubemap);
@@ -56,7 +55,6 @@ bool RenderToTexture::addDepthCubeMap()
 
     m_depthCubeMaps[m_num_depth_components] = newDepthCubemap;
     m_num_depth_components++;
-    return true;
 }
 
 void RenderToTexture::switchToDepthTexture(unsigned int unit)
