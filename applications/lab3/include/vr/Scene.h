@@ -16,6 +16,7 @@
 #include "lab3/nodes/Geometry.h"
 #include "lab3/visitors/RenderVisitor.h"
 #include "lab3/visitors/UpdateVisitor.h"
+#include "lab3/Quad.h"
 
 namespace vr
 {
@@ -80,7 +81,8 @@ namespace vr
     }
 
     Group* createDefaultScene();
-    Geometry* buildGeometry(std::string geo_name, std::vector<glm::vec3> vertices, std::vector<GLshort> indices, std::vector<glm::vec3> normals, std::vector<glm::vec2> texCoords);
+    Geometry* buildGeometry(std::string geo_name, std::vector<glm::vec3> vertices, std::vector<GLushort> indices, std::vector<glm::vec3> normals, std::vector<glm::vec2> texCoords);
+    Quad* buildQuad(std::vector<glm::vec4> vertices, std::vector<GLushort> indices, std::vector<glm::vec2> texCoords);
 
     void addGroundPlane();
     void setUseShadowMap(bool b);
@@ -98,6 +100,8 @@ namespace vr
 
     std::shared_ptr<Shader> getDefaultShader(void) { return m_defaultShader; }
 
+    void addQuad(void);
+
   private:
     std::shared_ptr<RenderToTexture> m_renderToTexture;
     bool m_useShadowMap = true;
@@ -112,5 +116,6 @@ namespace vr
     std::shared_ptr<Shader> m_defaultShader;
 
     std::vector<std::shared_ptr<Light>> m_sceneLights;
+    std::vector<std::shared_ptr<Quad>> m_quads;
   };
 }

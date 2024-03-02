@@ -47,7 +47,7 @@ void Scene::addLight(std::shared_ptr<Light> newLight) { m_sceneLights.push_back(
 
 Scene::~Scene() {}
 
-Geometry* Scene::buildGeometry(std::string geo_name, std::vector<glm::vec3> vertices, std::vector<GLshort> indices, std::vector<glm::vec3> normals, std::vector<glm::vec2> texCoords)
+Geometry* Scene::buildGeometry(std::string geo_name, std::vector<glm::vec3> vertices, std::vector<GLushort> indices, std::vector<glm::vec3> normals, std::vector<glm::vec2> texCoords)
 {
   auto geometry = new Geometry(geo_name);
 
@@ -66,6 +66,15 @@ Geometry* Scene::buildGeometry(std::string geo_name, std::vector<glm::vec3> vert
   return geometry;
 }
 
+Quad* Scene::buildQuad(std::vector<glm::vec4> vertices, std::vector<GLushort> indices, std::vector<glm::vec2> texCoords)
+{
+  auto newQuad = new Quad();
+  newQuad->setVertices(vertices);
+  newQuad->setElements(indices);
+  newQuad->setTexCoords(texCoords);
+  return newQuad;
+}
+
 Group* Scene::createDefaultScene()
 {
   auto defaultScene = new Group("DefaultSceneRoot");
@@ -80,7 +89,7 @@ Group* Scene::createDefaultScene()
     glm::vec3(-1.0f, 1.0f, 1.0f)
   };
 
-  std::vector<GLshort> indices = {
+  std::vector<GLushort> indices = {
     0, 1, 2, 2, 3, 0,
     1, 5, 6, 6, 2, 1,
     7, 6, 5, 5, 4, 7,
@@ -139,7 +148,7 @@ void Scene::addGroundPlane()
     glm::vec3(-1000.0f, 0.0f, 1000.0f)
   };
 
-  std::vector<GLshort> indices = {
+  std::vector<GLushort> indices = {
     0, 1, 2,
     2, 3, 0
   };
@@ -174,6 +183,31 @@ void Scene::addGroundPlane()
 void Scene::updateLightMatrices(int idx, BoundingBox box, glm::vec2 nearFar)
 {
   m_sceneLights[idx]->calcLightMatrices(box, nearFar);
+}
+
+void Scene::addQuad(void)
+{
+  std::vector<glm::vec4> vertices = {
+    glm::vec4(-1.0f, -1.0f, 0.0f, 1.0), // Bottom Left
+    glm::vec4(1.0f, -1.0f, 0.0f, 1.0),  // Bottom Right
+    glm::vec4(1.0f, 1.0f, 0.0f, 1.0),   // Top Right
+    glm::vec4(-1.0f, 1.0f, 0.0f, 1.0)   // Top Left
+  };
+
+  std::vector<GLushort> indices = {
+      0, 1, 2, // First Triangle
+      2, 3, 0  // Second Triangle
+  };
+
+  std::vector<glm::vec2> texCoords = {
+      glm::vec2(0.0f, 0.0f), // Bottom Left
+      glm::vec2(1.0f, 0.0f), // Bottom Right
+      glm::vec2(1.0f, 1.0f), // Top Right
+      glm::vec2(0.0f, 1.0f)  // Top Left
+  };
+
+  auto newQuad = std::shared_ptr<Quad>(buildQuad(vertices, indices, texCoords));
+  m_quads.push_back(newQuad);
 }
 
 void Scene::render()

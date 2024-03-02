@@ -74,7 +74,7 @@ GLFWwindow* initializeWindows(int width, int height)
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-  window = glfwCreateWindow(width, height, "ObjViewer", NULL, NULL);
+  window = glfwCreateWindow(width, height, "Shadow Mapping", NULL, NULL);
   if (!window)
   {
     glfwTerminate();

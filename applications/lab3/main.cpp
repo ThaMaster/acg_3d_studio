@@ -74,7 +74,7 @@ GLFWwindow* initializeWindows(int width, int height)
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-  window = glfwCreateWindow(width, height, "ObjViewer", NULL, NULL);
+  window = glfwCreateWindow(width, height, "Deferred Rendering", NULL, NULL);
   if (!window)
   {
     glfwTerminate();
@@ -131,8 +131,8 @@ int main(int argc, char** argv)
   if (argc > 1)
     model_filename = argv[1];
 
-  std::string v_shader_filename = "shaders/shadowmap.vs";
-  std::string f_shader_filename = "shaders/shadowmap.fs";
+  std::string v_shader_filename = "shaders/deferredShader.vs";
+  std::string f_shader_filename = "shaders/deferredShader.fs";
 
   if (argc < 2 ) {
     std::cerr << "Loading default scene! " << model_filename << std::endl;

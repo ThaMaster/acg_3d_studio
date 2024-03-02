@@ -223,6 +223,30 @@ src/glad.c.s:
 	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab3/CMakeFiles/lab3.dir/build.make applications/lab3/CMakeFiles/lab3.dir/src/glad.c.s
 .PHONY : src/glad.c.s
 
+src/lab3/Quad.o: src/lab3/Quad.cpp.o
+.PHONY : src/lab3/Quad.o
+
+# target to build an object file
+src/lab3/Quad.cpp.o:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab3/CMakeFiles/lab3.dir/build.make applications/lab3/CMakeFiles/lab3.dir/src/lab3/Quad.cpp.o
+.PHONY : src/lab3/Quad.cpp.o
+
+src/lab3/Quad.i: src/lab3/Quad.cpp.i
+.PHONY : src/lab3/Quad.i
+
+# target to preprocess a source file
+src/lab3/Quad.cpp.i:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab3/CMakeFiles/lab3.dir/build.make applications/lab3/CMakeFiles/lab3.dir/src/lab3/Quad.cpp.i
+.PHONY : src/lab3/Quad.cpp.i
+
+src/lab3/Quad.s: src/lab3/Quad.cpp.s
+.PHONY : src/lab3/Quad.s
+
+# target to generate assembly for a file
+src/lab3/Quad.cpp.s:
+	cd /home/thamaster/Documents/University/advanced_computer_graphics/acg_3d_studio && $(MAKE) $(MAKESILENT) -f applications/lab3/CMakeFiles/lab3.dir/build.make applications/lab3/CMakeFiles/lab3.dir/src/lab3/Quad.cpp.s
+.PHONY : src/lab3/Quad.cpp.s
+
 src/lab3/RenderToTexture.o: src/lab3/RenderToTexture.cpp.o
 .PHONY : src/lab3/RenderToTexture.o
 
@@ -770,6 +794,9 @@ help:
 	@echo "... src/glad.o"
 	@echo "... src/glad.i"
 	@echo "... src/glad.s"
+	@echo "... src/lab3/Quad.o"
+	@echo "... src/lab3/Quad.i"
+	@echo "... src/lab3/Quad.s"
 	@echo "... src/lab3/RenderToTexture.o"
 	@echo "... src/lab3/RenderToTexture.i"
 	@echo "... src/lab3/RenderToTexture.s"
