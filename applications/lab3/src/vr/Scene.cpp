@@ -13,6 +13,7 @@ Scene::Scene() : m_uniform_numberOfLights(-1)
   m_renderVisitor->setCamera(m_camera);
   m_updateVisitor = new UpdateVisitor();
   m_renderVisitor->setRTT(m_renderToTexture);
+
 }
 
 void Scene::setDefaultRootState(Group &g)
@@ -187,11 +188,12 @@ void Scene::updateLightMatrices(int idx, BoundingBox box, glm::vec2 nearFar)
 
 void Scene::addQuad(void)
 {
+  float ratio = 1920.0f / 1080.0f;
   std::vector<glm::vec4> vertices = {
-    glm::vec4(-1.0f, -1.0f, 0.0f, 1.0), // Bottom Left
-    glm::vec4(1.0f, -1.0f, 0.0f, 1.0),  // Bottom Right
-    glm::vec4(1.0f, 1.0f, 0.0f, 1.0),   // Top Right
-    glm::vec4(-1.0f, 1.0f, 0.0f, 1.0)   // Top Left
+    glm::vec4(-0.5f, -0.5f, 0.0f, 1.0), // Bottom Left
+    glm::vec4(0.5f, -0.5f, 0.0f, 1.0),  // Bottom Right
+    glm::vec4(0.5f, 0.5f, 0.0f, 1.0),   // Top Right
+    glm::vec4(-0.5f, 0.5f, 0.0f, 1.0)   // Top Left
   };
 
   std::vector<GLushort> indices = {
@@ -207,6 +209,8 @@ void Scene::addQuad(void)
   };
 
   auto newQuad = std::shared_ptr<Quad>(buildQuad(vertices, indices, texCoords));
+  newQuad->initShaders();
+  newQuad->uploadQuad();
   m_quads.push_back(newQuad);
 }
 
@@ -228,7 +232,12 @@ void Scene::render()
     m_renderVisitor->getRTT()->defaultBuffer();
     m_renderVisitor->setDepthPass(false);
   }
-
+  
   m_renderVisitor->visit(*m_rootGroup);
   m_updateVisitor->visit(*m_rootGroup);
+  for(int i = 0; i < m_quads.size(); i++) {
+      m_quads[i]->getQuadShader()->use();
+      m_renderVisitor->getRTT()->applyDepthTexture(m_quads[i]->getQuadShader(), 0, 0);
+      m_quads[i]->drawQuad(i, m_quads.size());
+  }
 }

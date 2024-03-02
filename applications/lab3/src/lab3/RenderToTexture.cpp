@@ -118,20 +118,33 @@ void RenderToTexture::applyDepthMaps(std::shared_ptr<vr::Shader> shader)
     for(int unit = 0; unit < m_num_depth_components; unit++ ) {
 
         if(m_depthTextures[unit] != -1) {
-            glActiveTexture(GL_TEXTURE10 + unit);
-            glBindTexture(GL_TEXTURE_2D, m_depthTextures[unit]);
-            shader->setInt(("shadowMaps[" + std::to_string(i) + "]").c_str(), 10 + unit);
+            applyDepthTexture(shader, unit, i);
         }
 
         if(m_depthCubeMaps[unit] != -1) {
-            glActiveTexture(GL_TEXTURE10 + unit);
-            glBindTexture(GL_TEXTURE_CUBE_MAP, m_depthCubeMaps[unit]);
-            shader->setInt(("shadowCubeMaps[" + std::to_string(i) + "]").c_str(), 10 + unit);
+            applyDepthCubeMap(shader, unit, i);
         }
         i++;
     }
     CHECK_GL_ERROR_LINE_FILE();
 }
+
+void RenderToTexture::applyDepthTexture(std::shared_ptr<vr::Shader> shader, int texUnit, int texPos)
+{
+    glActiveTexture(GL_TEXTURE10 + texUnit);
+    glBindTexture(GL_TEXTURE_2D, m_depthTextures[texUnit]);
+    shader->setInt(("shadowMaps[" + std::to_string(texPos) + "]").c_str(), 10 + texUnit);    
+    CHECK_GL_ERROR_LINE_FILE();
+}
+
+void RenderToTexture::applyDepthCubeMap(std::shared_ptr<vr::Shader> shader, int texUnit, int texPos)
+{
+    glActiveTexture(GL_TEXTURE10 + texUnit);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, m_depthCubeMaps[texUnit]);
+    shader->setInt(("shadowCubeMaps[" + std::to_string(texPos) + "]").c_str(), 10 + texUnit);
+    CHECK_GL_ERROR_LINE_FILE();
+}
+
 
 void RenderToTexture::applyDepthData(std::vector<glm::mat4> lms, glm::vec4 l_pos, float farPlane)
 {

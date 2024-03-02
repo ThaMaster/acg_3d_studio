@@ -2,9 +2,15 @@
 
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+
 #include <vr/glErrorUtil.h>
 #include <iostream>
 #include <sstream>
+
+Quad::Quad()
+{
+  m_quadShader = std::shared_ptr<vr::Shader>(new vr::Shader("shaders/quadShader.vs", "shaders/quadShader.fs"));
+}
 
 Quad::~Quad()
 {
@@ -15,22 +21,23 @@ Quad::~Quad()
         glDeleteBuffers(1, &m_vbo_texCoords);
 }
 
+std::shared_ptr<vr::Shader> Quad::getQuadShader() { return m_quadShader; }
 void Quad::setVertices(std::vector<glm::vec4> vs) { m_vertices = vs; }
 void Quad::setTexCoords(std::vector<glm::vec2> ts) { m_texCoords = ts; }
 void Quad::setElements(std::vector<GLushort> es) { m_elements = es; }
 
-bool Quad::initShaders(std::shared_ptr<vr::Shader> shader)
+bool Quad::initShaders()
 {
-  shader->use();
+  m_quadShader->use();
 
   const char* attribute_name;
   attribute_name = "vertex_position";
-  m_attribute_v_coord = shader->getAttribute(attribute_name); // glGetAttribLocation(program, attribute_name);
+  m_attribute_v_coord = m_quadShader->getAttribute(attribute_name);
   if (m_attribute_v_coord == -1)
       return false;
 
   attribute_name = "vertex_texCoord";
-  m_attribute_v_texCoords = shader->getAttribute(attribute_name);
+  m_attribute_v_texCoords = m_quadShader->getAttribute(attribute_name);
   if (m_attribute_v_texCoords == -1)
       return false;
   
@@ -112,7 +119,7 @@ void Quad::uploadQuad()
   }
 }
 
-void Quad::drawQuad(std::shared_ptr<vr::Shader> shader)
+void Quad::drawQuad(int quadNr, int totalQuads)
 {
   CHECK_GL_ERROR_LINE_FILE();
   if (m_useVAO) {
@@ -156,6 +163,14 @@ void Quad::drawQuad(std::shared_ptr<vr::Shader> shader)
       glEnableVertexAttribArray(m_attribute_v_texCoords);
     CHECK_GL_ERROR_LINE_FILE();
   }
+
+  float quadSize = 1.0f / (float)totalQuads;
+  float xCenter = -1.0f + quadSize * 0.5f + (quadNr * quadSize);
+  glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(xCenter, -1.0f + quadSize * 0.5f, 0.0f));
+  model = glm::scale(model, glm::vec3(quadSize, quadSize, 1.0f));
+
+  m_quadShader->setMat4("transform", model);
+  CHECK_GL_ERROR_LINE_FILE();
 
   /* Push each element in buffer_vertices to the vertex shader */
   if (this->m_ibo_elements != 0) 

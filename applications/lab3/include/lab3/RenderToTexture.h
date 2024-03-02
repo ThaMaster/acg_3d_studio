@@ -95,6 +95,9 @@ class RenderToTexture
 
         void initGBufferAttribs(void);
 
+        void applyDepthTexture(std::shared_ptr<vr::Shader> shader, int texUnit, int texPos);
+        void applyDepthCubeMap(std::shared_ptr<vr::Shader> shader, int texUnit, int texPos);
+
     private:
         std::shared_ptr<vr::Shader> m_depthShader;
         std::vector<GLuint> m_depthTextures;

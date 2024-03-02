@@ -17,7 +17,6 @@ out mat3 TBN; // The TBN matrix;
 // model, view and projection transform
 uniform mat4 m, v, p;
 
-
 // Inverse transpose of model matrix for transforming normals
 uniform mat3 m_3x3_inv_transp;
 
