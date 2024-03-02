@@ -101,6 +101,8 @@ namespace vr
     std::shared_ptr<Shader> getDefaultShader(void) { return m_defaultShader; }
 
     void addQuad(void);
+    void toggleQuad(int quadIdx);
+    int getNumQuadsToRender(void);
 
   private:
     std::shared_ptr<RenderToTexture> m_renderToTexture;
@@ -116,6 +118,7 @@ namespace vr
     std::shared_ptr<Shader> m_defaultShader;
 
     std::vector<std::shared_ptr<Light>> m_sceneLights;
+    std::vector<int> m_quadsToRender;
     std::vector<std::shared_ptr<Quad>> m_quads;
   };
 }

@@ -22,6 +22,8 @@ Application::Application(unsigned int width, unsigned height) :
   m_clearColor(1, 1, 1, 1),
   m_lastTime(0)
 {
+  for(int i = 0; i < 10; i++)
+  m_numPressed.push_back(false);
   m_fpsCounter = std::make_shared<FPSCounter>();
   m_fpsCounter->setFontScale(0.5f);
   m_fpsCounter->setColor(glm::vec4(0.2, 1.0, 1.0, 1.0));
@@ -139,7 +141,6 @@ void Application::update(GLFWwindow* window)
 void Application::processInput(GLFWwindow* window)
 {
   getCamera()->processInput(window);
-
   std::shared_ptr<vr::Light> light = m_sceneRoot->getLight(m_selectedLight);
   if(light) {
     lightInput(window, light);
@@ -154,6 +155,8 @@ void Application::processInput(GLFWwindow* window)
       m_lightSwitchPressed = true;
     }
   }
+  
+  quadInput(window);
 
   if(glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS) {
     if(!m_spacePressed) {
@@ -183,7 +186,26 @@ void Application::lightInput(GLFWwindow* window, std::shared_ptr<vr::Light> ligh
     if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) deltaPos.y += m_speed;
     if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) deltaPos.y -= m_speed; 
     light->setPosition(light->getPosition() + deltaPos);
+  }
+}
 
+void Application::quadInput(GLFWwindow* window)
+{
+  int quadIdx = -1;
+  for (int i = 0; i < 10; i++) {
+    int key = GLFW_KEY_0 + i;
+    bool keyPressed = glfwGetKey(window, key) == GLFW_PRESS;
+    bool keyReleased = glfwGetKey(window, key) == GLFW_RELEASE;
+
+    if (keyPressed && !m_numPressed[i]) {
+        m_numPressed[i] = true;
+        quadIdx = i;
+    } else if (keyReleased) {
+        m_numPressed[i] = false;
+    }
+  }
+  if (quadIdx != -1) {
+      m_sceneRoot->toggleQuad(quadIdx);
   }
 }
 

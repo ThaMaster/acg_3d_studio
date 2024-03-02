@@ -38,6 +38,7 @@ namespace vr {
 
     void processInput(GLFWwindow* window);
     void lightInput(GLFWwindow* window, std::shared_ptr<vr::Light> light);
+    void quadInput(GLFWwindow* window);
 
     void setClearColor(const glm::f32vec4& clearColor);
     
@@ -53,6 +54,6 @@ namespace vr {
     float m_lastTime;
     bool m_spacePressed = false;
     bool m_lightSwitchPressed = false;
-
+    std::vector<bool> m_numPressed;
   };
 }

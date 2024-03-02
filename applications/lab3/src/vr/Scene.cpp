@@ -13,7 +13,6 @@ Scene::Scene() : m_uniform_numberOfLights(-1)
   m_renderVisitor->setCamera(m_camera);
   m_updateVisitor = new UpdateVisitor();
   m_renderVisitor->setRTT(m_renderToTexture);
-
 }
 
 void Scene::setDefaultRootState(Group &g)
@@ -65,6 +64,17 @@ Geometry* Scene::buildGeometry(std::string geo_name, std::vector<glm::vec3> vert
     geometry->texCoords.push_back(t);
 
   return geometry;
+}
+
+void Scene::toggleQuad(int quadIdx)
+{
+  if(!(quadIdx >= m_quads.size() || quadIdx < 0))
+  {
+    if(m_quadsToRender[quadIdx] == 1)
+      m_quadsToRender[quadIdx] = 0;
+    else
+      m_quadsToRender[quadIdx] = 1;
+  }
 }
 
 Quad* Scene::buildQuad(std::vector<glm::vec4> vertices, std::vector<GLushort> indices, std::vector<glm::vec2> texCoords)
@@ -212,6 +222,16 @@ void Scene::addQuad(void)
   newQuad->initShaders();
   newQuad->uploadQuad();
   m_quads.push_back(newQuad);
+  m_quadsToRender.push_back(0);
+}
+
+int Scene::getNumQuadsToRender(void)
+{
+  int nrQuadsToRender = 0;
+  for(auto i : m_quadsToRender)
+    if(i == 1) nrQuadsToRender++;
+  
+  return nrQuadsToRender;
 }
 
 void Scene::render()
@@ -235,9 +255,16 @@ void Scene::render()
   
   m_renderVisitor->visit(*m_rootGroup);
   m_updateVisitor->visit(*m_rootGroup);
+
+  int totalQuads = getNumQuadsToRender();
+  int o = 0;
   for(int i = 0; i < m_quads.size(); i++) {
+    if(m_quadsToRender[i] == 1) 
+    {
       m_quads[i]->getQuadShader()->use();
       m_renderVisitor->getRTT()->applyDepthTexture(m_quads[i]->getQuadShader(), 0, 0);
-      m_quads[i]->drawQuad(i, m_quads.size());
+      m_quads[i]->drawQuad(o, totalQuads);
+      o++;
+    }
   }
 }
