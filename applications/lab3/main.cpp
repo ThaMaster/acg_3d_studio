@@ -131,8 +131,8 @@ int main(int argc, char** argv)
   if (argc > 1)
     model_filename = argv[1];
 
-  std::string v_shader_filename = "shaders/deferredShader.vs";
-  std::string f_shader_filename = "shaders/deferredShader.fs";
+  std::string v_shader_filename = "shaders/gBuffer.vs";
+  std::string f_shader_filename = "shaders/gBuffer.fs";
 
   if (argc < 2 ) {
     std::cerr << "Loading default scene! " << model_filename << std::endl;

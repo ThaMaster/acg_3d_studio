@@ -108,19 +108,7 @@ void State::apply(bool b)
         applyTextures(m_shader);
 
     if(b) {
-        m_shader->setInt("numberOfLights", (GLint)m_lights.size());
-
-        size_t i = 0;
-        if(m_enableLight) {
-            if(m_lights.size() != 0 && *m_enableLight)
-            {            
-                for(auto l : m_lights)
-                {
-                    l->apply(m_shader, i);
-                    i++;
-                }
-            }
-        }
+        applyLights(m_shader);
     }
 
     if(m_cullFace) {
@@ -130,6 +118,22 @@ void State::apply(bool b)
             glDisable(GL_CULL_FACE);
     } 
     
+}
+
+void State::applyLights(std::shared_ptr<vr::Shader> shader)
+{
+    shader->setInt("numberOfLights", (GLint)m_lights.size());
+    size_t i = 0;
+    if(m_enableLight) {
+        if(m_lights.size() != 0 && *m_enableLight)
+        {            
+            for(auto l : m_lights)
+            {
+                l->apply(shader, i);
+                i++;
+            }
+        }
+    }
 }
 
 /**

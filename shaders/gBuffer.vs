@@ -21,7 +21,7 @@ void main()
   mat4 mv = v * m;
   texCoord = vertex_texCoord;
 
-  position = mv * vertex_position;
+  position = m * vertex_position;
 
   normal = normalize(m_3x3_inv_transp * vertex_normal);
 
@@ -33,7 +33,7 @@ void main()
 
   TBN = mat3(T, B, N);
 
-  gl_Position = p * position;
+  gl_Position = p * mv * vertex_position;
 
 
 }

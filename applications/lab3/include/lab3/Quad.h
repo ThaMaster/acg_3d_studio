@@ -13,9 +13,9 @@ class Quad
         Quad();
         ~Quad();
 
-        void drawQuad(int quadNr, int totalQuads);
-        void uploadQuad();
-        bool initShaders();
+        void drawQuad(void);
+        void uploadQuad(void);
+        bool initShaders(void);
 
         std::shared_ptr<vr::Shader> getQuadShader(void);
         void setVertices(std::vector<glm::vec4> vs);

@@ -100,7 +100,8 @@ namespace vr
 
     std::shared_ptr<Shader> getDefaultShader(void) { return m_defaultShader; }
 
-    void addQuad(void);
+    std::shared_ptr<Quad> createMainQuad(void);
+    void addDebugQuads(void);
     void toggleQuad(int quadIdx);
     int getNumQuadsToRender(void);
 

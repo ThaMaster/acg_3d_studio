@@ -219,12 +219,54 @@ void RenderToTexture::bindGBuffer()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+void RenderToTexture::applyPositionTexture(std::shared_ptr<vr::Shader> shader)
+{
+    glActiveTexture(GL_TEXTURE10);
+    glBindTexture(GL_TEXTURE_2D, m_gPosition);
+    shader->setInt("quadTexture", 10);
+    shader->setInt("numTexVals", 4);
+    CHECK_GL_ERROR_LINE_FILE();
+}
+
 void RenderToTexture::applyNormalTexture(std::shared_ptr<vr::Shader> shader)
 {
     glActiveTexture(GL_TEXTURE11);
     glBindTexture(GL_TEXTURE_2D, m_gNormal);
     shader->setInt("quadTexture", 11);
+    shader->setInt("numTexVals", 3);
     CHECK_GL_ERROR_LINE_FILE();
+}
+
+void RenderToTexture::applyDiffuseTexture(std::shared_ptr<vr::Shader> shader)
+{
+    glActiveTexture(GL_TEXTURE12);
+    glBindTexture(GL_TEXTURE_2D, m_gAlbedoSpec);
+    shader->setInt("quadTexture", 12);
+    shader->setInt("numTexVals", 3);
+    CHECK_GL_ERROR_LINE_FILE();
+}
+
+void RenderToTexture::applySpecularTexture(std::shared_ptr<vr::Shader> shader)
+{
+    glActiveTexture(GL_TEXTURE12);
+    glBindTexture(GL_TEXTURE_2D, m_gAlbedoSpec);
+    shader->setInt("quadTexture", 12);
+    shader->setInt("numTexVals", 1);
+    CHECK_GL_ERROR_LINE_FILE();
+}
+
+void RenderToTexture::applyGAttribs(std::shared_ptr<vr::Shader> shader)
+{
+    glActiveTexture(GL_TEXTURE10);
+    glBindTexture(GL_TEXTURE_2D, m_gPosition);
+    CHECK_GL_ERROR_LINE_FILE();
+    glActiveTexture(GL_TEXTURE11);
+    glBindTexture(GL_TEXTURE_2D, m_gNormal);
+    CHECK_GL_ERROR_LINE_FILE();
+    glActiveTexture(GL_TEXTURE12);
+    glBindTexture(GL_TEXTURE_2D, m_gAlbedoSpec);
+    CHECK_GL_ERROR_LINE_FILE();
+    
 }
 
 std::shared_ptr<vr::Shader> RenderToTexture::getDepthShader(void) { return m_depthShader; }

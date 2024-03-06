@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<scene useGround="true">
+<scene useGround="false">
     <state>
         <light position="1.0 1.0 0.0 0.0" ambient="0.0 0.0 0.0 1.0" diffuse="1.0 1.0 1.0 1.0" specular="1.0 1.0 1.0 1.0"/>
     </state>

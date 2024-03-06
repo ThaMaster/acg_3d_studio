@@ -50,6 +50,8 @@ class State
          */
         void apply(bool b);
 
+        void applyLights(std::shared_ptr<vr::Shader> shader);
+
         /**
          * @brief Initializes the loaded textures with the correct
          *        unit indices. This will be useful when the program

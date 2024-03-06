@@ -11,7 +11,6 @@ in vec2 texCoord; // Texture coordinate
 in mat3 TBN;
 
 uniform mat4 m, v, p;
-uniform mat4 v_inv;
 const int MAX_TEXTURES=10;
 
 // declaration of a Material structure

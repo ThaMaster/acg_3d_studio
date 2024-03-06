@@ -44,23 +44,33 @@ void RenderVisitor::visit(Geometry& geo)
     m_stateStack.push(m_stateStack.top()->merge(geo.getState()));
     auto state = m_stateStack.top();
     if(m_depthPass) {
+        std::cout << "Depth" << std::endl;
+
         m_rtt->applyDepthData(m_currLight->getLightMatrices(), m_currLight->getPosition(), m_camera->getNearFar().y);
         geo.draw(m_rtt->getDepthShader(), m_transformStack.top(), m_depthPass);
+
     } else if(m_gBufferPass) {
+        std::cout << "GBuffer" << std::endl;
+
         state->setShader(m_rtt->getGBufferShader());
         state->apply(false);
         m_camera->apply(m_rtt->getGBufferShader());
         geo.draw(m_rtt->getGBufferShader(), m_transformStack.top(), false);
-    } else {
-        state->apply(true);
-        state->getShader()->setBool("useShadowMap", m_useShadowMap);
-        state->getShader()->setFloat("far_plane", getCamera()->getNearFar().y);
-        m_camera->apply(state->getShader());
-        
-        if(m_useShadowMap)
-            m_rtt->applyDepthMaps(state->getShader());
 
-        geo.draw(state->getShader(), m_transformStack.top(), m_depthPass);
+    } else {
+        std::cout << "MainQuad" << std::endl;
+        m_lightShader->use();
+        state->applyLights(m_lightShader);
+        m_camera->applyInv(m_lightShader);
+        m_rtt->applyGAttribs(m_lightShader);
+        // state->getShader()->setBool("useShadowMap", m_useShadowMap);
+        // state->getShader()->setFloat("far_plane", getCamera()->getNearFar().y);
+        // m_camera->apply(state->getShader());
+        
+        /* if(m_useShadowMap)
+            m_rtt->applyDepthMaps(state->getShader()); */
+
+        m_mainQuad->drawQuad();
     }
 
     m_stateStack.pop();
@@ -95,4 +105,7 @@ bool RenderVisitor::getUseShadowMap(void) { return m_useShadowMap; }
 void RenderVisitor::setRTT(std::shared_ptr<RenderToTexture> rtt) {m_rtt = rtt; }
 std::shared_ptr<RenderToTexture> RenderVisitor::getRTT(void) { return m_rtt; }
 
+void RenderVisitor::setMainQuad(std::shared_ptr<Quad> quad) { m_mainQuad = quad; }
 void RenderVisitor::setCurrentLight(std::shared_ptr<vr::Light> light) { m_currLight = light; }
+
+void RenderVisitor::setLightShader(std::shared_ptr<vr::Shader> s) { m_lightShader = s; }

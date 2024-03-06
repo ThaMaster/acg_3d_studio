@@ -119,7 +119,7 @@ void Quad::uploadQuad()
   }
 }
 
-void Quad::drawQuad(int quadNr, int totalQuads)
+void Quad::drawQuad()
 {
   CHECK_GL_ERROR_LINE_FILE();
   if (m_useVAO) {
@@ -163,13 +163,7 @@ void Quad::drawQuad(int quadNr, int totalQuads)
       glEnableVertexAttribArray(m_attribute_v_texCoords);
     CHECK_GL_ERROR_LINE_FILE();
   }
-
-  float quadSize = 1.0f / (float)totalQuads;
-  float xCenter = -1.0f + quadSize * 0.5f + (quadNr * quadSize);
-  glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(xCenter, -1.0f + quadSize * 0.5f, 0.0f));
-  model = glm::scale(model, glm::vec3(quadSize, quadSize, 1.0f));
-
-  m_quadShader->setMat4("transform", model);
+  
   CHECK_GL_ERROR_LINE_FILE();
 
   /* Push each element in buffer_vertices to the vertex shader */

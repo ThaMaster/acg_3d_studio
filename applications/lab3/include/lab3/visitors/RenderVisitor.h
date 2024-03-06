@@ -5,9 +5,9 @@
 #include "NodeVisitor.h"
 #include "vr/Shader.h"
 #include "lab3/State.h"
+#include "lab3/Quad.h"
 #include "lab3/RenderToTexture.h"
 #include "vr/Camera.h"
-
 /**
  * @brief The RenderVisitor will traverse the scene graph and
  *        gather information such as transformation and states
@@ -50,8 +50,13 @@ class RenderVisitor : public NodeVisitor
         bool getUseShadowMap(void);
 
         void setCurrentLight(std::shared_ptr<vr::Light> light);
+        void setMainQuad(std::shared_ptr<Quad> quad);
+        void setLightShader(std::shared_ptr<vr::Shader> s);
+
 
     private:
+        std::shared_ptr<vr::Shader> m_lightShader;
+        std::shared_ptr<Quad> m_mainQuad;
         bool m_depthPass = false;
         bool m_gBufferPass = false;
         bool m_useShadowMap = false;

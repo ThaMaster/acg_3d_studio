@@ -82,7 +82,10 @@ bool Application::initResources(const std::string& model_filename, const std::st
 
 void Application::reloadScene()
 {
-  initResources(m_loadedFilename, m_loadedVShader, m_loadedFShader);
+  if(!initResources(m_loadedFilename, m_loadedVShader, m_loadedFShader)) {
+    std::cout << "ERROR: Could not initialize resources!" << std::endl;
+    exit(1);
+  }
   initView();
 }
 

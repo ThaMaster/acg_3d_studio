@@ -13,7 +13,8 @@ Scene::Scene() : m_uniform_numberOfLights(-1)
   m_renderVisitor->setCamera(m_camera);
   m_updateVisitor = new UpdateVisitor();
   m_renderVisitor->setRTT(m_renderToTexture);
-  addQuad();
+  m_renderVisitor->setMainQuad(createMainQuad());
+  addDebugQuads();
 }
 
 void Scene::setDefaultRootState(Group &g)
@@ -30,7 +31,11 @@ bool Scene::initShaders(const std::string& vshader_filename, const std::string& 
   auto shader = std::shared_ptr<vr::Shader>(new Shader(vshader_filename, fshader_filename));
   if (!shader->valid())
     return false;
+  auto lShader = std::shared_ptr<vr::Shader>(new Shader("shaders/deferredShader.vs", "shaders/deferredShader.fs"));
+  if (!lShader->valid())
+    return false;
   m_defaultShader = shader;
+  m_renderVisitor->setLightShader(lShader);
   return true;
 }
 
@@ -197,14 +202,13 @@ void Scene::updateLightMatrices(int idx, BoundingBox box, glm::vec2 nearFar)
   m_sceneLights[idx]->calcLightMatrices(box, nearFar);
 }
 
-void Scene::addQuad(void)
+std::shared_ptr<Quad> Scene::createMainQuad(void)
 {
-  float ratio = 1920.0f / 1080.0f;
   std::vector<glm::vec4> vertices = {
-    glm::vec4(-0.5f, -0.5f, 0.0f, 1.0), // Bottom Left
-    glm::vec4(0.5f, -0.5f, 0.0f, 1.0),  // Bottom Right
-    glm::vec4(0.5f, 0.5f, 0.0f, 1.0),   // Top Right
-    glm::vec4(-0.5f, 0.5f, 0.0f, 1.0)   // Top Left
+    glm::vec4(-1.0f, -1.0f, 0.0f, 1.0), // Bottom Left
+    glm::vec4(1.0f, -1.0f, 0.0f, 1.0),  // Bottom Right
+    glm::vec4(1.0f, 1.0f, 0.0f, 1.0),   // Top Right
+    glm::vec4(-1.0f, 1.0f, 0.0f, 1.0)   // Top Left
   };
 
   std::vector<GLushort> indices = {
@@ -218,12 +222,63 @@ void Scene::addQuad(void)
       glm::vec2(1.0f, 1.0f), // Top Right
       glm::vec2(0.0f, 1.0f)  // Top Left
   };
-
   auto newQuad = std::shared_ptr<Quad>(buildQuad(vertices, indices, texCoords));
   newQuad->initShaders();
   newQuad->uploadQuad();
-  m_quads.push_back(newQuad);
-  m_quadsToRender.push_back(0);
+  return newQuad;
+}
+
+void Scene::addDebugQuads(void)
+{
+  std::vector<std::vector<glm::vec4>> debugQuads;
+
+  debugQuads.push_back({
+    glm::vec4(-1.0f, 0.0f, 0.0f, 1.0), // Bottom Left
+    glm::vec4(0.0f, 0.0f, 0.0f, 1.0),  // Bottom Right
+    glm::vec4(0.0f, 1.0f, 0.0f, 1.0),   // Top Right
+    glm::vec4(-1.0f, 1.0f, 0.0f, 1.0)   // Top Left
+  });
+
+  debugQuads.push_back({
+    glm::vec4(0.0f, 0.0f, 0.0f, 1.0), // Bottom Left
+    glm::vec4(1.0f, 0.0f, 0.0f, 1.0),  // Bottom Right
+    glm::vec4(1.0f, 1.0f, 0.0f, 1.0),   // Top Right
+    glm::vec4(0.0f, 1.0f, 0.0f, 1.0)   // Top Left
+  });
+
+  debugQuads.push_back({
+    glm::vec4(-1.0f, -1.0f, 0.0f, 1.0), // Bottom Left
+    glm::vec4(0.0f, -1.0f, 0.0f, 1.0),  // Bottom Right
+    glm::vec4(0.0f, 0.0f, 0.0f, 1.0),   // Top Right
+    glm::vec4(-1.0f, 0.0f, 0.0f, 1.0)   // Top Left
+  });
+
+  debugQuads.push_back({
+    glm::vec4(0.0f, -1.0f, 0.0f, 1.0), // Bottom Left
+    glm::vec4(1.0f, -1.0f, 0.0f, 1.0),  // Bottom Right
+    glm::vec4(1.0f, 0.0f, 0.0f, 1.0),   // Top Right
+    glm::vec4(0.0f, 0.0f, 0.0f, 1.0)   // Top Left
+  });
+
+  std::vector<GLushort> indices = {
+      0, 1, 2, // First Triangle
+      2, 3, 0  // Second Triangle
+  };
+
+  std::vector<glm::vec2> texCoords = {
+      glm::vec2(0.0f, 0.0f), // Bottom Left
+      glm::vec2(1.0f, 0.0f), // Bottom Right
+      glm::vec2(1.0f, 1.0f), // Top Right
+      glm::vec2(0.0f, 1.0f)  // Top Left
+  };
+
+  for(int i = 0; i < 4; i++) {
+    auto newQuad = std::shared_ptr<Quad>(buildQuad(debugQuads[i], indices, texCoords));
+    newQuad->initShaders();
+    newQuad->uploadQuad();
+    m_quads.push_back(newQuad);
+    m_quadsToRender.push_back(0);
+  }
 }
 
 int Scene::getNumQuadsToRender(void)
@@ -238,7 +293,7 @@ int Scene::getNumQuadsToRender(void)
 void Scene::render()
 {
   glEnable(GL_DEPTH_TEST);
-  m_renderVisitor->setUseShadowMap(m_useShadowMap);
+  /* m_renderVisitor->setUseShadowMap(m_useShadowMap);
   if(m_useShadowMap) {
     m_renderVisitor->setDepthPass(true);
 
@@ -253,27 +308,46 @@ void Scene::render()
     }
     m_renderVisitor->getRTT()->defaultBuffer();
     m_renderVisitor->setDepthPass(false);
-  }
+  } */
   
   m_renderVisitor->setGBufferPass(true);
   m_renderVisitor->getRTT()->bindGBuffer();
   m_renderVisitor->visit(*m_rootGroup);
+  m_updateVisitor->visit(*m_rootGroup);
   m_renderVisitor->getRTT()->defaultBuffer();
   m_renderVisitor->setGBufferPass(false);
+
+  glDisable(GL_DEPTH_TEST);
 
   m_renderVisitor->visit(*m_rootGroup);
   m_updateVisitor->visit(*m_rootGroup);
 
-  glDisable(GL_DEPTH_TEST);
-  int totalQuads = getNumQuadsToRender();
-  int o = 0;
-  for(int i = 0; i < m_quads.size(); i++) {
-    if(m_quadsToRender[i] == 1) 
-    {
-      m_quads[i]->getQuadShader()->use();
-      m_renderVisitor->getRTT()->applyNormalTexture(m_quads[i]->getQuadShader());
-      m_quads[i]->drawQuad(o, totalQuads);
-      o++;
-    }
+  if(m_quadsToRender[0] == 1) 
+  {
+    m_quads[0]->getQuadShader()->use();
+    m_renderVisitor->getRTT()->applyPositionTexture(m_quads[0]->getQuadShader());
+    m_quads[0]->drawQuad();
   }
+
+  if(m_quadsToRender[1] == 1) 
+  {
+    m_quads[1]->getQuadShader()->use();
+    m_renderVisitor->getRTT()->applyNormalTexture(m_quads[1]->getQuadShader());
+    m_quads[1]->drawQuad();
+  }
+  
+  if(m_quadsToRender[2] == 1) 
+  {
+    m_quads[2]->getQuadShader()->use();
+    m_renderVisitor->getRTT()->applyDiffuseTexture(m_quads[2]->getQuadShader());
+    m_quads[2]->drawQuad();
+  }
+
+  if(m_quadsToRender[3] == 1)
+  {
+    m_quads[3]->getQuadShader()->use();
+    m_renderVisitor->getRTT()->applySpecularTexture(m_quads[3]->getQuadShader());
+    m_quads[3]->drawQuad();
+  }
+  
 }
