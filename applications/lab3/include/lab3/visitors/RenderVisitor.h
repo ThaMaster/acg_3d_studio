@@ -43,6 +43,9 @@ class RenderVisitor : public NodeVisitor
         void setDepthPass(bool b);
         bool getDepthPass(void);
 
+        void setGBufferPass(bool b);
+        bool getGBufferPass(void);
+
         void setUseShadowMap(bool b);
         bool getUseShadowMap(void);
 
@@ -50,7 +53,8 @@ class RenderVisitor : public NodeVisitor
 
     private:
         bool m_depthPass = false;
-        bool m_useShadowMap = true;
+        bool m_gBufferPass = false;
+        bool m_useShadowMap = false;
         std::shared_ptr<vr::Camera> m_camera;
         std::stack<glm::mat4> m_transformStack;
         std::vector<std::vector<glm::mat4>> m_lightMatrices;

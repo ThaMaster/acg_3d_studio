@@ -9,6 +9,7 @@
 RenderToTexture::RenderToTexture() 
 {
     m_depthShader = std::shared_ptr<vr::Shader>(new vr::Shader("shaders/depthRTT.vs", "shaders/depthRTT.fs", "shaders/depthRTT.gs"));
+    m_gShader = std::shared_ptr<vr::Shader>(new vr::Shader("shaders/gBuffer.vs", "shaders/gBuffer.fs"));
     for(int i = 0; i < 10; i++) {
         m_depthTextures.push_back(-1);
         m_depthCubeMaps.push_back(-1);
@@ -16,6 +17,7 @@ RenderToTexture::RenderToTexture()
     CHECK_GL_ERROR_LINE_FILE();
     glGenFramebuffers(1, &m_depthBuffer);
     glGenFramebuffers(1, &m_gBuffer);
+    initGBufferAttribs();
 }
 
 RenderToTexture::~RenderToTexture() {}
@@ -167,6 +169,7 @@ void RenderToTexture::initGBufferAttribs(void)
     glBindFramebuffer(GL_FRAMEBUFFER, m_gBuffer);
     // - position color buffer
     glGenTextures(1, &m_gPosition);
+    glActiveTexture(GL_TEXTURE10);
     glBindTexture(GL_TEXTURE_2D, m_gPosition);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, 1920, 1080, 0, GL_RGBA, GL_FLOAT, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -175,6 +178,7 @@ void RenderToTexture::initGBufferAttribs(void)
     
     // - normal color buffer
     glGenTextures(1, &m_gNormal);
+    glActiveTexture(GL_TEXTURE11);
     glBindTexture(GL_TEXTURE_2D, m_gNormal);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, 1920, 1080, 0, GL_RGBA, GL_FLOAT, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -183,16 +187,45 @@ void RenderToTexture::initGBufferAttribs(void)
     
     // - color + specular color buffer
     glGenTextures(1, &m_gAlbedoSpec);
+    glActiveTexture(GL_TEXTURE12);
     glBindTexture(GL_TEXTURE_2D, m_gAlbedoSpec);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1920, 1080, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_gAlbedoSpec, 0);
-    
+
     // - tell OpenGL which color attachments we'll use (of this framebuffer) for rendering 
     unsigned int attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
     glDrawBuffers(3, attachments);
+
+    unsigned int rboDepth;
+    glGenRenderbuffers(1, &rboDepth);
+    glBindRenderbuffer(GL_RENDERBUFFER, rboDepth);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1920, 1080);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboDepth);
+
+    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+        std::cout << "ERROR: Framebuffer not complete!" << std::endl;
+        exit(1);
+    }
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
+void RenderToTexture::bindGBuffer()
+{
+    glDisable(GL_BLEND);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_gBuffer);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void RenderToTexture::applyNormalTexture(std::shared_ptr<vr::Shader> shader)
+{
+    glActiveTexture(GL_TEXTURE11);
+    glBindTexture(GL_TEXTURE_2D, m_gNormal);
+    shader->setInt("quadTexture", 11);
+    CHECK_GL_ERROR_LINE_FILE();
+}
 
 std::shared_ptr<vr::Shader> RenderToTexture::getDepthShader(void) { return m_depthShader; }
+std::shared_ptr<vr::Shader> RenderToTexture::getGBufferShader(void) { return m_gShader; }

@@ -13,6 +13,7 @@ Scene::Scene() : m_uniform_numberOfLights(-1)
   m_renderVisitor->setCamera(m_camera);
   m_updateVisitor = new UpdateVisitor();
   m_renderVisitor->setRTT(m_renderToTexture);
+  addQuad();
 }
 
 void Scene::setDefaultRootState(Group &g)
@@ -236,6 +237,7 @@ int Scene::getNumQuadsToRender(void)
 
 void Scene::render()
 {
+  glEnable(GL_DEPTH_TEST);
   m_renderVisitor->setUseShadowMap(m_useShadowMap);
   if(m_useShadowMap) {
     m_renderVisitor->setDepthPass(true);
@@ -253,16 +255,23 @@ void Scene::render()
     m_renderVisitor->setDepthPass(false);
   }
   
+  m_renderVisitor->setGBufferPass(true);
+  m_renderVisitor->getRTT()->bindGBuffer();
+  m_renderVisitor->visit(*m_rootGroup);
+  m_renderVisitor->getRTT()->defaultBuffer();
+  m_renderVisitor->setGBufferPass(false);
+
   m_renderVisitor->visit(*m_rootGroup);
   m_updateVisitor->visit(*m_rootGroup);
 
+  glDisable(GL_DEPTH_TEST);
   int totalQuads = getNumQuadsToRender();
   int o = 0;
   for(int i = 0; i < m_quads.size(); i++) {
     if(m_quadsToRender[i] == 1) 
     {
       m_quads[i]->getQuadShader()->use();
-      m_renderVisitor->getRTT()->applyDepthTexture(m_quads[i]->getQuadShader(), 0, 0);
+      m_renderVisitor->getRTT()->applyNormalTexture(m_quads[i]->getQuadShader());
       m_quads[i]->drawQuad(o, totalQuads);
       o++;
     }

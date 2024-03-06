@@ -46,8 +46,13 @@ void RenderVisitor::visit(Geometry& geo)
     if(m_depthPass) {
         m_rtt->applyDepthData(m_currLight->getLightMatrices(), m_currLight->getPosition(), m_camera->getNearFar().y);
         geo.draw(m_rtt->getDepthShader(), m_transformStack.top(), m_depthPass);
+    } else if(m_gBufferPass) {
+        state->setShader(m_rtt->getGBufferShader());
+        state->apply(false);
+        m_camera->apply(m_rtt->getGBufferShader());
+        geo.draw(m_rtt->getGBufferShader(), m_transformStack.top(), false);
     } else {
-        state->apply();
+        state->apply(true);
         state->getShader()->setBool("useShadowMap", m_useShadowMap);
         state->getShader()->setFloat("far_plane", getCamera()->getNearFar().y);
         m_camera->apply(state->getShader());
@@ -80,6 +85,10 @@ std::shared_ptr<vr::Camera> RenderVisitor::getCamera(void) { return m_camera; }
 
 void RenderVisitor::setDepthPass(bool b) { m_depthPass = b; }
 bool RenderVisitor::getDepthPass(void) { return m_depthPass; }
+
+void RenderVisitor::setGBufferPass(bool b) { m_gBufferPass = b; }
+bool RenderVisitor::getGBufferPass(void) { return m_gBufferPass; }
+
 void RenderVisitor::setUseShadowMap(bool b) { m_useShadowMap = b; }
 bool RenderVisitor::getUseShadowMap(void) { return m_useShadowMap; }
 

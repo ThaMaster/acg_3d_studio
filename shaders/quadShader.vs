@@ -9,6 +9,6 @@ uniform mat4 transform;
 
 void main()
 {
-    gl_Position = transform * vertex_position;
     texCoord = vertex_texCoord;
+    gl_Position = transform * vertex_position;
 }

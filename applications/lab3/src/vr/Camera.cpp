@@ -232,7 +232,7 @@ void Camera::apply(std::shared_ptr<vr::Shader> shader)
 	shader->setMat4("v", view);
 	shader->setMat4("p", projection);
 	glm::mat4 v_inv = glm::inverse(view);
-	shader->setMat4("v_inv", v_inv);
+	//shader->setMat4("v_inv", v_inv);
 }
 
 void Camera::setFOV(float fov)

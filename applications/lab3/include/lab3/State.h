@@ -48,7 +48,7 @@ class State
          *        information to the shader that is present
          *        in the current state.
          */
-        void apply();
+        void apply(bool b);
 
         /**
          * @brief Initializes the loaded textures with the correct

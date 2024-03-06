@@ -96,7 +96,7 @@ std::shared_ptr<State> State::merge(std::shared_ptr<State> s)
  *        information to the shader that is present
  *        in the current state.
  */
-void State::apply() 
+void State::apply(bool b) 
 {
     m_shader->use();
 
@@ -107,16 +107,18 @@ void State::apply()
     if(m_textures.size() != 0)
         applyTextures(m_shader);
 
-    m_shader->setInt("numberOfLights", (GLint)m_lights.size());
+    if(b) {
+        m_shader->setInt("numberOfLights", (GLint)m_lights.size());
 
-    size_t i = 0;
-    if(m_enableLight) {
-        if(m_lights.size() != 0 && *m_enableLight)
-        {            
-            for(auto l : m_lights)
-            {
-                l->apply(m_shader, i);
-                i++;
+        size_t i = 0;
+        if(m_enableLight) {
+            if(m_lights.size() != 0 && *m_enableLight)
+            {            
+                for(auto l : m_lights)
+                {
+                    l->apply(m_shader, i);
+                    i++;
+                }
             }
         }
     }
@@ -126,7 +128,7 @@ void State::apply()
             glEnable(GL_CULL_FACE);
         else
             glDisable(GL_CULL_FACE);
-    }
+    } 
     
 }
 

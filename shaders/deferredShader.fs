@@ -1,7 +1,6 @@
 #version 410 core
 
 const int MaxNumberOfLights = 10;
-
 // From vertex shader
 in vec4 position;  // position of the vertex (and fragment) in eye space
 in vec3 normal ;  // surface normal vector in eye space

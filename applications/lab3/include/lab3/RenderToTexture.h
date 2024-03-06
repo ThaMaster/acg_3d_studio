@@ -92,11 +92,15 @@ class RenderToTexture
         void applyDepthData(std::vector<glm::mat4> lms, glm::vec4 l_pos, float farPlane);
 
         std::shared_ptr<vr::Shader> getDepthShader(void);
+        std::shared_ptr<vr::Shader> getGBufferShader(void);
 
         void initGBufferAttribs(void);
 
         void applyDepthTexture(std::shared_ptr<vr::Shader> shader, int texUnit, int texPos);
         void applyDepthCubeMap(std::shared_ptr<vr::Shader> shader, int texUnit, int texPos);
+        void applyNormalTexture(std::shared_ptr<vr::Shader> shader);
+
+        void bindGBuffer(void);
 
     private:
         std::shared_ptr<vr::Shader> m_depthShader;

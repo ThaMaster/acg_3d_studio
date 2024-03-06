@@ -1,16 +1,12 @@
 #version 410 core
 
-out vec4 FragColor;
-
 in vec2 texCoord;
 
 layout(location = 0) out vec4 color;
 
-const int MaxNumberOfLights = 10;
-uniform sampler2D shadowMaps[MaxNumberOfLights];
+uniform sampler2D quadTexture;
 
 void main()
 {
-    float depth = texture(shadowMaps[0], texCoord).r;
-    color = vec4(vec3(depth), 1.0);
+    color = vec4(texture(quadTexture, texCoord).rgb, 1.0);
 }

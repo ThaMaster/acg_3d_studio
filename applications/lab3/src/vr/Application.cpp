@@ -130,7 +130,7 @@ void Application::render(GLFWwindow* window)
   glClearColor(m_clearColor[0], m_clearColor[1], m_clearColor[2], m_clearColor[3]);
   glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
   m_sceneRoot->render();
-  m_fpsCounter->render(window);
+  //m_fpsCounter->render(window);
 }
 
 void Application::update(GLFWwindow* window)
@@ -199,7 +199,10 @@ void Application::quadInput(GLFWwindow* window)
 
     if (keyPressed && !m_numPressed[i]) {
         m_numPressed[i] = true;
-        quadIdx = i;
+        if(i == 0)
+          quadIdx = 9;
+        else
+          quadIdx = i - 1;
     } else if (keyReleased) {
         m_numPressed[i] = false;
     }
