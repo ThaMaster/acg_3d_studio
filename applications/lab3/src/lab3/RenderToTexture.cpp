@@ -259,12 +259,15 @@ void RenderToTexture::applyGAttribs(std::shared_ptr<vr::Shader> shader)
 {
     glActiveTexture(GL_TEXTURE10);
     glBindTexture(GL_TEXTURE_2D, m_gPosition);
+    shader->setInt("gPosition", 10);
     CHECK_GL_ERROR_LINE_FILE();
     glActiveTexture(GL_TEXTURE11);
     glBindTexture(GL_TEXTURE_2D, m_gNormal);
+    shader->setInt("gNormal", 11);
     CHECK_GL_ERROR_LINE_FILE();
     glActiveTexture(GL_TEXTURE12);
     glBindTexture(GL_TEXTURE_2D, m_gAlbedoSpec);
+    shader->setInt("gAlbedoSpec", 12);
     CHECK_GL_ERROR_LINE_FILE();
     
 }

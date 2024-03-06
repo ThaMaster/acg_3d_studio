@@ -21,6 +21,8 @@ class Quad
         void setVertices(std::vector<glm::vec4> vs);
         void setTexCoords(std::vector<glm::vec2> ts);
         void setElements(std::vector<GLushort> es);
+
+        void setQuadShader(std::shared_ptr<vr::Shader> s) { m_quadShader = s; }
         
     private:
         std::shared_ptr<vr::Shader> m_quadShader;

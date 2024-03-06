@@ -38,7 +38,6 @@ struct LightSource
 // This is the uniforms that our program communicates with
 uniform LightSource lights[MaxNumberOfLights];
 
-uniform vec3 viewPos;
 
 //uniform bool useShadowMap;
 //uniform sampler2D shadowMaps[MaxNumberOfLights];
@@ -138,7 +137,7 @@ void main()
     // for all light sources
     for (int index = 0; index < numberOfLights; index++) 
     {
-        //sfloat shadow = 0.0;
+        float shadow = 0.0;
         LightSource light = lights[index];
         if (0.0 == light.position.w) // directional light?
         {
@@ -185,5 +184,5 @@ void main()
         // }
     }
 
-    color = texture(gPosition, texCoord);
+    color = vec4(normalDirection, 1.0);
 }

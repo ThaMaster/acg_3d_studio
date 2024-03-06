@@ -13,7 +13,6 @@ Scene::Scene() : m_uniform_numberOfLights(-1)
   m_renderVisitor->setCamera(m_camera);
   m_updateVisitor = new UpdateVisitor();
   m_renderVisitor->setRTT(m_renderToTexture);
-  m_renderVisitor->setMainQuad(createMainQuad());
   addDebugQuads();
 }
 
@@ -35,7 +34,13 @@ bool Scene::initShaders(const std::string& vshader_filename, const std::string& 
   if (!lShader->valid())
     return false;
   m_defaultShader = shader;
-  m_renderVisitor->setLightShader(lShader);
+  
+  auto mainQuad = createMainQuad();
+  mainQuad->setQuadShader(lShader);
+  mainQuad->initShaders();
+  mainQuad->uploadQuad();
+  m_renderVisitor->setMainQuad(mainQuad);
+
   return true;
 }
 
@@ -223,8 +228,6 @@ std::shared_ptr<Quad> Scene::createMainQuad(void)
       glm::vec2(0.0f, 1.0f)  // Top Left
   };
   auto newQuad = std::shared_ptr<Quad>(buildQuad(vertices, indices, texCoords));
-  newQuad->initShaders();
-  newQuad->uploadQuad();
   return newQuad;
 }
 
