@@ -15,6 +15,7 @@ layout(location = 0) out vec4 color;
 uniform mat4 m, v, p;
 uniform mat4 v_inv;
 uniform int numberOfLights;
+uniform vec3 viewPos;
 //uniform float far_plane;
 
 // Definition of a light source structure
@@ -37,7 +38,6 @@ struct LightSource
 
 // This is the uniforms that our program communicates with
 uniform LightSource lights[MaxNumberOfLights];
-
 
 //uniform bool useShadowMap;
 //uniform sampler2D shadowMaps[MaxNumberOfLights];
@@ -127,7 +127,7 @@ void main()
     vec4 diffuseColor = vec4(texture(gAlbedoSpec, texCoord).rgb, 1.0);
     float specularColor = texture(gAlbedoSpec, texCoord).a;
     
-    vec3 viewDirection = normalize(vec3(v_inv * vec4(0.0, 0.0, 0.0, 1.0) - position));
+    vec3 viewDirection = normalize(viewPos - position.xyz);
     vec3 lightDirection;
     float attenuation;
 
@@ -152,8 +152,7 @@ void main()
             // if(useShadowMap) {
             //     shadow = pointShadow(index);
             // }
-            vec4 positionWorld = v_inv * position;
-            vec3 positionToLightSource = vec3(light.position.xyz - positionWorld.xyz);
+            vec3 positionToLightSource = vec3(light.position.xyz - position.xyz);
             float distance = length(positionToLightSource);
             lightDirection = normalize(positionToLightSource);
             attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
@@ -170,12 +169,12 @@ void main()
         }
         else // light source on the right side
         {
-            specularReflection = vec4(specularColor, specularColor, specularColor, 1.0);
-            // specularReflection = attenuation * light.specular * specularColor
+            specularReflection = attenuation * light.specular * specularColor
+            * pow(max(0.0, dot(reflect(-lightDirection, normalDirection), viewDirection)), 10);
             // * pow(max(0.0, dot(reflect(-lightDirection, normalDirection), viewDirection)), material.shininess);
         }
 
-        totalLighting = totalLighting + diffuseReflection + specularReflection;
+        totalLighting += diffuseReflection + specularReflection;
 
         // if(material.shininess != 0) {
         //     totalLighting = totalLighting + (1.0 - shadow) * (diffuseReflection + specularReflection);
@@ -184,5 +183,5 @@ void main()
         // }
     }
 
-    color = vec4(normalDirection, 1.0);
+    color = totalLighting;
 }

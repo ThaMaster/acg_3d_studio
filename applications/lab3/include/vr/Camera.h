@@ -124,7 +124,7 @@ namespace vr
 
     void setDefaultView(glm::vec3 pos, glm::vec3 dir, glm::vec3 up);
     void resetView();
-    void applyInv(std::shared_ptr<vr::Shader> shader);
+    void applyPos(std::shared_ptr<vr::Shader> shader);
 
   private:
 

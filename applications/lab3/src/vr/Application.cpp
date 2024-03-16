@@ -130,10 +130,8 @@ void Application::initView()
 
 void Application::render(GLFWwindow* window)
 {
-  glClearColor(m_clearColor[0], m_clearColor[1], m_clearColor[2], m_clearColor[3]);
-  glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
   m_sceneRoot->render();
-  //m_fpsCounter->render(window);
+  // m_fpsCounter->render(window);
 }
 
 void Application::update(GLFWwindow* window)

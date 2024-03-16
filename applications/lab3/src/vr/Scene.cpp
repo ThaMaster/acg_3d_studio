@@ -315,13 +315,13 @@ void Scene::render()
   
   m_renderVisitor->setGBufferPass(true);
   m_renderVisitor->getRTT()->bindGBuffer();
+
   m_renderVisitor->visit(*m_rootGroup);
   m_updateVisitor->visit(*m_rootGroup);
   m_renderVisitor->getRTT()->defaultBuffer();
   m_renderVisitor->setGBufferPass(false);
 
   glDisable(GL_DEPTH_TEST);
-
   m_renderVisitor->visit(*m_rootGroup);
   m_updateVisitor->visit(*m_rootGroup);
 

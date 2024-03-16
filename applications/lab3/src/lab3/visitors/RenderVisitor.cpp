@@ -54,8 +54,9 @@ void RenderVisitor::visit(Geometry& geo)
     } else {
         m_mainQuad->getQuadShader()->use();
         state->applyLights(m_mainQuad->getQuadShader());
-        m_camera->applyInv(m_mainQuad->getQuadShader());
+        m_camera->applyPos(m_mainQuad->getQuadShader());
         m_rtt->applyGAttribs(m_mainQuad->getQuadShader());
+
         // state->getShader()->setBool("useShadowMap", m_useShadowMap);
         // state->getShader()->setFloat("far_plane", getCamera()->getNearFar().y);
         // m_camera->apply(state->getShader());

@@ -231,8 +231,6 @@ void Camera::apply(std::shared_ptr<vr::Shader> shader)
 
 	shader->setMat4("v", view);
 	shader->setMat4("p", projection);
-	//glm::mat4 v_inv = glm::inverse(view);
-	//shader->setMat4("v_inv", v_inv);
 }
 
 void Camera::setFOV(float fov)
@@ -265,10 +263,7 @@ float Camera::getSpeed() const
 	return m_speed;
 }
 
-void Camera::applyInv(std::shared_ptr<vr::Shader> shader)
+void Camera::applyPos(std::shared_ptr<vr::Shader> shader)
 {
-	glm::mat4 view = glm::mat4(1.0f);
-	view = glm::lookAt(m_position, m_position + m_direction, m_up);
-	glm::mat4 v_inv = glm::inverse(view);
-	shader->setMat4("v_inv", v_inv);
+	shader->setVec3("viewPos", m_position);
 }
