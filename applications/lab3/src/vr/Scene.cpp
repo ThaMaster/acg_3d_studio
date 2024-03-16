@@ -35,11 +35,10 @@ bool Scene::initShaders(const std::string& vshader_filename, const std::string& 
     return false;
   m_defaultShader = shader;
   
-  auto mainQuad = createMainQuad();
-  mainQuad->setQuadShader(lShader);
-  mainQuad->initShaders();
-  mainQuad->uploadQuad();
-  m_renderVisitor->setMainQuad(mainQuad);
+  m_mainQuad = createMainQuad();
+  m_mainQuad->setQuadShader(lShader);
+  m_mainQuad->initShaders();
+  m_mainQuad->uploadQuad();
 
   return true;
 }
@@ -306,7 +305,7 @@ void Scene::render()
   m_renderVisitor->getRTT()->defaultBuffer();
   m_renderVisitor->setGBufferPass(false);
 
-  // 2nd Pass: THE SHADOW GENERATION PASS
+  // 2nd Pass: THE LIGHTNING PASS
 
   m_renderVisitor->setUseShadowMap(m_useShadowMap);
   if(m_useShadowMap) {
@@ -327,10 +326,9 @@ void Scene::render()
   
   glDisable(GL_DEPTH_TEST);
 
-  // 3rd Pass: The
+  // 3rd Pass: THE QUAD PASS
 
-  m_renderVisitor->visit(*m_rootGroup);
-  m_updateVisitor->visit(*m_rootGroup);
+  renderMainQuad();
 
   if(m_quadsToRender[0] == 1) 
   {
@@ -359,5 +357,21 @@ void Scene::render()
     m_renderVisitor->getRTT()->applySpecularTexture(m_quads[3]->getQuadShader());
     m_quads[3]->drawQuad();
   }
-  
+
+  m_updateVisitor->visit(*m_rootGroup);
+}
+
+void Scene::renderMainQuad()
+{
+  m_mainQuad->getQuadShader()->use();
+  m_rootGroup->getState()->applyLights(m_mainQuad->getQuadShader());
+  m_camera->applyPos(m_mainQuad->getQuadShader());
+  m_renderVisitor->getRTT()->applyGAttribs(m_mainQuad->getQuadShader());
+
+  m_mainQuad->getQuadShader()->setBool("useShadowMap", m_useShadowMap);
+  m_mainQuad->getQuadShader()->setFloat("far_plane", getCamera()->getNearFar().y);
+
+  if(m_useShadowMap)
+      m_renderVisitor->getRTT()->applyDepthMaps(m_mainQuad->getQuadShader());
+  m_mainQuad->drawQuad();
 }

@@ -3,7 +3,7 @@
 layout(location = 0) out vec4 gPosition;
 layout(location = 1) out vec4 gNormal;
 layout(location = 2) out vec4 gAlbedo;
-layout(location = 3) out vec4 gShininess;
+layout(location = 3) out vec4 gAmbientShininess;
 
 // From vertex shader
 in vec4 position;  // position of the vertex (and fragment) in eye space
@@ -66,7 +66,8 @@ void main()
 
     gAlbedo.a = specularColor.r;
 
-    gShininess.a = material.shininess;
+    gAmbientShininess.rgb = material.ambient.rgb;
+    gAmbientShininess.a = material.shininess;
 
     // Iterate over other potentially set material textures.
     // for(int i = 5; i < MAX_TEXTURES; i++)

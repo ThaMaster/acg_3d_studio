@@ -198,13 +198,13 @@ void RenderToTexture::initGBufferAttribs(void)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_gAlbedoSpec, 0);
 
-    glGenTextures(1, &m_gShininess);
+    glGenTextures(1, &m_gAmbientShininess);
     glActiveTexture(GL_TEXTURE13);
-    glBindTexture(GL_TEXTURE_2D, m_gShininess);
+    glBindTexture(GL_TEXTURE_2D, m_gAmbientShininess);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1920, 1080, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, m_gShininess, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, m_gAmbientShininess, 0);
 
     // - tell OpenGL which color attachments we'll use (of this framebuffer) for rendering 
     unsigned int attachments[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
@@ -282,8 +282,8 @@ void RenderToTexture::applyGAttribs(std::shared_ptr<vr::Shader> shader)
     shader->setInt("gAlbedoSpec", 12);
     CHECK_GL_ERROR_LINE_FILE();
     glActiveTexture(GL_TEXTURE13);
-    glBindTexture(GL_TEXTURE_2D, m_gShininess);
-    shader->setInt("gShininess", 13);
+    glBindTexture(GL_TEXTURE_2D, m_gAmbientShininess);
+    shader->setInt("gAmbientShininess", 13);
     CHECK_GL_ERROR_LINE_FILE();
     
 }

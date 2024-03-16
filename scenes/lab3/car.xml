@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene>
+    <state>
+        <light position="0.0 1.0 0.0 0.0" ambient="0.0 0.0 0.0 1.0" diffuse="1.0 1.0 1.0 1.0" specular="1.0 1.0 1.0 1.0"/>
+    </state>
+    <geometry name="geo1" path="models/porsche_911_gt3.glb"/>
+</scene>

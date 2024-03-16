@@ -50,13 +50,10 @@ class RenderVisitor : public NodeVisitor
         bool getUseShadowMap(void);
 
         void setCurrentLight(std::shared_ptr<vr::Light> light);
-        void setMainQuad(std::shared_ptr<Quad> quad);
         void setLightShader(std::shared_ptr<vr::Shader> s);
-
-
+        
     private:
         std::shared_ptr<vr::Shader> m_lightShader;
-        std::shared_ptr<Quad> m_mainQuad;
         bool m_depthPass = false;
         bool m_gBufferPass = false;
         bool m_useShadowMap = false;

@@ -46,11 +46,11 @@ void Material::setTexture(std::shared_ptr<vr::Texture> texture, unsigned int uni
 
 void Material::apply(std::shared_ptr<vr::Shader> shader)
 {
-  //shader->setVec4("material.ambient", m_ambient);
+  shader->setVec4("material.ambient", m_ambient);
   shader->setVec4("material.specular", m_specular);
   shader->setVec4("material.diffuse", m_diffuse);
   //shader->setFloat("material.opacity", m_opacity);
-  //shader->setFloat("material.shininess", m_shininess);
+  shader->setFloat("material.shininess", m_shininess);
 
   std::vector<int> slotActive;
   std::vector<int> slots; 

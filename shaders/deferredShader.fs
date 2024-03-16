@@ -8,7 +8,7 @@ in vec4 position;
 uniform sampler2D gPosition;
 uniform sampler2D gNormal;
 uniform sampler2D gAlbedoSpec;
-uniform sampler2D gShininess;
+uniform sampler2D gAmbientShininess;
 
 // The end result of this shader
 layout(location = 0) out vec4 color;
@@ -126,14 +126,15 @@ void main()
     vec3 normalDirection = texture(gNormal, texCoord).rgb;
     vec4 diffuseColor = vec4(texture(gAlbedoSpec, texCoord).rgb, 1.0);
     float specularColor = texture(gAlbedoSpec, texCoord).a;
-    float shininess = texture(gShininess, texCoord).a;
+    vec4 matAmbient = vec4(texture(gAmbientShininess, texCoord).rgb, 1.0);
+    float shininess = texture(gAmbientShininess, texCoord).a;
     
     vec3 viewDirection = normalize(viewPos - position.xyz);
     vec3 lightDirection;
     float attenuation;
 
     // initialize total lighting with ambient lighting
-    vec4 totalLighting = lights[0].ambient;
+    vec4 totalLighting = lights[0].ambient * matAmbient;
 
     // for all light sources
     for (int index = 0; index < numberOfLights; index++) 
@@ -147,7 +148,7 @@ void main()
                 shadow = directionalShadow(index, fragSpacePos, normalDirection);
             }   
             attenuation = 1.0; // no attenuation
-            lightDirection = normalize(vec3(light.position));
+            lightDirection = normalize(light.position.xyz);
         }
         else // point light or spotlight (or other kind of light) 
         {
@@ -165,7 +166,7 @@ void main()
         * max(0.0, dot(normalDirection, lightDirection));
 
         vec4 specularReflection;
-        if (dot(normalDirection, lightDirection) < 0.0) // light source on the wrong side?
+        if (dot(normalDirection, lightDirection) < 0.0 || shininess == 0) // light source on the wrong side?
         {
             specularReflection = vec4(0.0, 0.0, 0.0, 0.0); // no specular reflection
         }
@@ -174,12 +175,9 @@ void main()
             specularReflection = attenuation * light.specular * specularColor
             * pow(max(0.0, dot(reflect(-lightDirection, normalDirection), viewDirection)), shininess);
         }
+        
+        totalLighting = totalLighting + (1.0 - shadow) * (diffuseReflection + specularReflection);
 
-        if(shininess != 0) {
-            totalLighting = totalLighting + (1.0 - shadow) * (diffuseReflection + specularReflection);
-        } else {
-            totalLighting = totalLighting + (1.0 - shadow) * diffuseReflection;
-        }
     }
 
     color = totalLighting;

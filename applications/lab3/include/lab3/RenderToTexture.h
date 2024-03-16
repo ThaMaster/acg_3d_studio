@@ -119,7 +119,7 @@ class RenderToTexture
         GLuint m_gPosition;
         GLuint m_gNormal;
         GLuint m_gAlbedoSpec;
-        GLuint m_gShininess;
+        GLuint m_gAmbientShininess;
 };
 
 #endif
