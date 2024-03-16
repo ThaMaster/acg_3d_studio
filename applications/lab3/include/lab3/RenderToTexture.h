@@ -93,10 +93,9 @@ class RenderToTexture
 
         std::shared_ptr<vr::Shader> getDepthShader(void);
         std::shared_ptr<vr::Shader> getGBufferShader(void);
-
+        
         void initGBufferAttribs(void);
         void applyGAttribs(std::shared_ptr<vr::Shader> shader);
-
 
         void applyDepthTexture(std::shared_ptr<vr::Shader> shader, int texUnit, int texPos);
         void applyDepthCubeMap(std::shared_ptr<vr::Shader> shader, int texUnit, int texPos);
@@ -105,11 +104,11 @@ class RenderToTexture
         void applyDiffuseTexture(std::shared_ptr<vr::Shader> shader);
         void applySpecularTexture(std::shared_ptr<vr::Shader> shader);
 
-
         void bindGBuffer(void);
 
     private:
         std::shared_ptr<vr::Shader> m_depthShader;
+
         std::vector<GLuint> m_depthTextures;
         std::vector<GLuint> m_depthCubeMaps;
         GLuint m_depthBuffer;
@@ -120,6 +119,7 @@ class RenderToTexture
         GLuint m_gPosition;
         GLuint m_gNormal;
         GLuint m_gAlbedoSpec;
+        GLuint m_gShininess;
 };
 
 #endif

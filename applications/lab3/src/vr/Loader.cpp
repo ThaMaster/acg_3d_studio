@@ -118,9 +118,6 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
     ai_material->Get(AI_MATKEY_COLOR_SPECULAR, color);
     material->setSpecular(glm::vec4(color.r, color.g, color.b, color.a));
 
-    //ai_material->Get(AI_MATKEY_COLOR_EMISSIVE, color);
-    //material->setAmbient(glm::vec4(color.r, color.g, color.b, color.a));
-
     if(ai_material->Get(AI_MATKEY_SHININESS, shiniess) == AI_SUCCESS)
         material->setShininess(shiniess);
   
@@ -712,10 +709,11 @@ std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node, std::shared_pt
       auto newLight = parseStateLight(node);
       newState->addLight(newLight);
       scene->addLight(newLight);      
-      if(newLight->getPosition().w == 0.0)
+      if(newLight->getPosition().w == 0.0) {
         scene->getRTT()->addDepthMap();
-      else
+      } else {
         scene->getRTT()->addDepthCubeMap();
+      }
 
     } else if(node_type == "shaders") {
       newState->setShader(parseStateShader(node, scene));

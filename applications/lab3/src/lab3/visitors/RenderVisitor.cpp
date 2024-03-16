@@ -46,23 +46,24 @@ void RenderVisitor::visit(Geometry& geo)
     if(m_depthPass) {
         m_rtt->applyDepthData(m_currLight->getLightMatrices(), m_currLight->getPosition(), m_camera->getNearFar().y);
         geo.draw(m_rtt->getDepthShader(), m_transformStack.top(), m_depthPass);
+
     } else if(m_gBufferPass) {
         state->setShader(m_rtt->getGBufferShader());
         state->apply(false);
         m_camera->apply(m_rtt->getGBufferShader());
         geo.draw(m_rtt->getGBufferShader(), m_transformStack.top(), false);
+
     } else {
         m_mainQuad->getQuadShader()->use();
         state->applyLights(m_mainQuad->getQuadShader());
         m_camera->applyPos(m_mainQuad->getQuadShader());
         m_rtt->applyGAttribs(m_mainQuad->getQuadShader());
 
-        // state->getShader()->setBool("useShadowMap", m_useShadowMap);
-        // state->getShader()->setFloat("far_plane", getCamera()->getNearFar().y);
-        // m_camera->apply(state->getShader());
+        m_mainQuad->getQuadShader()->setBool("useShadowMap", m_useShadowMap);
+        m_mainQuad->getQuadShader()->setFloat("far_plane", getCamera()->getNearFar().y);
 
-        /* if(m_useShadowMap)
-            m_rtt->applyDepthMaps(state->getShader()); */
+        if(m_useShadowMap)
+            m_rtt->applyDepthMaps(m_mainQuad->getQuadShader());
         m_mainQuad->drawQuad();
     }
 
