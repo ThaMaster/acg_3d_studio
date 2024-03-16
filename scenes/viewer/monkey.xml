@@ -2,7 +2,7 @@
 <scene>
   <node name="monkey">
     <file path="models/monkey.obj"> </file>
-    <transform translate="0 0 0" rotate="0 0 0" scale="2 2 2"></transform>
+    <transform translate="0 2 0" rotate="0 0 0" scale="2 2 2"></transform>
   </node>
 
   <node name="monkey">

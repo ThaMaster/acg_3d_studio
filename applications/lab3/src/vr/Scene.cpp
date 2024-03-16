@@ -297,6 +297,17 @@ void Scene::render()
 {
   glEnable(GL_DEPTH_TEST);
   
+  // 1st Pass: THE GEOMETRY PASS
+
+  m_renderVisitor->setGBufferPass(true);
+  m_renderVisitor->getRTT()->bindGBuffer();
+  m_renderVisitor->visit(*m_rootGroup);
+  m_updateVisitor->visit(*m_rootGroup);
+  m_renderVisitor->getRTT()->defaultBuffer();
+  m_renderVisitor->setGBufferPass(false);
+
+  // 2nd Pass: THE SHADOW GENERATION PASS
+
   m_renderVisitor->setUseShadowMap(m_useShadowMap);
   if(m_useShadowMap) {
     m_renderVisitor->setDepthPass(true);
@@ -313,17 +324,11 @@ void Scene::render()
     m_renderVisitor->getRTT()->defaultBuffer();
     m_renderVisitor->setDepthPass(false);
   }
-
-  m_renderVisitor->setGBufferPass(true);
-  m_renderVisitor->getRTT()->bindGBuffer();
-  m_renderVisitor->visit(*m_rootGroup);
-  m_updateVisitor->visit(*m_rootGroup);
-  m_renderVisitor->getRTT()->defaultBuffer();
-  m_renderVisitor->setGBufferPass(false);
-
   
-
   glDisable(GL_DEPTH_TEST);
+
+  // 3rd Pass: The
+
   m_renderVisitor->visit(*m_rootGroup);
   m_updateVisitor->visit(*m_rootGroup);
 
