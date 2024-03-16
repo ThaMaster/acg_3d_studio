@@ -103,6 +103,7 @@ class RenderToTexture
         void applyNormalTexture(std::shared_ptr<vr::Shader> shader);
         void applyDiffuseTexture(std::shared_ptr<vr::Shader> shader);
         void applySpecularTexture(std::shared_ptr<vr::Shader> shader);
+        void applyLightDepth(std::shared_ptr<vr::Shader> shader, int lightIdx, glm::vec4 l_pos, float farPlane);
 
         void bindGBuffer(void);
 

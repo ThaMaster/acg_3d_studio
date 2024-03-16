@@ -50,7 +50,7 @@ void Scene::setUseGroundPlane(bool b) { m_useGroundPlane = b; }
 bool Scene::getUseGroundPlane(void) { return m_useGroundPlane; }
 
 RenderVisitor *Scene::getRenderVisitor(void) { return m_renderVisitor; }
-std::shared_ptr<Light> Scene::getLight(int i) { return m_sceneLights[i]; }
+std::shared_ptr<Light> Scene::getSelectedLight() { return m_sceneLights[m_selectedLight]; }
 std::vector<std::shared_ptr<Light>> Scene::getLights() { return m_sceneLights; }
 void Scene::addLight(std::shared_ptr<Light> newLight) { m_sceneLights.push_back(newLight); }
 
@@ -235,31 +235,38 @@ void Scene::addDebugQuads(void)
   std::vector<std::vector<glm::vec4>> debugQuads;
 
   debugQuads.push_back({
-    glm::vec4(-1.0f, 0.0f, 0.0f, 1.0), // Bottom Left
-    glm::vec4(0.0f, 0.0f, 0.0f, 1.0),  // Bottom Right
-    glm::vec4(0.0f, 1.0f, 0.0f, 1.0),   // Top Right
+    glm::vec4(-1.0f, 0.5f, 0.0f, 1.0), // Bottom Left
+    glm::vec4(-0.5f, 0.5f, 0.0f, 1.0),  // Bottom Right
+    glm::vec4(-0.5f, 1.0f, 0.0f, 1.0),   // Top Right
     glm::vec4(-1.0f, 1.0f, 0.0f, 1.0)   // Top Left
   });
 
   debugQuads.push_back({
-    glm::vec4(0.0f, 0.0f, 0.0f, 1.0), // Bottom Left
-    glm::vec4(1.0f, 0.0f, 0.0f, 1.0),  // Bottom Right
-    glm::vec4(1.0f, 1.0f, 0.0f, 1.0),   // Top Right
+    glm::vec4(-0.5f, 0.5f, 0.0f, 1.0), // Bottom Left
+    glm::vec4(0.0f, 0.5f, 0.0f, 1.0),  // Bottom Right
+    glm::vec4(0.0f, 1.0f, 0.0f, 1.0),   // Top Right
+    glm::vec4(-0.5f, 1.0f, 0.0f, 1.0)   // Top Left
+  });
+
+  debugQuads.push_back({
+    glm::vec4(0.0f, 0.5f, 0.0f, 1.0), // Bottom Left
+    glm::vec4(0.5f, 0.5f, 0.0f, 1.0),  // Bottom Right
+    glm::vec4(0.5f, 1.0f, 0.0f, 1.0),   // Top Right
     glm::vec4(0.0f, 1.0f, 0.0f, 1.0)   // Top Left
   });
 
   debugQuads.push_back({
-    glm::vec4(-1.0f, -1.0f, 0.0f, 1.0), // Bottom Left
-    glm::vec4(0.0f, -1.0f, 0.0f, 1.0),  // Bottom Right
-    glm::vec4(0.0f, 0.0f, 0.0f, 1.0),   // Top Right
-    glm::vec4(-1.0f, 0.0f, 0.0f, 1.0)   // Top Left
+    glm::vec4(0.5f, 0.5f, 0.0f, 1.0), // Bottom Left
+    glm::vec4(1.0f, 0.5f, 0.0f, 1.0),  // Bottom Right
+    glm::vec4(1.0f, 1.0f, 0.0f, 1.0),   // Top Right
+    glm::vec4(0.5f, 1.0f, 0.0f, 1.0)   // Top Left
   });
 
   debugQuads.push_back({
-    glm::vec4(0.0f, -1.0f, 0.0f, 1.0), // Bottom Left
-    glm::vec4(1.0f, -1.0f, 0.0f, 1.0),  // Bottom Right
-    glm::vec4(1.0f, 0.0f, 0.0f, 1.0),   // Top Right
-    glm::vec4(0.0f, 0.0f, 0.0f, 1.0)   // Top Left
+    glm::vec4(-1.0f, -1.0f, 0.0f, 1.0), // Bottom Left
+    glm::vec4(-0.5f, -1.0f, 0.0f, 1.0),  // Bottom Right
+    glm::vec4(-0.5f, -0.5f, 0.0f, 1.0),   // Top Right
+    glm::vec4(-1.0f, -0.5f, 0.0f, 1.0)   // Top Left
   });
 
   std::vector<GLushort> indices = {
@@ -274,7 +281,7 @@ void Scene::addDebugQuads(void)
       glm::vec2(0.0f, 1.0f)  // Top Left
   };
 
-  for(int i = 0; i < 4; i++) {
+  for(int i = 0; i < debugQuads.size(); i++) {
     auto newQuad = std::shared_ptr<Quad>(buildQuad(debugQuads[i], indices, texCoords));
     newQuad->initShaders();
     newQuad->uploadQuad();
@@ -301,7 +308,6 @@ void Scene::render()
   m_renderVisitor->setGBufferPass(true);
   m_renderVisitor->getRTT()->bindGBuffer();
   m_renderVisitor->visit(*m_rootGroup);
-  m_updateVisitor->visit(*m_rootGroup);
   m_renderVisitor->getRTT()->defaultBuffer();
   m_renderVisitor->setGBufferPass(false);
 
@@ -329,7 +335,28 @@ void Scene::render()
   // 3rd Pass: THE QUAD PASS
 
   renderMainQuad();
+  renderDebugQuads();
 
+  m_updateVisitor->visit(*m_rootGroup);
+}
+
+void Scene::renderMainQuad()
+{
+  m_mainQuad->getQuadShader()->use();
+  m_rootGroup->getState()->applyLights(m_mainQuad->getQuadShader());
+  m_camera->applyPos(m_mainQuad->getQuadShader());
+  m_renderVisitor->getRTT()->applyGAttribs(m_mainQuad->getQuadShader());
+
+  m_mainQuad->getQuadShader()->setBool("useShadowMap", m_useShadowMap);
+  m_mainQuad->getQuadShader()->setFloat("far_plane", getCamera()->getNearFar().y);
+
+  if(m_useShadowMap)
+      m_renderVisitor->getRTT()->applyDepthMaps(m_mainQuad->getQuadShader());
+  m_mainQuad->drawQuad();
+}
+
+void Scene::renderDebugQuads()
+{
   if(m_quadsToRender[0] == 1) 
   {
     m_quads[0]->getQuadShader()->use();
@@ -358,20 +385,22 @@ void Scene::render()
     m_quads[3]->drawQuad();
   }
 
-  m_updateVisitor->visit(*m_rootGroup);
+  if(m_quadsToRender[4] == 1)
+  {
+    m_quads[4]->getQuadShader()->use();
+    m_renderVisitor->getRTT()->applyLightDepth(m_quads[4]->getQuadShader(), m_selectedLight, m_sceneLights[m_selectedLight]->getPosition(), m_camera->getNearFar().y);
+    m_quads[4]->drawQuad();
+  }
 }
 
-void Scene::renderMainQuad()
+int Scene::getSelectedLightIdx(void)
 {
-  m_mainQuad->getQuadShader()->use();
-  m_rootGroup->getState()->applyLights(m_mainQuad->getQuadShader());
-  m_camera->applyPos(m_mainQuad->getQuadShader());
-  m_renderVisitor->getRTT()->applyGAttribs(m_mainQuad->getQuadShader());
+  return m_selectedLight;
+}
 
-  m_mainQuad->getQuadShader()->setBool("useShadowMap", m_useShadowMap);
-  m_mainQuad->getQuadShader()->setFloat("far_plane", getCamera()->getNearFar().y);
-
-  if(m_useShadowMap)
-      m_renderVisitor->getRTT()->applyDepthMaps(m_mainQuad->getQuadShader());
-  m_mainQuad->drawQuad();
+void Scene::selectNextLight(void)
+{ 
+  m_selectedLight++;
+  if(m_selectedLight == m_sceneLights.size())
+    m_selectedLight = 0;
 }

@@ -151,7 +151,6 @@ void RenderToTexture::applyDepthCubeMap(std::shared_ptr<vr::Shader> shader, int 
     CHECK_GL_ERROR_LINE_FILE();
 }
 
-
 void RenderToTexture::applyDepthData(std::vector<glm::mat4> lms, glm::vec4 l_pos, float farPlane)
 {
     if(l_pos.w == 0.0) {
@@ -260,10 +259,40 @@ void RenderToTexture::applyDiffuseTexture(std::shared_ptr<vr::Shader> shader)
 
 void RenderToTexture::applySpecularTexture(std::shared_ptr<vr::Shader> shader)
 {
+    glm::vec4 valuePosition = glm::vec4(0.0, 0.0, 0.0, 1.0);
     glActiveTexture(GL_TEXTURE12);
     glBindTexture(GL_TEXTURE_2D, m_gAlbedoSpec);
     shader->setInt("quadTexture", 12);
     shader->setInt("numTexVals", 1);
+    shader->setVec4("valPos", valuePosition);
+    CHECK_GL_ERROR_LINE_FILE();
+}
+
+void RenderToTexture::applyLightDepth(std::shared_ptr<vr::Shader> shader, int lightIdx, glm::vec4 l_pos, float farPlane)
+{
+    if(m_depthTextures[lightIdx] != -1) {
+        glm::vec4 valuePosition = glm::vec4(1.0, 0.0, 0.0, 0.0);
+        glBindTexture(GL_TEXTURE_2D, m_depthTextures[lightIdx]);
+        glActiveTexture(GL_TEXTURE5 + lightIdx);
+        shader->setInt("quadTexture", 5 + lightIdx);
+        shader->setInt("numTexVals", 1);
+        shader->setVec4("valPos", valuePosition);
+        shader->setBool("useDepthCubeMap", false);
+    }
+    CHECK_GL_ERROR_LINE_FILE();
+
+    if(m_depthCubeMaps[lightIdx] != -1) {
+        glActiveTexture(GL_TEXTURE10);
+        glBindTexture(GL_TEXTURE_2D, m_gPosition);
+        shader->setInt("gPosition", 10);
+
+        glActiveTexture(GL_TEXTURE5 + lightIdx);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, m_depthCubeMaps[lightIdx]);
+        shader->setInt("quadCubeMap", 5 + lightIdx);
+        shader->setVec4("lPosition", l_pos);
+        shader->setBool("useDepthCubeMap", true);
+        shader->setFloat("far_plane", farPlane);
+    }
     CHECK_GL_ERROR_LINE_FILE();
 }
 

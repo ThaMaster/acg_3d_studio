@@ -30,6 +30,8 @@ glm::vec4 Light::getDiffuse(void) { return m_diffuse; }
 void Light::setSpecular(glm::vec4 s) { m_specular = s; }
 glm::vec4 Light::getSpecular(void) { return m_specular; }
 
+bool Light::isEnabled(void) { return enabled; }
+
 std::vector<glm::mat4> Light::getLightMatrices(void) { return m_lightMatrices; }
 
 void Light::createGeometry()
@@ -97,6 +99,8 @@ void Light::apply(std::shared_ptr<vr::Shader> shader, size_t idx)
     }
   }
 }
+
+void Light::toggleLight() { enabled = !enabled; }
 
 void Light::calcLightMatrices(vr::BoundingBox box, glm::vec2 nearFar)
 {

@@ -47,6 +47,7 @@ float directionalShadow(int lightIndex, vec4 fragSpacePos, vec3 normal)
 {
     // perform perspective divide
     vec3 projCoords = fragSpacePos.xyz / fragSpacePos.w;
+    
     // transform to [0,1] range
     projCoords = projCoords * 0.5 + 0.5;
 
@@ -56,7 +57,7 @@ float directionalShadow(int lightIndex, vec4 fragSpacePos, vec3 normal)
     vec3 lightDir = normalize(vec3(lights[lightIndex].position));
 
     float bias = max(0.001 * (1.0 - dot(normal, lightDir)), 0.0001);
-    //float bias = 0.05;
+
     // check whether current frag pos is in shadow
     float shadow = 0.0;
     vec2 texelSize = 1.0 / textureSize(shadowMaps[lightIndex], 0);
@@ -141,43 +142,44 @@ void main()
     {
         float shadow = 0.0;
         LightSource light = lights[index];
-        if (0.0 == light.position.w) // directional light?
-        {
-            if(useShadowMap) {
-                vec4 fragSpacePos = light.lightMatrices[0] * position;
-                shadow = directionalShadow(index, fragSpacePos, normalDirection);
-            }   
-            attenuation = 1.0; // no attenuation
-            lightDirection = normalize(light.position.xyz);
-        }
-        else // point light or spotlight (or other kind of light) 
-        {
-            if(useShadowMap) {
-                shadow = pointShadow(index, position);
+        if(light.enabled) {
+            if (0.0 == light.position.w) // directional light?
+            {
+                if(useShadowMap) {
+                    vec4 fragSpacePos = light.lightMatrices[0] * position;
+                    shadow = directionalShadow(index, fragSpacePos, normalDirection);
+                }   
+                attenuation = 1.0; // no attenuation
+                lightDirection = normalize(light.position.xyz);
             }
-            vec3 positionToLightSource = vec3(light.position.xyz - position.xyz);
-            float distance = length(positionToLightSource);
-            lightDirection = normalize(positionToLightSource);
-            attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
-        }
+            else // point light or spotlight (or other kind of light) 
+            {
+                if(useShadowMap) {
+                    shadow = pointShadow(index, position);
+                }
+                vec3 positionToLightSource = vec3(light.position.xyz - position.xyz);
+                float distance = length(positionToLightSource);
+                lightDirection = normalize(positionToLightSource);
+                attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
+            }
 
-        vec4 diffuseReflection = attenuation
-        * light.diffuse * diffuseColor
-        * max(0.0, dot(normalDirection, lightDirection));
+            vec4 diffuseReflection = attenuation
+            * light.diffuse * diffuseColor
+            * max(0.0, dot(normalDirection, lightDirection));
 
-        vec4 specularReflection;
-        if (dot(normalDirection, lightDirection) < 0.0 || shininess == 0) // light source on the wrong side?
-        {
-            specularReflection = vec4(0.0, 0.0, 0.0, 0.0); // no specular reflection
+            vec4 specularReflection;
+            if (dot(normalDirection, lightDirection) < 0.0 || shininess == 0) // light source on the wrong side?
+            {
+                specularReflection = vec4(0.0, 0.0, 0.0, 0.0); // no specular reflection
+            }
+            else // light source on the right side
+            {
+                specularReflection = attenuation * light.specular * specularColor
+                * pow(max(0.0, dot(reflect(-lightDirection, normalDirection), viewDirection)), shininess);
+            }
+            
+            totalLighting += (1.0 - shadow) * (diffuseReflection + specularReflection);
         }
-        else // light source on the right side
-        {
-            specularReflection = attenuation * light.specular * specularColor
-            * pow(max(0.0, dot(reflect(-lightDirection, normalDirection), viewDirection)), shininess);
-        }
-        
-        totalLighting = totalLighting + (1.0 - shadow) * (diffuseReflection + specularReflection);
-
     }
 
     color = totalLighting;

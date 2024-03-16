@@ -142,21 +142,12 @@ void Application::update(GLFWwindow* window)
 void Application::processInput(GLFWwindow* window)
 {
   getCamera()->processInput(window);
-  std::shared_ptr<vr::Light> light = m_sceneRoot->getLight(m_selectedLight);
+  std::shared_ptr<vr::Light> light = m_sceneRoot->getSelectedLight();
   if(light) {
     lightInput(window, light);
-    m_sceneRoot->updateLightMatrices(m_selectedLight, m_bbox, getCamera()->getNearFar());
+    m_sceneRoot->updateLightMatrices(m_sceneRoot->getSelectedLightIdx(), m_bbox, getCamera()->getNearFar());
   }
 
-  if(glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
-    if(!m_lightSwitchPressed) {
-      m_selectedLight++;
-      if(m_selectedLight == m_sceneRoot->getLights().size())
-        m_selectedLight = 0;
-      m_lightSwitchPressed = true;
-    }
-  }
-  
   quadInput(window);
 
   if(glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS) {
@@ -168,9 +159,6 @@ void Application::processInput(GLFWwindow* window)
 
   if(glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_RELEASE)
     m_spacePressed = false;
-
-  if(glfwGetKey(window, GLFW_KEY_T) == GLFW_RELEASE)
-    m_lightSwitchPressed = false;
 }
 
 void Application::lightInput(GLFWwindow* window, std::shared_ptr<vr::Light> light)
@@ -179,15 +167,36 @@ void Application::lightInput(GLFWwindow* window, std::shared_ptr<vr::Light> ligh
   float deltaTime = float(currentTime - m_lastTime);
   float m_speed = 0.1f;
   glm::vec4 deltaPos = glm::vec4(0.0f);
-  if(light) {
+  
+  if(light->isEnabled()) {
     if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) deltaPos.z -= m_speed;
     if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS) deltaPos.z += m_speed;
     if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS) deltaPos.x -= m_speed;
     if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) deltaPos.x += m_speed;
     if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) deltaPos.y += m_speed;
-    if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) deltaPos.y -= m_speed; 
+    if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) deltaPos.y -= m_speed;
     light->setPosition(light->getPosition() + deltaPos);
   }
+
+  if(glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
+    if(!m_lightSwitchPressed) {
+      m_sceneRoot->selectNextLight();
+      m_lightSwitchPressed = true;
+    }
+  }
+
+  if(glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS) {
+    if(!m_lightTogglePressed) {
+      m_sceneRoot->getSelectedLight()->toggleLight();
+      m_lightTogglePressed = true;
+    }
+  }
+
+  if(glfwGetKey(window, GLFW_KEY_T) == GLFW_RELEASE)
+    m_lightSwitchPressed = false;
+  
+  if(glfwGetKey(window, GLFW_KEY_Y) == GLFW_RELEASE)
+    m_lightTogglePressed = false;
 }
 
 void Application::quadInput(GLFWwindow* window)

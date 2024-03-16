@@ -91,7 +91,7 @@ namespace vr
     bool getUseGroundPlane(void);
 
     RenderVisitor *getRenderVisitor(void);
-    std::shared_ptr<Light> getLight(int i);
+    std::shared_ptr<Light> getSelectedLight(void);
     std::vector<std::shared_ptr<Light>> getLights();
     void addLight(std::shared_ptr<Light> newLight);
 
@@ -101,13 +101,19 @@ namespace vr
     std::shared_ptr<Shader> getDefaultShader(void) { return m_defaultShader; }
 
     std::shared_ptr<Quad> createMainQuad(void);
-    void renderMainQuad();
+    void renderMainQuad(void);
+    void renderDebugQuads(void);
 
     void addDebugQuads(void);
     void toggleQuad(int quadIdx);
     int getNumQuadsToRender(void);
 
+    void selectNextLight(void);
+    int getSelectedLightIdx(void);
+
   private:
+    int m_selectedLight = 0;
+
     std::shared_ptr<RenderToTexture> m_renderToTexture;
     bool m_useShadowMap = true;
     bool m_useGroundPlane = true;
@@ -119,7 +125,6 @@ namespace vr
     std::map<std::string, Group*> m_loadedObjects;
 
     std::shared_ptr<Shader> m_defaultShader;
-
     std::vector<std::shared_ptr<Light>> m_sceneLights;
     std::vector<int> m_quadsToRender;
     std::shared_ptr<Quad> m_mainQuad;

@@ -50,10 +50,10 @@ namespace vr {
     std::string m_loadedFilename, m_loadedVShader, m_loadedFShader;
     glm::uvec2 m_screenSize;
     glm::f32vec4 m_clearColor;
-    int m_selectedLight = 0;
     float m_lastTime;
     bool m_spacePressed = false;
     bool m_lightSwitchPressed = false;
+    bool m_lightTogglePressed = false;
     std::vector<bool> m_numPressed;
   };
 }

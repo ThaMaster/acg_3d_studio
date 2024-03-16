@@ -41,6 +41,8 @@ namespace vr
      */
     void calcLightMatrices(vr::BoundingBox box, glm::vec2 nearFar);
     std::vector<glm::mat4> getLightMatrices(void);
+    void toggleLight(void);
+    bool isEnabled(void);
 
   private:
     friend class Scene;
@@ -53,8 +55,6 @@ namespace vr
     glm::vec4 m_specular;
 
     std::vector<glm::mat4> m_lightMatrices;
-
-    GLuint m_shadowMap = 0;
 
     float m_att_constant;
     float m_att_linear;
