@@ -157,8 +157,28 @@ void Application::processInput(GLFWwindow* window)
     }
   }
 
+  if(glfwGetKey(window, GLFW_KEY_9) == GLFW_PRESS) {
+    if(!m_toggleBloomPressed) {
+      m_sceneRoot->setUseBloom(!m_sceneRoot->getUseBloom());
+      m_toggleBloomPressed = true;
+    }
+  }
+
+  if(glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS) {
+    if(!m_toggleDOF) {
+      m_sceneRoot->setUseDOF(!m_sceneRoot->getUseDOF());
+      m_toggleDOF = true;
+    }
+  }
+
   if(glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_RELEASE)
     m_spacePressed = false;
+
+  if(glfwGetKey(window, GLFW_KEY_9) == GLFW_RELEASE)
+    m_toggleBloomPressed = false;
+  
+  if(glfwGetKey(window, GLFW_KEY_0) == GLFW_RELEASE)
+    m_toggleDOF = false;
 }
 
 void Application::lightInput(GLFWwindow* window, std::shared_ptr<vr::Light> light)
@@ -202,17 +222,14 @@ void Application::lightInput(GLFWwindow* window, std::shared_ptr<vr::Light> ligh
 void Application::quadInput(GLFWwindow* window)
 {
   int quadIdx = -1;
-  for (int i = 0; i < 10; i++) {
-    int key = GLFW_KEY_0 + i;
+  for (int i = 0; i < 8; i++) {
+    int key = GLFW_KEY_1 + i;
     bool keyPressed = glfwGetKey(window, key) == GLFW_PRESS;
     bool keyReleased = glfwGetKey(window, key) == GLFW_RELEASE;
 
     if (keyPressed && !m_numPressed[i]) {
         m_numPressed[i] = true;
-        if(i == 0)
-          quadIdx = 9;
-        else
-          quadIdx = i - 1;
+          quadIdx = i;
     } else if (keyReleased) {
         m_numPressed[i] = false;
     }

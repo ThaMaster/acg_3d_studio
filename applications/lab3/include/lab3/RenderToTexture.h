@@ -93,7 +93,12 @@ class RenderToTexture
 
         std::shared_ptr<vr::Shader> getDepthShader(void);
         std::shared_ptr<vr::Shader> getGBufferShader(void);
+        std::shared_ptr<vr::Shader> getBlurShader(void);
+        std::shared_ptr<vr::Shader> getBloomShader(void);
         
+        void initFrameBuffer(void);
+        void initBlurBuffers(void);
+
         void initGBufferAttribs(void);
         void applyGAttribs(std::shared_ptr<vr::Shader> shader);
 
@@ -105,22 +110,31 @@ class RenderToTexture
         void applySpecularTexture(std::shared_ptr<vr::Shader> shader);
         void applyLightDepth(std::shared_ptr<vr::Shader> shader, int lightIdx, glm::vec4 l_pos, float farPlane);
 
+        void useBloomShader(bool b);
+        void applyBloomBuffer(std::shared_ptr<vr::Shader> shader);
+
+        void bindFB(void);
         void bindGBuffer(void);
 
     private:
         std::shared_ptr<vr::Shader> m_depthShader;
+        std::shared_ptr<vr::Shader> m_bloomShader;
+        std::shared_ptr<vr::Shader> m_blurShader;
 
         std::vector<GLuint> m_depthTextures;
         std::vector<GLuint> m_depthCubeMaps;
+
+        GLuint m_frameBuffer;
+        std::vector<GLuint> m_colorBuffers;
+
+        GLuint m_blurBuffer;
+
         GLuint m_depthBuffer;
         int m_num_depth_components = 0;
 
         std::shared_ptr<vr::Shader> m_gShader;
         GLuint m_gBuffer;
-        GLuint m_gPosition;
-        GLuint m_gNormal;
-        GLuint m_gAlbedoSpec;
-        GLuint m_gAmbientShininess;
+        std::vector<GLuint> m_gTextures;
 };
 
 #endif

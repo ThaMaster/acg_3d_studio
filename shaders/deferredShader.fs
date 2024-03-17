@@ -10,8 +10,8 @@ uniform sampler2D gNormal;
 uniform sampler2D gAlbedoSpec;
 uniform sampler2D gAmbientShininess;
 
-// The end result of this shader
-layout(location = 0) out vec4 color;
+layout (location = 0) out vec4 color;
+layout (location = 1) out vec4 bloomColor;
 
 uniform mat4 m, v, p;
 uniform int numberOfLights;
@@ -182,5 +182,11 @@ void main()
         }
     }
 
+    float brightness = dot(vec3(totalLighting), vec3(0.2126, 0.7152, 0.0722));
+    if(brightness > 1.0) {
+        bloomColor = totalLighting;
+    } else {
+        bloomColor = vec4(0.0, 0.0, 0.0, 1.0);
+    }
     color = totalLighting;
 }

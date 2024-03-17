@@ -45,9 +45,13 @@ bool Scene::initShaders(const std::string& vshader_filename, const std::string& 
 
 std::shared_ptr<Camera> Scene::getCamera() { return m_camera; }
 void Scene::setUseShadowMap(bool b) { m_useShadowMap = b; }
-bool Scene::getUseShadowMap(void) { return m_useShadowMap; }
+bool Scene::getUseShadowMap() { return m_useShadowMap; }
 void Scene::setUseGroundPlane(bool b) { m_useGroundPlane = b; }
-bool Scene::getUseGroundPlane(void) { return m_useGroundPlane; }
+bool Scene::getUseGroundPlane() { return m_useGroundPlane; }
+void Scene::setUseBloom(bool b) { m_useBloom = b; }
+bool Scene::getUseBloom() { return m_useBloom; }
+void Scene::setUseDOF(bool b) { m_useDOF = b; }
+bool Scene::getUseDOF() { return m_useDOF; }
 
 RenderVisitor *Scene::getRenderVisitor(void) { return m_renderVisitor; }
 std::shared_ptr<Light> Scene::getSelectedLight() { return m_sceneLights[m_selectedLight]; }
@@ -348,7 +352,7 @@ void Scene::render()
     for(int i = 0; i < m_sceneLights.size(); i++) {
       if(m_sceneLights[i]->getPosition().w == 0.0) {
         m_renderVisitor->getRTT()->switchToDepthTexture(i);
-      }else {
+      } else {
         m_renderVisitor->getRTT()->switchToDepthCubeMap(i);
       }
       m_renderVisitor->setCurrentLight(m_sceneLights[i]);
@@ -362,7 +366,17 @@ void Scene::render()
 
   // 3rd Pass: THE QUAD PASS
 
+  // Render Scnee into framebuffer
+  m_renderVisitor->getRTT()->bindFB();
   renderMainQuad();
+
+  // Blur bright framgents with two-pass Gaussian Blur
+  //applyBlur();
+  // Render color buffer to 2D quad to the default buffer, blending the two images.
+  m_renderVisitor->getRTT()->defaultBuffer();
+
+  renderFinalImage();
+
   renderDebugQuads();
 
   m_updateVisitor->visit(*m_rootGroup);
@@ -380,6 +394,17 @@ void Scene::renderMainQuad()
 
   if(m_useShadowMap)
       m_renderVisitor->getRTT()->applyDepthMaps(m_mainQuad->getQuadShader());
+  m_mainQuad->drawQuad();
+}
+
+void Scene::applyBlur(void)
+{
+  m_renderVisitor->getRTT()->getBlurShader()->use();
+}
+
+void Scene::renderFinalImage()
+{
+  m_renderVisitor->getRTT()->useBloomShader(m_useBloom);
   m_mainQuad->drawQuad();
 }
 
@@ -424,6 +449,7 @@ void Scene::renderDebugQuads()
   if(m_quadsToRender[5] == 1)
   {
     m_quads[5]->getQuadShader()->use();
+    m_renderVisitor->getRTT()->applyBloomBuffer(m_quads[5]->getQuadShader());
     m_quads[5]->drawQuad();
   }
 
@@ -451,3 +477,5 @@ void Scene::selectNextLight(void)
   if(m_selectedLight == m_sceneLights.size())
     m_selectedLight = 0;
 }
+
+

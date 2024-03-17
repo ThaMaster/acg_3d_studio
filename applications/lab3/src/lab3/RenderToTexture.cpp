@@ -8,15 +8,24 @@
 
 RenderToTexture::RenderToTexture() 
 {
-    m_depthShader = std::shared_ptr<vr::Shader>(new vr::Shader("shaders/depthRTT.vs", "shaders/depthRTT.fs", "shaders/depthRTT.gs"));
     m_gShader = std::shared_ptr<vr::Shader>(new vr::Shader("shaders/gBuffer.vs", "shaders/gBuffer.fs"));
+    m_bloomShader = std::shared_ptr<vr::Shader>(new vr::Shader("shaders/PFX/bloom/bloom_final.vs", "shaders/PFX/bloom/bloom_final.fs"));
+    m_blurShader = std::shared_ptr<vr::Shader>(new vr::Shader("shaders/PFX/bloom/blur.vs", "shaders/PFX/bloom/blur.fs"));
+    m_depthShader = std::shared_ptr<vr::Shader>(new vr::Shader("shaders/depthRTT.vs", "shaders/depthRTT.fs", "shaders/depthRTT.gs"));
+
     for(int i = 0; i < 32; i++) {
         m_depthTextures.push_back(-1);
         m_depthCubeMaps.push_back(-1);
     }
+    
+    m_gTextures.resize(4);
+    m_colorBuffers.resize(2);
+
     CHECK_GL_ERROR_LINE_FILE();
     glGenFramebuffers(1, &m_depthBuffer);
     glGenFramebuffers(1, &m_gBuffer);
+    initFrameBuffer();
+    initBlurBuffers();
     initGBufferAttribs();
 }
 
@@ -167,60 +176,82 @@ void RenderToTexture::applyDepthData(std::vector<glm::mat4> lms, glm::vec4 l_pos
     m_depthShader->setVec4("lightPos", l_pos);
 }
 
+void RenderToTexture::initFrameBuffer(void)
+{
+    glGenFramebuffers(1, &m_frameBuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_frameBuffer);
+
+    for(int i = 0; i < 2; i++) {
+        glGenTextures(1, &m_colorBuffers[i]);
+        glActiveTexture(GL_TEXTURE0 + i);
+        glBindTexture(GL_TEXTURE_2D, m_colorBuffers[i]);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, 1920, 1080, 0, GL_RGBA, GL_FLOAT, NULL);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);  // we clamp to the edge as the blur filter would otherwise sample repeated texture values!
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, m_colorBuffers[i], 0);
+    }
+
+    GLuint rboDepth;
+    glGenRenderbuffers(1, &rboDepth);
+    glBindRenderbuffer(GL_RENDERBUFFER, rboDepth);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1920, 1080);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboDepth);
+
+    GLuint attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
+    glDrawBuffers(2, attachments);
+    // finally check if framebuffer is complete
+    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+        std::cout << "ERROR: (frameBuffer) Framebuffer not complete!" << std::endl;
+        exit(1);
+    }
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void RenderToTexture::initBlurBuffers()
+{
+
+}
+
 void RenderToTexture::initGBufferAttribs(void)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, m_gBuffer);
-    // - position color buffer
-    glGenTextures(1, &m_gPosition);
-    glActiveTexture(GL_TEXTURE10);
-    glBindTexture(GL_TEXTURE_2D, m_gPosition);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, 1920, 1080, 0, GL_RGBA, GL_FLOAT, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_gPosition, 0);
-    
-    // - normal color buffer
-    glGenTextures(1, &m_gNormal);
-    glActiveTexture(GL_TEXTURE11);
-    glBindTexture(GL_TEXTURE_2D, m_gNormal);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, 1920, 1080, 0, GL_RGBA, GL_FLOAT, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_gNormal, 0);
-    
-    // - color + specular color buffer
-    glGenTextures(1, &m_gAlbedoSpec);
-    glActiveTexture(GL_TEXTURE12);
-    glBindTexture(GL_TEXTURE_2D, m_gAlbedoSpec);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1920, 1080, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_gAlbedoSpec, 0);
 
-    glGenTextures(1, &m_gAmbientShininess);
-    glActiveTexture(GL_TEXTURE13);
-    glBindTexture(GL_TEXTURE_2D, m_gAmbientShininess);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1920, 1080, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, m_gAmbientShininess, 0);
+    for(int i = 0; i < 4; i++) {
+        glGenTextures(1, &m_gTextures[i]);
+        // - position color buffer
+        glActiveTexture(GL_TEXTURE10 + i);
+        glBindTexture(GL_TEXTURE_2D, m_gTextures[i]);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, 1920, 1080, 0, GL_RGBA, GL_FLOAT, NULL);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, m_gTextures[i], 0);
+    }
 
     // - tell OpenGL which color attachments we'll use (of this framebuffer) for rendering 
-    unsigned int attachments[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
+    GLuint attachments[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
     glDrawBuffers(4, attachments);
 
-    unsigned int rboDepth;
+    GLuint rboDepth;
     glGenRenderbuffers(1, &rboDepth);
     glBindRenderbuffer(GL_RENDERBUFFER, rboDepth);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1920, 1080);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboDepth);
 
     if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-        std::cout << "ERROR: Framebuffer not complete!" << std::endl;
+        std::cout << "ERROR: (gBuffer) Framebuffer not complete!" << std::endl;
         exit(1);
     }
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void RenderToTexture::bindFB()
+{
+    glDisable(GL_BLEND);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_frameBuffer);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void RenderToTexture::bindGBuffer()
@@ -233,7 +264,7 @@ void RenderToTexture::bindGBuffer()
 void RenderToTexture::applyPositionTexture(std::shared_ptr<vr::Shader> shader)
 {
     glActiveTexture(GL_TEXTURE10);
-    glBindTexture(GL_TEXTURE_2D, m_gPosition);
+    glBindTexture(GL_TEXTURE_2D, m_gTextures[0]);
     shader->setInt("quadTexture", 10);
     shader->setInt("numTexVals", 4);
     CHECK_GL_ERROR_LINE_FILE();
@@ -242,7 +273,7 @@ void RenderToTexture::applyPositionTexture(std::shared_ptr<vr::Shader> shader)
 void RenderToTexture::applyNormalTexture(std::shared_ptr<vr::Shader> shader)
 {
     glActiveTexture(GL_TEXTURE11);
-    glBindTexture(GL_TEXTURE_2D, m_gNormal);
+    glBindTexture(GL_TEXTURE_2D, m_gTextures[1]);
     shader->setInt("quadTexture", 11);
     shader->setInt("numTexVals", 3);
     CHECK_GL_ERROR_LINE_FILE();
@@ -251,7 +282,7 @@ void RenderToTexture::applyNormalTexture(std::shared_ptr<vr::Shader> shader)
 void RenderToTexture::applyDiffuseTexture(std::shared_ptr<vr::Shader> shader)
 {
     glActiveTexture(GL_TEXTURE12);
-    glBindTexture(GL_TEXTURE_2D, m_gAlbedoSpec);
+    glBindTexture(GL_TEXTURE_2D, m_gTextures[2]);
     shader->setInt("quadTexture", 12);
     shader->setInt("numTexVals", 3);
     CHECK_GL_ERROR_LINE_FILE();
@@ -261,7 +292,7 @@ void RenderToTexture::applySpecularTexture(std::shared_ptr<vr::Shader> shader)
 {
     glm::vec4 valuePosition = glm::vec4(0.0, 0.0, 0.0, 1.0);
     glActiveTexture(GL_TEXTURE12);
-    glBindTexture(GL_TEXTURE_2D, m_gAlbedoSpec);
+    glBindTexture(GL_TEXTURE_2D, m_gTextures[2]);
     shader->setInt("quadTexture", 12);
     shader->setInt("numTexVals", 1);
     shader->setVec4("valPos", valuePosition);
@@ -283,8 +314,9 @@ void RenderToTexture::applyLightDepth(std::shared_ptr<vr::Shader> shader, int li
 
     if(m_depthCubeMaps[lightIdx] != -1) {
         glActiveTexture(GL_TEXTURE10);
-        glBindTexture(GL_TEXTURE_2D, m_gPosition);
+        glBindTexture(GL_TEXTURE_2D, m_gTextures[0]);
         shader->setInt("gPosition", 10);
+
         glActiveTexture(GL_TEXTURE5 + lightIdx);
         glBindTexture(GL_TEXTURE_CUBE_MAP, m_depthCubeMaps[lightIdx]);
         shader->setInt("quadCubeMap", 5 + lightIdx);
@@ -294,26 +326,55 @@ void RenderToTexture::applyLightDepth(std::shared_ptr<vr::Shader> shader, int li
     CHECK_GL_ERROR_LINE_FILE();
 }
 
+void RenderToTexture::useBloomShader(bool b)
+{
+    m_bloomShader->use();
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, m_colorBuffers[0]);
+    m_bloomShader->setInt("scene", 0);
+    CHECK_GL_ERROR_LINE_FILE();
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, m_colorBuffers[1]);
+    m_bloomShader->setInt("bloomBlur", 1);
+    CHECK_GL_ERROR_LINE_FILE();
+    float exposure = 1.0f;
+    CHECK_GL_ERROR_LINE_FILE();
+    m_bloomShader->setFloat("exposure", exposure);
+    CHECK_GL_ERROR_LINE_FILE();
+    m_bloomShader->setBool("bloom", b);
+    CHECK_GL_ERROR_LINE_FILE();
+}
+
+void RenderToTexture::applyBloomBuffer(std::shared_ptr<vr::Shader> shader)
+{
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, m_colorBuffers[1]);
+    shader->setInt("quadTexture", 1);
+    shader->setInt("numTexVals", 4);
+    CHECK_GL_ERROR_LINE_FILE();
+}
+
 void RenderToTexture::applyGAttribs(std::shared_ptr<vr::Shader> shader)
 {
     glActiveTexture(GL_TEXTURE10);
-    glBindTexture(GL_TEXTURE_2D, m_gPosition);
+    glBindTexture(GL_TEXTURE_2D, m_gTextures[0]);
     shader->setInt("gPosition", 10);
     CHECK_GL_ERROR_LINE_FILE();
     glActiveTexture(GL_TEXTURE11);
-    glBindTexture(GL_TEXTURE_2D, m_gNormal);
+    glBindTexture(GL_TEXTURE_2D, m_gTextures[1]);
     shader->setInt("gNormal", 11);
     CHECK_GL_ERROR_LINE_FILE();
     glActiveTexture(GL_TEXTURE12);
-    glBindTexture(GL_TEXTURE_2D, m_gAlbedoSpec);
+    glBindTexture(GL_TEXTURE_2D, m_gTextures[2]);
     shader->setInt("gAlbedoSpec", 12);
     CHECK_GL_ERROR_LINE_FILE();
     glActiveTexture(GL_TEXTURE13);
-    glBindTexture(GL_TEXTURE_2D, m_gAmbientShininess);
+    glBindTexture(GL_TEXTURE_2D, m_gTextures[3]);
     shader->setInt("gAmbientShininess", 13);
     CHECK_GL_ERROR_LINE_FILE();
     
 }
-
+std::shared_ptr<vr::Shader> RenderToTexture::getBlurShader(void) { return m_bloomShader; }
+std::shared_ptr<vr::Shader> RenderToTexture::getBloomShader(void) { return m_blurShader; }
 std::shared_ptr<vr::Shader> RenderToTexture::getDepthShader(void) { return m_depthShader; }
 std::shared_ptr<vr::Shader> RenderToTexture::getGBufferShader(void) { return m_gShader; }

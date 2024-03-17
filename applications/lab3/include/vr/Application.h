@@ -54,6 +54,8 @@ namespace vr {
     bool m_spacePressed = false;
     bool m_lightSwitchPressed = false;
     bool m_lightTogglePressed = false;
+    bool m_toggleBloomPressed = false;
+    bool m_toggleDOF = false;
     std::vector<bool> m_numPressed;
   };
 }

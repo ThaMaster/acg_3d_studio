@@ -9,6 +9,4 @@ void main()
 {
   texCoord = vertex_texCoord;
   gl_Position = vertex_position;
-
-
 }

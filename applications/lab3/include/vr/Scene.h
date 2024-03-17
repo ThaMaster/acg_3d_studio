@@ -104,6 +104,10 @@ namespace vr
     void renderMainQuad(void);
     void renderDebugQuads(void);
 
+    void applyBlur(void);
+
+    void renderFinalImage(void);
+
     void addDebugQuads(void);
     void toggleQuad(int quadIdx);
     int getNumQuadsToRender(void);
@@ -111,10 +115,18 @@ namespace vr
     void selectNextLight(void);
     int getSelectedLightIdx(void);
 
+    void setUseBloom(bool b);
+    bool getUseBloom(void);
+
+    void setUseDOF(bool b);
+    bool getUseDOF(void);
+
   private:
     int m_selectedLight = 0;
 
     std::shared_ptr<RenderToTexture> m_renderToTexture;
+    bool m_useBloom = true;
+    bool m_useDOF = true;
     bool m_useShadowMap = true;
     bool m_useGroundPlane = true;
     GLint m_uniform_numberOfLights;
