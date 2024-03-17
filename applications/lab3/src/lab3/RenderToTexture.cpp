@@ -291,7 +291,6 @@ void RenderToTexture::applyLightDepth(std::shared_ptr<vr::Shader> shader, int li
         shader->setInt("quadCubeMap", 5 + lightIdx);
         shader->setVec4("lPosition", l_pos);
         shader->setBool("useDepthCubeMap", true);
-        shader->setFloat("far_plane", farPlane);
     }
     CHECK_GL_ERROR_LINE_FILE();
 }

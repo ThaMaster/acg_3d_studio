@@ -12,22 +12,12 @@ uniform vec4 valPos;
 
 uniform bool useDepthCubeMap;
 uniform samplerCube quadCubeMap;
-uniform vec4 lPosition; 
-uniform float far_plane;
-
+uniform vec4 lPosition;
 vec4 visualizeDepthCubeMap(vec4 fragSpacePos)
 {
     vec3 fragToLight = vec3(fragSpacePos - lPosition);
-    
-    float closestDepth = texture(quadCubeMap, fragToLight).r;
-    closestDepth *= far_plane;
-    
-    float currentDepth = length(fragToLight);
-
-    float bias = 0.005;
-    float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0; 
-    
-    return vec4(vec3(closestDepth / far_plane), 1.0);
+    float closestDepth = texture(quadCubeMap, fragToLight).r;    
+    return vec4(vec3(closestDepth), 1.0);
 }
 
 void main()
