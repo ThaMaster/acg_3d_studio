@@ -22,7 +22,8 @@ m_horizontalAngle(glm::pi<float>()),
 m_verticalAngle(0.0f),
 m_mouseSpeed(1),
 m_lastTime(0),
-m_speedup(1)
+m_speedup(1),
+m_focusDistance(20.0f)
 {
 	m_direction = glm::vec3(0.0f, 0.0f, -1.0f);
 	m_defDirection = glm::vec3(0.0f, 0.0f, -1.0f);
@@ -221,7 +222,7 @@ void Camera::apply(std::shared_ptr<vr::Shader> shader)
 	glm::mat4 view = glm::mat4(1.0f);
 	glm::mat4 projection = glm::mat4(1.0f);
 
-	// Makes camera look in the right direction from the right position
+	// Makes camera look in the right direction sfrom the right position
 	view = glm::lookAt(m_position, m_position + m_direction, m_up);
 	
 	float aspect = (float)m_screenSize[0] / (float)m_screenSize[1];

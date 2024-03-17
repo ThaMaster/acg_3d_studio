@@ -149,6 +149,9 @@ namespace vr
     float m_mouseSpeed;
     float m_lastTime;
     float m_speedup;
+
+    float m_focusDistance;
+ 
     double m_lastX;
     double m_lastY;
   };

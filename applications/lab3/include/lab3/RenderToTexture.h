@@ -94,7 +94,7 @@ class RenderToTexture
         std::shared_ptr<vr::Shader> getDepthShader(void);
         std::shared_ptr<vr::Shader> getGBufferShader(void);
         std::shared_ptr<vr::Shader> getBlurShader(void);
-        std::shared_ptr<vr::Shader> getBloomShader(void);
+        std::shared_ptr<vr::Shader> getPostFXShader(void);
         
         void initFrameBuffer(void);
         void initBlurBuffers(void);
@@ -108,18 +108,23 @@ class RenderToTexture
         void applyNormalTexture(std::shared_ptr<vr::Shader> shader);
         void applyDiffuseTexture(std::shared_ptr<vr::Shader> shader);
         void applySpecularTexture(std::shared_ptr<vr::Shader> shader);
+        void applyCamDepth(std::shared_ptr<vr::Shader> shader);
         void applyLightDepth(std::shared_ptr<vr::Shader> shader, int lightIdx, glm::vec4 l_pos, float farPlane);
 
-        void useBloomShader(bool b, bool horizontal);
+        void usePostFXShader(bool bloom, bool dof, bool horizontal);
+
         void applyBloomBuffer(std::shared_ptr<vr::Shader> shader);
-        void useBlurBuffers(bool horizontal, bool first_iteration);
+        
+        void useBloomBlur(bool horizontal, bool first_iteration);
+        void useDOFBlur(bool horizontal, bool first_iteration);
+        void useBlurBuffer(bool horizontal);
 
         void bindFB(void);
         void bindGBuffer(void);
 
     private:
         std::shared_ptr<vr::Shader> m_depthShader;
-        std::shared_ptr<vr::Shader> m_bloomShader;
+        std::shared_ptr<vr::Shader> m_postFXShader;
         std::shared_ptr<vr::Shader> m_blurShader;
 
         std::vector<GLuint> m_depthTextures;
@@ -128,8 +133,11 @@ class RenderToTexture
         GLuint m_frameBuffer;
         std::vector<GLuint> m_colorBuffers;
 
-        std::vector<GLuint> m_blurFrameBuffers;
-        std::vector<GLuint> m_blurColorBuffers;
+        std::vector<GLuint> m_bloomBlurFBOs;
+        std::vector<GLuint> m_bloomBlurCBs;
+
+        std::vector<GLuint> m_dofBlurFBOs;
+        std::vector<GLuint> m_dofBlurCBs;
 
         GLuint m_depthBuffer;
         int m_num_depth_components = 0;
@@ -137,6 +145,7 @@ class RenderToTexture
         std::shared_ptr<vr::Shader> m_gShader;
         GLuint m_gBuffer;
         std::vector<GLuint> m_gTextures;
+        GLuint m_depthTexture;
 };
 
 #endif

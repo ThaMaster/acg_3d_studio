@@ -12,6 +12,7 @@ uniform sampler2D gAmbientShininess;
 
 layout (location = 0) out vec4 color;
 layout (location = 1) out vec4 bloomColor;
+layout (location = 2) out vec4 cleanColor;
 
 uniform mat4 m, v, p;
 uniform int numberOfLights;
@@ -189,4 +190,5 @@ void main()
         bloomColor = vec4(0.0, 0.0, 0.0, 1.0);
     }
     color = totalLighting;
+    cleanColor = totalLighting;
 }

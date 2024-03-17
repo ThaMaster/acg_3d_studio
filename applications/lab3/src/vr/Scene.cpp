@@ -361,8 +361,6 @@ void Scene::render()
     m_renderVisitor->getRTT()->defaultBuffer();
     m_renderVisitor->setDepthPass(false);
   }
-  
-
   glDisable(GL_DEPTH_TEST);
   // 3rd Pass: THE QUAD PASS
 
@@ -372,21 +370,24 @@ void Scene::render()
 
   // Blur bright framgents with two-pass Gaussian Blur
   bool horizontal = true, first_iteration = true;
-  int amount = 10;
+  int amount = 20;
   m_renderVisitor->getRTT()->getBlurShader()->use();
   for(int i = 0; i < amount; i++)
   {
-    m_renderVisitor->getRTT()->useBlurBuffers(horizontal, first_iteration);
+    m_renderVisitor->getRTT()->useBloomBlur(horizontal, first_iteration);
+    m_mainQuad->drawQuad();
+    m_renderVisitor->getRTT()->useDOFBlur(horizontal, first_iteration);
     m_mainQuad->drawQuad();
     horizontal = !horizontal;
     if(first_iteration)
       first_iteration = false;
   }
+
+  // Apply Depth of Field
   // Render color buffer to 2D quad to the default buffer, blending the two images.
   m_renderVisitor->getRTT()->defaultBuffer();
-  
-  renderFinalImage(horizontal);
-
+  m_renderVisitor->getRTT()->usePostFXShader(m_useBloom, m_useDOF, horizontal);
+  m_mainQuad->drawQuad();
   renderDebugQuads();
 
   m_updateVisitor->visit(*m_rootGroup);
@@ -404,12 +405,6 @@ void Scene::renderMainQuad()
 
   if(m_useShadowMap)
       m_renderVisitor->getRTT()->applyDepthMaps(m_mainQuad->getQuadShader());
-  m_mainQuad->drawQuad();
-}
-
-void Scene::renderFinalImage(bool horizontal)
-{
-  m_renderVisitor->getRTT()->useBloomShader(m_useBloom, horizontal);
   m_mainQuad->drawQuad();
 }
 
@@ -461,6 +456,7 @@ void Scene::renderDebugQuads()
   if(m_quadsToRender[6] == 1)
   {
     m_quads[6]->getQuadShader()->use();
+    m_renderVisitor->getRTT()->applyCamDepth(m_quads[6]->getQuadShader());
     m_quads[6]->drawQuad();
   }
 
@@ -482,5 +478,3 @@ void Scene::selectNextLight(void)
   if(m_selectedLight == m_sceneLights.size())
     m_selectedLight = 0;
 }
-
-

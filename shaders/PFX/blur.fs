@@ -17,8 +17,8 @@ void main()
     {
         for(int i = 1; i < 5; ++i)
         {
-        result += texture(image, texCoords + vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
-        result += texture(image, texCoords - vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
+            result += texture(image, texCoords + vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
+            result += texture(image, texCoords - vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
         }
     }
     else

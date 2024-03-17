@@ -104,8 +104,6 @@ namespace vr
     void renderMainQuad(void);
     void renderDebugQuads(void);
 
-    void renderFinalImage(bool horizontal);
-
     void addDebugQuads(void);
     void toggleQuad(int quadIdx);
     int getNumQuadsToRender(void);
