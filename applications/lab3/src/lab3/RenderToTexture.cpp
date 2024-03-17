@@ -285,7 +285,6 @@ void RenderToTexture::applyLightDepth(std::shared_ptr<vr::Shader> shader, int li
         glActiveTexture(GL_TEXTURE10);
         glBindTexture(GL_TEXTURE_2D, m_gPosition);
         shader->setInt("gPosition", 10);
-
         glActiveTexture(GL_TEXTURE5 + lightIdx);
         glBindTexture(GL_TEXTURE_CUBE_MAP, m_depthCubeMaps[lightIdx]);
         shader->setInt("quadCubeMap", 5 + lightIdx);

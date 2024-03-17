@@ -13,6 +13,7 @@ uniform vec4 valPos;
 uniform bool useDepthCubeMap;
 uniform samplerCube quadCubeMap;
 uniform vec4 lPosition;
+
 vec4 visualizeDepthCubeMap(vec4 fragSpacePos)
 {
     vec3 fragToLight = vec3(fragSpacePos - lPosition);

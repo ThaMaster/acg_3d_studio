@@ -234,6 +234,7 @@ void Scene::addDebugQuads(void)
 {
   std::vector<std::vector<glm::vec4>> debugQuads;
 
+  // Debug Quad #1 (Positions)
   debugQuads.push_back({
     glm::vec4(-1.0f, 0.5f, 0.0f, 1.0), // Bottom Left
     glm::vec4(-0.5f, 0.5f, 0.0f, 1.0),  // Bottom Right
@@ -241,6 +242,7 @@ void Scene::addDebugQuads(void)
     glm::vec4(-1.0f, 1.0f, 0.0f, 1.0)   // Top Left
   });
 
+  // Debug Quad #2 (Normals)
   debugQuads.push_back({
     glm::vec4(-0.5f, 0.5f, 0.0f, 1.0), // Bottom Left
     glm::vec4(0.0f, 0.5f, 0.0f, 1.0),  // Bottom Right
@@ -248,6 +250,7 @@ void Scene::addDebugQuads(void)
     glm::vec4(-0.5f, 1.0f, 0.0f, 1.0)   // Top Left
   });
 
+  // Debug Quad #3 (Diffuse Colors)
   debugQuads.push_back({
     glm::vec4(0.0f, 0.5f, 0.0f, 1.0), // Bottom Left
     glm::vec4(0.5f, 0.5f, 0.0f, 1.0),  // Bottom Right
@@ -255,6 +258,7 @@ void Scene::addDebugQuads(void)
     glm::vec4(0.0f, 1.0f, 0.0f, 1.0)   // Top Left
   });
 
+  // Debug Quad #4 (Specular Colors)
   debugQuads.push_back({
     glm::vec4(0.5f, 0.5f, 0.0f, 1.0), // Bottom Left
     glm::vec4(1.0f, 0.5f, 0.0f, 1.0),  // Bottom Right
@@ -262,11 +266,36 @@ void Scene::addDebugQuads(void)
     glm::vec4(0.5f, 1.0f, 0.0f, 1.0)   // Top Left
   });
 
+  // Debug Quad #5 (Lights depthmap)
   debugQuads.push_back({
     glm::vec4(-1.0f, -1.0f, 0.0f, 1.0), // Bottom Left
     glm::vec4(-0.5f, -1.0f, 0.0f, 1.0),  // Bottom Right
     glm::vec4(-0.5f, -0.5f, 0.0f, 1.0),   // Top Right
     glm::vec4(-1.0f, -0.5f, 0.0f, 1.0)   // Top Left
+  });
+
+  // Debug Quad #6
+  debugQuads.push_back({
+    glm::vec4(-0.5f, -1.0f, 0.0f, 1.0), // Bottom Left
+    glm::vec4(0.0f, -1.0f, 0.0f, 1.0),  // Bottom Right
+    glm::vec4(0.0f, -0.5f, 0.0f, 1.0),   // Top Right
+    glm::vec4(-0.5f, -0.5f, 0.0f, 1.0)   // Top Left
+  });
+
+  // Debug Quad #7
+  debugQuads.push_back({
+    glm::vec4(0.0f, -1.0f, 0.0f, 1.0), // Bottom Left
+    glm::vec4(0.5f, -1.0f, 0.0f, 1.0),  // Bottom Right
+    glm::vec4(0.5f, -0.5f, 0.0f, 1.0),   // Top Right
+    glm::vec4(0.0f, -0.5f, 0.0f, 1.0)   // Top Left
+  });
+
+  // Debug Quad #8
+  debugQuads.push_back({
+    glm::vec4(0.5f, -1.0f, 0.0f, 1.0), // Bottom Left
+    glm::vec4(1.0f, -1.0f, 0.0f, 1.0),  // Bottom Right
+    glm::vec4(1.0f, -0.5f, 0.0f, 1.0),   // Top Right
+    glm::vec4(0.5f, -0.5f, 0.0f, 1.0)   // Top Left
   });
 
   std::vector<GLushort> indices = {
@@ -316,7 +345,6 @@ void Scene::render()
   m_renderVisitor->setUseShadowMap(m_useShadowMap);
   if(m_useShadowMap) {
     m_renderVisitor->setDepthPass(true);
-
     for(int i = 0; i < m_sceneLights.size(); i++) {
       if(m_sceneLights[i]->getPosition().w == 0.0) {
         m_renderVisitor->getRTT()->switchToDepthTexture(i);
@@ -388,8 +416,27 @@ void Scene::renderDebugQuads()
   if(m_quadsToRender[4] == 1)
   {
     m_quads[4]->getQuadShader()->use();
-    m_renderVisitor->getRTT()->applyLightDepth(m_quads[4]->getQuadShader(), m_selectedLight, m_sceneLights[m_selectedLight]->getPosition(), m_camera->getNearFar().y);
+    m_renderVisitor->getRTT()->applyLightDepth(m_quads[4]->getQuadShader(), m_selectedLight, 
+      m_sceneLights[m_selectedLight]->getPosition(), m_camera->getNearFar().y);
     m_quads[4]->drawQuad();
+  }
+
+  if(m_quadsToRender[5] == 1)
+  {
+    m_quads[5]->getQuadShader()->use();
+    m_quads[5]->drawQuad();
+  }
+
+  if(m_quadsToRender[6] == 1)
+  {
+    m_quads[6]->getQuadShader()->use();
+    m_quads[6]->drawQuad();
+  }
+
+  if(m_quadsToRender[7] == 1)
+  {
+    m_quads[7]->getQuadShader()->use();
+    m_quads[7]->drawQuad();
   }
 }
 
