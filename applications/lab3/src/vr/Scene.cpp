@@ -362,8 +362,8 @@ void Scene::render()
     m_renderVisitor->setDepthPass(false);
   }
   
-  glDisable(GL_DEPTH_TEST);
 
+  glDisable(GL_DEPTH_TEST);
   // 3rd Pass: THE QUAD PASS
 
   // Render Scnee into framebuffer
@@ -371,11 +371,21 @@ void Scene::render()
   renderMainQuad();
 
   // Blur bright framgents with two-pass Gaussian Blur
-  //applyBlur();
+  bool horizontal = true, first_iteration = true;
+  int amount = 10;
+  m_renderVisitor->getRTT()->getBlurShader()->use();
+  for(int i = 0; i < amount; i++)
+  {
+    m_renderVisitor->getRTT()->useBlurBuffers(horizontal, first_iteration);
+    m_mainQuad->drawQuad();
+    horizontal = !horizontal;
+    if(first_iteration)
+      first_iteration = false;
+  }
   // Render color buffer to 2D quad to the default buffer, blending the two images.
   m_renderVisitor->getRTT()->defaultBuffer();
-
-  renderFinalImage();
+  
+  renderFinalImage(horizontal);
 
   renderDebugQuads();
 
@@ -397,14 +407,9 @@ void Scene::renderMainQuad()
   m_mainQuad->drawQuad();
 }
 
-void Scene::applyBlur(void)
+void Scene::renderFinalImage(bool horizontal)
 {
-  m_renderVisitor->getRTT()->getBlurShader()->use();
-}
-
-void Scene::renderFinalImage()
-{
-  m_renderVisitor->getRTT()->useBloomShader(m_useBloom);
+  m_renderVisitor->getRTT()->useBloomShader(m_useBloom, horizontal);
   m_mainQuad->drawQuad();
 }
 

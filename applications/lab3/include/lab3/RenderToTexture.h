@@ -110,8 +110,9 @@ class RenderToTexture
         void applySpecularTexture(std::shared_ptr<vr::Shader> shader);
         void applyLightDepth(std::shared_ptr<vr::Shader> shader, int lightIdx, glm::vec4 l_pos, float farPlane);
 
-        void useBloomShader(bool b);
+        void useBloomShader(bool b, bool horizontal);
         void applyBloomBuffer(std::shared_ptr<vr::Shader> shader);
+        void useBlurBuffers(bool horizontal, bool first_iteration);
 
         void bindFB(void);
         void bindGBuffer(void);
@@ -127,7 +128,8 @@ class RenderToTexture
         GLuint m_frameBuffer;
         std::vector<GLuint> m_colorBuffers;
 
-        GLuint m_blurBuffer;
+        std::vector<GLuint> m_blurFrameBuffers;
+        std::vector<GLuint> m_blurColorBuffers;
 
         GLuint m_depthBuffer;
         int m_num_depth_components = 0;

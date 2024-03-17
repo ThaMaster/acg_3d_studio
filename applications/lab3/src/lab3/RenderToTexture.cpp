@@ -20,6 +20,8 @@ RenderToTexture::RenderToTexture()
     
     m_gTextures.resize(4);
     m_colorBuffers.resize(2);
+    m_blurFrameBuffers.resize(2);
+    m_blurColorBuffers.resize(2);
 
     CHECK_GL_ERROR_LINE_FILE();
     glGenFramebuffers(1, &m_depthBuffer);
@@ -113,7 +115,7 @@ void RenderToTexture::defaultBuffer()
 {
     CHECK_GL_ERROR_LINE_FILE();
     glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
-    glViewport(0,0,1980,1080);
+    glViewport(0,0,1920,1080);
     glClear(GL_DEPTH_BUFFER_BIT);
     glCullFace(GL_BACK);
     CHECK_GL_ERROR_LINE_FILE();
@@ -211,7 +213,20 @@ void RenderToTexture::initFrameBuffer(void)
 
 void RenderToTexture::initBlurBuffers()
 {
+    for(int i = 0; i < 2; i++) {
+        glGenFramebuffers(1, &m_blurFrameBuffers[i]);
+        glGenTextures(1, &m_blurColorBuffers[i]);
+        glActiveTexture(GL_TEXTURE0);
+        glBindFramebuffer(GL_FRAMEBUFFER, m_blurFrameBuffers[i]);
+        glBindTexture(GL_TEXTURE_2D, m_blurColorBuffers[i]);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, 1920, 1080, 0, GL_RGBA, GL_FLOAT, NULL);
 
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_blurColorBuffers[i], 0);
+    }
 }
 
 void RenderToTexture::initGBufferAttribs(void)
@@ -249,7 +264,6 @@ void RenderToTexture::initGBufferAttribs(void)
 
 void RenderToTexture::bindFB()
 {
-    glDisable(GL_BLEND);
     glBindFramebuffer(GL_FRAMEBUFFER, m_frameBuffer);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
@@ -326,21 +340,16 @@ void RenderToTexture::applyLightDepth(std::shared_ptr<vr::Shader> shader, int li
     CHECK_GL_ERROR_LINE_FILE();
 }
 
-void RenderToTexture::useBloomShader(bool b)
+void RenderToTexture::useBloomShader(bool b, bool horizontal)
 {
     m_bloomShader->use();
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_colorBuffers[0]);
     m_bloomShader->setInt("scene", 0);
-    CHECK_GL_ERROR_LINE_FILE();
+
     glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, m_colorBuffers[1]);
+    glBindTexture(GL_TEXTURE_2D, m_blurColorBuffers[!horizontal]);
     m_bloomShader->setInt("bloomBlur", 1);
-    CHECK_GL_ERROR_LINE_FILE();
-    float exposure = 1.0f;
-    CHECK_GL_ERROR_LINE_FILE();
-    m_bloomShader->setFloat("exposure", exposure);
-    CHECK_GL_ERROR_LINE_FILE();
     m_bloomShader->setBool("bloom", b);
     CHECK_GL_ERROR_LINE_FILE();
 }
@@ -352,6 +361,15 @@ void RenderToTexture::applyBloomBuffer(std::shared_ptr<vr::Shader> shader)
     shader->setInt("quadTexture", 1);
     shader->setInt("numTexVals", 4);
     CHECK_GL_ERROR_LINE_FILE();
+}
+
+void RenderToTexture::useBlurBuffers(bool horizontal, bool first_iteration)
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, m_blurFrameBuffers[!horizontal]);
+    m_blurShader->setBool("horizontal", horizontal);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, first_iteration ? m_colorBuffers[1] : m_blurColorBuffers[!horizontal]);
+    m_blurShader->setInt("image", 0);
 }
 
 void RenderToTexture::applyGAttribs(std::shared_ptr<vr::Shader> shader)
@@ -374,7 +392,7 @@ void RenderToTexture::applyGAttribs(std::shared_ptr<vr::Shader> shader)
     CHECK_GL_ERROR_LINE_FILE();
     
 }
-std::shared_ptr<vr::Shader> RenderToTexture::getBlurShader(void) { return m_bloomShader; }
-std::shared_ptr<vr::Shader> RenderToTexture::getBloomShader(void) { return m_blurShader; }
+std::shared_ptr<vr::Shader> RenderToTexture::getBloomShader(void) { return m_bloomShader; }
+std::shared_ptr<vr::Shader> RenderToTexture::getBlurShader(void) { return m_blurShader; }
 std::shared_ptr<vr::Shader> RenderToTexture::getDepthShader(void) { return m_depthShader; }
 std::shared_ptr<vr::Shader> RenderToTexture::getGBufferShader(void) { return m_gShader; }
