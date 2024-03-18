@@ -22,7 +22,7 @@ namespace vr
 		/// <param name="pixelType"></param>
 		Texture();
 		bool create(const char* image, unsigned int slot=0, GLenum texType = GL_TEXTURE_2D, GLenum pixelType=GL_UNSIGNED_BYTE);
-		bool createProceduralTexture(unsigned int width, unsigned int height, unsigned int slot=0, GLenum pixelType=GL_UNSIGNED_BYTE);
+		bool createProceduralTexture(unsigned int slot=0);
 
 		bool isValid();
 
@@ -40,10 +40,13 @@ namespace vr
 		/// Deletes a texture
 		void cleanup();
 
+		bool isProcedural(void) { return m_isProcedural; }
+
 	private:
 		GLuint m_id;
 		GLenum m_type;
 		bool m_valid;
+		bool m_isProcedural = false;
 		GLuint m_textureSlot;
 
 	};

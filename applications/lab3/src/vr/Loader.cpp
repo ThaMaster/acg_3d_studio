@@ -709,13 +709,9 @@ std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node, std::shared_pt
     } else if(node_type == "texture") {
       std::string texType = getAttribute(node, "type");
       if(texType == "procedural") {
-        std::string dims = getAttribute(node, "dimensions");
-        glm::vec2 dimsVector;
-        if (!getVec<glm::vec2>(dimsVector, dims))
-          throw std::runtime_error("State(" + node_type + "): Invalid procedural texture dimensions.\n");
         std::shared_ptr<vr::Texture> texture;
         texture = std::make_shared<vr::Texture>();
-        if (!texture->createProceduralTexture(dimsVector.x, dimsVector.y, texUnit))
+        if (!texture->createProceduralTexture(texUnit))
           std::cerr << "ERROR: Could not create procedural texture!" << std::endl;
         newState->addTexture(texture);
         texUnit++;

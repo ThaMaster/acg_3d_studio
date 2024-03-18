@@ -46,13 +46,7 @@
         </transform>
     </group>
     <group name="pillar_group">
-        <state>
-            <material>
-                <texture mapType="diffuse" path="textures/container2.png"/>
-                <texture mapType="specular" path="textures/container2_specular.png"/>
-            </material>
-        </state>
-        <transform translate="0.0 2.5 -4.0" scale="8.0 5.0 0.25">
+         <transform translate="0.0 2.5 -4.0" scale="8.0 5.0 0.25">
             <geometry name="wall_1" path="models/box.obj" />
         </transform>
         <transform translate="8.0 2.5 -4.0" scale="8.0 5.0 0.25">
@@ -77,6 +71,12 @@
             <geometry name="ceiling_1" path="models/box.obj" />
         </transform>
         <transform translate="8.0 5.0 0.0" scale="8.0 0.25 8.0">
+            <geometry name="ceiling_2" path="models/box.obj" />
+        </transform>
+        <transform translate="0.0 20.0 0.0" scale="20.0 20 1.0">
+            <state>
+                <texture type="procedural" />
+            </state>
             <geometry name="ceiling_2" path="models/box.obj" />
         </transform>
     </group>

@@ -91,8 +91,10 @@ bool Texture::create(const char* image, unsigned int slot, GLenum texType, GLenu
 	return true;
 }
 
-bool Texture::createProceduralTexture(unsigned int width, unsigned int height, unsigned int slot, GLenum pixelType)
+bool Texture::createProceduralTexture(unsigned int slot)
 {
+	m_isProcedural = true;
+	m_textureSlot = slot; 
     return true;
 }
 

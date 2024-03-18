@@ -153,6 +153,7 @@ void State::applyTextures(std::shared_ptr<vr::Shader> shader)
 {
     std::vector<int> slotActive;
     std::vector<int> slots; 
+    std::vector<int> slotProcedural; 
     if(m_textures.size() == 0) {
         slotActive.resize(10);
         slots.resize(10);
@@ -164,16 +165,19 @@ void State::applyTextures(std::shared_ptr<vr::Shader> shader)
     } else {
         slotActive.resize(m_textures.size());
         slots.resize(m_textures.size());
+        slotProcedural.resize(m_textures.size());
         for (int i = 0; i < m_textures.size(); i++)
         {
             slots[i] = i + 6;
             slotActive[i] = m_textures[i] != nullptr;
             if (m_textures[i]) {
-                m_textures[i]->bind();
+                if(!m_textures[i]->isProcedural())
+                    m_textures[i]->bind();
+                slotProcedural[i] = m_textures[i]->isProcedural();
             }
         }
     }
-    
     shader->setIntVector("fragTexture.textures", slots);
     shader->setIntVector("fragTexture.activeTextures", slotActive);
+    shader->setIntVector("fragTexture.isProcedural", slotProcedural);
 }
