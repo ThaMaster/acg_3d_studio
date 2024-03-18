@@ -229,6 +229,7 @@ void main()
             totalLighting.rgb *= matTexColor;
         }
     }
+    
     // Iterate over each texture
     for (int i = 0; i < MAX_TEXTURES; i++)
     {

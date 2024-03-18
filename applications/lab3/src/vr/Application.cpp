@@ -131,7 +131,7 @@ void Application::initView()
 void Application::render(GLFWwindow* window)
 {
   m_sceneRoot->render();
-  // m_fpsCounter->render(window);
+  m_fpsCounter->render(window);
 }
 
 void Application::update(GLFWwindow* window)

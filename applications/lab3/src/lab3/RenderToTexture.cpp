@@ -41,7 +41,7 @@ void RenderToTexture::addDepthMap()
 {
     GLuint newDepthTexture;
     glGenTextures(1, &newDepthTexture);
-	glActiveTexture(GL_TEXTURE5 + m_num_depth_components);
+	glActiveTexture(GL_TEXTURE16 + m_num_depth_components);
     glBindTexture(GL_TEXTURE_2D, newDepthTexture);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, 2048, 2048, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -59,7 +59,7 @@ void RenderToTexture::addDepthCubeMap()
 {
     GLuint newDepthCubemap;
     glGenTextures(1, &newDepthCubemap);
-	glActiveTexture(GL_TEXTURE5 + m_num_depth_components);
+	glActiveTexture(GL_TEXTURE16 + m_num_depth_components);
     glBindTexture(GL_TEXTURE_CUBE_MAP, newDepthCubemap);
     for(unsigned int i = 0; i < 6; ++i) {
         glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_DEPTH_COMPONENT, 2048, 2048, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
@@ -148,17 +148,17 @@ void RenderToTexture::applyDepthMaps(std::shared_ptr<vr::Shader> shader)
 
 void RenderToTexture::applyDepthTexture(std::shared_ptr<vr::Shader> shader, int texUnit, int texPos)
 {
-    glActiveTexture(GL_TEXTURE5 + texUnit);
+    glActiveTexture(GL_TEXTURE16 + texUnit);
     glBindTexture(GL_TEXTURE_2D, m_depthTextures[texUnit]);
-    shader->setInt(("shadowMaps[" + std::to_string(texPos) + "]").c_str(), 5 + texUnit);    
+    shader->setInt(("shadowMaps[" + std::to_string(texPos) + "]").c_str(), 16 + texUnit);    
     CHECK_GL_ERROR_LINE_FILE();
 }
 
 void RenderToTexture::applyDepthCubeMap(std::shared_ptr<vr::Shader> shader, int texUnit, int texPos)
 {
-    glActiveTexture(GL_TEXTURE5 + texUnit);
+    glActiveTexture(GL_TEXTURE16 + texUnit);
     glBindTexture(GL_TEXTURE_CUBE_MAP, m_depthCubeMaps[texUnit]);
-    shader->setInt(("shadowCubeMaps[" + std::to_string(texPos) + "]").c_str(), 5 + texUnit);
+    shader->setInt(("shadowCubeMaps[" + std::to_string(texPos) + "]").c_str(), 16 + texUnit);
     CHECK_GL_ERROR_LINE_FILE();
 }
 
@@ -195,7 +195,7 @@ void RenderToTexture::initFrameBuffer(void)
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, m_colorBuffers[i], 0);
     }
 
-    GLuint attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2};
+    GLuint attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
     glDrawBuffers(3, attachments);
     // finally check if framebuffer is complete
     if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
@@ -221,6 +221,7 @@ void RenderToTexture::initBlurBuffers()
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_bloomBlurCBs[i], 0);
     }
+
     for(int i = 0; i < 2; i++) {
         glGenFramebuffers(1, &m_dofBlurFBOs[i]);
         glGenTextures(1, &m_dofBlurCBs[i]);
@@ -241,10 +242,10 @@ void RenderToTexture::initGBufferAttribs(void)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, m_gBuffer);
 
-    for(int i = 0; i < 4; i++) {
+    for(int i = 0; i < 5; i++) {
         glGenTextures(1, &m_gTextures[i]);
         // - position color buffer
-        glActiveTexture(GL_TEXTURE10 + i);
+        glActiveTexture(GL_TEXTURE0 + i);
         glBindTexture(GL_TEXTURE_2D, m_gTextures[i]);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, 1920, 1080, 0, GL_RGBA, GL_FLOAT, NULL);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -253,11 +254,11 @@ void RenderToTexture::initGBufferAttribs(void)
     }
 
     // - tell OpenGL which color attachments we'll use (of this framebuffer) for rendering 
-    GLuint attachments[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
-    glDrawBuffers(4, attachments);
+    GLuint attachments[5] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4 };
+    glDrawBuffers(5, attachments);
 
     glGenTextures(1, &m_depthTexture);
-	glActiveTexture(GL_TEXTURE14);
+	glActiveTexture(GL_TEXTURE5);
     glBindTexture(GL_TEXTURE_2D, m_depthTexture);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, 1920, 1080, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -291,27 +292,27 @@ void RenderToTexture::bindGBuffer()
 
 void RenderToTexture::applyPositionTexture(std::shared_ptr<vr::Shader> shader)
 {
-    glActiveTexture(GL_TEXTURE10);
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_gTextures[0]);
-    shader->setInt("quadTexture", 10);
+    shader->setInt("quadTexture", 0);
     shader->setInt("numTexVals", 4);
     CHECK_GL_ERROR_LINE_FILE();
 }
 
 void RenderToTexture::applyNormalTexture(std::shared_ptr<vr::Shader> shader)
 {
-    glActiveTexture(GL_TEXTURE11);
+    glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, m_gTextures[1]);
-    shader->setInt("quadTexture", 11);
+    shader->setInt("quadTexture", 1);
     shader->setInt("numTexVals", 3);
     CHECK_GL_ERROR_LINE_FILE();
 }
 
 void RenderToTexture::applyDiffuseTexture(std::shared_ptr<vr::Shader> shader)
 {
-    glActiveTexture(GL_TEXTURE12);
+    glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, m_gTextures[2]);
-    shader->setInt("quadTexture", 12);
+    shader->setInt("quadTexture", 2);
     shader->setInt("numTexVals", 3);
     CHECK_GL_ERROR_LINE_FILE();
 }
@@ -319,20 +320,29 @@ void RenderToTexture::applyDiffuseTexture(std::shared_ptr<vr::Shader> shader)
 void RenderToTexture::applySpecularTexture(std::shared_ptr<vr::Shader> shader)
 {
     glm::vec4 valuePosition = glm::vec4(0.0, 0.0, 0.0, 1.0);
-    glActiveTexture(GL_TEXTURE12);
+    glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, m_gTextures[2]);
-    shader->setInt("quadTexture", 12);
+    shader->setInt("quadTexture", 2);
     shader->setInt("numTexVals", 1);
     shader->setVec4("valPos", valuePosition);
+    CHECK_GL_ERROR_LINE_FILE();
+}
+
+void RenderToTexture::applyTextureColor(std::shared_ptr<vr::Shader> shader)
+{
+    glActiveTexture(GL_TEXTURE4);
+    glBindTexture(GL_TEXTURE_2D, m_gTextures[4]);
+    shader->setInt("quadTexture", 4);
+    shader->setInt("numTexVals", 4);
     CHECK_GL_ERROR_LINE_FILE();
 }
 
 void RenderToTexture::applyCamDepth(std::shared_ptr<vr::Shader> shader)
 {
     glm::vec4 valuePosition = glm::vec4(1.0, 0.0, 0.0, 0.0);
-    glActiveTexture(GL_TEXTURE14);
+    glActiveTexture(GL_TEXTURE5);
     glBindTexture(GL_TEXTURE_2D, m_depthTexture);
-    shader->setInt("quadTexture", 14);
+    shader->setInt("quadTexture", 5);
     shader->setInt("numTexVals", 1);
     shader->setVec4("valPos", valuePosition);
     CHECK_GL_ERROR_LINE_FILE();
@@ -343,8 +353,8 @@ void RenderToTexture::applyLightDepth(std::shared_ptr<vr::Shader> shader, int li
     if(m_depthTextures[lightIdx] != -1) {
         glm::vec4 valuePosition = glm::vec4(1.0, 0.0, 0.0, 0.0);
         glBindTexture(GL_TEXTURE_2D, m_depthTextures[lightIdx]);
-        glActiveTexture(GL_TEXTURE5 + lightIdx);
-        shader->setInt("quadTexture", 5 + lightIdx);
+        glActiveTexture(GL_TEXTURE16 + lightIdx);
+        shader->setInt("quadTexture", 16 + lightIdx);
         shader->setInt("numTexVals", 1);
         shader->setVec4("valPos", valuePosition);
         shader->setBool("useDepthCubeMap", false);
@@ -352,13 +362,13 @@ void RenderToTexture::applyLightDepth(std::shared_ptr<vr::Shader> shader, int li
     CHECK_GL_ERROR_LINE_FILE();
 
     if(m_depthCubeMaps[lightIdx] != -1) {
-        glActiveTexture(GL_TEXTURE10);
+        glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, m_gTextures[0]);
-        shader->setInt("gPosition", 10);
+        shader->setInt("gPosition", 0);
 
-        glActiveTexture(GL_TEXTURE5 + lightIdx);
+        glActiveTexture(GL_TEXTURE16 + lightIdx);
         glBindTexture(GL_TEXTURE_CUBE_MAP, m_depthCubeMaps[lightIdx]);
-        shader->setInt("quadCubeMap", 5 + lightIdx);
+        shader->setInt("quadCubeMap", 16 + lightIdx);
         shader->setVec4("lPosition", l_pos);
         shader->setBool("useDepthCubeMap", true);
     }
@@ -383,9 +393,9 @@ void RenderToTexture::usePostFXShader(bool bloom, bool dof, bool horizontal)
     m_postFXShader->setBool("bloom", bloom);
     m_postFXShader->setBool("useDOF", dof);
 
-    glActiveTexture(GL_TEXTURE14);
+    glActiveTexture(GL_TEXTURE5);
     glBindTexture(GL_TEXTURE_2D, m_depthTexture);
-    m_postFXShader->setInt("depthTexture", 14);
+    m_postFXShader->setInt("depthTexture", 5);
     CHECK_GL_ERROR_LINE_FILE();
 }
 
@@ -418,24 +428,28 @@ void RenderToTexture::useDOFBlur(bool horizontal, bool first_iteration)
 
 void RenderToTexture::applyGAttribs(std::shared_ptr<vr::Shader> shader)
 {
-    glActiveTexture(GL_TEXTURE10);
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_gTextures[0]);
-    shader->setInt("gPosition", 10);
+    shader->setInt("gPosition", 0);
     CHECK_GL_ERROR_LINE_FILE();
-    glActiveTexture(GL_TEXTURE11);
+    glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, m_gTextures[1]);
-    shader->setInt("gNormal", 11);
+    shader->setInt("gNormal", 1);
     CHECK_GL_ERROR_LINE_FILE();
-    glActiveTexture(GL_TEXTURE12);
+    glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, m_gTextures[2]);
-    shader->setInt("gAlbedoSpec", 12);
+    shader->setInt("gAlbedoSpec", 2);
     CHECK_GL_ERROR_LINE_FILE();
-    glActiveTexture(GL_TEXTURE13);
+    glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D, m_gTextures[3]);
-    shader->setInt("gAmbientShininess", 13);
+    shader->setInt("gAmbientShininess", 3);
     CHECK_GL_ERROR_LINE_FILE();
-    
+    glActiveTexture(GL_TEXTURE4);
+    glBindTexture(GL_TEXTURE_2D, m_gTextures[4]);
+    shader->setInt("gTextureColor", 4);
+    CHECK_GL_ERROR_LINE_FILE();
 }
+
 std::shared_ptr<vr::Shader> RenderToTexture::getPostFXShader(void) { return m_postFXShader; }
 std::shared_ptr<vr::Shader> RenderToTexture::getBlurShader(void) { return m_blurShader; }
 std::shared_ptr<vr::Shader> RenderToTexture::getDepthShader(void) { return m_depthShader; }

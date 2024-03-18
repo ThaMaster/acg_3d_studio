@@ -4,6 +4,7 @@ layout(location = 0) out vec4 gPosition;
 layout(location = 1) out vec4 gNormal;
 layout(location = 2) out vec4 gAlbedo;
 layout(location = 3) out vec4 gAmbientShininess;
+layout(location = 4) out vec4 gTextureColor;
 
 // From vertex shader
 in vec4 position;  // position of the vertex (and fragment) in eye space
@@ -21,7 +22,6 @@ struct Material
     vec4 diffuse;
     vec4 specular;
 
-    float opacity;
     float shininess;
     bool activeTextures[MAX_TEXTURES];
     sampler2D textures[MAX_TEXTURES];
@@ -69,23 +69,16 @@ void main()
     gAmbientShininess.rgb = material.ambient.rgb;
     gAmbientShininess.a = material.shininess;
 
-    // Iterate over other potentially set material textures.
-    // for(int i = 5; i < MAX_TEXTURES; i++)
-    // {
-    //     if (material.activeTextures[i])
-    //     {
-    //         vec3 matTexColor = texture2D(material.textures[i], texCoord).rgb;
-    //         totalLighting.rgb *= matTexColor;
-    //     }
-    // }
+    vec4 texColor = vec4(0.0, 0.0, 0.0, 0.0);
+    // Iterate over each texture
+    for (int i = 0; i < MAX_TEXTURES; i++)
+    {
+        if (fragTexture.activeTextures[i])
+        {
+            vec4 fragTexColor = texture2D(fragTexture.textures[i], texCoord);
+            texColor = mix(texColor, fragTexColor, fragTexColor.a);
+        }
+    }
 
-    // // Iterate over each texture
-    // for (int i = 0; i < MAX_TEXTURES; i++)
-    // {
-    //     if (fragTexture.activeTextures[i])
-    //     {
-    //         vec4 textureColor = texture2D(fragTexture.textures[i], texCoord);
-    //         totalLighting = mix(totalLighting, textureColor, textureColor.a);
-    //     }
-    // }
+    gTextureColor = texColor;
 }

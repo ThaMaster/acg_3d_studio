@@ -50,8 +50,8 @@ void RenderVisitor::visit(Geometry& geo)
     } else if(m_gBufferPass) {
         state->setShader(m_rtt->getGBufferShader());
         state->apply(false);
-        m_camera->apply(m_rtt->getGBufferShader());
-        geo.draw(m_rtt->getGBufferShader(), m_transformStack.top(), false);
+        m_camera->apply(state->getShader());
+        geo.draw(state->getShader(), m_transformStack.top(), false);
     }
 
     m_stateStack.pop();

@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<scene>
+<scene useGround="false">
+    <light position="2.0 2.0 0.0 0.0" specular="1.0 1.0 1.0 1.0" diffuse="1.0 1 0 1.0"/>
     <state>
-        <light ambient="0.8 0.8 0.8 1.0" position="-2.0 2.0 0.0 1.0" specular="1.0 0 0 1.0" diffuse="1.0 0 0 1.0"/>
-        <light position="2.0 2.0 0.0 1.0" specular="0.0 1.0 0 1.0" diffuse="1.0 0 0 1.0"/>
-        <material ambient="0.2 0.2 0.2" specular="0 1 1" diffuse="0 0 1" shininess="20"/>
-        <texture path="textures/7997.jpg"/>
+        <texture path="textures/container2.png"/>
     </state>
     <geometry name="geo1" path="models/sphere.obj"/>
 </scene>

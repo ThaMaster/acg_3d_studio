@@ -106,7 +106,6 @@ namespace vr
 
     void addDebugQuads(void);
     void toggleQuad(int quadIdx);
-    int getNumQuadsToRender(void);
 
     void selectNextLight(void);
     int getSelectedLightIdx(void);
@@ -122,7 +121,7 @@ namespace vr
 
     std::shared_ptr<RenderToTexture> m_renderToTexture;
     bool m_useBloom = true;
-    bool m_useDOF = true;
+    bool m_useDOF = false;
     bool m_useShadowMap = true;
     bool m_useGroundPlane = true;
     GLint m_uniform_numberOfLights;

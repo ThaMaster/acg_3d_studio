@@ -91,6 +91,12 @@ bool Texture::create(const char* image, unsigned int slot, GLenum texType, GLenu
 	return true;
 }
 
+bool Texture::createProceduralTexture(unsigned int width, unsigned int height, unsigned int slot, GLenum pixelType)
+{
+    return true;
+}
+
+
 bool Texture::isValid()
 {
 	return m_valid;
@@ -108,7 +114,6 @@ void Texture::texUnit(GLuint program, const char* uniform, unsigned int unit)
 void Texture::bind()
 {
 	glActiveTexture(GL_TEXTURE0 + m_textureSlot);
-
 	if (m_valid) 
 		glBindTexture(m_type, m_id);
 	

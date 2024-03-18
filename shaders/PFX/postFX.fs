@@ -15,8 +15,8 @@ uniform bool bloom;
 void main()
 {
     if (useDOF) {
-        float maxFocalDist = 0.97;
-        float minFocalDist = 0.8;
+        float maxFocalDist = 0.99;
+        float minFocalDist = 0.90;
 
         // Sample depth value from the depth texture
         float depthValue = texture(depthTexture, texCoords).r;
@@ -37,7 +37,6 @@ void main()
         vec4 sceneColor = texture(scene, texCoords);
         vec4 blurColor = texture(sceneBlur, texCoords);
         vec4 dofResult = mix(sceneColor, blurColor, blurAmount);
-
 
         // Apply bloom effect if enabled
         if (bloom) {

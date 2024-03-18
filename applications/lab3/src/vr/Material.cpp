@@ -35,9 +35,6 @@ void Material::setSpecular(const glm::vec4& color)  { m_specular = color; }
 glm::vec4 Material::getDiffuse() const { return m_diffuse; }
 void Material::setDiffuse(const glm::vec4& color)  { m_diffuse = color; }
 
-float Material::getOpacity() const { return m_opacity; }
-void Material::setOpacity(float f) { m_opacity = f; }
-
 float Material::getShininess() const { return m_shininess; }
 void Material::setShininess(float s)  { m_shininess = s; }
 
@@ -49,7 +46,6 @@ void Material::apply(std::shared_ptr<vr::Shader> shader)
   shader->setVec4("material.ambient", m_ambient);
   shader->setVec4("material.specular", m_specular);
   shader->setVec4("material.diffuse", m_diffuse);
-  //shader->setFloat("material.opacity", m_opacity);
   shader->setFloat("material.shininess", m_shininess);
 
   std::vector<int> slotActive;

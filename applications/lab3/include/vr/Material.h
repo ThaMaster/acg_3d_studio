@@ -38,9 +38,6 @@ namespace vr
     void setSpecular(const glm::vec4& color);
     void setDiffuse(const glm::vec4& color);
 
-    float getOpacity() const;
-    void setOpacity(float f);
-
     void setShininess(float s);
 
     /// Set a \p texture to the specified \p unit

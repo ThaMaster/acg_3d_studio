@@ -95,11 +95,9 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
   aiMaterial* ai_material;
   aiColor4D color(0.0f, 0.0f, 0.0f, 1.0f);
   GLfloat shiniess;
-  GLfloat opacity = 1.0f;
   aiString path;
   for (uint32_t i = 0; i < num_materials; i++)
   {
-    int texUnit = 1;
     std::shared_ptr<Material> material(new Material);
     
     ai_material = scene->mMaterials[i];
@@ -121,12 +119,6 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
     if(ai_material->Get(AI_MATKEY_SHININESS, shiniess) == AI_SUCCESS)
         material->setShininess(shiniess);  
 
-    if(ai_material->Get(AI_MATKEY_OPACITY, opacity) == AI_SUCCESS) {
-      material->setOpacity(opacity);
-    } else {
-      material->setOpacity(1.0f);
-    }
-
     if (ai_material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
     {
       aiString res("res\\");
@@ -143,7 +135,6 @@ size_t ExtractMaterials(const aiScene* scene, MaterialVector& materials, const s
           std::cerr << "Error creating texture: " << diffuseTexPath << std::endl;
         else {
           material->setTexture(texture, 1);
-          texUnit++;
         }
       }
     }
@@ -598,13 +589,13 @@ std::shared_ptr<Shader> parseStateShader(rapidxml::xml_node<>* node, std::shared
 std::shared_ptr<Texture> parseTexture(rapidxml::xml_node<>* node, std::shared_ptr<Scene>& scene, int texUnit)
 {
   std::shared_ptr<vr::Texture> texture;
-  std::string diffuseTexPath = getAttribute(node, "path");
-  if (diffuseTexPath.empty()) {
+  std::string texturePath = getAttribute(node, "path");
+  if (texturePath.empty()) {
     std::cerr << "Unable to find texture: Path Empty!" << std::endl;
   } else {
     texture = std::make_shared<vr::Texture>();
-    if (!texture->create(diffuseTexPath.c_str(), texUnit))
-      std::cerr << "Error creating texture: " << diffuseTexPath << std::endl;
+    if (!texture->create(texturePath.c_str(), texUnit))
+      std::cerr << "Error creating texture: " << texturePath << std::endl;
   }
   return texture;
 }
@@ -651,25 +642,24 @@ std::shared_ptr<Material> parseStateMaterial(rapidxml::xml_node<>* node, std::sh
   if(!shininess.empty()) 
     material->setShininess(atof(shininess.c_str()));
   
-  
   rapidxml::xml_node<>* texNode;
-  int textUnit = 5;
+  int texUnit = 6;
   for(texNode = node->first_node("texture"); texNode; texNode = texNode->next_sibling("texture"))
   {
     std::string map_type = getAttribute(texNode, "mapType");
     if(!map_type.empty()) {
-      if(map_type == "diffuse")
-        material->setTexture(parseTexture(texNode, scene, 1), 1);
-      else if(map_type == "specular")
-        material->setTexture(parseTexture(texNode, scene, 2), 2);
-      else if(map_type == "normal")
+      if(map_type == "normal") {
         material->setTexture(parseTexture(texNode, scene, 0), 0);
-    } else {
-      material->setTexture(parseTexture(texNode, scene, textUnit), textUnit);
-      textUnit++;
+      } else if(map_type == "diffuse") {
+        material->setTexture(parseTexture(texNode, scene, 1), 1);
+      } else if(map_type == "specular") {
+        material->setTexture(parseTexture(texNode, scene, 2), 2);
+      } else {
+        material->setTexture(parseTexture(texNode, scene, texUnit), texUnit);
+        texUnit++;
+      }
     }
   }
-  
   return material;
 }
 
@@ -697,7 +687,7 @@ std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node, std::shared_pt
   if(!enableLight.empty())
     newState->setEnableLight(std::shared_ptr<bool>(new bool(enableLight == "1" || enableLight == "true")));
 
-  int texUnit = 5;
+  int texUnit = 6;
   for(node = node->first_node(); node; node = node->next_sibling())
   {
     std::string node_type = node->name();
@@ -717,8 +707,22 @@ std::shared_ptr<State> parseNodeState(rapidxml::xml_node<>* node, std::shared_pt
     } else if(node_type == "shaders") {
       newState->setShader(parseStateShader(node, scene));
     } else if(node_type == "texture") {
-      newState->addTexture(parseTexture(node, scene, texUnit));
-      texUnit++;
+      std::string texType = getAttribute(node, "type");
+      if(texType == "procedural") {
+        std::string dims = getAttribute(node, "dimensions");
+        glm::vec2 dimsVector;
+        if (!getVec<glm::vec2>(dimsVector, dims))
+          throw std::runtime_error("State(" + node_type + "): Invalid procedural texture dimensions.\n");
+        std::shared_ptr<vr::Texture> texture;
+        texture = std::make_shared<vr::Texture>();
+        if (!texture->createProceduralTexture(dimsVector.x, dimsVector.y, texUnit))
+          std::cerr << "ERROR: Could not create procedural texture!" << std::endl;
+        newState->addTexture(texture);
+        texUnit++;
+      } else {
+        newState->addTexture(parseTexture(node, scene, texUnit));
+        texUnit++;
+      }
     } else if(node_type == "material") {
       newState->setMaterial(parseStateMaterial(node, scene));
     } else {

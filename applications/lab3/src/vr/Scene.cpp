@@ -323,15 +323,6 @@ void Scene::addDebugQuads(void)
   }
 }
 
-int Scene::getNumQuadsToRender(void)
-{
-  int nrQuadsToRender = 0;
-  for(auto i : m_quadsToRender)
-    if(i == 1) nrQuadsToRender++;
-  
-  return nrQuadsToRender;
-}
-
 void Scene::render()
 {
   glEnable(GL_DEPTH_TEST);
@@ -383,9 +374,9 @@ void Scene::render()
       first_iteration = false;
   }
 
-  // Apply Depth of Field
   // Render color buffer to 2D quad to the default buffer, blending the two images.
   m_renderVisitor->getRTT()->defaultBuffer();
+  
   m_renderVisitor->getRTT()->usePostFXShader(m_useBloom, m_useDOF, horizontal);
   m_mainQuad->drawQuad();
   renderDebugQuads();
@@ -463,6 +454,7 @@ void Scene::renderDebugQuads()
   if(m_quadsToRender[7] == 1)
   {
     m_quads[7]->getQuadShader()->use();
+    m_renderVisitor->getRTT()->applyTextureColor(m_quads[7]->getQuadShader());
     m_quads[7]->drawQuad();
   }
 }

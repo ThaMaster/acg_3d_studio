@@ -2,13 +2,14 @@
 
 const int MaxNumberOfLights = 10;
 
-in vec2 texCoord;
+in vec2 texCoords;
 in vec4 position;
 
 uniform sampler2D gPosition;
 uniform sampler2D gNormal;
 uniform sampler2D gAlbedoSpec;
 uniform sampler2D gAmbientShininess;
+uniform sampler2D gTextureColor;
 
 layout (location = 0) out vec4 color;
 layout (location = 1) out vec4 bloomColor;
@@ -107,36 +108,22 @@ float pointShadow(int lightIndex, vec4 fragSpacePos)
     return shadow;
 }
 
-// vec4 visualizeDepthCubeMap(int lightIndex, vec4 fragSpacePos)
-// {
-//     vec3 fragToLight = vec3(fragSpacePos - lights[lightIndex].position);
-    
-//     float closestDepth = texture(shadowCubeMaps[lightIndex], fragToLight).r;
-//     closestDepth *= far_plane;
-    
-//     float currentDepth = length(fragToLight);
-
-//     float bias = 0.005;
-//     float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0; 
-    
-//     return vec4(vec3(closestDepth / far_plane), 1.0);
-// }
-
 void main()
 {
-    vec4 position = texture(gPosition, texCoord);
-    vec3 normalDirection = texture(gNormal, texCoord).rgb;
-    vec4 diffuseColor = vec4(texture(gAlbedoSpec, texCoord).rgb, 1.0);
-    float specularColor = texture(gAlbedoSpec, texCoord).a;
-    vec4 matAmbient = vec4(texture(gAmbientShininess, texCoord).rgb, 1.0);
-    float shininess = texture(gAmbientShininess, texCoord).a;
+    vec4 position = texture(gPosition, texCoords);
+    vec3 normalDirection = texture(gNormal, texCoords).rgb;
+    vec4 diffuseColor = vec4(texture(gAlbedoSpec, texCoords).rgb, 1.0);
+    float specularColor = texture(gAlbedoSpec, texCoords).a;
+    vec4 matAmbient = vec4(texture(gAmbientShininess, texCoords).rgb, 1.0);
+    float shininess = texture(gAmbientShininess, texCoords).a;
+    vec4 texColor = texture2D(gTextureColor, texCoords);
     
     vec3 viewDirection = normalize(viewPos - position.xyz);
     vec3 lightDirection;
     float attenuation;
 
     // initialize total lighting with ambient lighting
-    vec4 totalLighting = lights[0].ambient * matAmbient;
+    vec4 totalLighting = (lights[0].ambient * matAmbient);
 
     // for all light sources
     for (int index = 0; index < numberOfLights; index++) 
@@ -181,6 +168,9 @@ void main()
             
             totalLighting += (1.0 - shadow) * (diffuseReflection + specularReflection);
         }
+    }
+    if(texColor != vec4(0.0)) {
+        totalLighting *= texColor;
     }
 
     float brightness = dot(vec3(totalLighting), vec3(0.2126, 0.7152, 0.0722));

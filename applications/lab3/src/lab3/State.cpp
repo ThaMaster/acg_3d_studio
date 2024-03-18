@@ -104,8 +104,7 @@ void State::apply(bool b)
         m_material->apply(m_shader);
     }
 
-    if(m_textures.size() != 0)
-        applyTextures(m_shader);
+    applyTextures(m_shader);
 
     if(b) {
         applyLights(m_shader);
@@ -116,8 +115,7 @@ void State::apply(bool b)
             glEnable(GL_CULL_FACE);
         else
             glDisable(GL_CULL_FACE);
-    } 
-    
+    }     
 }
 
 void State::applyLights(std::shared_ptr<vr::Shader> shader)
@@ -153,19 +151,29 @@ void State::setTextures(std::vector<std::shared_ptr<vr::Texture>> t) { m_texture
 
 void State::applyTextures(std::shared_ptr<vr::Shader> shader)
 {
-    int i = 0;
     std::vector<int> slotActive;
     std::vector<int> slots; 
-    slotActive.resize(m_textures.size());
-    slots.resize(m_textures.size());
-    for (int i = 0; i < m_textures.size(); i++)
-    {
-        slots[i] = i;
-        slotActive[i] = m_textures[i] != nullptr;
-        if (m_textures[i]) {
-            m_textures[i]->bind();
+    if(m_textures.size() == 0) {
+        slotActive.resize(10);
+        slots.resize(10);
+        for (int i = 0; i < 10; i++)
+        {
+            slots[i] = i + 6;
+            slotActive[i] = false;
+        }
+    } else {
+        slotActive.resize(m_textures.size());
+        slots.resize(m_textures.size());
+        for (int i = 0; i < m_textures.size(); i++)
+        {
+            slots[i] = i + 6;
+            slotActive[i] = m_textures[i] != nullptr;
+            if (m_textures[i]) {
+                m_textures[i]->bind();
+            }
         }
     }
+    
     shader->setIntVector("fragTexture.textures", slots);
     shader->setIntVector("fragTexture.activeTextures", slotActive);
 }
