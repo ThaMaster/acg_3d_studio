@@ -10,12 +10,15 @@
  *        As of writing this code, this class only handles
  *        rendering depth maps to textures but it can be
  *        further developed to render additional information
- *        to other textures.
+ *        to other textures. The class can switch between multiple
+ *        framebuffers for deferred rendering.
  * 
  * @author Christoffer Nordlander (c20cnr@cs.umu.se)
  * 
  * Version information:
  *      2024-03-01: v1.0, first version. 
+ *      2024-03-19: v1.5, second version, implemented the support for deferred
+ *                        shading.
  */
 class RenderToTexture 
 {
@@ -100,8 +103,8 @@ class RenderToTexture
         void initBlurBuffers(void);
 
         void initGBufferAttribs(void);
+        
         void applyGAttribs(std::shared_ptr<vr::Shader> shader);
-
         void applyDepthTexture(std::shared_ptr<vr::Shader> shader, int texUnit, int texPos);
         void applyDepthCubeMap(std::shared_ptr<vr::Shader> shader, int texUnit, int texPos);
         void applyPositionTexture(std::shared_ptr<vr::Shader> shader);
@@ -113,12 +116,10 @@ class RenderToTexture
         void applyLightDepth(std::shared_ptr<vr::Shader> shader, int lightIdx, glm::vec4 l_pos, float farPlane);
 
         void usePostFXShader(bool bloom, bool dof, bool horizontal);
-
         void applyBloomBuffer(std::shared_ptr<vr::Shader> shader);
         
         void useBloomBlur(bool horizontal, bool first_iteration);
         void useDOFBlur(bool horizontal, bool first_iteration);
-        void useBlurBuffer(bool horizontal);
 
         void bindFB(void);
         void bindGBuffer(void);

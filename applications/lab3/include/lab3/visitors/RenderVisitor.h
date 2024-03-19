@@ -18,7 +18,8 @@
  * @author Christoffer Nordlander (c20cnr@cs.umu.se)
  * 
  * Version information:
- *      2024-02-12: v1.0, first version. 
+ *      2024-02-12: v1.0, first version.
+ *      2024-03-19: v1.5, second version, implemented support for deferred rendering.
  */
 class RenderVisitor : public NodeVisitor
 {

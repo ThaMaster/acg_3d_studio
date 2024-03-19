@@ -110,6 +110,7 @@ float pointShadow(int lightIndex, vec4 fragSpacePos)
 
 void main()
 {
+    // Get all the attributes from the geometry pass.
     vec4 position = texture(gPosition, texCoords);
     vec3 normalDirection = texture(gNormal, texCoords).rgb;
     vec4 diffuseColor = vec4(texture(gAlbedoSpec, texCoords).rgb, 1.0);
@@ -169,10 +170,13 @@ void main()
             totalLighting += (1.0 - shadow) * (diffuseReflection + specularReflection);
         }
     }
+    
     if(texColor != vec4(0.0)) {
+        // Add additional texture colors if they are stated.
         totalLighting *= texColor;
     }
 
+    // Exctract the fragments that exceed a certain brightness.
     float brightness = dot(vec3(totalLighting), vec3(0.2126, 0.7152, 0.0722));
     if(brightness > 1.0) {
         bloomColor = totalLighting;
@@ -180,5 +184,7 @@ void main()
         bloomColor = vec4(0.0, 0.0, 0.0, 1.0);
     }
     color = totalLighting;
+
+    // Exctract a copy of the scene for the depth of field effect.
     cleanColor = totalLighting;
 }

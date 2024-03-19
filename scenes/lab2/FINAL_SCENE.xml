@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene useGround="true">
     <state name="sun_light_state">
-        <light position="1.0 2.0 1.0 0.0" ambient="0.0 0.0 0.0 1.0" specular="1.0 1.0 1.0 1.0" diffuse="1.0 1.0 1.0 1.0"/>
-        <light position="26.23 6.20 8.87 1.0" ambient="0.0 0.0 0.0 1.0" specular="0.10 0.48 0.94 1.0" diffuse="0.74 0.29 0.84 1.0"/>
-        <light position="9.52 4.55 -20.32 1.0" ambient="0.0 0.0 0.0 1.0" specular="0.17 0.41 0.47 1.0" diffuse="0.89 0.20 0.27 1.0"/>
-        <light position="17.31 5.23 0.77 1.0" ambient="0.0 0.0 0.0 1.0" specular="0.59 0.70 0.19 1.0" diffuse="0.78 0.69 0.81 1.0"/>
-        <light position="-8.81 7.90 0.25 1.0" ambient="0.0 0.0 0.0 1.0" specular="0.52 0.73 0.39 1.0" diffuse="0.14 0.43 0.32 1.0"/>
-        <light position="8.05 5.11 0.39 1.0" ambient="0.0 0.0 0.0 1.0" specular="0.65 0.81 0.58 1.0" diffuse="0.21 0.32 0.95 1.0"/>
-        <light position="-6.27 8.60 10.89 1.0" ambient="0.0 0.0 0.0 1.0" specular="0.73 0.52 0.23 1.0" diffuse="0.58 0.35 0.47 1.0"/>
-        <light position="15.21 6.09 0.79 1.0" ambient="0.0 0.0 0.0 1.0" specular="0.64 0.23 0.76 1.0" diffuse="0.25 0.76 0.90 1.0"/>
-        <light position="9.07 9.05 -2.54 1.0" ambient="0.0 0.0 0.0 1.0" specular="0.19 0.56 0.32 1.0" diffuse="0.89 0.78 0.15 1.0"/>
-        <light position="16.54 9.44 5.32 1.0" ambient="0.0 0.0 0.0 1.0" specular="0.76 0.66 0.38 1.0" diffuse="0.94 0.59 0.16 1.0"/>
+        <light position="1.5 1.0 1.5 0.0" ambient="0.0 0.0 0.0 1.0" specular="1.0 1.0 1.0 1.0" diffuse="1.0 1.0 1.0 1.0"/>
+        <light position="0.0 4.0 1.0 1.0" ambient="0.0 0.0 0.0 1.0" specular="1.0 0.0 0.0 1.0" diffuse="1.0 0.0 0.0 1.0"/>
+        <light position="4.0 4.0 1.0 1.0" ambient="0.0 0.0 0.0 1.0" specular="0.0 1.0 0.0 1.0" diffuse="0.0 1.0 0.0 1.0"/>
+        <light position="8.0 4.0 1.0 1.0" ambient="0.0 0.0 0.0 1.0" specular="0.0 0.0 1.0 1.0" diffuse="0.0 0.0 1.0 1.0"/>
     </state>
     <transform translate="4 5.1 0" rotate="0 0 0" scale="0.04 0.04 0.04">
         <update>
@@ -33,9 +27,6 @@
             </update>
             <geometry name="monkey_1" path="models/monkey.obj"/>
         </transform>
-        <transform translate="0.0 10.0 15.0" rotate="0 45 0">
-            <geometry name="monkey_1" path="models/monkey.obj"/>
-        </transform>
     </group>
     <group name="concrete_group">
         <transform translate="11.0 0.0 4.0" scale="1.5 1.5 1.5">
@@ -46,7 +37,13 @@
         </transform>
     </group>
     <group name="pillar_group">
-         <transform translate="0.0 2.5 -4.0" scale="8.0 5.0 0.25">
+        <state>
+            <material>
+                <texture mapType="specular" path="textures/container2_specular.png"/>
+            </material>
+            <texture path="textures/container2.png"/>
+        </state>
+        <transform translate="0.0 2.5 -4.0" scale="8.0 5.0 0.25">
             <geometry name="wall_1" path="models/box.obj" />
         </transform>
         <transform translate="8.0 2.5 -4.0" scale="8.0 5.0 0.25">
@@ -71,12 +68,6 @@
             <geometry name="ceiling_1" path="models/box.obj" />
         </transform>
         <transform translate="8.0 5.0 0.0" scale="8.0 0.25 8.0">
-            <geometry name="ceiling_2" path="models/box.obj" />
-        </transform>
-        <transform translate="0.0 20.0 0.0" scale="20.0 20 1.0">
-            <state>
-                <texture type="procedural" />
-            </state>
             <geometry name="ceiling_2" path="models/box.obj" />
         </transform>
     </group>

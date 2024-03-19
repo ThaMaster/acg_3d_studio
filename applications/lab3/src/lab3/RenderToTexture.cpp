@@ -19,7 +19,7 @@ RenderToTexture::RenderToTexture()
     }
     
     m_gTextures.resize(4);
-    m_colorBuffers.resize(2);
+    m_colorBuffers.resize(3);
 
     m_bloomBlurFBOs.resize(2);
     m_bloomBlurCBs.resize(2);

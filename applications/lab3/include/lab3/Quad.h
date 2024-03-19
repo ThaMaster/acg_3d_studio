@@ -6,7 +6,19 @@
 #include <memory>
 #include <vr/Shader.h>
 
-
+/**
+ * @brief A class for rendering quads to the screen. Since
+ *        the project now uses deferred rendering this class
+ *        is essential for showcasing the different stored
+ *        textures. The class is a more basic version of the
+ *        geometry class since a quad only needs vertex positions,
+ *        indices and texture coordinates.
+ * 
+ * @author Christoffer Nordlander (c20cnr@cs.umu.se)
+ * 
+ * Version information:
+ *      2024-03-19: v1.0, first version. 
+ */
 class Quad 
 {
     public:
@@ -14,15 +26,15 @@ class Quad
         ~Quad();
 
         void drawQuad(void);
+
         void uploadQuad(void);
         bool initShaders();
-
-        std::shared_ptr<vr::Shader> getQuadShader(void);
 
         void setVertices(std::vector<glm::vec4> vs);
         void setTexCoords(std::vector<glm::vec2> ts);
         void setElements(std::vector<GLushort> es);
 
+        std::shared_ptr<vr::Shader> getQuadShader(void);
         void setQuadShader(std::shared_ptr<vr::Shader> s) { m_quadShader = s; }
     
     private:

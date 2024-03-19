@@ -7,7 +7,6 @@
 
 namespace vr
 {
-
 	class Texture
 	{
 	public:

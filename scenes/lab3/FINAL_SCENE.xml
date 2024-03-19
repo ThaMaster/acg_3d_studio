@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene useGround="true">
+    <state name="scene_lights">
+        <light position="4.0 3.0 4.0 0.0" ambient="0.0 0.0 0.0 1.0" specular="1.0 1.0 1.0 1.0" diffuse="1.0 1.0 1.0 1.0"/>
+        <light position="1.0 4.0 2.0 1.0" ambient="0.0 0.0 0.0 1.0" specular="1.0 1.0 1.0 1.0" diffuse="1.0 1.0 1.0 1.0"/>
+        <light position="-1.0 4.0 2.0 1.0" ambient="0.0 0.0 0.0 1.0" specular="1.0 1.0 1.0 1.0" diffuse="1.0 1.0 1.0 1.0"/>
+        <light position="0.0 8.0 2.0 1.0" ambient="0.0 0.0 0.0 1.0" specular="1.0 0.0 0.0 1.0" diffuse="1.0 0.0 1.0 1.0" attenuation="1.0 0.014 0.0007"/>
+        <light position="12.0 5.0 0.0 1.0" ambient="0.0 0.0 0.0 1.0" specular="0.0 0.0 1.0 1.0" diffuse="0.0 0.0 1.0 1.0"/>
+        <light position="9.0 5.0 0.0 1.0" ambient="0.0 0.0 0.0 1.0" specular="0.0 1.0 0.0 1.0" diffuse="0.0 1.0 0.0 1.0"/>
+        <light position="-4.0 2.0 -2.0 1.0" ambient="0.0 0.0 0.0 1.0" specular="0.5 1.0 0.5 1.0" diffuse="0.5 1.0 0.5 1.0"/>
+        <light position="6.5 11.0 2.0 1.0" ambient="0.0 0.0 0.0 1.0" specular="1.0 1.0 1.0 1.0" diffuse="1.0 1.0 1.0 1.0"/>
+        <light position="7.5 11.0 2.0 1.0" ambient="0.0 0.0 0.0 1.0" specular="1.0 1.0 1.0 1.0" diffuse="1.0 1.0 1.0 1.0"/>
+    </state>
+    <transform translate="0 5.2 0" rotate="0 0 0" scale="0.03 0.03 0.03">
+        <geometry path="models/Altair_Model/altair.3ds"/>
+    </transform>
+    <transform translate="7.0 10.1 0.0" rotate="0 90 0" scale="2.0 2.0 2.0">
+        <geometry path="models/porsche_911_gt3.glb"/>
+    </transform>
+    <group name="concrete_group">
+        <transform translate="12.0 0.0 4.0" scale="2.0 2.0 2.0">
+            <geometry name="concrete_1" path="models/concrete/concrete_road_barrier_02_4k.gltf"/>
+        </transform>
+        <transform translate="0.0 0.0 4.0" scale="2.0 2.0 2.0">
+            <geometry name="concrete_2" path="models/concrete/concrete_road_barrier_02_4k.gltf"/>
+        </transform>
+    </group>
+    <group name="monkey_group">
+        <transform translate="0.0 2.0 0.0">
+            <update>
+                <rotate speed="1.0" axis="0 1 0"/>
+            </update>
+            <geometry name="monkey_1" path="models/monkey.obj"/>
+        </transform>
+        <transform translate="12.0 2.0 0.0" scale="0.6 0.6 0.6">
+            <update>
+                <translate speed="-0.05" axis="0 0 1"/>
+                <rotate speed="1" axis="0 1 0"/>
+            </update>
+            <geometry name="monkey_2" path="models/monkey.obj"/>
+        </transform>
+        <transform translate="8.0 2.0 0.0" scale="0.6 0.6 0.6">
+            <update>
+                <translate speed="0.05" axis="0 0 1"/>
+                <rotate speed="1" axis="0 1 0"/>
+            </update>
+            <geometry name="monkey_3" path="models/monkey.obj"/>
+        </transform>
+        <transform translate="2.0 17.0 25.0" rotate="0 45 0" scale="0.6 0.6 0.6">
+            <geometry name="monkey_close" path="models/monkey.obj"/>
+        </transform>
+        <transform translate="4.0 17.0 25.0" rotate="0 -45 0" scale="0.6 0.6 0.6">
+            <geometry name="monkey_close" path="models/monkey.obj"/>
+        </transform>
+    </group>
+
+    <group name="pillar_group">
+        <state>
+            <texture type="procedural"/>
+        </state>
+        <transform translate="10.0 2.5 0.0" scale="1.0 7.5.0 1.0">
+            <update>
+                <rotate speed="-1.0" axis="0 1 0"/>
+            </update>
+            <geometry name="wall_1" path="models/box.obj" />
+        </transform>
+        <transform translate="10.0 7.0 0.0" scale="1.5 1.5 1.5">
+            <update>
+                <rotate speed="-1.0" axis="0 1 0"/>
+            </update>
+            <geometry name="pillar" path="models/box.obj" />
+        </transform>
+    </group>
+
+    <group name="box_group">
+        <state>
+            <material>
+                <texture mapType="diffuse" path="textures/container2.png"/>
+                <texture mapType="specular" path="textures/container2_specular.png"/>
+            </material>
+        </state>
+        <transform translate="6.5 0.2 0.0" scale="18.0 0.25 8.0">
+            <geometry name="floor" path="models/box.obj" />
+        </transform>
+        <transform translate="6.5 5.0 -4.0" scale="18.0 10.0 0.25">
+            <geometry name="wall_1" path="models/box.obj" />
+        </transform>
+        <transform translate="2.5 5.0 0.0" scale="0.25 10.0 8.0">
+            <geometry name="wall_2" path="models/box.obj" />
+        </transform>
+        <transform translate="15.5 5.0 0.0" scale="0.25 10.0 8.0">
+            <geometry name="wall_2" path="models/box.obj" />
+        </transform>
+        <transform translate="-2.5 5.0 0.0" scale="0.25 10.0 8.0">
+            <geometry name="wall_3" path="models/box.obj" />
+        </transform>
+        <transform translate="0.0 5.0 0.0" scale="5.0 0.25 8.0">
+            <geometry name="ceiling_1" path="models/box.obj" />
+        </transform>
+        <transform translate="6.5 10.0 0.0" scale="18.0 0.25 8.0">
+            <geometry name="ceiling_2" path="models/box.obj" />
+        </transform>
+    </group>
+</scene>

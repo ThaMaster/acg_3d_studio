@@ -21,6 +21,8 @@
  * Version information:
  *      2024-02-12: v1.0, first version. 
  *      2024-03-01: v1.1, second version, can now handle multiple textures.
+ *      2024-03-19: v1.5, third version, corrected the texture units when binding
+ *                        textures and added support for procedural textures.
  */
 class State 
 {

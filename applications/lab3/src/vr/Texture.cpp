@@ -93,6 +93,7 @@ bool Texture::create(const char* image, unsigned int slot, GLenum texType, GLenu
 
 bool Texture::createProceduralTexture(unsigned int slot)
 {
+	// Do not generate any texture since this is done in the fragment shader.
 	m_isProcedural = true;
 	m_textureSlot = slot; 
     return true;

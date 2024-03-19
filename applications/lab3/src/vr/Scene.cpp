@@ -16,6 +16,8 @@ Scene::Scene() : m_uniform_numberOfLights(-1)
   addDebugQuads();
 }
 
+Scene::~Scene() {}
+
 void Scene::setDefaultRootState(Group &g)
 {
   auto newRootState = std::shared_ptr<State>(new State("root_state"));
@@ -52,14 +54,19 @@ void Scene::setUseBloom(bool b) { m_useBloom = b; }
 bool Scene::getUseBloom() { return m_useBloom; }
 void Scene::setUseDOF(bool b) { m_useDOF = b; }
 bool Scene::getUseDOF() { return m_useDOF; }
+int Scene::getSelectedLightIdx(void) { return m_selectedLight; }
+
+void Scene::selectNextLight(void)
+{ 
+  m_selectedLight++;
+  if(m_selectedLight == m_sceneLights.size())
+    m_selectedLight = 0;
+}
 
 RenderVisitor *Scene::getRenderVisitor(void) { return m_renderVisitor; }
 std::shared_ptr<Light> Scene::getSelectedLight() { return m_sceneLights[m_selectedLight]; }
 std::vector<std::shared_ptr<Light>> Scene::getLights() { return m_sceneLights; }
 void Scene::addLight(std::shared_ptr<Light> newLight) { m_sceneLights.push_back(newLight); }
-
-
-Scene::~Scene() {}
 
 Geometry* Scene::buildGeometry(std::string geo_name, std::vector<glm::vec3> vertices, std::vector<GLushort> indices, std::vector<glm::vec3> normals, std::vector<glm::vec2> texCoords)
 {
@@ -78,26 +85,6 @@ Geometry* Scene::buildGeometry(std::string geo_name, std::vector<glm::vec3> vert
     geometry->texCoords.push_back(t);
 
   return geometry;
-}
-
-void Scene::toggleQuad(int quadIdx)
-{
-  if(!(quadIdx >= m_quads.size() || quadIdx < 0))
-  {
-    if(m_quadsToRender[quadIdx] == 1)
-      m_quadsToRender[quadIdx] = 0;
-    else
-      m_quadsToRender[quadIdx] = 1;
-  }
-}
-
-Quad* Scene::buildQuad(std::vector<glm::vec4> vertices, std::vector<GLushort> indices, std::vector<glm::vec2> texCoords)
-{
-  auto newQuad = new Quad();
-  newQuad->setVertices(vertices);
-  newQuad->setElements(indices);
-  newQuad->setTexCoords(texCoords);
-  return newQuad;
 }
 
 Group* Scene::createDefaultScene()
@@ -210,6 +197,87 @@ void Scene::updateLightMatrices(int idx, BoundingBox box, glm::vec2 nearFar)
   m_sceneLights[idx]->calcLightMatrices(box, nearFar);
 }
 
+void Scene::render()
+{
+  glEnable(GL_DEPTH_TEST);
+  
+  // 1st Pass: Render Geometry to gBuffer
+
+  m_renderVisitor->setGBufferPass(true);
+  m_renderVisitor->getRTT()->bindGBuffer();
+  m_renderVisitor->visit(*m_rootGroup);
+  m_renderVisitor->getRTT()->defaultBuffer();
+  m_renderVisitor->setGBufferPass(false);
+
+  // 2nd Pass: Render the shadowmaps
+
+  m_renderVisitor->setUseShadowMap(m_useShadowMap);
+  if(m_useShadowMap) {
+    m_renderVisitor->setDepthPass(true);
+    for(int i = 0; i < m_sceneLights.size(); i++) {
+      if(m_sceneLights[i]->getPosition().w == 0.0) {
+        m_renderVisitor->getRTT()->switchToDepthTexture(i);
+      } else {
+        m_renderVisitor->getRTT()->switchToDepthCubeMap(i);
+      }
+      m_renderVisitor->setCurrentLight(m_sceneLights[i]);
+      m_renderVisitor->visit(*m_rootGroup);
+    }
+    m_renderVisitor->getRTT()->defaultBuffer();
+    m_renderVisitor->setDepthPass(false);
+  }
+  glDisable(GL_DEPTH_TEST);
+
+  // 3rd Pass: Apply Post-Process Effects
+  m_renderVisitor->getRTT()->bindFB();
+  renderMainQuad();
+
+  // Blur the brightest fragments and a copy of the scene with two-pass Gaussian Blur
+  bool horizontal = true, first_iteration = true;
+  int amount = 20;
+  m_renderVisitor->getRTT()->getBlurShader()->use();
+  for(int i = 0; i < amount; i++)
+  {
+    m_renderVisitor->getRTT()->useBloomBlur(horizontal, first_iteration);
+    m_mainQuad->drawQuad();
+    m_renderVisitor->getRTT()->useDOFBlur(horizontal, first_iteration);
+    m_mainQuad->drawQuad();
+    horizontal = !horizontal;
+    if(first_iteration)
+      first_iteration = false;
+  }
+  m_renderVisitor->getRTT()->defaultBuffer();
+
+  // 4th Pass: Mix the effects into the final image and render to default framebuffer.
+  m_renderVisitor->getRTT()->usePostFXShader(m_useBloom, m_useDOF, horizontal);
+  m_mainQuad->drawQuad();
+  renderDebugQuads();
+
+  m_updateVisitor->visit(*m_rootGroup);
+}
+
+// Functions regarding Quads
+
+void Scene::toggleQuad(int quadIdx)
+{
+  if(!(quadIdx >= m_quads.size() || quadIdx < 0))
+  {
+    if(m_quadsToRender[quadIdx] == 1)
+      m_quadsToRender[quadIdx] = 0;
+    else
+      m_quadsToRender[quadIdx] = 1;
+  }
+}
+
+Quad* Scene::buildQuad(std::vector<glm::vec4> vertices, std::vector<GLushort> indices, std::vector<glm::vec2> texCoords)
+{
+  auto newQuad = new Quad();
+  newQuad->setVertices(vertices);
+  newQuad->setElements(indices);
+  newQuad->setTexCoords(texCoords);
+  return newQuad;
+}
+
 std::shared_ptr<Quad> Scene::createMainQuad(void)
 {
   std::vector<glm::vec4> vertices = {
@@ -278,7 +346,7 @@ void Scene::addDebugQuads(void)
     glm::vec4(-1.0f, -0.5f, 0.0f, 1.0)   // Top Left
   });
 
-  // Debug Quad #6
+  // Debug Quad #6 (Brightest fragments)
   debugQuads.push_back({
     glm::vec4(-0.5f, -1.0f, 0.0f, 1.0), // Bottom Left
     glm::vec4(0.0f, -1.0f, 0.0f, 1.0),  // Bottom Right
@@ -286,7 +354,7 @@ void Scene::addDebugQuads(void)
     glm::vec4(-0.5f, -0.5f, 0.0f, 1.0)   // Top Left
   });
 
-  // Debug Quad #7
+  // Debug Quad #7 (Scene depth)
   debugQuads.push_back({
     glm::vec4(0.0f, -1.0f, 0.0f, 1.0), // Bottom Left
     glm::vec4(0.5f, -1.0f, 0.0f, 1.0),  // Bottom Right
@@ -294,7 +362,7 @@ void Scene::addDebugQuads(void)
     glm::vec4(0.0f, -0.5f, 0.0f, 1.0)   // Top Left
   });
 
-  // Debug Quad #8
+  // Debug Quad #8 (Additional textures)
   debugQuads.push_back({
     glm::vec4(0.5f, -1.0f, 0.0f, 1.0), // Bottom Left
     glm::vec4(1.0f, -1.0f, 0.0f, 1.0),  // Bottom Right
@@ -321,67 +389,6 @@ void Scene::addDebugQuads(void)
     m_quads.push_back(newQuad);
     m_quadsToRender.push_back(0);
   }
-}
-
-void Scene::render()
-{
-  glEnable(GL_DEPTH_TEST);
-  
-  // 1st Pass: THE GEOMETRY PASS
-
-  m_renderVisitor->setGBufferPass(true);
-  m_renderVisitor->getRTT()->bindGBuffer();
-  m_renderVisitor->visit(*m_rootGroup);
-  m_renderVisitor->getRTT()->defaultBuffer();
-  m_renderVisitor->setGBufferPass(false);
-
-  // 2nd Pass: THE LIGHTNING PASS
-
-  m_renderVisitor->setUseShadowMap(m_useShadowMap);
-  if(m_useShadowMap) {
-    m_renderVisitor->setDepthPass(true);
-    for(int i = 0; i < m_sceneLights.size(); i++) {
-      if(m_sceneLights[i]->getPosition().w == 0.0) {
-        m_renderVisitor->getRTT()->switchToDepthTexture(i);
-      } else {
-        m_renderVisitor->getRTT()->switchToDepthCubeMap(i);
-      }
-      m_renderVisitor->setCurrentLight(m_sceneLights[i]);
-      m_renderVisitor->visit(*m_rootGroup);
-    }
-    m_renderVisitor->getRTT()->defaultBuffer();
-    m_renderVisitor->setDepthPass(false);
-  }
-  glDisable(GL_DEPTH_TEST);
-  // 3rd Pass: THE QUAD PASS
-
-  // Render Scnee into framebuffer
-  m_renderVisitor->getRTT()->bindFB();
-  renderMainQuad();
-
-  // Blur bright framgents with two-pass Gaussian Blur
-  bool horizontal = true, first_iteration = true;
-  int amount = 20;
-  m_renderVisitor->getRTT()->getBlurShader()->use();
-  for(int i = 0; i < amount; i++)
-  {
-    m_renderVisitor->getRTT()->useBloomBlur(horizontal, first_iteration);
-    m_mainQuad->drawQuad();
-    m_renderVisitor->getRTT()->useDOFBlur(horizontal, first_iteration);
-    m_mainQuad->drawQuad();
-    horizontal = !horizontal;
-    if(first_iteration)
-      first_iteration = false;
-  }
-
-  // Render color buffer to 2D quad to the default buffer, blending the two images.
-  m_renderVisitor->getRTT()->defaultBuffer();
-  
-  m_renderVisitor->getRTT()->usePostFXShader(m_useBloom, m_useDOF, horizontal);
-  m_mainQuad->drawQuad();
-  renderDebugQuads();
-
-  m_updateVisitor->visit(*m_rootGroup);
 }
 
 void Scene::renderMainQuad()
@@ -457,16 +464,4 @@ void Scene::renderDebugQuads()
     m_renderVisitor->getRTT()->applyTextureColor(m_quads[7]->getQuadShader());
     m_quads[7]->drawQuad();
   }
-}
-
-int Scene::getSelectedLightIdx(void)
-{
-  return m_selectedLight;
-}
-
-void Scene::selectNextLight(void)
-{ 
-  m_selectedLight++;
-  if(m_selectedLight == m_sceneLights.size())
-    m_selectedLight = 0;
 }

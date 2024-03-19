@@ -34,7 +34,7 @@ struct Texture
     sampler2D textures[MAX_TEXTURES];
 };
 
-// PROCEDURAL TEXTURE
+// Start of procedural texture
 
 // Hash function
 vec2 hash(vec2 p) {
@@ -42,6 +42,8 @@ vec2 hash(vec2 p) {
     p2 += dot(p2, p2.yx + 19.19);
     return fract(vec2((p2.x + p2.y) * p2.x, (p2.x + p2.y) * p2.y));
 }
+
+// Perlin noise function
 float noise(vec2 P) {
     vec2 Pi = floor(P);
     vec2 Pf = P - Pi;
@@ -55,6 +57,7 @@ float noise(vec2 P) {
     return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
 }
 
+// End of procedural texture
 
 // The front surface material
 uniform Material material;
@@ -93,12 +96,15 @@ void main()
     gAmbientShininess.a = material.shininess;
 
     vec4 texColor = vec4(0.0, 0.0, 0.0, 0.0);
+
     // Iterate over each texture
     for (int i = 0; i < MAX_TEXTURES; i++)
     {
         if (fragTexture.activeTextures[i])
         {
             if(fragTexture.isProcedural[i]) {
+
+                // Select different shades of blue depending on the noise.
                 float n = noise(texCoord * 50);
                 if (n < 0.1)
                     texColor = vec4(0.0, 0.0, 0.5, 1.0);
@@ -106,6 +112,7 @@ void main()
                     texColor = vec4(0.0, 0.2, 0.8, 1.0);
                 else 
                     texColor = vec4(0.0, 0.5, 1.0, 1.0);
+                    
             } else {
                 vec4 fragTexColor = texture2D(fragTexture.textures[i], texCoord);
                 texColor = mix(texColor, fragTexColor, fragTexColor.a);

@@ -20,22 +20,16 @@ void main()
 
         // Sample depth value from the depth texture
         float depthValue = texture(depthTexture, texCoords).r;
-
-        // Calculate the depth difference from the focal plane
-        float depthDifference = abs(depthValue - minFocalDist);
-
-        // Calculate the maximum possible depth difference in the scene
-        float maxDepthDifference = maxFocalDist - minFocalDist;
-
-        // Normalize the depth difference
-        float normalizedDepthDifference = depthDifference / maxDepthDifference;
-
-        // Calculate the blur amount based on normalized depth difference
-        float blurAmount = smoothstep(0.0, 1.0, normalizedDepthDifference);
-
-        // Mix between the regular scene and the blurry scene based on blur amount
         vec4 sceneColor = texture(scene, texCoords);
         vec4 blurColor = texture(sceneBlur, texCoords);
+
+        // Calculate the depth difference from the focal plane
+        float depthDifference = abs(depthValue - minFocalDist) / (maxFocalDist - minFocalDist);
+
+        // Calculate the blur amount based on depth difference
+        float blurAmount = smoothstep(0.0, 1.0, depthDifference);
+
+        // Mix between the regular scene and the blurry scene based on blur amount
         vec4 dofResult = mix(sceneColor, blurColor, blurAmount);
 
         // Apply bloom effect if enabled

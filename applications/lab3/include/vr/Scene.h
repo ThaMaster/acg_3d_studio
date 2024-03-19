@@ -82,7 +82,6 @@ namespace vr
 
     Group* createDefaultScene();
     Geometry* buildGeometry(std::string geo_name, std::vector<glm::vec3> vertices, std::vector<GLushort> indices, std::vector<glm::vec3> normals, std::vector<glm::vec2> texCoords);
-    Quad* buildQuad(std::vector<glm::vec4> vertices, std::vector<GLushort> indices, std::vector<glm::vec2> texCoords);
 
     void addGroundPlane();
     void setUseShadowMap(bool b);
@@ -102,10 +101,11 @@ namespace vr
 
     std::shared_ptr<Quad> createMainQuad(void);
     void renderMainQuad(void);
-    void renderDebugQuads(void);
 
-    void addDebugQuads(void);
     void toggleQuad(int quadIdx);
+    Quad* buildQuad(std::vector<glm::vec4> vertices, std::vector<GLushort> indices, std::vector<glm::vec2> texCoords);
+    void renderDebugQuads(void);
+    void addDebugQuads(void);
 
     void selectNextLight(void);
     int getSelectedLightIdx(void);
