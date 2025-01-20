@@ -156,7 +156,7 @@ Now use these classes to write a program where you load several models and arran
 
 /---TABLE---/
 
-You can use [these models](../../models/cow/) for the LOD demonstration. The zip file consists of a set of .obj files of a cow in different resolutions. From 94 to 9496 triangles:
+You can use [these models](https://www8.cs.umu.se/kurser/5DV180/VT22/lab/cow.zip) for the LOD demonstration. The zip file consists of a set of .obj files of a cow in different resolutions. From 94 to 9496 triangles:
 
 ![Low Poly Cow](../images/cow_low.png "Low resolution model of a cow")
 ![High Poly Cow](../images/cow_high.png "High resolution model of a cow")
